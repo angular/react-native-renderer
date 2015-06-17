@@ -2,12 +2,16 @@
   "name": "angular-react",
   "version": "0.0.1",
   "dependencies": {
-    "gulp": "^3.9.0",
-    "gulp-shell": "^0.4.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-shell": "^0.4.2",
+    "react-native-cli": "^0.1.4",
+    "tsd": "^0.6.1",
+    "typescript": "alexeagle/TypeScript#error_is_class"
+  },
   "scripts": {
-    "postinstall": "gulp init"
+    "postinstall": "./node_modules/.bin/gulp init"
   },
   "repository": {
     "type": "git",

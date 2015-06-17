@@ -33,8 +33,6 @@ export class ReactNativeRenderer extends Renderer {
 
 	destroyView(viewRef: RenderViewRef) {
 		console.log("destroyView", arguments);
-		// DomRenderer had "noop for now", so, uh...
-		// noop for now
 	}
 
 	attachComponentView(hostViewRef: RenderViewRef, elementIndex: number,
@@ -56,10 +54,26 @@ export class ReactNativeRenderer extends Renderer {
 
 	attachViewInContainer(parentViewRef: RenderViewRef, boundElementIndex: number, atIndex: number, viewRef: RenderViewRef) {
 		console.log("attachViewInContainer", arguments);
+		var parentView = resolveInternalReactNativeView(parentViewRef);
+		var view = resolveInternalReactNativeView(viewRef);
+		var siblingElement = parentView.boundElements[boundElementIndex];
+		var siblingIndex = siblingElement.parent.children.indexOf(siblingElement);
+		var desiredIndex = (siblingIndex + 1) + atIndex;
+		if (view.rootChildElements.length != 1) {
+			console.log("%cExpected one element, got " + view.rootChildElements.length, "color: #FF0000");
+		}
+		var elementToInsert = view.rootChildElements[0];
+		siblingElement.parent.insertChildAtIndex(elementToInsert, desiredIndex);
 	}
 
 	detachViewInContainer(parentViewRef: RenderViewRef, boundElementIndex: number, atIndex: number, viewRef: RenderViewRef) {
 		console.log("detachViewInContainer", arguments);
+		var parentView = resolveInternalReactNativeView(parentViewRef);
+		var view = resolveInternalReactNativeView(viewRef);
+		var siblingElement = parentView.boundElements[boundElementIndex];
+		var siblingIndex = siblingElement.parent.children.indexOf(siblingElement);
+		var desiredIndex = (siblingIndex + 1) + atIndex;
+		siblingElement.parent.removeAtIndex(desiredIndex);
 	}
 
 	hydrateView(viewRef: RenderViewRef) {
@@ -81,7 +95,7 @@ export class ReactNativeRenderer extends Renderer {
 		console.log("setElementProperty", arguments);
 		var view = resolveInternalReactNativeView(viewRef);
 		var element = view.boundElements[elementIndex];
-		element.setAttribute(propertyName, propertyValue);
+		element.setProperty(propertyName, propertyValue);
 	}
 
 	callAction(viewRef: RenderViewRef, elementIndex: number, actionExpression: string, actionArgs: any) {
@@ -91,7 +105,7 @@ export class ReactNativeRenderer extends Renderer {
 	setText(viewRef: RenderViewRef, textNodeIndex: number, text: string) {
 		console.log("setText", arguments);
 		var view = resolveInternalReactNativeView(viewRef);
-		view.boundTextNodes[textNodeIndex].setAttribute("text", text);
+		view.boundTextNodes[textNodeIndex].setProperty("text", text);
 	}
 
 	setEventDispatcher(viewRef: RenderViewRef, dispatcher: EventDispatcher) {
@@ -104,7 +118,7 @@ export class ReactNativeRenderer extends Renderer {
 		console.log(proto);
 		var nativeElements;
 		var boundElements = [];
-		if (proto.rootBindingOffset == 0) {
+		if (proto.element.name == "template") {
 			nativeElements = this._dfsAndCreateNativeElements(proto.element.children[0].children, boundElements);
 		} else {
 			nativeElements = this._dfsAndCreateNativeElements([proto.element], boundElements);
@@ -139,7 +153,7 @@ export class ReactNativeRenderer extends Renderer {
 			}
 
 			//create and then attach children
-			if (node.children) {
+			if (node.children && node.name != "template") {
 				var children = this._dfsAndCreateNativeElements(node.children, boundElements);
 				for (var j = 0; j < children.length; j++) {
 					var child = children[j];

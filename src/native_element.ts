@@ -222,9 +222,14 @@ export var tagElementMap = {};
 export class ReactNativeElement {
 	tag;
 	viewName;
-	children = [];
-	listenerCallback: Function;
-	constructor(viewName: string, attributes = {}) {
+	parent: ReactNativeElement;
+	children:Array<ReactNativeElement> = [];
+	listenerCallback = (name, event) => {};
+	//Keeping track of native properties so that we can re-create
+	//the element when re-attaching it.
+	props = {};
+	_created = false;
+	constructor(viewName: string, properties = {}) {
 		var nativeViewName = RCT_VIEW_NAMES[viewName];
 		if (nativeViewName == undefined) {
 			console.log("%cNode viewName invalid: " + viewName + ". defaulting to RCTView", "background: #FFFF00");
@@ -234,27 +239,61 @@ export class ReactNativeElement {
 
 		this.tag = ReactNativeTagHandles.allocateTag();
 
-		var newAttribs = {};
-		for (var i in attributes) {
-			newAttribs[RCT_PROPERTY_NAMES[i] || i] = attributes[i]
-		}
+		this._mergeInProps(properties);
 
-		NativeModules.UIManager.createView(this.tag, this.viewName, newAttribs);
+		this._createIfNeeded();
 		tagElementMap[this.tag] = this;
 	}
 
-	insertChildAtIndex(node, index) {
+	insertChildAtIndex(node: ReactNativeElement, index: number) {
 		this.children.splice(index, 0, node);
+		node.parent = this;
+		node._createIfNeeded();
 		NativeModules.UIManager.manageChildren(this.tag, null, null, [node.tag], [index], null);
 	}
 
-	setAttribute(attribute, value) {
-		var props = {};
-		props[RCT_PROPERTY_NAMES[attribute] || attribute] = value;
-		NativeModules.UIManager.updateView(this.tag, this.viewName, props);
+	removeAtIndex(index: number) {
+		var removedElement = this.children.splice(index, 1)[0];
+		NativeModules.UIManager.manageChildren(this.tag, null, null, null, null, [index])
+		removedElement.parent = null;
+		removedElement._destroy();
+	}
+
+	setProperty(prop, value) {
+		this.props[RCT_PROPERTY_NAMES[prop] || prop] = value;
+		NativeModules.UIManager.updateView(this.tag, this.viewName, this.props);
 	}
 
 	attachToNative() {
 		NativeModules.UIManager.manageChildren(1, null, null, [this.tag], [0], null);
+	}
+
+	focus() {
+		NativeModules.UIManager.focus(this.tag);
+	}
+
+	_mergeInProps(properties) {
+		for (var i in properties) {
+			this.props[RCT_PROPERTY_NAMES[i] || i] = properties[i];
+		}
+	}
+
+	_createIfNeeded() {
+		if (!this._created) {
+			NativeModules.UIManager.createView(this.tag, this.viewName, this.props);
+			for (var i = 0; i < this.children.length; i++) {
+				var node = this.children[i];
+				node._createIfNeeded();
+				NativeModules.UIManager.manageChildren(this.tag, null, null, [node.tag], [i], null);
+			}
+			this._created = true;
+		}
+	}
+
+	_destroy() {
+		this._created = false;
+		for (var i = 0; i < this.children.length; i++) {
+			this.children[i]._destroy();
+		}
 	}
 }
