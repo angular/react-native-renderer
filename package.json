@@ -1,0 +1,20 @@
+{
+  "name": "angular-react",
+  "version": "0.0.1",
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-shell": "^0.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "postinstall": "gulp init"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uber5001/angular-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/uber5001/angular-react/issues"
+  },
+  "homepage": "https://github.com/uber5001/angular-react#readme"
+}
