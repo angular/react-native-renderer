@@ -272,6 +272,14 @@ export class ReactNativeElement {
 		NativeModules.UIManager.focus(this.tag);
 	}
 
+	setEventListener(listener) {
+		this.listenerCallback = listener;
+	}
+
+	fireEvent(name, event) {
+		this.listenerCallback(name, event);
+	}
+
 	_mergeInProps(properties) {
 		for (var i in properties) {
 			this.props[RCT_PROPERTY_NAMES[i] || i] = properties[i];
