@@ -15,13 +15,10 @@ import {Component, View, Directive, NgFor} from 'angular2/angular2';
 })
 @View({
 	template:
-	    "<TextField (topsubmitediting)='submit($event)' " +
-		    "placeholder='new item' height=40 fontSize=30></TextField>" +
+	    "<TextField (topsubmitediting)='submit($event)' placeholder='new item' height=40 fontSize=30></TextField>" +
 		"<ScrollView flex=1><View>" +
-		  "<View *ng-for='#item of items' " +
-		      "flexDirection='row' height=40 fontSize=20 alignItems='center'>" +
-		    "<switch (topchange)='remove(item)' " +
-		        "width=61 height=31 paddingRight=10></switch>" +
+		  "<View *ng-for='#item of items' flexDirection='row' height=40 fontSize=20 alignItems='center'>" +
+		    "<switch (topchange)='remove(item)' width=61 height=31 paddingRight=10></switch>" +
 		    "<Text fontSize=20>{{item.label}}</Text>" +
 		  "</View>" +
 		"</View></ScrollView>",
