@@ -59,3 +59,11 @@ gulp.task('initTypings', ['initDistAngular'], shell.task([
 	"cp angular/modules/angular2/*.d.ts src/angular2",
 	"cp -r angular/modules/angular2/typings src/angular2/typings"
 ]));
+
+gulp.task('build.app', ['init'], shell.task([
+	"./scripts/build_app.sh",
+]));
+
+gulp.task('main.jsbundle', function() {
+	return require('./tools/bundler').bundle();
+})

@@ -1,0 +1,5 @@
+[caps]
+	platformName = "ios"
+	app = "/Users/scottlittle/GitHub/react-native-renderer/dist.app.zip"
+	deviceName = "iPhone Simulator"
+	platformVersion = "8.3"

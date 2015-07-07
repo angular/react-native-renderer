@@ -2,3 +2,4 @@ node_modules
 dist
 src/angular2
 *.swp
+.DS_Store
