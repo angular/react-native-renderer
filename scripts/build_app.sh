@@ -7,6 +7,7 @@ sed -i '.old' -E '/^ *\/\/ *jsCodeLocation/ s/^ *\/\/*//' dist/iOS/AppDelegate.m
 
 xctool -project dist/dist.xcodeproj/ -scheme dist -sdk iphonesimulator8.3 clean CONFIGURATION_BUILD_DIR=$(pwd)/dist/build
 xctool -project dist/dist.xcodeproj/ -scheme dist -sdk iphonesimulator8.3 build CONFIGURATION_BUILD_DIR=$(pwd)/dist/build
+zip -r dist/build/dist.app.zip dist/build/dist.app
 
 # revert AppDelegate.m back to the normal development version
 rm dist/iOS/AppDelegate.m

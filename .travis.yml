@@ -1,0 +1,11 @@
+language: objective-c
+osx_image: beta-xcode6.3
+install: npm install
+script: ./scripts/build_and_test.sh
+env:
+  global:
+    - SAUCE_USERNAME=angular-ci
+    - SAUCE_ACCESS_KEY=9b988f434ff8-fbca-8aa4-4ae3-35442987
+    - LOGS_DIR=/tmp/react-native-renderer-build/logs
+before_script:
+    - mkdir -p $LOGS_DIR

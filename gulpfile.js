@@ -24,7 +24,9 @@ gulp.task('cleanSrcAngularTypings', shell.task([
 
 gulp.task('initSubmodule', shell.task([
 	"git submodule update --init --recursive",
-	"./node_modules/.bin/tsd reinstall --config angular/modules/angular2/tsd.json",
+	// "./node_modules/.bin/tsd reinstall --config angular/modules/angular2/tsd.json",
+		"rm -rf angular/modules/angular2/typings",
+		"cp -r angular_typings angular/modules/angular2/typings"
 ]));
 
 gulp.task('initDist', ['cleanDist'], shell.task([
