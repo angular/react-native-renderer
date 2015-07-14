@@ -7,6 +7,8 @@
     "gulp": "^3.9.0",
     "gulp-shell": "^0.4.2",
     "jasmine": "^2.3.1",
+    "object-assign": "^3.0.0",
+    "proxyquire": "^1.6.0",
     "react-native-cli": "^0.1.4",
     "tsd": "^0.6.1",
     "typescript": "alexeagle/TypeScript#error_is_class",

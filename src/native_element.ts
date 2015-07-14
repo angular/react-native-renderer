@@ -232,7 +232,7 @@ export class ReactNativeElement {
 	constructor(viewName: string, properties = {}) {
 		var nativeViewName = RCT_VIEW_NAMES[viewName];
 		if (nativeViewName == undefined) {
-			console.log("%cNode viewName invalid: " + viewName + ". defaulting to RCTView", "background: #FFFF00");
+			// console.log("%cNode viewName invalid: " + viewName + ". defaulting to RCTView", "background: #FFFF00");
 			nativeViewName = RCT_VIEW_NAMES["view"];
 		}
 		this.viewName = nativeViewName;
