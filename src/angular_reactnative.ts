@@ -37,7 +37,7 @@ ReactNativeEventEmitter.receiveTouches = function(
 	console.log(eventTopLevelType, touches, changedIndices)
 };
 
-import {bind, Renderer, appComponentRefToken, bootstrap} from "angular2/angular2";
+import {bind, Renderer, bootstrap} from "angular2/angular2";
 import {internalView} from 'angular2/src/core/compiler/view_ref';
 import {ReactNativeRenderer} from './renderer'
 

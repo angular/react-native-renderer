@@ -1,5 +1,5 @@
 import {DomProtoView} from 'angular2/src/render/dom/view/proto_view';
-import {RenderViewRef, EventDispatcher} from 'angular2/src/render/api';
+import {RenderViewRef, RenderEventDispatcher} from 'angular2/src/render/api';
 import {NG_BINDING_CLASS} from 'angular2/src/render/dom/util';
 import {ReactNativeElement} from './native_element';
 
@@ -17,7 +17,7 @@ export class ReactNativeViewRef extends RenderViewRef {
 
 export class ReactNativeView {
 	hydrated: boolean;
-	eventDispatcher: EventDispatcher;
+	eventDispatcher: RenderEventDispatcher;
 
 	renderTree;
 

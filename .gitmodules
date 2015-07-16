@@ -1,3 +1,4 @@
 [submodule "angular"]
 	path = angular
-	url = https://github.com/angular/angular.git
+	url = https://github.com/uber5001/angular
+	branch = private-param-types

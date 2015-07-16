@@ -1,6 +1,8 @@
 var NativeModules = require('NativeModules');
 var ReactNativeTagHandles = require('ReactNativeTagHandles');
+import {RenderFragmentRef} from 'angular2/src/render/api';
 
+//Taken from a search of react-native for file names that match: /(RCT[^/]*)Manager\.m
 const RCT_VIEW_NAMES = {
 	"actionsheet": "RCTActionSheet",
 	"activityindicatorview": "RCTActivityIndicatorView",
@@ -218,6 +220,15 @@ const RCT_PROPERTY_NAMES = {
 }
 
 export var tagElementMap = {};
+
+export function resolveInternalReactNativeFragment(fragmentRef: RenderFragmentRef) {
+	return (<ReactNativeFragmentRef>fragmentRef)._nodes;
+}
+
+export class ReactNativeFragmentRef extends RenderFragmentRef {
+  constructor(public _nodes: ReactNativeElement[]) { super(); }
+}
+
 
 export class ReactNativeElement {
 	tag;

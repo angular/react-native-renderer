@@ -1,16 +1,18 @@
+var shims = require('es6-shim');
+
 import {reactNativeBootstrap} from './angular_reactnative'
 import {Component, View, Directive, NgFor} from 'angular2/angular2';
 
 @Component({
 	selector: 'todo-app',
-	hostAttributes: {
+	host: {
 		"position": "absolute",
-		"top": 0,
-		"bottom": 0,
-		"left": 0,
-		"right": 0,
-		"padding": 5,
-		"paddingTop": 15
+		"top": "0",
+		"bottom": "0",
+		"left": "0",
+		"right": "0",
+		"padding": "5",
+		"paddingTop": "15"
 	}
 })
 @View({
