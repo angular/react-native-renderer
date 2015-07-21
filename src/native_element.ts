@@ -299,7 +299,7 @@ export class ReactNativeElement {
 
 	_createIfNeeded() {
 		if (!this._created) {
-			NativeModules.UIManager.createView(this.tag, this.viewName, this.props);
+			NativeModules.UIManager.createView(this.tag, this.viewName, null, this.props);
 			for (var i = 0; i < this.children.length; i++) {
 				var node = this.children[i];
 				node._createIfNeeded();

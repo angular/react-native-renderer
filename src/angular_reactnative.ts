@@ -18,12 +18,11 @@ ReactNativeEventEmitter.receiveEvent = function(
 	topLevelType: string,
 	nativeEventParam
 ) {
-	if (!nativeEventParam.target) {
-		throw "Expected all events to have a target!";
-	}
 	var element = tagElementMap[tag];
-	nativeEventParam.target = element;
-	console.log(tag, topLevelType.toLowerCase(), nativeEventParam);
+	if (nativeEventParam.target) {
+		nativeEventParam.target = tagElementMap[nativeEventParam.target];
+	}
+	// console.log(tag, topLevelType.toLowerCase(), nativeEventParam);
 	element.fireEvent(topLevelType.toLowerCase(), nativeEventParam);
 	// TODO: Don't call detectChanges on events that are not listened to.
 }
@@ -34,7 +33,7 @@ ReactNativeEventEmitter.receiveTouches = function(
 	touches: Array<Object>,
 	changedIndices: Array<number>
 ) {
-	console.log(eventTopLevelType, touches, changedIndices)
+	// console.log(eventTopLevelType, touches, changedIndices)
 };
 
 import {bind, Renderer, bootstrap} from "angular2/angular2";

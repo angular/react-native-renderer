@@ -22,7 +22,7 @@ describe("A React Native element wrapper", function() {
 	it("should apply initial properties to native", function() {
 		spyOn(UIManager, "createView");
 		var element = new ReactNativeElement("view", {"foo": "bar"});
-		expect(UIManager.createView.calls.mostRecent().args[2]).toEqual({"foo":"bar"});
+		expect(UIManager.createView.calls.mostRecent().args[3]).toEqual({"foo":"bar"});
 	})
 	it("should apply added properties to native", function() {
 		var element = new ReactNativeElement();
@@ -135,7 +135,7 @@ describe("A React Native element wrapper", function() {
 			var resultingProperties = {}
 			for (var i = 0; i < mostRecentCalls.length; i++) {
 				var call = mostRecentCalls[i];
-				objectAssign(resultingProperties, call.args[2]);
+				objectAssign(resultingProperties, call.args[3]);
 			}
 
 			expect(resultingProperties).toEqual({"foo": "bar"})

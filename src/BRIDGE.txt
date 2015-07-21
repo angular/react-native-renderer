@@ -1,136 +1,68 @@
 RCT_EXPORT_METHOD
 =================
-    UIManager
-        /**
-         * A method to be called from JS, which takes a container ID and then releases
-         * all subviews for that container upon receipt.
-         */
-        removeSubviewsFromContainerWithID
-                      (NSNumber *)containerID
-
-        removeRootView
-                      (NSNumber *)rootReactTag
-
-        replaceExistingNonRootView
-                      (NSNumber *)reactTag withView
-                      (NSNumber *)newReactTag
-
-        manageChildren
-                      (NSNumber *)containerReactTag
-                       (NSArray *)moveFromIndices
-                       (NSArray *)moveToIndices
-                       (NSArray *)addChildReactTags
-                       (NSArray *)addAtIndices
-                       (NSArray *)removeAtIndices
-
-        createView
-                      (NSNumber *)reactTag
-                      (NSString *)viewName
-                  (NSDictionary *)props
-
-        updateView
-                      (NSNumber *)reactTag
-             (__unused NSString *)_        ###viewName
-                  (NSDictionary *)props
-
-        focus
-                      (NSNumber *)reactTag
-
-        blur
-                      (NSNumber *)reactTag
-
-        findSubviewIn
-                      (NSNumber *)reactTag atPoint
-                         (CGPoint)point callback
-          (RCTResponseSenderBlock)callback
-
-        measure
-                      (NSNumber *)reactTag
-          (RCTResponseSenderBlock)callback
-
-        /**
-         * Returns the computed recursive offset layout in a dictionary form. The
-         * returned values are relative to the `ancestor` shadow view. Returns `nil`, if
-         * the `ancestor` shadow view is not actually an `ancestor`. Does not touch
-         * anything on the main UI thread. Invokes supplied callback with (x, y, width,
-         * height).
-         */
-        measureLayout
-                      (NSNumber *)reactTag
-                      (NSNumber *)ancestorReactTag
-          (RCTResponseSenderBlock)errorCallback
-          (RCTResponseSenderBlock)callback
-
-        /**
-         * Returns the computed recursive offset layout in a dictionary form. The
-         * returned values are relative to the `ancestor` shadow view. Returns `nil`, if
-         * the `ancestor` shadow view is not actually an `ancestor`. Does not touch
-         * anything on the main UI thread. Invokes supplied callback with (x, y, width,
-         * height).
-         */
-        measureLayoutRelativeToParent
-                      (NSNumber *)reactTag
-          (RCTResponseSenderBlock)errorCallback
-          (RCTResponseSenderBlock)callback
-
-        /**
-         * Returns an array of computed offset layouts in a dictionary form. The layouts are of any React subviews
-         * that are immediate descendants to the parent view found within a specified rect. The dictionary result
-         * contains left, top, width, height and an index. The index specifies the position among the other subviews.
-         * Only layouts for views that are within the rect passed in are returned. Invokes the error callback if the
-         * passed in parent view does not exist. Invokes the supplied callback with the array of computed layouts.
-         */
-        measureViewsInRect
-                          (CGRect)rect
-                      (NSNumber *)reactTag
-          (RCTResponseSenderBlock)errorCallback
-          (RCTResponseSenderBlock)callback
-
-        setMainScrollViewTag
-                      (NSNumber *)reactTag
-
-        scrollTo
-                      (NSNumber *)reactTag
-                         (CGFloat)offsetX
-                         (CGFloat)offsetY
-
-        scrollWithoutAnimationTo
-                      (NSNumber *)reactTag
-                         (CGFloat)offsetX
-                         (CGFloat)offsetY
-
-        zoomToRect
-                      (NSNumber *)reactTag
-                          (CGRect)rect
-
-        /**
-         * JS sets what *it* considers to be the responder. Later, scroll views can use
-         * this in order to determine if scrolling is appropriate.
-         */
-        setJSResponder
-                      (NSNumber *)reactTag
-
-        clearJSResponder
-
-        configureNextLayoutAnimation
-                  (NSDictionary *)config
-          (RCTResponseSenderBlock)callback
-          (RCTResponseSenderBlock)errorCallback
-
-    Timing
-        createTimer
-                      (NSNumber *)callbackID
-                  (NSTimeInterval)jsDuration
-                        (NSDate *)jsSchedulingTime
-                            (BOOL)repeats
-
-RCT_IMPORT_METHOD
-=================
-
-        RCT_IMPORT_METHOD(RCTNativeAppEventEmitter, emit);
-        RCT_IMPORT_METHOD(RCTDeviceEventEmitter, emit);
-        RCT_IMPORT_METHOD(RCTEventEmitter, receiveEvent);
-        RCT_IMPORT_METHOD(AppRegistry, runApplication)
-        RCT_IMPORT_METHOD(ReactNative, unmountComponentAtNodeAndRemoveContainer)
-        RCT_IMPORT_METHOD(RCTEventEmitter, receiveTouches);
-        RCT_IMPORT_METHOD(RCTJSTimers, callTimers)
+removeSubviewsFromContainerWithID:
+    containerID(NSNumber *)containerID
+removeRootView
+    rootReactTag:(NSNumber *)rootReactTag
+replaceExistingNonRootView
+    newReactTag:(NSNumber *)reactTag withView:(NSNumber *)newReactTag
+manageChildren
+    containerReactTag:(NSNumber *)containerReactTag
+    moveFromIndices:(NSArray *)moveFromIndices
+    moveToIndices:(NSArray *)moveToIndices
+    addChildReactTags:(NSArray *)addChildReactTags
+    addAtIndices:(NSArray *)addAtIndices
+    removeAtIndices:(NSArray *)removeAtIndices
+createView
+    reactTag:(NSNumber *)reactTag
+    viewName:(NSString *)viewName
+    rootTag:(__unused NSNumber *)rootTag
+    props:(NSDictionary *)props
+updateView
+    reactTag:(NSNumber *)reactTag
+    viewName:(__unused NSString *)_
+    props:(NSDictionary *)props
+focus
+    reactTag:(NSNumber *)reactTag
+blur
+    reactTag:(NSNumber *)reactTag
+findSubviewIn
+    callback:(NSNumber *)reactTag atPoint:(CGPoint)point callback:(RCTResponseSenderBlock)callback
+measure
+    reactTag:(NSNumber *)reactTag
+    callback:(RCTResponseSenderBlock)callback
+measureLayout
+    reactTag:(NSNumber *)reactTag
+    relativeTo:(NSNumber *)ancestorReactTag
+    errorCallback:(__unused RCTResponseSenderBlock)errorCallback
+    callback:(RCTResponseSenderBlock)callback
+measureLayoutRelativeToParent
+    reactTag:(NSNumber *)reactTag
+    errorCallback:(__unused RCTResponseSenderBlock)errorCallback
+    callback:(RCTResponseSenderBlock)callback
+measureViewsInRect
+    rect:(CGRect)rect
+    parentView:(NSNumber *)reactTag
+    errorCallback:(__unused RCTResponseSenderBlock)errorCallback
+    callback:(RCTResponseSenderBlock)callback
+setMainScrollViewTag
+    reactTag:(NSNumber *)reactTag
+scrollTo
+    reactTag:(NSNumber *)reactTag
+    withOffsetX:(CGFloat)offsetX
+    offsetY:(CGFloat)offsetY
+scrollWithoutAnimationTo
+    reactTag:(NSNumber *)reactTag
+    offsetX:(CGFloat)offsetX
+    offsetY:(CGFloat)offsetY
+zoomToRect
+    reactTag:(NSNumber *)reactTag
+    withRect:(CGRect)rect
+setJSResponder
+    reactTag:(NSNumber *)reactTag
+    blockNativeResponder:(__unused BOOL)blockNativeResponder
+clearJSResponder
+configureNextLayoutAnimation
+    config:(NSDictionary *)config
+    withCallback:(RCTResponseSenderBlock)callback
+    errorCallback:(__unused RCTResponseSenderBlock)errorCallback
