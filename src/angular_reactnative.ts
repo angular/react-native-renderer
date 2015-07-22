@@ -1,14 +1,15 @@
 'use strict';
 
-var shims = require('es6-shim');
 
-import {tagElementMap} from "./native_element";
 
 var AppRegistry = require('AppRegistry');
+var shims = require('es6-shim');
+import {tagElementMap, RCT_PROPERTY_NAMES} from "./native_element";
 var ReactNativeEventEmitter = require('ReactNativeEventEmitter');
 
 // required for angular:
-var parse5Adapter = require('angular2/src/dom/parse5_adapter.js');
+import { Parse5DomAdapter } from 'angular2/src/dom/parse5_adapter';
+import { setRootDomAdapter } from 'angular2/src/dom/dom_adapter';
 require('traceur/bin/traceur-runtime.js');
 require('reflect-metadata/Reflect.js');
 
@@ -32,19 +33,38 @@ ReactNativeEventEmitter.receiveEvent = function(
 // intentionlly overriding here because this is the easiest way to intercept events from React Native
 ReactNativeEventEmitter.receiveTouches = function(
 	eventTopLevelType: string,
-	touches: Array<Object>,
+	touches: Array<any>,
 	changedIndices: Array<number>
 ) {
-	// console.log(eventTopLevelType, touches, changedIndices)
+	for (var i = 0; i < touches.length; i++) {
+		var element = tagElementMap[touches[i].target];
+		if (touches[i].target) {
+			touches[i].target = tagElementMap[touches[i].target];
+		}
+		// console.log(eventTopLevelType, touches, changedIndices)
+
+		while (element) {
+			element.fireEvent(eventTopLevelType.toLowerCase(), touches[i]);
+			element = element.parent;
+		}
+	}
 };
 
 import {bind, Renderer, bootstrap} from "angular2/angular2";
 import {internalView} from 'angular2/src/core/compiler/view_ref';
 import {ReactNativeRenderer} from './renderer'
 
+class CustomParse5DomAdapter extends Parse5DomAdapter {
+	static makeCurrent() { setRootDomAdapter(new CustomParse5DomAdapter()); }
+	hasProperty(element, name: string): boolean {
+		console.log(name);
+		return RCT_PROPERTY_NAMES[name] !== undefined;
+	}
+}
+
 export function reactNativeBootstrap(component, bindings = []) {
 	AppRegistry.registerRunnable("dist", function() {
-		parse5Adapter.Parse5DomAdapter.makeCurrent();
+		CustomParse5DomAdapter.makeCurrent();
 
 		bootstrap(component, [
 			ReactNativeRenderer,

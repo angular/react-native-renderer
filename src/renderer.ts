@@ -7,7 +7,6 @@ import {DOM} from 'angular2/src/dom/dom_adapter';
 import {resolveInternalReactNativeView, ReactNativeViewRef, ReactNativeView} from './view';
 import {ReactNativeElement, ReactNativeFragmentRef, resolveInternalReactNativeFragment} from './native_element';
 
-
 export class ReactNativeRenderer extends Renderer {
 
 	constructor() {
@@ -57,6 +56,11 @@ export class ReactNativeRenderer extends Renderer {
 			var element = fragment[i];
 			element.parent.removeAtIndex(element.parent.children.indexOf(element));
 		}
+		var item = fragment[0];
+		var text = item.children[1].children[0].props.text;
+		if (global.__removed_label) {
+			global.__removed_item = item;
+		}
 	}
 
 	hydrateView(viewRef: RenderViewRef) {
@@ -82,29 +86,54 @@ export class ReactNativeRenderer extends Renderer {
 
 	setElementProperty(location: RenderElementRef, propertyName: string, propertyValue: any) {
 		// console.log("setElementProperty", arguments);
-		// var view = resolveInternalReactNativeView(viewRef);
-		// var element = view.boundElements[elementIndex];
-		// element.setProperty(propertyName, propertyValue);
+		var view = resolveInternalReactNativeView(location.renderView);
+		var element = view.boundElements[location.renderBoundElementIndex];
+		element.setProperty(propertyName, propertyValue);
 	}
 
 	setElementAttribute(location: RenderElementRef, attributeName: string, attributeValue: string) {
-		// console.log("setElementAttribute", arguments);
+		console.log("setElementAttribute", arguments);
 	}
 
 	setElementClass(location: RenderElementRef, className: string, isAdd: boolean) {
-		// console.log("setElementClass", arguments);
+		console.log("setElementClass", arguments);
 	}
 
 	setElementStyle(location: RenderElementRef, styleName: string, styleValue: string) {
-		// console.log("setElementStyle", arguments);
+		console.log("setElementStyle", arguments);
 	}
 
 	invokeElementMethod(location: RenderElementRef, methodName: string, args: List<any>) {
-		// console.log("invokeElementMethod", arguments);
+		console.log("invokeElementMethod", arguments);
 	}
 
 	setText(viewRef: RenderViewRef, textNodeIndex: number, text: string) {
 		// console.log("setText", arguments);
+		// if (text === "FADE_OUT_HACK") {
+		// 	var view = resolveInternalReactNativeView(viewRef);
+		// 	var element = view.boundTextNodes[textNodeIndex].parent.parent;
+		// 	var start = Date.now();
+		// 	function animate() {
+		// 		var secondsPassed = (Date.now() - start) / 1000;
+		// 		var transform = [
+		// 			{ translateX: Math.max(300 * secondsPassed * secondsPassed, 0) },
+		// 			{ scaleY: Math.max(1 - secondsPassed * secondsPassed, 0) }
+		// 		];
+		// 		var transformMatrix = precomputeStyle({ transform: transform }).transformMatrix;
+		// 		element.setProperty("transformMatrix", transformMatrix);
+		// 		// element.setProperty("opacity", Math.max(1 - secondsPassed * secondsPassed, 0));
+		// 		if (secondsPassed <= 1) {
+		// 			requestAnimationFrame(animate);
+		// 		}
+		// 	} animate();
+		// 	return;
+		// } else {
+		// 	//FADE_OUT_HACK clearing extra transform props so the fragment can be re-used
+		// 	var view = resolveInternalReactNativeView(viewRef);
+		// 	var element = view.boundTextNodes[textNodeIndex].parent.parent;
+		// 	element.setProperty("transformMatrix", undefined);
+		// }
+
 		var view = resolveInternalReactNativeView(viewRef);
 		view.boundTextNodes[textNodeIndex].setProperty("text", text);
 	}

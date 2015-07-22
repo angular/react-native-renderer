@@ -39,7 +39,7 @@ const RCT_VIEW_NAMES = {
 	"webview": "RCTWebView"
 }
 
-const RCT_PROPERTY_NAMES = {
+export const RCT_PROPERTY_NAMES = {
 	"accessibilitylabel": "accessibilityLabel",
 	"accessibilitytraits": "accessibilityTraits",
 	"accessible": "accessible",
@@ -238,7 +238,7 @@ export class ReactNativeElement {
 	listenerCallback = (name, event) => {};
 	//Keeping track of native properties so that we can re-create
 	//the element when re-attaching it.
-	props = {};
+	props: any = {};
 	_created = false;
 	constructor(viewName: string, properties = {}) {
 		var nativeViewName = RCT_VIEW_NAMES[viewName];
