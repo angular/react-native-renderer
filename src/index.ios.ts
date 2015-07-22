@@ -1,5 +1,3 @@
-var shims = require('es6-shim');
-
 import {reactNativeBootstrap} from './angular_reactnative'
 import {Component, View, Directive, NgFor} from 'angular2/angular2';
 

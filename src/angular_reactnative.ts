@@ -1,5 +1,7 @@
 'use strict';
 
+var shims = require('es6-shim');
+
 import {tagElementMap} from "./native_element";
 
 var AppRegistry = require('AppRegistry');
