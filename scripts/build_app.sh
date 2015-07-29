@@ -1,3 +1,4 @@
+./node_modules/.bin/gulp build
 
 # uncomment the "OPTION 2", so the javascript bundle is used in the built app
 # the packager still gets uselessly launched: https://github.com/facebook/react-native/issues/1430

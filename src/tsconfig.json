@@ -8,5 +8,15 @@
         "sourceRoot": ".",
         "target": "ES5",
         "outDir": "../dist"
-    }
+    },
+	"files": [
+		"index.ios.ts",
+		"angular_reactnative.ts",
+		"reactnative_zone_patch.ts",
+		"renderer.ts",
+		"view.ts",
+		"reactnative_zone.ts",
+		"native_element.ts",
+		"node_modules/angular2/typings/node/node.d.ts"
+	]
 }

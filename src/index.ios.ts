@@ -71,7 +71,7 @@ class TodoAppComponent {
 		if (!item.startedSwipe) {
 			var prevY = item.prevEvent.pageY;
 			var curY = event.pageY;
-			var dy = curX - prevY;
+			var dy = curY - prevY;
 			if (Math.abs(dx) - Math.abs(dy) > 10) {
 				this.scrollEnabled = false;
 				item.startedSwipe = true;

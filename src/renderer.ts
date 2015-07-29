@@ -58,9 +58,6 @@ export class ReactNativeRenderer extends Renderer {
 		}
 		var item = fragment[0];
 		var text = item.children[1].children[0].props.text;
-		if (global.__removed_label) {
-			global.__removed_item = item;
-		}
 	}
 
 	hydrateView(viewRef: RenderViewRef) {
