@@ -50,7 +50,7 @@ ReactNativeEventEmitter.receiveTouches = function(
 	}
 };
 
-import {bind, Renderer, bootstrap} from "angular2/angular2";
+import {bind, Renderer, bootstrap, NgZone} from "angular2/angular2";
 import {internalView} from 'angular2/src/core/compiler/view_ref';
 import {ReactNativeRenderer} from './renderer'
 
@@ -69,6 +69,9 @@ export function reactNativeBootstrap(component, bindings = []) {
 		bootstrap(component, [
 			ReactNativeRenderer,
 			bind(Renderer).toAlias(ReactNativeRenderer)
-		].concat(bindings))
+		].concat(bindings)).then(function(appRef) {
+			var zone = appRef._injector.get(NgZone)._innerZone;
+			require('ReactUpdates').batchedUpdates = zone.bind(require('ReactUpdates').batchedUpdates);
+		});
 	});
 }

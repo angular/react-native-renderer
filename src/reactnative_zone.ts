@@ -4,4 +4,4 @@ var core = require('zone.js/lib/core.js');
 
 var zone = global.zone = new core.Zone()
 
-ReactNativePatch.apply();
+// ReactNativePatch.apply();
