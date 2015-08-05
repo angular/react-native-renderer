@@ -1,4 +1,5 @@
-./scripts/build_app.sh
+EXAMPLE=todoApp
+./scripts/build_app.sh $EXAMPLE
 if [ ! $TRAVIS ]; then
 	./node_modules/appium/bin/appium.js --log-level debug &
 	APPIUM_PID=$!
@@ -11,13 +12,13 @@ fi
 export SAUCE_APP_NAME=build_local.app.zip
 export SAUCE_ACCESS_KEY=`echo $SAUCE_ACCESS_KEY | rev`
 if [ $TRAVIS ]; then
-	export SAUCE_APP_NAME=build_${TRAVIS_BUILD_NUMBER}_${TRAVIS_BUILD_ID}.app.zip
+	export SAUCE_APP_NAME=build_${TRAVIS_BUILD_NUMBER}_${TRAVIS_BUILD_ID}_${RANDOM}.app.zip
 	./scripts/start_tunnel.sh
 	curl -u angular-ci:$SAUCE_ACCESS_KEY \
 		 -X POST \
 		 -H "Content-Type: application/octet-stream" \
 		 https://saucelabs.com/rest/v1/storage/$SAUCE_USERNAME/$SAUCE_APP_NAME \
-		 --data-binary @./dist/build/dist.app.zip
+		 --data-binary @./dist/$EXAMPLE/build/$EXAMPLE.app.zip
 fi
 ./node_modules/jasmine/bin/jasmine.js
 EXIT_STATUS=$?

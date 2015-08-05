@@ -9,7 +9,7 @@ var desired = {
 	appiumVersion: "1.4.7",
 	deviceName: "iPhone Simulator",
 	deviceOrientation: "portrait",
-	// platformVersion: "8.3",
+	platformVersion: "8.3",
 	// platformVersion: "8.2",
 	platformName: "iOS",
 	// app: path.resolve("dist/build/dist.app.zip"),
@@ -18,10 +18,11 @@ var desired = {
 };
 if (travis) {
 	desired.app = "sauce-storage:" + process.env.SAUCE_APP_NAME
-	desired.platformVersion = "8.2"
+	console.log("-------------- sauce-storage:" + process.env.SAUCE_APP_NAME + " --------------");
+	// desired.platformVersion = "8.2"
 } else {
-	desired.app = path.resolve("dist/build/dist.app.zip")
-	desired.platformVersion = "8.3"
+	desired.app = path.resolve("dist/todoApp/build/todoApp.app.zip")
+	// desired.platformVersion = "8.3"
 }
 //appium also closes a session after 60s, no reason to wait longer than that. (capability newCommandTimeout)
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;

@@ -3,7 +3,7 @@ var proxyquire = require('proxyquire').noCallThru();
 var NativeModules = require('./NativeModules_mock');
 var UIManager = NativeModules.UIManager;
 var ReactNativeTagHandles = require('./ReactNativeTagHandles_mock');
-var native_element = proxyquire('../dist/native_element', {
+var native_element = proxyquire('../dist/todoApp/node_modules/angular-react-native-renderer/native_element', {
 	'NativeModules': NativeModules, 
 	'ReactNativeTagHandles': ReactNativeTagHandles
 });

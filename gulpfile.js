@@ -1,44 +1,41 @@
 var gulp = require('gulp');
 var shell = require('gulp-shell');
 
-gulp.task('default', ['build', 'watchbuild']);
+var minimist = require('minimist');
 
-gulp.task('watchbuild', function() {
+var options = minimist(process.argv.slice(2), {
+	string: 'example',
+	alias: {
+		'example': 'x'
+	}
+})
+console.log(options);
+
+gulp.task('watch', function() {
+	gulp.watch('src/examples/' + options.example + '/**', ['build']);
 	gulp.watch('src/**/*.ts', ['build']);
 });
 
 gulp.task('build', shell.task([
-	"cd src/node_modules && ../../node_modules/.bin/tsc"
+	"./scripts/updateExample.sh " + options.example
 ]));
 
-gulp.task('init', ['initSrc', 'initDist'], shell.task([]));
-
-gulp.task('initSrc', ['cleanSrc'], shell.task([
-	"cd src && npm install",
-
-	//prune angular2 to only use angular2/ts
-	"mv src/node_modules/angular2/ts src/node_modules/tmpSrcAngular2",
-	"rm -rf src/node_modules/angular2",
-	"mv src/node_modules/tmpSrcAngular2 src/node_modules/angular2"
+gulp.task('init', ['clean'], shell.task([
+	"./scripts/setupExample.sh " + options.example
 ]));
 
-gulp.task('cleanSrc', shell.task([
-	"rm -rf src/node_modules"
+gulp.task('clean', shell.task([
+	"rm -rf dist/" + options.example
 ]));
 
-gulp.task('initDist', ['cleanDist'], shell.task([
-	"./node_modules/.bin/react-native init dist",
-	"cp src/package.json dist/package.json",
-	"cd dist && npm install",
-
-	//add the fake, empty crypto package
-	"cp -r crypto/ dist/node_modules/crypto"
+gulp.task('open', shell.task([
+	"open dist/" + options.example + "/" + options.example + ".xcodeproj"
 ]));
 
-gulp.task('cleanDist', shell.task([
+gulp.task('cleanAll', shell.task([
 	"rm -rf dist"
 ]));
 
-gulp.task('main.jsbundle', function() {
-	return require('./tools/bundler').bundle();
+gulp.task('bundle', function() {
+	return require('./tools/bundler').bundle(options.example);
 })

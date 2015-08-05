@@ -7,16 +7,10 @@
         "sourceMap": true,
         "sourceRoot": ".",
         "target": "ES5",
-        "outDir": "../dist"
+        "outDir": "dist/modules/angular-react-native-renderer"
     },
 	"files": [
-		"index.ios.ts",
-		"angular_reactnative.ts",
-		"reactnative_zone_patch.ts",
-		"renderer.ts",
-		"view.ts",
-		"reactnative_zone.ts",
-		"native_element.ts",
+		"index.ts",
 		"node_modules/angular2/typings/node/node.d.ts"
 	]
 }

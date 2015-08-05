@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"target": "ES5",
+		"module": "commonjs",
+		"emitDecoratorMetadata": true
+	},
+	"files": [
+		"index.ios.ts",
+		"node_modules/angular2/typings/node/node.d.ts"
+	]
+}

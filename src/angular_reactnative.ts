@@ -13,7 +13,7 @@ import { setRootDomAdapter } from 'angular2/src/dom/dom_adapter';
 require('traceur/bin/traceur-runtime.js');
 require('reflect-metadata/Reflect.js');
 
-require('./reactnative_zone')
+import './reactnative_zone';
 
 // intentionlly overriding here because this is the easiest way to intercept events from React Native
 ReactNativeEventEmitter.receiveEvent = function(
@@ -62,8 +62,8 @@ class CustomParse5DomAdapter extends Parse5DomAdapter {
 	}
 }
 
-export function reactNativeBootstrap(component, bindings = []) {
-	AppRegistry.registerRunnable("dist", function() {
+export function reactNativeBootstrap(appName, component, bindings = []) {
+	AppRegistry.registerRunnable(appName, function() {
 		CustomParse5DomAdapter.makeCurrent();
 
 		bootstrap(component, [

@@ -3,20 +3,21 @@
 // returns a promise
 var fs = require('fs');
 var path = require('path');
-var blacklist = require('../dist/node_modules/react-native/packager/blacklist.js');
-var ReactPackager = require('../dist/node_modules/react-native/packager/react-packager');
 
-var OUT_PATH = 'dist/iOS/main.jsbundle';
 
-function bundle(flags) {
+function bundle(example, flags) {
   flags = flags || [];
   flags.dev = flags.dev || 0;
   flags.minify = flags.minify || 0;
 
+  var blacklist = require('../dist/' + example + '/node_modules/react-native/packager/blacklist.js');
+  var ReactPackager = require('../dist/' + example + '/node_modules/react-native/packager/react-packager');
+  var OUT_PATH = 'dist/' + example + '/iOS/main.jsbundle';
+
   var options = {
-    projectRoots: [path.resolve(__dirname, '../dist')],
-    transformModulePath: require.resolve('../dist/node_modules/react-native/packager/transformer.js'),
-    assetRoots: [path.resolve(__dirname, '../dist')],
+    projectRoots: [path.resolve(__dirname, '../dist/' + example)],
+    transformModulePath: require.resolve('../dist/' + example + '/node_modules/react-native/packager/transformer.js'),
+    assetRoots: [path.resolve(__dirname, '../dist/' + example)],
     cacheVersion: '2',
     blacklistRE: blacklist('ios')
   };

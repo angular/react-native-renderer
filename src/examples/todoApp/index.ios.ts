@@ -1,4 +1,5 @@
-import {reactNativeBootstrap} from './angular_reactnative'
+require('AppRegistry');
+import {reactNativeBootstrap} from 'angular-react-native-renderer/angular_reactnative'
 import {Component, View, Directive, NgFor} from 'angular2/angular2';
 
 var precomputeStyle = require('precomputeStyle');
@@ -191,4 +192,4 @@ var parksToVisit = global.tmpParks = [
 ];
 
 
-reactNativeBootstrap(TodoAppComponent);
+reactNativeBootstrap("todoApp", TodoAppComponent);
