@@ -41,6 +41,10 @@ gulp.task('buildSrc', shell.task([
 	"cd src/node_modules && ../../node_modules/.bin/tsc"
 ]));
 
+gulp.task('publish', ['buildSrc'], shell.task([
+	"cd src && npm publish"
+]));
+
 gulp.task('bundle', function() {
 	return require('./tools/bundler').bundle(options.example);
 })
