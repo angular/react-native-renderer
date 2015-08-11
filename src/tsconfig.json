@@ -5,7 +5,7 @@
 		"emitDecoratorMetadata": true
 	},
 	"files": [
-		"index.ios.ts",
+		"angular_reactnative.ts",
 		"node_modules/angular2/typings/node/node.d.ts"
 	]
 }

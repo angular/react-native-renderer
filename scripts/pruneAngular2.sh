@@ -4,4 +4,4 @@ if [ -d node_modules/angular2/ts ]; then
 	rm -rf node_modules/angular2
 	mv node_modules/tmpAngular2 node_modules/angular2
 	mv node_modules/tmpPackage node_modules/angular2/package.json
-fi
+fi 

@@ -16,25 +16,21 @@ Add angular-react-native-renderer as a depenedency:
 
 	npm install angular-react-native-renderer
 
-A `setup.sh` script is provided for initial setup:
+Copy the example todo app:
 
-	./node_modules/angular-react-native-renderer/setup/setup.sh todoApp
-
-It copies the following to the current directory:
-
- - `package.json` with needed peer dependencies. This will be `npm install`ed by this script too.
- - `tsconfig.json` for use with the typescript compiler. This is only needed for a typescript workflow.
- - example files from the 'todoApp' example, including `index.ios.ts`.
- - a fake crypto module, needed to get Reflect.js to work in JavaScriptCore.
-
-When this script runs `npm install`, it will also modify node_modules/angular2 to use the typescript sources directly.
+	cp node_modules/angular-react-native-renderer/examples/todoApp/index.ios.ts .
 
 The copied `index.ios.ts` file will have the wrong application name. Open it and replace "todoApp" on the last line with "theNameOfYourReactNativeProject".
 
-Compile the .ts sources to .js:
+Install needed .d.ts files with tsd:
 
-	npm install alexeagle/typescript#error_is_class
-	$( cd node_modules && ../node_modules/.bin/tsc )
+	npm install -g tsd
+	tsd install angular2 node
+
+Compile the example's .ts sources to .js:
+
+	npm install -g typescript
+	tsc index.ios.ts -m commonjs -t es5 --experimentalDecorators
 
 And run the app:
 

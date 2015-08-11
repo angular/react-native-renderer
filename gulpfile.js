@@ -16,11 +16,11 @@ gulp.task('watch', function() {
 	gulp.watch('src/**/*.ts', ['build']);
 });
 
-gulp.task('build', shell.task([
+gulp.task('build', ['buildSrc'], shell.task([
 	"./scripts/updateExample.sh " + options.example
 ]));
 
-gulp.task('init', ['clean'], shell.task([
+gulp.task('init', ['clean', 'buildSrc'], shell.task([
 	"./scripts/setupExample.sh " + options.example
 ]));
 
@@ -34,6 +34,11 @@ gulp.task('open', shell.task([
 
 gulp.task('cleanAll', shell.task([
 	"rm -rf dist"
+]));
+
+gulp.task('buildSrc', shell.task([
+	"cd src && ../scripts/pruneAngular2.sh",
+	"cd src/node_modules && ../../node_modules/.bin/tsc"
 ]));
 
 gulp.task('bundle', function() {

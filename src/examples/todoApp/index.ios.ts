@@ -1,5 +1,9 @@
+/// <reference path="typings/node/node.d.ts" />
+/// <reference path="typings/angular2/angular2.d.ts" />
+/// <reference path="node_modules/angular-react-native-renderer/angular-react-native-renderer.d.ts" />
+
 require('AppRegistry');
-import {reactNativeBootstrap} from 'angular-react-native-renderer/angular_reactnative'
+import {reactNativeBootstrap} from 'angular-react-native-renderer'
 import {Component, View, Directive, NgFor} from 'angular2/angular2';
 
 var precomputeStyle = require('precomputeStyle');
@@ -169,7 +173,7 @@ class TodoAppComponent {
 	}
 }
 
-var parksToVisit = global.tmpParks = [
+var parksToVisit = [
 	{"label": 'Bryce Canyon'},
 	{"label": 'Crater Lake'},
 	{"label": 'Death Valley'},
