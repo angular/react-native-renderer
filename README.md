@@ -130,7 +130,7 @@ This project was tested on the iPhone Simulator, an iPhone 4, and an iPad 2.
 
 ## animations
 
-There are 2 .mp4 files in the repo, demoing the app on the iPad and iPhone.
+There are 2 .mp4 files [in the video branch](https://github.com/angular/react-native-renderer/tree/video), demoing the app on the iPad and iPhone.
 
 On the iPad, most animations almost feel native.
 
