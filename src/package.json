@@ -1,10 +1,14 @@
 {
   "name": "angular-react-native-renderer",
   "version": "0.0.1",
-  "private": true,
   "scripts": {
     "start": "node_modules/react-native/packager/packager.sh",
     "postinstall": "cp -r crypto ../crypto"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/angular/react-native-renderer.git"
   },
   "dependencies": {
   	"es6-shim": ""
