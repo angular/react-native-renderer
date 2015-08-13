@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/angular/react-native-renderer.svg?branch=master)](https://travis-ci.org/angular/react-native-renderer)
 
+[Todo app demo on rnplay.org](https://rnplay.org/apps/88NRLQ)
+
 This project is an Angular 2 renderer that renders to iOS. It replaces the usual DOM renderer in Angular 2 with a custom renderer that renders through React Native.
 
 # Getting Started
