@@ -51,6 +51,8 @@ To run tests:
 
 This codebase is a hack that attempts to take the "React" part of React Native and replace it with Angular 2. I say that it is a hack because *some of the details of React Native described here are not documented in the React Native docs and are subject to change.* Also, everything here about how React Native works is just how I *think* it works, after some experimentation.
 
+![React Native Renderer replaces the Dom Renderer](diagram.png)
+
 ## React Native without React
 
 *Internal modules can't be required this way in the future. See* https://github.com/facebook/react-native/issues/1821
