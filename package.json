@@ -1,0 +1,40 @@
+{
+  "name": "angular-react-native-renderer",
+  "version": "0.0.1",
+  "description": "A React-native renderer for Angular 2",
+  "scripts": {
+    "test": "gulp test.node/ci && gulp test.browser/ci"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlaval/angular-react-native-renderer.git"
+  },
+  "keywords": ["Angular", "renderer", "react-native"],
+  "author": "Marc Laval <mlaval>",
+  "license": "Apache License Version 2.0",
+  "bugs": {
+    "url": "https://github.com/mlaval/angular-react-native-renderer/issues"
+  },
+  "homepage": "https://github.com/mlaval/angular-react-native-renderer#readme",
+  "devDependencies": {
+    "del": "^1.2.0",
+    "gulp": "^3.9.0",
+    "gulp-typescript": "^2.8.0",
+    "gulp-watch": "~4.3.5",
+    "jasmine": "2.3.1",
+    "karma": "^0.13.10",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.6",
+    "run-sequence": "~1.1.2",
+    "through2": "~0.6.3"
+  },
+  "dependencies": {
+    "angular2": "2.0.0-alpha.46",
+    "react-native": "0.15.0",
+    "parse5": "1.5.0",
+    "reflect-metadata": "0.1.2",
+    "zone.js": "0.5.8",
+    "es6-shim": "^0.33.6",
+    "systemjs": "^0.19.4"
+  }
+}
