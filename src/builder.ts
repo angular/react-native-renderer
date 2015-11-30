@@ -93,8 +93,6 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
     var node = <ComponentNode>this.parentStack.pop();
     if (node.isRoot) {
       node.attachRoot();
-    } else if (node.parent === this.parentComponent) {
-      node.attachToParent();
     }
     return undefined;
   }

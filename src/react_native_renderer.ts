@@ -128,14 +128,12 @@ export class ReactNativeRenderer extends Renderer {
 
   setElementProperty(location:RenderElementRef, propertyName:string, propertyValue:any): void {
     var node = (<ReactNativeViewRef>location.renderView).boundElementNodes[(<any>location).boundElementIndex];
-    node.setAttribute(propertyName, propertyValue);
-    this._refresh();
+    node.setProperty(propertyName, propertyValue);
   }
 
   setElementAttribute(location:RenderElementRef, attributeName:string, attributeValue:string): void {
     var node = (<ReactNativeViewRef>location.renderView).boundElementNodes[(<any>location).boundElementIndex];
-    node.setAttribute(attributeName, attributeValue);
-    this._refresh();
+    node.setProperty(attributeName, attributeValue);
   }
 
   setElementClass(location:RenderElementRef, className:string, isAdd:boolean): void {
@@ -151,8 +149,7 @@ export class ReactNativeRenderer extends Renderer {
   }
 
   setText(viewRef:RenderViewRef, textNodeIndex:number, text:string): void {
-    (<ReactNativeViewRef>viewRef).boundTextNodes[textNodeIndex].value = text;
-    this._refresh();
+    (<TextNode>(<ReactNativeViewRef>viewRef).boundTextNodes[textNodeIndex]).setText(text);
   }
 
   setEventDispatcher(viewRef:RenderViewRef, dispatcher:RenderEventDispatcher): void {
