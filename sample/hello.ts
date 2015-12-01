@@ -30,12 +30,17 @@ class Sub {}
     <View><Text>Some content in a view, at the top</Text></View>
   </sub>
   <Text *ng-for="#item of items" [style]="styles.row">ng-for says {{item}}</Text>
+
+  <TextInput value="hello"></TextInput>
+  <View [style]="styles.button" (toptouchend)="handleEvent($event)">
+    <Text>Button</Text>
+  </View>
 </View>
 `
 })
 export class HelloApp {
   foo: string = "bar";
-  s: number = 30;
+  s: number = 10;
   maybe: boolean = true;
   styles: any;
   items: Array<number> = [1, 2, 3, 4];
@@ -61,20 +66,20 @@ export class HelloApp {
       },
       row: {
         backgroundColor: '#E2DCF7',
+      },
+      button: {
+        margin: 20,
+        padding: 10,
+        backgroundColor: '#800080'
       }
     });
+  }
 
-    setTimeout(() => {
-      this.foo = "baz";
-      this.s = 20;
-      this.maybe = false;
-      this.items.splice(3,1);
-      setTimeout(() => {
-        this.maybe = true;
-        this.foo = "bam";
-        this.items.push(9);
-      }, 2000);
-    }, 2000)
+  handleEvent(event) {
+    this.maybe = !this.maybe;
+    this.foo += "!";
+    this.items.splice(3,1);
+    this.items.push(Math.ceil(Math.random()*10));
   }
 }
 

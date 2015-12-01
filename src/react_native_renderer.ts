@@ -9,8 +9,9 @@ import {
   RenderEventDispatcher
 } from 'angular2/angular2';
 import {RenderComponentTemplate} from 'angular2/src/core/render/api';
-import {Node, ComponentNode, ElementNode, TextNode, AnchorNode} from './node';
+import {Node, ComponentNode, ElementNode, TextNode, AnchorNode, nodeMap} from './node';
 import {BuildContext, ReactNativetRenderViewBuilder} from "./builder";
+var ReactNativeEventEmitter = require('ReactNativeEventEmitter');
 
 class ReactNativeProtoViewRef extends RenderProtoViewRef {
   constructor(public template: RenderComponentTemplate, public cmds: RenderTemplateCmd[]) { super(); }
@@ -22,6 +23,7 @@ class ReactNativeRenderFragmentRef extends RenderFragmentRef {
 
 class ReactNativeViewRef extends RenderViewRef {
   hydrated: boolean = false;
+  eventDispatcher: RenderEventDispatcher = null;
   constructor(public fragments: ReactNativeRenderFragmentRef[], public boundTextNodes: TextNode[],
               public boundElementNodes: Node[]) { super(); }
 }
@@ -32,6 +34,29 @@ export class ReactNativeRenderer extends Renderer {
 
   constructor() {
     super();
+    //Events
+    ReactNativeEventEmitter.receiveEvent = function(nativeTag: number, topLevelType: string, nativeEventParam: any) {
+      //console.log('receiveEvent', nativeTag, topLevelType, nativeEventParam);
+      var element = nodeMap.get(nativeTag);
+      if (nativeEventParam.target) {
+        nativeEventParam.target = nodeMap.get(nativeEventParam.target);
+      }
+      element.fireEvent(topLevelType.toLowerCase(), nativeEventParam);
+    }
+
+    ReactNativeEventEmitter.receiveTouches = function(eventTopLevelType: string, touches: Array<any>, changedIndices: Array<number>) {
+      //console.log('receiveTouches', eventTopLevelType, touches, changedIndices);
+      for (var i = 0; i < touches.length; i++) {
+        var element = nodeMap.get(touches[i].target);
+        if (touches[i].target) {
+          touches[i].target = nodeMap.get(touches[i].target);
+        }
+        while (element) {
+          element.fireEvent(eventTopLevelType.toLowerCase(), touches[i]);
+          element = element.parent;
+        }
+      }
+    };
   }
 
   createProtoView(componentTemplateId: string, cmds:RenderTemplateCmd[]):RenderProtoViewRef {
@@ -67,7 +92,18 @@ export class ReactNativeRenderer extends Renderer {
       fragments.push(new ReactNativeRenderFragmentRef(context.fragments[i]));
     }
     var view = new ReactNativeViewRef(fragments, context.boundTextNodes, context.boundElementNodes);
+    for (var i = 0; i < view.boundElementNodes.length; i++) {
+      this._initElementEventListener(i, view.boundElementNodes[i], view);
+    }
     return new RenderViewWithFragments(view, view.fragments);
+  }
+
+  _initElementEventListener(bindingIndex: number, element: Node, view: ReactNativeViewRef) {
+    element.setEventListener(global.zone.bind(function(name, event) {
+      var locals = new Map<string, any>();
+      locals.set('$event', event);
+      view.eventDispatcher.dispatchRenderEvent(bindingIndex, name, locals);
+    }));
   }
 
   destroyView(viewRef:RenderViewRef):any {
@@ -136,7 +172,7 @@ export class ReactNativeRenderer extends Renderer {
   }
 
   setEventDispatcher(viewRef:RenderViewRef, dispatcher:RenderEventDispatcher): void {
-    //Do nothing
+    (<ReactNativeViewRef>viewRef).eventDispatcher = dispatcher;
   }
 
 }

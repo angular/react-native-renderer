@@ -4,10 +4,13 @@ var ReactNativeTagHandles = require('ReactNativeTagHandles');
 var ReactNativeAttributePayload = require('ReactNativeAttributePayload');
 var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 
+export var nodeMap: Map<number, Node> = new Map<number, Node>();
+
 export abstract class Node {
   public parent: Node;
   public children: Node[] = [];
   public nativeChildren: Array<number> = [];
+  listenerCallback = (name, event) => {};
 
   public tag: string = "";
   public attribs: Object = {};
@@ -24,6 +27,7 @@ export abstract class Node {
       console.log(`Creating a ${this.viewName} with tag ${this.nativeTag} and attribs:`, this._buildProps());
       NativeModules.UIManager.createView(this.nativeTag, this.viewName, 1, this._buildProps());
       this._created = true;
+      nodeMap.set(this.nativeTag, this);
     }
   }
 
@@ -50,7 +54,7 @@ export abstract class Node {
   insertAfter(nodes: Array<Node>) {
     if (nodes.length > 0 && this.parent) {
       var index = this.parent.children.indexOf(this);
-      var nativeIndex = 0;
+      var nativeIndex = -1;
       var nativeInsertedCount = 0;
       var count = index;
       while (count >= 0) {
@@ -90,8 +94,10 @@ export abstract class Node {
 
   _destroyNative() {
     this._created = false;
+    nodeMap.delete(this.nativeTag);
     this.nativeTag = -1;
     this.nativeChildren = [];
+    this.listenerCallback = (name, event) => {};
     for (var i = 0; i < this.children.length; i++) {
       this.children[i]._destroyNative();
     }
@@ -117,6 +123,18 @@ export abstract class Node {
       delete this.attribs['style'];
     }
     return this.attribs;
+  }
+
+  focus() {
+    NativeModules.UIManager.focus(this.nativeTag);
+  }
+
+  setEventListener(listener) {
+    this.listenerCallback = listener;
+  }
+
+  fireEvent(name, event) {
+    this.listenerCallback(name, event);
   }
 }
 

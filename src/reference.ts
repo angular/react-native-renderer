@@ -27,6 +27,7 @@ export const RCT_VIEW_NAMES = {
   "tabbaritem": "RCTTabBarItem",
   "text": "RCTText",
   "textfield": "RCTTextField",
+  "textinput": "AndroidTextInput",
   "textview": "RCTTextView",
   "ui": "RCTUI",
   "view": "RCTView",
