@@ -34,6 +34,7 @@ export const RCT_VIEW_NAMES = {
   "webview": "RCTWebView"
 }
 
+//TODO: build dynamically somehow, with types ideally!
 export const RCT_PROPERTY_NAMES = {
   "accessibilitylabel": "accessibilityLabel",
   "accessibilitytraits": "accessibilityTraits",

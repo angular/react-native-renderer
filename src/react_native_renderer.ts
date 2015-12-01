@@ -80,38 +80,21 @@ export class ReactNativeRenderer extends Renderer {
     if (previousNodes.length > 0) {
       var sibling = previousNodes[previousNodes.length - 1];
       var nodes = (<ReactNativeRenderFragmentRef>fragmentRef).nodes;
-      if (nodes.length > 0 && sibling.parent) {
-        for (var i = 0; i < nodes.length; i++) {
-          var index = sibling.parent.children.indexOf(sibling);
-          sibling.parent.children.splice(index + i + 1, 0, nodes[i]);
-          nodes[i].parent = sibling.parent;
-        }
-        this._refresh();
-      }
+      sibling.insertAfter(nodes);
     }
   }
 
   attachFragmentAfterElement(location:RenderElementRef, fragmentRef:RenderFragmentRef): void {
     var sibling = (<ReactNativeViewRef>location.renderView).boundElementNodes[(<any>location).boundElementIndex];
     var nodes = (<ReactNativeRenderFragmentRef>fragmentRef).nodes;
-    if (nodes.length > 0 && sibling.parent) {
-      for (var i = 0; i < nodes.length; i++) {
-        var index = sibling.parent.children.indexOf(sibling);
-        sibling.parent.children.splice(index + i + 1, 0, nodes[i]);
-        nodes[i].parent = sibling.parent;
-      }
-      this._refresh();
-    }
+    sibling.insertAfter(nodes);
   }
 
   detachFragment(fragmentRef:RenderFragmentRef): void {
     var nodes = (<ReactNativeRenderFragmentRef>fragmentRef).nodes;
     for (var i = 0; i < nodes.length; i++) {
-      var node = nodes[i];
-      var index = node.parent.children.indexOf(node);
-      node.parent.children.splice(index, 1);
+      nodes[i].detach();
     }
-    this._refresh();
   }
 
   hydrateView(viewRef:RenderViewRef): void {
