@@ -125,16 +125,31 @@ export abstract class Node {
     return this.attribs;
   }
 
-  focus() {
-    NativeModules.UIManager.focus(this.nativeTag);
-  }
-
   setEventListener(listener) {
     this.listenerCallback = listener;
   }
 
   fireEvent(name, event) {
     this.listenerCallback(name, event);
+  }
+
+  //TODO: move this TextInput specific code
+  focus() {
+    //iOS: NativeModules.UIManager.focus(this.nativeTag);
+    NativeModules.UIManager.dispatchViewManagerCommand(
+      this.nativeTag,
+      NativeModules.UIManager.AndroidTextInput.Commands.focusTextInput,
+      null
+    );
+  }
+
+  blur() {
+    //iOS: NativeModules.UIManager.blur(this.nativeTag);
+    NativeModules.UIManager.dispatchViewManagerCommand(
+      this.nativeTag,
+      NativeModules.UIManager.AndroidTextInput.Commands.blurTextInput,
+      null
+    );
   }
 }
 

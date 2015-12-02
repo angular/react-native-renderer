@@ -53,11 +53,7 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
   }
 
   visitBeginElement(cmd: RenderBeginElementCmd, context: BuildContext):any {
-    var attributes: Object = {};
-    for (var i = 0; i < cmd.attrNameAndValues.length / 2; i++) {
-      attributes[cmd.attrNameAndValues[i * 2]] = cmd.attrNameAndValues[i *2 + 1];
-    }
-    var element = new ElementNode(cmd.name, cmd.isBound, attributes);
+    var element = new ElementNode(cmd.name, cmd.isBound, this._processAttributes(cmd));
     this._addChild(element, cmd.ngContentIndex);
     this.parentStack.push(element);
     if (cmd.isBound) {
@@ -72,12 +68,8 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
   }
 
   visitBeginComponent(cmd: RenderBeginComponentCmd, context: BuildContext):any {
-    var attributes: Object = {};
-    for (var i = 0; i < cmd.attrNameAndValues.length / 2; i++) {
-      attributes[cmd.attrNameAndValues[i * 2]] = cmd.attrNameAndValues[i *2 + 1];
-    }
     var isRoot = context.componentsCount == 0;
-    var component = new ComponentNode(cmd.name, cmd.isBound, attributes, isRoot);
+    var component = new ComponentNode(cmd.name, cmd.isBound, this._processAttributes(cmd), isRoot);
     this._addChild(component, cmd.ngContentIndex);
     this.parentStack.push(component);
     if (cmd.isBound) {
@@ -121,6 +113,17 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
       if (node instanceof ComponentNode) this.parentComponent = node;
       this.rootNodes.push(node);
     }
+  }
+
+  _processAttributes(cmd: RenderBeginElementCmd): Object{
+    var attributes: Object = {};
+    for (var i = 0; i < cmd.attrNameAndValues.length / 2; i++) {
+      var val: any = cmd.attrNameAndValues[i *2 + 1];
+      if (val == "false") val = false;
+      if (!isNaN(parseInt(val))) val = parseInt(val);
+      attributes[cmd.attrNameAndValues[i * 2]] = val;
+    }
+    return attributes;
   }
 }
 

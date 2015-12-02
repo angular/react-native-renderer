@@ -36,7 +36,7 @@ export class ReactNativeRenderer extends Renderer {
     super();
     //Events
     ReactNativeEventEmitter.receiveEvent = function(nativeTag: number, topLevelType: string, nativeEventParam: any) {
-      //console.log('receiveEvent', nativeTag, topLevelType, nativeEventParam);
+      console.log('receiveEvent', nativeTag, topLevelType, nativeEventParam);
       var element = nodeMap.get(nativeTag);
       if (nativeEventParam.target) {
         nativeEventParam.target = nodeMap.get(nativeEventParam.target);
@@ -45,7 +45,7 @@ export class ReactNativeRenderer extends Renderer {
     }
 
     ReactNativeEventEmitter.receiveTouches = function(eventTopLevelType: string, touches: Array<any>, changedIndices: Array<number>) {
-      //console.log('receiveTouches', eventTopLevelType, touches, changedIndices);
+      console.log('receiveTouches', eventTopLevelType, touches, changedIndices);
       for (var i = 0; i < touches.length; i++) {
         var element = nodeMap.get(touches[i].target);
         if (touches[i].target) {
