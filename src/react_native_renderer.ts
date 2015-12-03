@@ -68,23 +68,17 @@ export class ReactNativeRenderer extends Renderer {
   }
 
   createRootHostView(hostProtoViewRef:RenderProtoViewRef, fragmentCount:number, hostElementSelector:string):RenderViewWithFragments {
-    //TODO: Init with selector?
-    this._rootView = this._createView(hostProtoViewRef);
-    this._refresh();
+    this._rootView = this._createView(hostProtoViewRef, true);
+    console.log((<ReactNativeRenderFragmentRef>this._rootView.fragmentRefs[0]).nodes[0]);
     return this._rootView;
   }
 
-  _refresh() {
-    //TODO: manage refresh?
-    console.log((<ReactNativeRenderFragmentRef>this._rootView.fragmentRefs[0]).nodes[0]);
-  }
-
   createView(protoViewRef:RenderProtoViewRef, fragmentCount:number):RenderViewWithFragments {
-    return this._createView(protoViewRef);
+    return this._createView(protoViewRef, false);
   }
 
-  _createView(protoViewRef:RenderProtoViewRef): RenderViewWithFragments {
-    var context = new BuildContext();
+  _createView(protoViewRef:RenderProtoViewRef, isHost: boolean): RenderViewWithFragments {
+    var context = new BuildContext(isHost);
     var builder = new ReactNativetRenderViewBuilder(this._componentTpls, (<ReactNativeProtoViewRef>protoViewRef).cmds, null, context);
     context.build(builder);
     var fragments: ReactNativeRenderFragmentRef[] = [];

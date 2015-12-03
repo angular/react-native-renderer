@@ -83,7 +83,7 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
 
   visitEndComponent(context: BuildContext):any {
     var node = <ComponentNode>this.parentStack.pop();
-    if (node.isRoot) {
+    if (node.isRoot && context.isHost) {
       node.attachRoot();
     }
     return undefined;
@@ -133,6 +133,8 @@ export class BuildContext {
   fragments: Node[][] = [];
   componentsCount: number = 0;
   _builders: ReactNativetRenderViewBuilder[] = [];
+
+  constructor(public isHost: boolean) {}
 
   public enqueueBuilder(builder: ReactNativetRenderViewBuilder) {
     this._builders.push(builder);
