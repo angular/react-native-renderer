@@ -41,7 +41,9 @@ export class ReactNativeRenderer extends Renderer {
       if (nativeEventParam.target) {
         nativeEventParam.target = nodeMap.get(nativeEventParam.target);
       }
-      element.fireEvent(topLevelType.toLowerCase(), nativeEventParam);
+      if (element) {
+        element.fireEvent(topLevelType.toLowerCase(), nativeEventParam);
+      }
     }
 
     ReactNativeEventEmitter.receiveTouches = function(eventTopLevelType: string, touches: Array<any>, changedIndices: Array<number>) {

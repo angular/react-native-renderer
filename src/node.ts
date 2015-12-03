@@ -33,10 +33,10 @@ export abstract class Node {
 
   createNativeRecursively() {
     if (!this._created) {
-      this.createNative();
+      this instanceof TextNode ? this.createNativeText() : this.createNative();
       for (var i = 0; i < this.children.length; i++) {
         var child = this.children[i];
-        child instanceof TextNode ? child.createNativeText() : child.createNative();
+        child.createNativeRecursively();
         child.attachToParent();
       }
     }
@@ -97,7 +97,6 @@ export abstract class Node {
     nodeMap.delete(this.nativeTag);
     this.nativeTag = -1;
     this.nativeChildren = [];
-    this.listenerCallback = (name, event) => {};
     for (var i = 0; i < this.children.length; i++) {
       this.children[i]._destroyNative();
     }

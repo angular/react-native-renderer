@@ -29,10 +29,12 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
   }
 
   visitText(cmd:RenderTextCmd, context: BuildContext):any {
-    var text = new TextNode(cmd.value, cmd.isBound);
-    this._addChild(text, cmd.ngContentIndex);
-    if (cmd.isBound) {
-      context.boundTextNodes.push(text);
+    if (cmd.isBound || !/^(\s|\r\n|\n|\r)+$/.test(cmd.value)) {
+      var text = new TextNode(cmd.value, cmd.isBound);
+      this._addChild(text, cmd.ngContentIndex);
+      if (cmd.isBound) {
+        context.boundTextNodes.push(text);
+      }
     }
     return undefined;
   }
