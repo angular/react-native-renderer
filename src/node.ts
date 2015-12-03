@@ -200,14 +200,15 @@ export class TextNode extends Node {
 
   createNativeText() {
     if (this.isBound || !/^(\s|\r\n|\n|\r)+$/.test(this.value)) {
-      this.attribs = {'text': this.isBound ? '' : this.value.trim()};
+      this.attribs = {'text': this.value ? this.value.trim() : ''};
       this.viewName = 'RCTRawText';
       this.createNative();
     }
   }
 
   setText(text: string) {
-    this.setProperty('text', text ? text.trim() : '');
+    this.value = text ? text.trim() : '';
+    this.setProperty('text', this.value);
   }
 }
 

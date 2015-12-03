@@ -123,8 +123,8 @@ export class TodoItem {
 </View>
 <ScrollView [style]="styles.scroll">
   <View collapsable="false">
-    <template ng-for #todo [ng-for-of]="todos">
-      <todo-item *ng-if="filter == 'all' || (filter == 'active' && todo.active) || (filter == 'done' && !todo.active)" [item]="todo" (toggled)="updateCount($event)" (deleted)="deleteTodo($event)"></todo-item>
+    <template ng-for #todo [ng-for-of]="filteredTodos">
+      <todo-item [item]="todo" (toggled)="updateCount($event)" (deleted)="deleteTodo($event)"></todo-item>
     </template>
   </View>
 </ScrollView>
@@ -151,12 +151,13 @@ export class TodoItem {
 export class TodoMVC {
   styles: any;
   todos: Array<Todo> = [];
+  filteredTodos: Array<Todo> = [];
   leftCount: number = 0;
   filter: string = 'all';
 
   constructor() {
     this.styles = this._getStyles();
-    this.todos = [
+    this.todos = this.filteredTodos = [
       new Todo("Angular 2", false, false),
       new Todo("React Native", false, false),
       new Todo("Android", false, false),
@@ -170,6 +171,7 @@ export class TodoMVC {
       this.todos.push(new Todo(event.text, true, false));
       this.leftCount++;
     }
+    this.filterTodos();
     event.target.blur();
   }
 
@@ -181,6 +183,7 @@ export class TodoMVC {
         this.leftCount--;
       }
     }
+    this.filterTodos();
   }
 
   selectAll() {
@@ -191,15 +194,14 @@ export class TodoMVC {
       }
       this.todos[i].active = result;
     }
+    this.filterTodos();
   }
 
   clearDone() {
-    for (var i = 0; i < this.todos.length; i++) {
-      var todo = this.todos[i];
-      if (!todo.active) {
-        this.deleteTodo(todo);
-      }
-    }
+    this.todos = this.todos.filter((todo) => {
+      return todo.active;
+    }, this);
+    this.filterTodos();
   }
 
   updateCount(diff) {
@@ -208,6 +210,13 @@ export class TodoMVC {
 
   setFilter(filter: string) {
     this.filter = filter;
+    this.filterTodos();
+  }
+
+  filterTodos() {
+    this.filteredTodos = this.todos.filter((todo) => {
+      return this.filter == 'all' || (this.filter == 'active' && todo.active) || (this.filter == 'done' && !todo.active);
+    }, this);
   }
 
   _getStyles() {
