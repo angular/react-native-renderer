@@ -5,6 +5,8 @@ import {Zone} from 'zone.js/lib/core';
 global.zone = new Zone();
 import {patchSetClearFunction} from 'zone.js/lib/patch/functions';
 patchSetClearFunction(global, ['timeout', 'interval', 'immediate']);
+//Needed for Android or iOS, but to be imported after zone.js
+import 'es6-shim';
 
 //Patch Parse5DomAdapter to avoid property check, will be removed with new parser
 import {RCT_PROPERTY_NAMES} from './reference';

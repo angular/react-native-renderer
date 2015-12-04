@@ -141,7 +141,7 @@ export abstract class Node {
       null
     );
   }
-
+  //TODO: move this TextInput specific code
   blur() {
     //iOS: NativeModules.UIManager.blur(this.nativeTag);
     NativeModules.UIManager.dispatchViewManagerCommand(

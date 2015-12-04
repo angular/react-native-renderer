@@ -131,6 +131,7 @@ export const RCT_PROPERTY_NAMES = {
   "minimumzoomscale": "minimumZoomScale",
   "minuteinterval": "minuteInterval",
   "mode": "mode",
+  "mostrecenteventcount": "mostRecentEventCount",
   "momentary": "momentary",
   "mycustomproperty": "myCustomProperty",
   "name": "name",
