@@ -6,12 +6,22 @@ import {
   RenderViewRef,
   RenderViewWithFragments,
   RenderTemplateCmd,
-  RenderEventDispatcher
+  RenderEventDispatcher,
+  RenderComponentTemplate
 } from 'angular2/angular2';
-import {RenderComponentTemplate} from 'angular2/src/core/render/api';
+import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {Node, ComponentNode, ElementNode, TextNode, AnchorNode, nodeMap} from './node';
 import {BuildContext, ReactNativetRenderViewBuilder} from "./builder";
 var ReactNativeEventEmitter = require('ReactNativeEventEmitter');
+
+export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
+  hasProperty(tagName: string, propName: string): boolean {
+    return true;
+  }
+  getMappedPropName(propName: string): string {
+    return propName;
+  }
+}
 
 class ReactNativeProtoViewRef extends RenderProtoViewRef {
   constructor(public template: RenderComponentTemplate, public cmds: RenderTemplateCmd[]) { super(); }
@@ -42,7 +52,7 @@ export class ReactNativeRenderer extends Renderer {
         nativeEventParam.target = nodeMap.get(nativeEventParam.target);
       }
       if (element) {
-        element.fireEvent(topLevelType.toLowerCase(), nativeEventParam);
+        element.fireEvent(topLevelType, nativeEventParam);
       }
     }
 
@@ -54,7 +64,7 @@ export class ReactNativeRenderer extends Renderer {
           touches[i].target = nodeMap.get(touches[i].target);
         }
         while (element) {
-          element.fireEvent(eventTopLevelType.toLowerCase(), touches[i]);
+          element.fireEvent(eventTopLevelType, touches[i]);
           element = element.parent;
         }
       }

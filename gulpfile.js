@@ -21,7 +21,6 @@ var PATHS = {
   modules: [
     'node_modules/angular2/**/*',
     'node_modules/es6-shim/**/*',
-    'node_modules/parse5/**/*',
     'node_modules/reflect-metadata/**/*',
     'node_modules/zone.js/**/*'
   ]

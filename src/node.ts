@@ -1,4 +1,4 @@
-import {RCT_VIEW_NAMES, RCT_PROPERTY_NAMES} from './reference';
+import {RCT_VIEW_NAMES} from './reference';
 import {NativeModules} from 'react-native';
 var ReactNativeTagHandles = require('ReactNativeTagHandles');
 var ReactNativeAttributePayload = require('ReactNativeAttributePayload');
@@ -15,7 +15,7 @@ export abstract class Node {
   public tag: string = "";
   public attribs: Object = {};
   public nativeTag: number = -1;
-  public viewName: string = RCT_VIEW_NAMES['view'];
+  public viewName: string = RCT_VIEW_NAMES['View'];
   private _created: boolean = false;
 
   createNative() {
@@ -103,7 +103,7 @@ export abstract class Node {
   }
 
   setProperty(name: string, value: any) {
-    this.attribs[RCT_PROPERTY_NAMES[name] || name] = value;
+    this.attribs[name] = value;
     console.log(`Updating property ${name} in ${this.nativeTag} to`, this._buildProps());
     NativeModules.UIManager.updateView(this.nativeTag, this.viewName, this._buildProps());
   }
@@ -158,7 +158,7 @@ export class ComponentNode extends Node {
   constructor(public tag: string, public isBound: boolean, _attribs: Object, public isRoot: boolean = false) {
     super();
     for (var i in _attribs) {
-      this.attribs[RCT_PROPERTY_NAMES[i] || i] = _attribs[i];
+      this.attribs[i] = _attribs[i];
     }
     this.createNative();
   }
@@ -186,7 +186,7 @@ export class ElementNode extends Node {
   constructor(public tag: string, public isBound: boolean, _attribs: Object) {
     super();
     for (var i in _attribs) {
-      this.attribs[RCT_PROPERTY_NAMES[i] || i] = _attribs[i];
+      this.attribs[i] = _attribs[i];
     }
     this.createNative();
   }

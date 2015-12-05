@@ -36,8 +36,8 @@ class Sub {}
         </sub>
         <Text *ng-for="#item of items" [style]="styles.row">ng-for says {{item}}</Text>
 
-        <TextInput placeholder="Type in" (toptouchend)="$event.target.focus()" (topSubmitEditing)="$event.target.blur()"></TextInput>
-        <View [style]="styles.button" (toptouchend)="handleEvent($event)">
+        <TextInput placeholder="Type in" (topTouchEnd)="$event.target.focus()" (topSubmitEditing)="$event.target.blur()"></TextInput>
+        <View [style]="styles.button" (topTouchEnd)="handleEvent($event)">
           <Text>Button</Text>
         </View>
       </View>
