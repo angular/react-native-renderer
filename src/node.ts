@@ -129,6 +129,7 @@ export abstract class Node {
   }
 
   fireEvent(name, event) {
+    event.currentTarget = this;
     this.listenerCallback(name, event);
   }
 
