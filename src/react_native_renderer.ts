@@ -12,7 +12,7 @@ import {
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {Node, ComponentNode, ElementNode, TextNode, AnchorNode, nodeMap} from './node';
 import {BuildContext, ReactNativetRenderViewBuilder} from "./builder";
-var ReactNativeEventEmitter = require('ReactNativeEventEmitter');
+import {ReactNativeWrapper, getGlobalZone} from './wrapper';
 
 export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
   hasProperty(tagName: string, propName: string): boolean {
@@ -44,31 +44,7 @@ export class ReactNativeRenderer extends Renderer {
 
   constructor() {
     super();
-    //Events
-    ReactNativeEventEmitter.receiveEvent = function(nativeTag: number, topLevelType: string, nativeEventParam: any) {
-      console.log('receiveEvent', nativeTag, topLevelType, nativeEventParam);
-      var element = nodeMap.get(nativeTag);
-      if (nativeEventParam.target) {
-        nativeEventParam.target = nodeMap.get(nativeEventParam.target);
-      }
-      if (element) {
-        element.fireEvent(topLevelType, nativeEventParam);
-      }
-    }
-
-    ReactNativeEventEmitter.receiveTouches = function(eventTopLevelType: string, touches: Array<any>, changedIndices: Array<number>) {
-      console.log('receiveTouches', eventTopLevelType, touches, changedIndices);
-      for (var i = 0; i < touches.length; i++) {
-        var element = nodeMap.get(touches[i].target);
-        if (touches[i].target) {
-          touches[i].target = nodeMap.get(touches[i].target);
-        }
-        while (element) {
-          element.fireEvent(eventTopLevelType, touches[i]);
-          element = element.parent;
-        }
-      }
-    };
+    ReactNativeWrapper.patchReactNativeEventEmitter(nodeMap)
   }
 
   createProtoView(componentTemplateId: string, cmds:RenderTemplateCmd[]):RenderProtoViewRef {
@@ -105,7 +81,7 @@ export class ReactNativeRenderer extends Renderer {
   }
 
   _initElementEventListener(bindingIndex: number, element: Node, view: ReactNativeViewRef) {
-    element.setEventListener(global.zone.bind(function(name, event) {
+    element.setEventListener(getGlobalZone().bind(function(name: string, event: any) {
       var locals = new Map<string, any>();
       locals.set('$event', event);
       view.eventDispatcher.dispatchRenderEvent(bindingIndex, name, locals);

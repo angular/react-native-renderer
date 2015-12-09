@@ -1,8 +1,4 @@
-import {RCT_VIEW_NAMES} from './reference';
-import {NativeModules} from 'react-native';
-var ReactNativeTagHandles = require('ReactNativeTagHandles');
-var ReactNativeAttributePayload = require('ReactNativeAttributePayload');
-var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
+import {ReactNativeWrapper} from './wrapper';
 
 export var nodeMap: Map<number, Node> = new Map<number, Node>();
 
@@ -10,22 +6,16 @@ export abstract class Node {
   public parent: Node;
   public children: Node[] = [];
   public nativeChildren: Array<number> = [];
-  listenerCallback = (name, event) => {};
+  listenerCallback = (name: string, event: any) => {};
 
-  public tag: string = "";
-  public attribs: Object = {};
+  public tagName: string = "";
+  public properties: {[s: string]: any } = {};
   public nativeTag: number = -1;
-  public viewName: string = RCT_VIEW_NAMES['View'];
   private _created: boolean = false;
 
   createNative() {
     if (!this._created) {
-      this.nativeTag = ReactNativeTagHandles.allocateTag();
-      if (this instanceof ElementNode && RCT_VIEW_NAMES[this.tag] != undefined){
-        this.viewName = RCT_VIEW_NAMES[this.tag];
-      }
-      console.log(`Creating a ${this.viewName} with tag ${this.nativeTag} and attribs:`, this._buildProps());
-      NativeModules.UIManager.createView(this.nativeTag, this.viewName, 1, this._buildProps());
+      this.nativeTag = ReactNativeWrapper.createView(this.tagName, 1, this._buildProps());
       this._created = true;
       nodeMap.set(this.nativeTag, this);
     }
@@ -33,7 +23,7 @@ export abstract class Node {
 
   createNativeRecursively() {
     if (!this._created) {
-      this instanceof TextNode ? this.createNativeText() : this.createNative();
+      this instanceof TextNode ? (<TextNode>this).createNativeText() : this.createNative();
       for (var i = 0; i < this.children.length; i++) {
         var child = this.children[i];
         child.createNativeRecursively();
@@ -46,7 +36,7 @@ export abstract class Node {
     if (this.nativeTag > -1) {
       var parent = this.parent;
       console.log(`Attaching to ${parent.nativeTag}: ${this.nativeTag} at ${parent.nativeChildren.length}`);
-      NativeModules.UIManager.manageChildren(parent.nativeTag, null, null, [this.nativeTag], [parent.nativeChildren.length], null);
+      ReactNativeWrapper.manageChildren(parent.nativeTag, null, null, [this.nativeTag], [parent.nativeChildren.length], null);
       parent.nativeChildren.push(this.nativeTag);
     }
   }
@@ -72,7 +62,7 @@ export abstract class Node {
         node.parent = this.parent;
         if (node.nativeTag > -1) {
           console.log(`Attaching to ${node.parent.nativeTag}: ${node.nativeTag} at ${nativeIndex + nativeInsertedCount + 1}`);
-          NativeModules.UIManager.manageChildren(node.parent.nativeTag, null, null, [node.nativeTag], [nativeIndex + nativeInsertedCount + 1], null);
+          ReactNativeWrapper.manageChildren(node.parent.nativeTag, null, null, [node.nativeTag], [nativeIndex + nativeInsertedCount + 1], null);
           node.parent.nativeChildren.splice(nativeIndex + nativeInsertedCount + 1, 0, node.nativeTag);
           nativeInsertedCount++;
         }
@@ -87,7 +77,7 @@ export abstract class Node {
       var nativeIndex = this.parent.nativeChildren.indexOf(this.nativeTag);
       this.parent.nativeChildren.splice(nativeIndex, 1);
       console.log(`Removing from ${this.parent.nativeTag}: ${this.nativeTag} at ${nativeIndex}`)
-      NativeModules.UIManager.manageChildren(this.parent.nativeTag, null, null, null, null, [nativeIndex]);
+      ReactNativeWrapper.manageChildren(this.parent.nativeTag, null, null, null, null, [nativeIndex]);
       this._destroyNative();
     }
   }
@@ -103,70 +93,58 @@ export abstract class Node {
   }
 
   setProperty(name: string, value: any) {
-    this.attribs[name] = value;
-    console.log(`Updating property ${name} in ${this.nativeTag} to`, this._buildProps());
-    NativeModules.UIManager.updateView(this.nativeTag, this.viewName, this._buildProps());
+    this.properties[name] = value;
+    ReactNativeWrapper.updateView(this.nativeTag, this.tagName, this._buildProps());
   }
 
   _buildProps(): Object {
-    if (this.attribs.hasOwnProperty('style')) {
-      var computedStyle = {};
+    if (this.properties.hasOwnProperty('style')) {
+      var computedStyle: { [s: string]: any } = {};
       try {
-        computedStyle = ReactNativeAttributePayload.create({style: this.attribs['style']}, ReactNativeViewAttributes.RCTView);
+        computedStyle = ReactNativeWrapper.computeStyle(this.properties['style']);
       } catch (e) {
         console.error(e);
       }
       for (var key in computedStyle) {
-        this.attribs[key] = computedStyle[key];
+        this.properties[key] = computedStyle[key];
       }
-      delete this.attribs['style'];
+      delete this.properties['style'];
     }
-    return this.attribs;
+    return this.properties;
   }
 
-  setEventListener(listener) {
+  setEventListener(listener: (name: string, event: any) => void) {
     this.listenerCallback = listener;
   }
 
-  fireEvent(name, event) {
+  fireEvent(name: string, event: any) {
     event.currentTarget = this;
     this.listenerCallback(name, event);
   }
 
-  //TODO: move this TextInput specific code
+  //TODO: generalize this TextInput specific code
   focus() {
-    //iOS: NativeModules.UIManager.focus(this.nativeTag);
-    NativeModules.UIManager.dispatchViewManagerCommand(
-      this.nativeTag,
-      NativeModules.UIManager.AndroidTextInput.Commands.focusTextInput,
-      null
-    );
+    ReactNativeWrapper.dispatchCommand(this.nativeTag, 'focus');
   }
-  //TODO: move this TextInput specific code
   blur() {
-    //iOS: NativeModules.UIManager.blur(this.nativeTag);
-    NativeModules.UIManager.dispatchViewManagerCommand(
-      this.nativeTag,
-      NativeModules.UIManager.AndroidTextInput.Commands.blurTextInput,
-      null
-    );
+    ReactNativeWrapper.dispatchCommand(this.nativeTag, 'blur');
   }
 }
 
 export class ComponentNode extends Node {
   private contentNodesByNgContentIndex: Node[][] = [];
 
-  constructor(public tag: string, public isBound: boolean, _attribs: Object, public isRoot: boolean = false) {
+  constructor(public tagName: string, public isBound: boolean, _attribs: { [s: string]: string }, public isRoot: boolean = false) {
     super();
     for (var i in _attribs) {
-      this.attribs[i] = _attribs[i];
+      this.properties[i] = _attribs[i];
     }
     this.createNative();
   }
 
   attachRoot() {
     console.log(`Attaching root ${this.nativeTag}`);
-    NativeModules.UIManager.manageChildren(1, null, null, [this.nativeTag], [0], null);
+    ReactNativeWrapper.manageChildren(1, null, null, [this.nativeTag], [0], null);
   }
 
   addContentNode(ngContentIndex: number, node: Node) {
@@ -184,10 +162,10 @@ export class ComponentNode extends Node {
 }
 
 export class ElementNode extends Node {
-  constructor(public tag: string, public isBound: boolean, _attribs: Object) {
+  constructor(public tagName: string, public isBound: boolean, _attribs: { [s: string]: string }) {
     super();
     for (var i in _attribs) {
-      this.attribs[i] = _attribs[i];
+      this.properties[i] = _attribs[i];
     }
     this.createNative();
   }
@@ -201,8 +179,8 @@ export class TextNode extends Node {
 
   createNativeText() {
     if (this.isBound || !/^(\s|\r\n|\n|\r)+$/.test(this.value)) {
-      this.attribs = {'text': this.value ? this.value.trim() : ''};
-      this.viewName = 'RCTRawText';
+      this.properties = {'text': this.value ? this.value.trim() : ''};
+      this.tagName = 'RawText';
       this.createNative();
     }
   }

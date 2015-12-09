@@ -1,5 +1,5 @@
 import {Component, NgIf, NgFor, Input, Output, EventEmitter} from 'angular2/angular2';
-import {StyleSheet} from 'react-native';
+import {StyleSheet} from './wrapper';
 
 class Palette {
   static background: string = '#005eb8';
@@ -33,14 +33,14 @@ class Todo {
 export class TodoItem {
   styles: any;
   @Input() item: Todo;
-  @Output() toggled: EventEmitter = new EventEmitter();
-  @Output() deleted: EventEmitter = new EventEmitter();
+  @Output() toggled: EventEmitter<number> = new EventEmitter();
+  @Output() deleted: EventEmitter<Todo> = new EventEmitter();
 
   constructor() {
     this.styles = this._getStyles();
   }
 
-  toggle(event) {
+  toggle(event: any) {
     this.item.active = !this.item.active;
     this.toggled.emit(this.item.active ? 1 : -1);
     event.currentTarget.setProperty('opacity', 1);
@@ -54,7 +54,7 @@ export class TodoItem {
     this.item.edited = true;
   }
 
-  stopEdit(event) {
+  stopEdit(event: any) {
     event.target.blur();
     this.item.edited = false;
     if (event.text && event.text.length > 0) {
@@ -62,7 +62,7 @@ export class TodoItem {
     }
   }
 
-  visualFeedback(event) {
+  visualFeedback(event: any) {
     event.currentTarget.setProperty('opacity', 0.5);
   }
 
@@ -114,7 +114,7 @@ export class TodoItem {
 
 @Component({
   selector: 'todo-mvc',
-  host: {position: "absolute", top: 0, left: 0, bottom: 0, right: 0},
+  host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   directives: [NgFor, NgIf, TodoItem],
   template: `
 <View [style]="styles.header">
@@ -171,7 +171,7 @@ export class TodoMVC {
     this.leftCount = 1;
   }
 
-  createTodo(event) {
+  createTodo(event: any) {
     if (event.text && event.text.length > 0) {
       this.todos.push(new Todo(event.text, true, false));
       this.leftCount++;
@@ -202,7 +202,7 @@ export class TodoMVC {
     this.filterTodos();
   }
 
-  clearDone(event) {
+  clearDone(event: any) {
     this.todos = this.todos.filter((todo) => {
       return todo.active;
     }, this);
@@ -210,7 +210,7 @@ export class TodoMVC {
     event.currentTarget.setProperty('opacity', 1);
   }
 
-  updateCount(diff) {
+  updateCount(diff: number) {
     debugger;
     this.leftCount += diff;
     if (this.filter != 'all') {
@@ -218,11 +218,11 @@ export class TodoMVC {
     }
   }
 
-  visualFeedback(event) {
+  visualFeedback(event: any) {
     event.currentTarget.setProperty('opacity', 0.5);
   }
 
-  setFilter(event, filter: string) {
+  setFilter(event: any, filter: string) {
     this.filter = filter;
     this.filterTodos();
     event.currentTarget.setProperty('opacity', 1);
@@ -234,14 +234,14 @@ export class TodoMVC {
     }, this);
   }
 
-  empty(event) {
+  empty(event: any) {
     this.todos = this.filteredTodos = [];
     this.leftCount = 0;
     event.currentTarget.setProperty('opacity', 1);
   }
 
-  full(event) {
-    var res = [];
+  full(event: any) {
+    var res: Array<Todo> = [];
     this.leftCount = 0;
     var examples = ['Do something', 'Go there', 'Buy this', 'Call her', 'Think about it']
     for (var i = 0; i < 100; i++) {

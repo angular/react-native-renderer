@@ -115,8 +115,8 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
     }
   }
 
-  _processAttributes(cmd: RenderBeginElementCmd): Object{
-    var attributes: Object = {};
+  _processAttributes(cmd: RenderBeginElementCmd): {[s: string]: string} {
+    var attributes: {[s: string]: string} = {};
     for (var i = 0; i < cmd.attrNameAndValues.length / 2; i++) {
       var val: any = cmd.attrNameAndValues[i *2 + 1];
       if (val == "false") val = false;
