@@ -16,6 +16,7 @@ Based on https://github.com/angular/react-native-renderer
 
 To launch the sample:
 * `gulp init` to create the react-native project
-* replace `require('rxjs/operators/toPromise');` by `require('rxjs/operator/toPromise');` in `./dist/app/ngReactNative/node_modules/angular2/src/facade/async.js`
 * `gulp start` to launch it on the connected device or emulator, and watch sources for auto update (if enabled in F2/shake dev menu)
 (the `Reload JS` button may have to be hit sometimes)
+
+Tip: if your computer is too slow to start the file watcher, increase the timer in `.\dist\app\ngReactNative\node_modules\react-native\packager\react-packager\src\FileWatcher\index.js`

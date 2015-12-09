@@ -22,6 +22,7 @@ var PATHS = {
     'node_modules/angular2/**/*',
     'node_modules/es6-shim/**/*',
     'node_modules/reflect-metadata/**/*',
+    'node_modules/rxjs/**/*',
     'node_modules/zone.js/**/*'
   ]
 };
