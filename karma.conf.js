@@ -13,8 +13,8 @@ module.exports = function(config) {
       {pattern: 'karma-test-shim.js', included: true, watched: true},
 
       // paths loaded via module imports
-      {pattern: 'build/src/**/*.js', included: false, watched: true},
-      {pattern: 'build/test/**/*.js', included: false, watched: true}
+      {pattern: 'dist/code/src/**/*.js', included: false, watched: true},
+      {pattern: 'dist/code/test/**/*.js', included: false, watched: true}
     ],
 
     reporters: ['progress'],
@@ -22,7 +22,7 @@ module.exports = function(config) {
     colors: true,
     //logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Firefox'],
+    browsers: ['Chrome'],
     singleRun: false
   })
 }

@@ -20,3 +20,9 @@ To launch the sample:
 (the `Reload JS` button may have to be hit sometimes)
 
 Tip: if your computer is too slow to start the file watcher, increase the timer in `.\dist\app\ngReactNative\node_modules\react-native\packager\react-packager\src\FileWatcher\index.js`
+
+To run tests in node:
+* Launch `gulp test.node`
+
+To run tests in Chrome:
+* Launch `gulp test.browser`

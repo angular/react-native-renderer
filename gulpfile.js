@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var typescript = require('gulp-typescript');
 var watch = require('gulp-watch');
 var exec = require('child_process').exec;
-var spawn = require('child_process').spawn;
 var fork = require('child_process').fork;
 var karma = require('karma').Server;
 var path = require('path');
@@ -93,13 +92,13 @@ gulp.task('test.node/ci', ['transformTests'], function(done) {
   runJasmine([PATHS.destination + '/test/**/*_spec.js'], done);
 });
 
-gulp.task('test.node', ['transformTests'], function(neverDone) {
+gulp.task('test.node', function(neverDone) {
   treatTestErrorsAsFatal = false;
   runSequence(
     'test.node/ci',
     function() {
       watch([PATHS.sources.src, PATHS.sources.test], function() {
-        runSequence('transformTests', 'test.node/ci');
+        runSequence('test.node/ci');
       });
     }
   );
@@ -141,7 +140,6 @@ gulp.task('test.browser/ci', ['ts2system'], function(done) {
     singleRun: true
   }, done).start();
 });
-
 
 /**********************************************************************************/
 /*******************************    UTIL     **************************************/
@@ -196,17 +194,10 @@ function runJasmine(globs, done) {
 
 function transformCommonJSTests() {
   return through2.obj(function (file, encoding, done) {
-    var content = `var parse5Adapter = require('angular2/src/core/dom/parse5_adapter');\r\n` +
+    var content = `var parse5Adapter = require('angular2/src/platform/server/parse5_adapter');\r\n` +
       `parse5Adapter.Parse5DomAdapter.makeCurrent();\r\n` + String(file.contents);
     file.contents = new Buffer(content);
     this.push(file);
     done();
   });
-}
-
-function afterRender(error, stdout, stderr, done) {
-  if (stdout) console.log('stdout: ' + stdout);
-  if (stderr) console.log('stderr: ' + stderr);
-  if (error)  console.log('exec error: ' + error);
-  if (done) done();
 }

@@ -7,12 +7,16 @@ import {
   RenderViewWithFragments,
   RenderTemplateCmd,
   RenderEventDispatcher,
-  RenderComponentTemplate
-} from 'angular2/angular2';
+  RenderComponentTemplate,
+  Inject,
+  OpaqueToken
+} from 'angular2/core';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {Node, ComponentNode, ElementNode, TextNode, AnchorNode, nodeMap} from './node';
 import {BuildContext, ReactNativetRenderViewBuilder} from "./builder";
 import {ReactNativeWrapper, getGlobalZone} from './wrapper';
+
+export const REACT_NATIVE_WRAPPER: OpaqueToken = new OpaqueToken("ReactNativeWrapper");
 
 export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
   hasProperty(tagName: string, propName: string): boolean {
@@ -41,10 +45,12 @@ class ReactNativeViewRef extends RenderViewRef {
 export class ReactNativeRenderer extends Renderer {
   private _componentTpls: Map<string, RenderComponentTemplate> = new Map<string, RenderComponentTemplate>();
   private _rootView: RenderViewWithFragments;
+  private rnWrapper: ReactNativeWrapper;
 
-  constructor() {
+  constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
     super();
-    ReactNativeWrapper.patchReactNativeEventEmitter(nodeMap)
+    wrapper.patchReactNativeEventEmitter(nodeMap);
+    this.rnWrapper = wrapper;
   }
 
   createProtoView(componentTemplateId: string, cmds:RenderTemplateCmd[]):RenderProtoViewRef {
@@ -57,7 +63,7 @@ export class ReactNativeRenderer extends Renderer {
 
   createRootHostView(hostProtoViewRef:RenderProtoViewRef, fragmentCount:number, hostElementSelector:string):RenderViewWithFragments {
     this._rootView = this._createView(hostProtoViewRef, true);
-    console.log((<ReactNativeRenderFragmentRef>this._rootView.fragmentRefs[0]).nodes[0]);
+    //console.log((<ReactNativeRenderFragmentRef>this._rootView.fragmentRefs[0]).nodes[0]);
     return this._rootView;
   }
 
@@ -66,7 +72,7 @@ export class ReactNativeRenderer extends Renderer {
   }
 
   _createView(protoViewRef:RenderProtoViewRef, isHost: boolean): RenderViewWithFragments {
-    var context = new BuildContext(isHost);
+    var context = new BuildContext(isHost, this.rnWrapper);
     var builder = new ReactNativetRenderViewBuilder(this._componentTpls, (<ReactNativeProtoViewRef>protoViewRef).cmds, null, context);
     context.build(builder);
     var fragments: ReactNativeRenderFragmentRef[] = [];

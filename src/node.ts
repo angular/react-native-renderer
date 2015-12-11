@@ -10,12 +10,18 @@ export abstract class Node {
 
   public tagName: string = "";
   public properties: {[s: string]: any } = {};
+
   public nativeTag: number = -1;
   private _created: boolean = false;
+  public rnWrapper: ReactNativeWrapper = null;
+
+  constructor(wrapper: ReactNativeWrapper) {
+    this.rnWrapper = wrapper;
+  }
 
   createNative() {
     if (!this._created) {
-      this.nativeTag = ReactNativeWrapper.createView(this.tagName, 1, this._buildProps());
+      this.nativeTag = this.rnWrapper.createView(this.tagName, 1, this._buildProps());
       this._created = true;
       nodeMap.set(this.nativeTag, this);
     }
@@ -36,7 +42,7 @@ export abstract class Node {
     if (this.nativeTag > -1) {
       var parent = this.parent;
       console.log(`Attaching to ${parent.nativeTag}: ${this.nativeTag} at ${parent.nativeChildren.length}`);
-      ReactNativeWrapper.manageChildren(parent.nativeTag, null, null, [this.nativeTag], [parent.nativeChildren.length], null);
+      this.rnWrapper.manageChildren(parent.nativeTag, null, null, [this.nativeTag], [parent.nativeChildren.length], null);
       parent.nativeChildren.push(this.nativeTag);
     }
   }
@@ -62,7 +68,7 @@ export abstract class Node {
         node.parent = this.parent;
         if (node.nativeTag > -1) {
           console.log(`Attaching to ${node.parent.nativeTag}: ${node.nativeTag} at ${nativeIndex + nativeInsertedCount + 1}`);
-          ReactNativeWrapper.manageChildren(node.parent.nativeTag, null, null, [node.nativeTag], [nativeIndex + nativeInsertedCount + 1], null);
+          this.rnWrapper.manageChildren(node.parent.nativeTag, null, null, [node.nativeTag], [nativeIndex + nativeInsertedCount + 1], null);
           node.parent.nativeChildren.splice(nativeIndex + nativeInsertedCount + 1, 0, node.nativeTag);
           nativeInsertedCount++;
         }
@@ -77,7 +83,7 @@ export abstract class Node {
       var nativeIndex = this.parent.nativeChildren.indexOf(this.nativeTag);
       this.parent.nativeChildren.splice(nativeIndex, 1);
       console.log(`Removing from ${this.parent.nativeTag}: ${this.nativeTag} at ${nativeIndex}`)
-      ReactNativeWrapper.manageChildren(this.parent.nativeTag, null, null, null, null, [nativeIndex]);
+      this.rnWrapper.manageChildren(this.parent.nativeTag, null, null, null, null, [nativeIndex]);
       this._destroyNative();
     }
   }
@@ -94,14 +100,14 @@ export abstract class Node {
 
   setProperty(name: string, value: any) {
     this.properties[name] = value;
-    ReactNativeWrapper.updateView(this.nativeTag, this.tagName, this._buildProps());
+    this.rnWrapper.updateView(this.nativeTag, this.tagName, this._buildProps());
   }
 
   _buildProps(): Object {
     if (this.properties.hasOwnProperty('style')) {
       var computedStyle: { [s: string]: any } = {};
       try {
-        computedStyle = ReactNativeWrapper.computeStyle(this.properties['style']);
+        computedStyle = this.rnWrapper.computeStyle(this.properties['style']);
       } catch (e) {
         console.error(e);
       }
@@ -124,18 +130,27 @@ export abstract class Node {
 
   //TODO: generalize this TextInput specific code
   focus() {
-    ReactNativeWrapper.dispatchCommand(this.nativeTag, 'focus');
+    this.rnWrapper.dispatchCommand(this.nativeTag, 'focus');
   }
   blur() {
-    ReactNativeWrapper.dispatchCommand(this.nativeTag, 'blur');
+    this.rnWrapper.dispatchCommand(this.nativeTag, 'blur');
+  }
+
+  //For testing only
+  public attribs: {[s: string]: any } = {};
+  setAttribute(name: string, value: string): void {
+    this.attribs[name] = value;
+  }
+  getAttribute(name: string): string {
+    return this.attribs[name];
   }
 }
 
 export class ComponentNode extends Node {
   private contentNodesByNgContentIndex: Node[][] = [];
 
-  constructor(public tagName: string, public isBound: boolean, _attribs: { [s: string]: string }, public isRoot: boolean = false) {
-    super();
+  constructor(public tagName: string, public isBound: boolean, _attribs: { [s: string]: string }, public isRoot: boolean, wrapper: ReactNativeWrapper) {
+    super(wrapper);
     for (var i in _attribs) {
       this.properties[i] = _attribs[i];
     }
@@ -144,7 +159,7 @@ export class ComponentNode extends Node {
 
   attachRoot() {
     console.log(`Attaching root ${this.nativeTag}`);
-    ReactNativeWrapper.manageChildren(1, null, null, [this.nativeTag], [0], null);
+    this.rnWrapper.manageChildren(1, null, null, [this.nativeTag], [0], null);
   }
 
   addContentNode(ngContentIndex: number, node: Node) {
@@ -162,8 +177,8 @@ export class ComponentNode extends Node {
 }
 
 export class ElementNode extends Node {
-  constructor(public tagName: string, public isBound: boolean, _attribs: { [s: string]: string }) {
-    super();
+  constructor(public tagName: string, public isBound: boolean, _attribs: { [s: string]: string }, wrapper: ReactNativeWrapper) {
+    super(wrapper);
     for (var i in _attribs) {
       this.properties[i] = _attribs[i];
     }
@@ -172,8 +187,8 @@ export class ElementNode extends Node {
 }
 
 export class TextNode extends Node {
-  constructor(public value: string,  public isBound: boolean) {
-    super();
+  constructor(public value: string,  public isBound: boolean, wrapper: ReactNativeWrapper) {
+    super(wrapper);
     this.createNativeText();
   }
 
@@ -192,6 +207,6 @@ export class TextNode extends Node {
 }
 
 export class AnchorNode extends Node {
-  constructor() { super();}
+  constructor(wrapper: ReactNativeWrapper) { super(wrapper);}
   createNative() {}
 }

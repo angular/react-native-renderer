@@ -1,5 +1,5 @@
 import {Component, NgIf, NgFor, Input, Output, EventEmitter} from 'angular2/angular2';
-import {StyleSheet} from './wrapper';
+import {StyleSheet} from 'react-native';
 
 class Palette {
   static background: string = '#005eb8';

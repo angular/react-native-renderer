@@ -1,5 +1,5 @@
 import {Component, NgIf, NgFor} from 'angular2/angular2';
-import {StyleSheet} from './wrapper';
+import {StyleSheet} from 'react-native';
 
 @Component({
   selector: 'sub',

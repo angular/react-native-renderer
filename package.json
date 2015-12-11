@@ -18,13 +18,15 @@
   "homepage": "https://github.com/mlaval/angular-react-native-renderer#readme",
   "devDependencies": {
     "del": "^1.2.0",
+    "glob": "^4.0.6",
     "gulp": "^3.9.0",
     "gulp-typescript": "^2.8.0",
     "gulp-watch": "~4.3.5",
     "jasmine": "2.3.1",
     "karma": "^0.13.10",
-    "karma-firefox-launcher": "^0.1.7",
+    "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.6",
+    "parse5": "1.5.0",
     "run-sequence": "~1.1.2",
     "through2": "~0.6.3"
   },

@@ -6,9 +6,10 @@ import {
   RenderNgContentCmd,
   RenderTemplateCmd,
   RenderTextCmd
-  } from 'angular2/angular2';
+  } from 'angular2/core';
 import {RenderComponentTemplate} from 'angular2/src/core/render/api';
 import {Node, ComponentNode, ElementNode, TextNode, AnchorNode} from './node';
+import {ReactNativeWrapper} from "./wrapper";
 
 export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
   private parentStack: Array<Node> = [];
@@ -29,7 +30,7 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
   }
 
   visitText(cmd:RenderTextCmd, context: BuildContext):any {
-    var text = new TextNode(cmd.value, cmd.isBound);
+    var text = new TextNode(cmd.value, cmd.isBound, context.rnWrapper);
     this._addChild(text, cmd.ngContentIndex);
     if (cmd.isBound) {
       context.boundTextNodes.push(text);
@@ -53,7 +54,7 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
   }
 
   visitBeginElement(cmd: RenderBeginElementCmd, context: BuildContext):any {
-    var element = new ElementNode(cmd.name, cmd.isBound, this._processAttributes(cmd));
+    var element = new ElementNode(cmd.name, cmd.isBound, this._processAttributes(cmd), context.rnWrapper);
     this._addChild(element, cmd.ngContentIndex);
     this.parentStack.push(element);
     if (cmd.isBound) {
@@ -69,7 +70,7 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
 
   visitBeginComponent(cmd: RenderBeginComponentCmd, context: BuildContext):any {
     var isRoot = context.componentsCount == 0;
-    var component = new ComponentNode(cmd.name, cmd.isBound, this._processAttributes(cmd), isRoot);
+    var component = new ComponentNode(cmd.name, cmd.isBound, this._processAttributes(cmd), isRoot, context.rnWrapper);
     this._addChild(component, cmd.ngContentIndex);
     this.parentStack.push(component);
     if (cmd.isBound) {
@@ -90,7 +91,7 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
   }
 
   visitEmbeddedTemplate(cmd: RenderEmbeddedTemplateCmd, context: BuildContext):any {
-    var anchor = new AnchorNode();
+    var anchor = new AnchorNode(context.rnWrapper);
     this._addChild(anchor, cmd.ngContentIndex);
     context.boundElementNodes.push(anchor);
     if (cmd.isMerged) {
@@ -133,8 +134,11 @@ export class BuildContext {
   fragments: Node[][] = [];
   componentsCount: number = 0;
   _builders: ReactNativetRenderViewBuilder[] = [];
+  rnWrapper: ReactNativeWrapper;
 
-  constructor(public isHost: boolean) {}
+  constructor(public isHost: boolean, wrapper: ReactNativeWrapper) {
+    this.rnWrapper = wrapper;
+  }
 
   public enqueueBuilder(builder: ReactNativetRenderViewBuilder) {
     this._builders.push(builder);
