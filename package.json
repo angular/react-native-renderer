@@ -31,7 +31,7 @@
     "through2": "~0.6.3"
   },
   "dependencies": {
-    "angular2": "2.0.0-alpha.50",
+    "angular2": "2.0.0-alpha.53",
     "react-native": "0.16.0",
     "reflect-metadata": "0.1.2",
     "zone.js": "angular/zone.js#26e7f5177a06b28e9c4478eab5c6b95cd79da37f",

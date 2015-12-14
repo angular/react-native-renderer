@@ -63,7 +63,7 @@ export class ReactNativeRenderer extends Renderer {
 
   createRootHostView(hostProtoViewRef:RenderProtoViewRef, fragmentCount:number, hostElementSelector:string):RenderViewWithFragments {
     this._rootView = this._createView(hostProtoViewRef, true);
-    //console.log((<ReactNativeRenderFragmentRef>this._rootView.fragmentRefs[0]).nodes[0]);
+    console.log((<ReactNativeRenderFragmentRef>this._rootView.fragmentRefs[0]).nodes[0]);
     return this._rootView;
   }
 
@@ -141,6 +141,11 @@ export class ReactNativeRenderer extends Renderer {
   setElementAttribute(location:RenderElementRef, attributeName:string, attributeValue:string): void {
     var node = (<ReactNativeViewRef>location.renderView).boundElementNodes[(<any>location).boundElementIndex];
     node.setProperty(attributeName, attributeValue);
+  }
+
+  setBindingDebugInfo(location: RenderElementRef, propertyName: string,
+                      propertyValue: string): void {
+    // Do nothing
   }
 
   setElementClass(location:RenderElementRef, className:string, isAdd:boolean): void {

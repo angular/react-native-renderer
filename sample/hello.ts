@@ -1,4 +1,5 @@
-import {Component, NgIf, NgFor} from 'angular2/angular2';
+import {Component} from 'angular2/core';
+import {NgIf, NgFor} from 'angular2/common'
 import {StyleSheet} from 'react-native';
 
 @Component({
@@ -29,12 +30,12 @@ class Sub {}
         <Text [style]="styles.instructions" [fontSize]="s">
           Shake or press menu button for dev menu {{foo}}
         </Text>
-        <Text *ng-if="maybe" [style]="styles.row">ng-if says hello</Text>
+        <Text *ngIf="maybe" [style]="styles.row">ngIf says hello</Text>
         <sub [marginTop]="10" [marginBottom]="10" [style]="styles.row">
           <Text>Some content at the bottom</Text>
           <View><Text>Some content in a view, at the top</Text></View>
         </sub>
-        <Text *ng-for="#item of items" [style]="styles.row">ng-for says {{item}}</Text>
+        <Text *ngFor="#item of items" [style]="styles.row">ngFor says {{item}}</Text>
 
         <TextInput placeholder="Type in" (topTouchEnd)="$event.target.focus()" (topSubmitEditing)="$event.target.blur()"></TextInput>
         <View [style]="styles.button" (topTouchEnd)="handleEvent($event)">

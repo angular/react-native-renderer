@@ -1,4 +1,5 @@
-import {Component, NgIf, NgFor, Input, Output, EventEmitter} from 'angular2/angular2';
+import {Component, Input, Output, EventEmitter} from 'angular2/core';
+import {NgIf, NgFor} from 'angular2/common'
 import {StyleSheet} from 'react-native';
 
 class Palette {
@@ -24,8 +25,8 @@ class Todo {
   template: `
 <View [style]="styles.row">
 <Text [style]="[styles.tick, item.active ? styles.tickOff : styles.tickOn]" (topTouchStart)="visualFeedback($event)" (topTouchEnd)="toggle($event)">{{item.active ? "[  ]" : "[x]"}}</Text>
-<Text *ng-if="!item.edited" [style]="[styles.main, item.active ? styles.mainOff : styles.mainOn]" (topTouchEnd)="startEdit()">{{item.value}}</Text>
-<TextInput *ng-if="item.edited" [style]="styles.editor" [text]="item.value" mostRecentEventCount="0" (topTouchEnd)="$event.target.focus()" (topSubmitEditing)="stopEdit($event)"></TextInput>
+<Text *ngIf="!item.edited" [style]="[styles.main, item.active ? styles.mainOff : styles.mainOn]" (topTouchEnd)="startEdit()">{{item.value}}</Text>
+<TextInput *ngIf="item.edited" [style]="styles.editor" [text]="item.value" mostRecentEventCount="0" (topTouchEnd)="$event.target.focus()" (topSubmitEditing)="stopEdit($event)"></TextInput>
 <Text [style]="styles.cross" (topTouchStart)="visualFeedback($event)" (topTouchEnd)="delete()">X</Text>
 </View>
 `
@@ -128,7 +129,7 @@ export class TodoItem {
 </View>
 <ScrollView [style]="styles.scroll">
   <View collapsable="false">
-    <template ng-for #todo [ng-for-of]="filteredTodos">
+    <template ngFor #todo [ngForOf]="filteredTodos">
       <todo-item [item]="todo" (toggled)="updateCount($event)" (deleted)="deleteTodo($event)"></todo-item>
     </template>
   </View>
