@@ -11,15 +11,15 @@ import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema
 import {ReactNativeRenderer, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../src/react_native_renderer';
 import {MockReactNativeWrapper} from "./mock_react_native_wrapper";
 
-var result: Object;
+var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
 
 describe('ReactNativeRenderer', () => {
 
   beforeEach(() => {
-    result = {};
+    mock.reset();
   });
   beforeEachProviders(() => [
-    provide(REACT_NATIVE_WRAPPER, {useValue: new MockReactNativeWrapper()}),
+    provide(REACT_NATIVE_WRAPPER, {useValue: mock}),
     ReactNativeElementSchemaRegistry,
     provide(ElementSchemaRegistry, {useExisting: ReactNativeElementSchemaRegistry}),
     ReactNativeRenderer,
@@ -27,125 +27,154 @@ describe('ReactNativeRenderer', () => {
   ]);
 
 
-  it('should fail', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+  it('should render element', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
     tcb.overrideTemplate(TestComponent, `<Text>foo</Text>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
-        expect(1).toEqual(2);
+        expect(mock.commandLogs.toString()).toEqual(
+          'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0');
       });
   }));
 
-  /*it('should render element', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.overrideTemplate(TestComponent, `<a>foo</a>`)
-      .createAsync(TestComponent).then(() => {
-        expect(result.richText).toEqual('<a>foo</a>');
-      });
-  }));
- 
-  it('should render element with attributes', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.overrideTemplate(TestComponent, `<a c="d" e="f">foo</a>`)
-      .createAsync(TestComponent).then(() => {
-        expect(result.richText).toEqual('<a c="d" e="f">foo</a>');
-      });
-  }));
-
-  it('should render component', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.overrideTemplate(TestComponent, `1<sub></sub>2`)
-      .createAsync(TestComponent).then(() => {
-        expect(result.richText).toEqual('1sub2');
-      });
-  }));
-
-  it('should support interpolation', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.overrideTemplate(TestComponent, `1{{s}}2`)
+  it('should render element with attributes', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text fontSize="20">foo</Text>`)
       .createAsync(TestComponent).then((fixture) => {
-        fixture.detectChanges();
-        expect(result.richText).toEqual('1bar2');
-      });
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{"fontSize":20},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0');
+    });
   }));
 
-  it('should not support binding to interpolated properties', inject([TestComponentBuilder], (tcb) => {
-    expect(tcb.overrideTemplate(TestComponent, `<a b="{{s}}">foo</a>`)
-      .createAsync(TestComponent).then(() => {})).toThrowErrorWith("");
-  }));
-
-  it('should not support binding to properties', inject([TestComponentBuilder], (tcb) => {
-    expect(tcb.overrideTemplate(TestComponent, `<a [b]="s">foo</a>`)
-      .createAsync(TestComponent).then(() => {})).toThrowErrorWith("");
-  }));
-
-  it('should support binding to attributes', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.overrideTemplate(TestComponent, `<a [attr.b]="s">foo</a>`)
+  it('should render component', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<View><sub></sub></View>`)
       .createAsync(TestComponent).then((fixture) => {
-        fixture.detectChanges();
-        expect(result.richText).toEqual('<a b="bar">foo</a>');
-
-        fixture.debugElement.componentInstance.s = 'baz';
-        fixture.detectChanges();
-        expect(result.richText).toEqual('<a b="baz">foo</a>');
-      });
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+View+{},ATTACH+2+3+0,' +
+        'CREATE+4+sub+{},ATTACH+3+4+0,CREATE+5+Text+{},ATTACH+4+5+0,CREATE+6+RawText+{"text":"foo"},ATTACH+5+6+0');
+    });
   }));
 
-  it('should support NgIf', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.overrideTemplate(TestComponent, `1<a *ng-if="b">foo</a>2`)
+  it('should support interpolation', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text>{{s}}</Text>`)
       .createAsync(TestComponent).then((fixture) => {
-        fixture.detectChanges();
-        expect(result.richText).toEqual('1<a>foo</a>2');
-
-        fixture.debugElement.componentInstance.b = false;
-        fixture.detectChanges();
-        expect(result.richText).toEqual('12');
-      });
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},ATTACH+2+3+0,' +
+        'CREATE+4+RawText+{"text":""},ATTACH+3+4+0,UPDATE+4+RawText+{"text":"bar"}');
+    });
   }));
 
-  it('should support NgFor', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.overrideTemplate(TestComponent, `0<template ng-for #item [ng-for-of]="a">{{item}}</template>4`)
+  it('should support binding to interpolated properties', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text foo="{{s}}">foo</Text>`)
       .createAsync(TestComponent).then((fixture) => {
-        fixture.detectChanges();
-        expect(result.richText).toEqual('01234');
-
-        fixture.debugElement.componentInstance.a.pop();
-        fixture.detectChanges();
-        expect(result.richText).toEqual('0124');
-
-        fixture.debugElement.componentInstance.a = [];
-        fixture.detectChanges();
-        expect(result.richText).toEqual('04');
-
-        fixture.debugElement.componentInstance.a.push(8);
-        fixture.detectChanges();
-        expect(result.richText).toEqual('084');
-      });
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0,' +
+        'UPDATE+3+Text+{"foo":"bar"}');
+    });
   }));
 
-  it('should support NgFor with several children and right order', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.overrideTemplate(TestComponent, `-<template ng-for #item [ng-for-of]="d"><a>{{item.a}}</a><b>{{item.b}}</b></template>-`)
+  it('should support binding to properties', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text [fontSize]="n">foo</Text>`)
       .createAsync(TestComponent).then((fixture) => {
-        fixture.detectChanges();
-        expect(result.richText).toEqual('-<a>0</a><b>1</b><a>8</a><b>9</b>-');
-      });
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0,' +
+        'UPDATE+3+Text+{"fontSize":20}');
+    });
   }));
 
-  it('should support ng-content', injectAsync([TestComponentBuilder], (tcb) => {
-    return tcb.overrideTemplate(TestComponent, `-<proj><a>a</a><b>b</b></proj>-`)
+  it('should support binding to attributes (same as interpolated properties)', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text [attr.foo]="s">foo</Text>`)
       .createAsync(TestComponent).then((fixture) => {
-        fixture.detectChanges();
-        expect(result.richText).toEqual('-0<b>b</b>1<a>a</a>2-');
-      });
-  }));*/
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0,' +
+        'UPDATE+3+Text+{"foo":"bar"}');
+    });
+  }));
+
+  it('should support NgIf', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text *ngIf="b">foo</Text>`)
+      .createAsync(TestComponent).then((fixture) => {
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0,ATTACH+2+3+0');
+
+      mock.clearLogs();
+      fixture.debugElement.componentInstance.b = false;
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual('DETACH+2+0');
+    });
+  }));
+
+  it('should support NgFor', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text *ngFor="#item of a">{{item}}</Text>`)
+      .createAsync(TestComponent).then((fixture) => {
+      fixture.detectChanges();
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('1,2,3');
+
+      fixture.debugElement.componentInstance.a.pop();
+      fixture.detectChanges();
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('1,2');
+
+      fixture.debugElement.componentInstance.a = [];
+      fixture.detectChanges();
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('');
+
+      fixture.debugElement.componentInstance.a.push(8);
+      fixture.detectChanges();
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('8');
+    });
+  }));
+
+  it('should support NgFor with several children and right order', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<template ngFor #item [ngForOf]="d"><Text>{{item.a}}</Text><Text>{{item.b}}</Text></template>`)
+      .createAsync(TestComponent).then((fixture) => {
+      fixture.detectChanges();
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('0,1,8,9');
+    });
+  }));
+
+  it('should support ng-content', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<proj><Text>foo</Text><View></View></proj>`)
+      .createAsync(TestComponent).then((fixture) => {
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+proj+{},ATTACH+2+3+0,' +
+        'CREATE+4+Text+{},CREATE+5+RawText+{"text":"foo"},ATTACH+4+5+0,CREATE+6+View+{},' +
+        'ATTACH+3+6+0,ATTACH+3+4+1');
+    });
+  }));
+
+  it('should support events', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text *ngIf="b" (someEvent)="handleEvent($event)">foo</Text>`)
+      .createAsync(TestComponent).then((fixture) => {
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0,ATTACH+2+3+0');
+
+      mock.clearLogs();
+      fixture.debugElement.nativeElement.children[1].fireEvent('someEvent', {});
+
+      fixture.detectChanges();
+      expect(mock.commandLogs.toString()).toEqual('DETACH+2+0');
+    });
+  }));
 
 });
 
 
 @Component({
   selector: 'sub',
-  template: `sub`
+  template: `<Text>foo</Text>`
 })
 class SubComponent {
 }
 @Component({
   selector: 'proj',
-  template: `0<ng-content select="b"></ng-content>1<ng-content></ng-content>2`
+  template: `<ng-content select="View"></ng-content><ng-content></ng-content>`
 })
 class SubComponentWithProjection {
 }
@@ -159,5 +188,9 @@ class TestComponent {
   b: boolean = true;
   a: Array<number> = [1,2,3];
   d: Array<Object> = [{a:0,b:1}, {a:8, b:9}]
-  n: number = 0;
+  n: number = 20;
+
+  handleEvent(evt) {
+    this.b = false;
+  }
 }

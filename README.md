@@ -1,6 +1,6 @@
 # angular-react-native-renderer
 
-A **proof of concept** renderer to build native applications with with Angular 2 and React Native.
+A **proof of concept** of building native applications with Angular 2 and React Native.
 Based on https://github.com/angular/react-native-renderer
 **Only tested on Windows targeting Android**
 

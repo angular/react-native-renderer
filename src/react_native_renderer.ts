@@ -63,7 +63,6 @@ export class ReactNativeRenderer extends Renderer {
 
   createRootHostView(hostProtoViewRef:RenderProtoViewRef, fragmentCount:number, hostElementSelector:string):RenderViewWithFragments {
     this._rootView = this._createView(hostProtoViewRef, true);
-    console.log((<ReactNativeRenderFragmentRef>this._rootView.fragmentRefs[0]).nodes[0]);
     return this._rootView;
   }
 

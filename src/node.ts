@@ -41,7 +41,7 @@ export abstract class Node {
   attachToParent() {
     if (this.nativeTag > -1) {
       var parent = this.parent;
-      console.log(`Attaching to ${parent.nativeTag}: ${this.nativeTag} at ${parent.nativeChildren.length}`);
+      this.rnWrapper.$log(`Attaching to ${parent.nativeTag}: ${this.nativeTag} at ${parent.nativeChildren.length}`);
       this.rnWrapper.manageChildren(parent.nativeTag, null, null, [this.nativeTag], [parent.nativeChildren.length], null);
       parent.nativeChildren.push(this.nativeTag);
     }
@@ -67,7 +67,7 @@ export abstract class Node {
         this.parent.children.splice(index + i + 1, 0, node);
         node.parent = this.parent;
         if (node.nativeTag > -1) {
-          console.log(`Attaching to ${node.parent.nativeTag}: ${node.nativeTag} at ${nativeIndex + nativeInsertedCount + 1}`);
+          this.rnWrapper.$log(`Attaching to ${node.parent.nativeTag}: ${node.nativeTag} at ${nativeIndex + nativeInsertedCount + 1}`);
           this.rnWrapper.manageChildren(node.parent.nativeTag, null, null, [node.nativeTag], [nativeIndex + nativeInsertedCount + 1], null);
           node.parent.nativeChildren.splice(nativeIndex + nativeInsertedCount + 1, 0, node.nativeTag);
           nativeInsertedCount++;
@@ -82,7 +82,7 @@ export abstract class Node {
     if (this.nativeTag > -1) {
       var nativeIndex = this.parent.nativeChildren.indexOf(this.nativeTag);
       this.parent.nativeChildren.splice(nativeIndex, 1);
-      console.log(`Removing from ${this.parent.nativeTag}: ${this.nativeTag} at ${nativeIndex}`)
+      this.rnWrapper.$log(`Removing from ${this.parent.nativeTag}: ${this.nativeTag} at ${nativeIndex}`)
       this.rnWrapper.manageChildren(this.parent.nativeTag, null, null, null, null, [nativeIndex]);
       this._destroyNative();
     }
@@ -158,7 +158,7 @@ export class ComponentNode extends Node {
   }
 
   attachRoot() {
-    console.log(`Attaching root ${this.nativeTag}`);
+    this.rnWrapper.$log(`Attaching root ${this.nativeTag}`);
     this.rnWrapper.manageChildren(1, null, null, [this.nativeTag], [0], null);
   }
 

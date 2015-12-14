@@ -10,4 +10,5 @@ export class ReactNativeWrapper {
   dispatchCommand(tag: number, command: string): void {}
   patchReactUpdates(zone: any): void {}
   patchReactNativeEventEmitter(nodeMap: Map<number, any>): void {}
+  $log(...args: any[]): void {};
 }

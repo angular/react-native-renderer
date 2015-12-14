@@ -34,17 +34,17 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
     return ReactNativeAttributePayload.create({style: styles}, ReactNativeViewAttributes.RCTView);
   }
 
-  createView(tagName: string, root: number, properties: Object) {
+  createView(tagName: string, root: number, properties: Object): number {
     var tag = ReactNativeTagHandles.allocateTag();
     var viewName = RCT_VIEW_NAMES[tagName] || RCT_VIEW_NAMES['View'];
-    console.log(`Creating a ${viewName} with tag ${tag} and attribs:`, properties);
+    this.$log(`Creating a ${viewName} with tag ${tag} and attribs:`, properties);
     UIManager.createView(tag, viewName, 1, properties);
     return tag;
   }
 
   updateView(tag: number, tagName: string, properties: Object) {
     var viewName = RCT_VIEW_NAMES[tagName] || RCT_VIEW_NAMES['View'];
-    console.log(`Updating property ${viewName} in ${tag} to`, properties);
+    this.$log(`Updating property ${viewName} in ${tag} to`, properties);
     UIManager.updateView(tag, viewName, properties);
   }
 
@@ -67,8 +67,8 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
   }
 
   patchReactNativeEventEmitter(nodeMap: Map<number, any>): void {
-    ReactNativeEventEmitter.receiveEvent = function(nativeTag: number, topLevelType: string, nativeEventParam: any) {
-      console.log('receiveEvent', nativeTag, topLevelType, nativeEventParam);
+    ReactNativeEventEmitter.receiveEvent = (nativeTag: number, topLevelType: string, nativeEventParam: any) => {
+      this.$log('receiveEvent', nativeTag, topLevelType, nativeEventParam);
       var element = nodeMap.get(nativeTag);
       if (nativeEventParam.target) {
         nativeEventParam.target = nodeMap.get(nativeEventParam.target);
@@ -78,8 +78,8 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
       }
     }
 
-    ReactNativeEventEmitter.receiveTouches = function(eventTopLevelType: string, touches: Array<any>, changedIndices: Array<number>) {
-      console.log('receiveTouches', eventTopLevelType, touches, changedIndices);
+    ReactNativeEventEmitter.receiveTouches = (eventTopLevelType: string, touches: Array<any>, changedIndices: Array<number>) => {
+      this.$log('receiveTouches', eventTopLevelType, touches, changedIndices);
       for (var i = 0; i < touches.length; i++) {
         var element = nodeMap.get(touches[i].target);
         if (touches[i].target) {
@@ -91,6 +91,10 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
         }
       }
     };
+  }
+  
+  $log(...args: any[]) {
+    console.log(...args);
   }
 }
 
