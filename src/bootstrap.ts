@@ -5,7 +5,7 @@ import {ReactNativeWrapperImpl} from './wrapper_impl';
 import 'es6-shim';
 
 // Finally, define the bootstrap
-import {Renderer, provide, NgZone, Provider} from 'angular2/core';
+import {Renderer, provide, NgZone, Provider, enableProdMode} from 'angular2/core';
 import {bootstrap} from 'angular2/bootstrap';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {ReactNativeRenderer, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from './react_native_renderer';
@@ -13,6 +13,7 @@ import {ReactNativeRenderer, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAP
 
 export function bootstrapReactNative(appName:string, cpt: any) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
+    enableProdMode();
     bootstrap(cpt, [
       [ReactNativeWrapperImpl],
       provide(REACT_NATIVE_WRAPPER, {useExisting: ReactNativeWrapperImpl}),
