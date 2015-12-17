@@ -1,7 +1,3 @@
-export function getGlobalZone() {
-  return global.zone;
-}
-
 export class ReactNativeWrapper {
   computeStyle(styles: Object): Object {return undefined;}
   createView(tagName: string, root: number, properties: Object): number {return 0;}

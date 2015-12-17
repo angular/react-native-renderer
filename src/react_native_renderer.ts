@@ -9,12 +9,13 @@ import {
   RenderEventDispatcher,
   RenderComponentTemplate,
   Inject,
-  OpaqueToken
+  OpaqueToken,
+  NgZone
 } from 'angular2/core';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {Node, ComponentNode, ElementNode, TextNode, AnchorNode, nodeMap} from './node';
 import {BuildContext, ReactNativetRenderViewBuilder} from "./builder";
-import {ReactNativeWrapper, getGlobalZone} from './wrapper';
+import {ReactNativeWrapper} from './wrapper';
 
 export const REACT_NATIVE_WRAPPER: OpaqueToken = new OpaqueToken("ReactNativeWrapper");
 
@@ -38,19 +39,34 @@ class ReactNativeRenderFragmentRef extends RenderFragmentRef {
 class ReactNativeViewRef extends RenderViewRef {
   hydrated: boolean = false;
   eventDispatcher: RenderEventDispatcher = null;
+  private _zone: NgZone;
+
   constructor(public fragments: ReactNativeRenderFragmentRef[], public boundTextNodes: TextNode[],
-              public boundElementNodes: Node[]) { super(); }
+              public boundElementNodes: Node[], zone: NgZone) {
+    super();
+    this._zone = zone;
+  }
+
+  dispatchRenderEvent(boundElementIndex: number, eventName: string, event: any):any {
+    if (this.eventDispatcher) {
+      var locals = new Map<string, any>();
+      locals.set('$event', event);
+      this._zone.run(() => this.eventDispatcher.dispatchRenderEvent(boundElementIndex, eventName, locals));
+    }
+  }
 }
 
 export class ReactNativeRenderer extends Renderer {
   private _componentTpls: Map<string, RenderComponentTemplate> = new Map<string, RenderComponentTemplate>();
   private _rootView: RenderViewWithFragments;
   private rnWrapper: ReactNativeWrapper;
+  private _zone: NgZone;
 
-  constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
+  constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper, zone: NgZone) {
     super();
     wrapper.patchReactNativeEventEmitter(nodeMap);
     this.rnWrapper = wrapper;
+    this._zone = zone;
   }
 
   createProtoView(componentTemplateId: string, cmds:RenderTemplateCmd[]):RenderProtoViewRef {
@@ -71,26 +87,18 @@ export class ReactNativeRenderer extends Renderer {
   }
 
   _createView(protoViewRef:RenderProtoViewRef, isHost: boolean): RenderViewWithFragments {
-    var context = new BuildContext(isHost, this.rnWrapper);
+    var view: ReactNativeViewRef;
+    var eventDispatcher = (boundElementIndex: number, eventName: string, event: any) =>
+      view.dispatchRenderEvent(boundElementIndex, eventName, event);
+    var context = new BuildContext(isHost, this.rnWrapper, eventDispatcher);
     var builder = new ReactNativetRenderViewBuilder(this._componentTpls, (<ReactNativeProtoViewRef>protoViewRef).cmds, null, context);
     context.build(builder);
     var fragments: ReactNativeRenderFragmentRef[] = [];
     for (var i = 0; i < context.fragments.length; i++) {
       fragments.push(new ReactNativeRenderFragmentRef(context.fragments[i]));
     }
-    var view = new ReactNativeViewRef(fragments, context.boundTextNodes, context.boundElementNodes);
-    for (var i = 0; i < view.boundElementNodes.length; i++) {
-      this._initElementEventListener(i, view.boundElementNodes[i], view);
-    }
+    view = new ReactNativeViewRef(fragments, context.boundTextNodes, context.boundElementNodes, this._zone);
     return new RenderViewWithFragments(view, view.fragments);
-  }
-
-  _initElementEventListener(bindingIndex: number, element: Node, view: ReactNativeViewRef) {
-    element.setEventListener(getGlobalZone().bind(function(name: string, event: any) {
-      var locals = new Map<string, any>();
-      locals.set('$event', event);
-      view.eventDispatcher.dispatchRenderEvent(bindingIndex, name, locals);
-    }));
   }
 
   destroyView(viewRef:RenderViewRef):any {

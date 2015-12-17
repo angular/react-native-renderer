@@ -58,7 +58,13 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
     this._addChild(element, cmd.ngContentIndex);
     this.parentStack.push(element);
     if (cmd.isBound) {
+      var boundElementIndex = context.boundElementNodes.length;
       context.boundElementNodes.push(element);
+      for (var i = 0; i < cmd.eventTargetAndNames.length; i += 2) {
+        var target = cmd.eventTargetAndNames[i];
+        var eventName = cmd.eventTargetAndNames[i + 1];
+        context.addEventListener(boundElementIndex, target, eventName);
+      }
     }
     return undefined;
   }
@@ -74,7 +80,13 @@ export class ReactNativetRenderViewBuilder implements RenderCommandVisitor {
     this._addChild(component, cmd.ngContentIndex);
     this.parentStack.push(component);
     if (cmd.isBound) {
+      var boundElementIndex = context.boundElementNodes.length;
       context.boundElementNodes.push(component);
+      for (var i = 0; i < cmd.eventTargetAndNames.length; i += 2) {
+        var target = cmd.eventTargetAndNames[i];
+        var eventName = cmd.eventTargetAndNames[i + 1];
+        context.addEventListener(boundElementIndex, target, eventName);
+      }
     }
     context.componentsCount++;
     var cptBuilder = new ReactNativetRenderViewBuilder(this.componentTemplates, this.componentTemplates.get(cmd.templateId).commands, component, context);
@@ -135,9 +147,11 @@ export class BuildContext {
   componentsCount: number = 0;
   _builders: ReactNativetRenderViewBuilder[] = [];
   rnWrapper: ReactNativeWrapper;
+  _eventDispatcher: Function;
 
-  constructor(public isHost: boolean, wrapper: ReactNativeWrapper) {
+  constructor(public isHost: boolean, wrapper: ReactNativeWrapper, eventDispatcher: Function) {
     this.rnWrapper = wrapper;
+    this._eventDispatcher = eventDispatcher;
   }
 
   public enqueueBuilder(builder: ReactNativetRenderViewBuilder) {
@@ -152,4 +166,18 @@ export class BuildContext {
       this.build(enqueuedBuilders[i]);
     }
   }
+
+  addEventListener(boundElementIndex: number, target: string, eventName:string):void {
+    if (target) {
+      //TODO: global events
+    } else {
+      var handler = createEventHandler(boundElementIndex, eventName, this._eventDispatcher);
+      this.boundElementNodes[boundElementIndex].addEventListener(eventName, handler)
+    }
+  }
+}
+
+function createEventHandler(boundElementIndex: number, eventName: string,
+                            eventDispatcher: Function): Function {
+  return ($event) => eventDispatcher(boundElementIndex, eventName, $event);
 }

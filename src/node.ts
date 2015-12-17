@@ -6,7 +6,7 @@ export abstract class Node {
   public parent: Node;
   public children: Node[] = [];
   public nativeChildren: Array<number> = [];
-  listenerCallback = (name: string, event: any) => {};
+  public eventListeners: Map<string, Function> = new Map<string, Function>();
 
   public tagName: string = "";
   public properties: {[s: string]: any } = {};
@@ -119,13 +119,16 @@ export abstract class Node {
     return this.properties;
   }
 
-  setEventListener(listener: (name: string, event: any) => void) {
-    this.listenerCallback = listener;
-  }
-
   fireEvent(name: string, event: any) {
     event.currentTarget = this;
-    this.listenerCallback(name, event);
+    var handler = this.eventListeners.get(name);
+    if (handler) {
+      handler(event);
+    }
+  }
+
+  addEventListener(eventName: string, handler: Function) {
+    this.eventListeners.set(eventName, handler);
   }
 
   //TODO: generalize this TextInput specific code

@@ -94,7 +94,7 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
   }
   
   $log(...args: any[]) {
-    console.log(...args);
+    //console.log(...args);
   }
 }
 
