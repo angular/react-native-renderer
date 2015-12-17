@@ -5,8 +5,8 @@ import {
   describe, ddescribe, xdescribe
   expect
 } from 'angular2/testing';
-import {Component, View, Renderer, provide} from 'angular2/core';
-import {NgIf, NgFor, NgSwitch, NgSwitchWhen, NgSwitchDefault} from 'angular2/common';
+import {Component, Renderer, provide} from 'angular2/core';
+import {NgIf, NgFor} from 'angular2/common';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {ReactNativeRenderer, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../src/react_native_renderer';
 import {MockReactNativeWrapper} from "./mock_react_native_wrapper";
@@ -181,7 +181,7 @@ class SubComponentWithProjection {
 @Component({
   selector: 'test-cmp',
   template: `to be overriden`,
-  directives: [SubComponent, SubComponentWithProjection, NgIf, NgFor, NgSwitch, NgSwitchWhen, NgSwitchDefault]
+  directives: [SubComponent, SubComponentWithProjection, NgIf, NgFor]
 })
 class TestComponent {
   s: string = 'bar';

@@ -1,4 +1,5 @@
 import {ReactNativeWrapper} from './wrapper';
+import {Hammer} from './hammer';
 
 export var nodeMap: Map<number, Node> = new Map<number, Node>();
 
@@ -6,7 +7,7 @@ export abstract class Node {
   public parent: Node;
   public children: Node[] = [];
   public nativeChildren: Array<number> = [];
-  public eventListeners: Map<string, Function> = new Map<string, Function>();
+  public eventListeners: Map<string, Array<Function>> = new Map<string, Array<Function>>();
 
   public tagName: string = "";
   public properties: {[s: string]: any } = {};
@@ -119,16 +120,41 @@ export abstract class Node {
     return this.properties;
   }
 
-  fireEvent(name: string, event: any) {
-    event.currentTarget = this;
-    var handler = this.eventListeners.get(name);
-    if (handler) {
-      handler(event);
+  addEventListener(eventName: string, handler: Function) {
+    if (!Hammer.supports(eventName)) {
+      if (!this.eventListeners.has(eventName)) {
+        this.eventListeners.set(eventName, []);
+      }
+      var handlers = this.eventListeners.get(eventName);
+      handlers.push(handler);
+      this.eventListeners.set(eventName, handlers);
+    }
+    else {
+      Hammer.create(this, eventName, handler);
     }
   }
 
-  addEventListener(eventName: string, handler: Function) {
-    this.eventListeners.set(eventName, handler);
+  removeEventListener(eventName: string, handler: Function) {
+    if (!Hammer.supports(eventName)) {
+      var handlers = this.eventListeners.get(eventName);
+      if (handlers) {
+        var index = handlers.indexOf(handler);
+        if (index > -1) {
+          handlers.splice(index, 1);
+          this.eventListeners.set(eventName, handlers);
+        }
+      }
+    } else {
+      //TODO: destroy hammer instance
+    }
+  }
+
+  fireEvent(name: string, event: any) {
+    event.currentTarget = this;
+    var handlers = this.eventListeners.get(name);
+    if (handlers) {
+      handlers.forEach((handler) => {handler(event)});
+    }
   }
 
   //TODO: generalize this TextInput specific code
@@ -140,6 +166,7 @@ export abstract class Node {
   }
 
   //For testing only
+  public style: {[s: string]: any } = {};
   public attribs: {[s: string]: any } = {};
   setAttribute(name: string, value: string): void {
     this.attribs[name] = value;

@@ -72,6 +72,10 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
       var element = nodeMap.get(nativeTag);
       if (nativeEventParam.target) {
         nativeEventParam.target = nodeMap.get(nativeEventParam.target);
+        nativeEventParam.type = topLevelType;
+        nativeEventParam.clientX = nativeEventParam.pageX;
+        nativeEventParam.clientY = nativeEventParam.pageY;
+        nativeEventParam.preventDefault = () => {};
       }
       if (element) {
         element.fireEvent(topLevelType, nativeEventParam);
@@ -84,6 +88,10 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
         var element = nodeMap.get(touches[i].target);
         if (touches[i].target) {
           touches[i].target = nodeMap.get(touches[i].target);
+          touches[i].type = eventTopLevelType;
+          touches[i].clientX = touches[i].pageX;
+          touches[i].clientY = touches[i].pageY;
+          touches[i].preventDefault = () => {};
         }
         while (element) {
           element.fireEvent(eventTopLevelType, touches[i]);

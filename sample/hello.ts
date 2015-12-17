@@ -1,5 +1,6 @@
 import {Component} from 'angular2/core';
 import {NgIf, NgFor} from 'angular2/common'
+import {HighLight} from './common';
 import {StyleSheet} from 'react-native';
 
 @Component({
@@ -13,7 +14,7 @@ class Sub {}
 
 @Component({
   selector: 'hello-app',
-  directives: [NgIf, NgFor, Sub],
+  directives: [NgIf, NgFor, Sub, HighLight],
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   template: `
 <View [style]="styles.container">
@@ -38,7 +39,7 @@ class Sub {}
         <Text *ngFor="#item of items" [style]="styles.row">ngFor says {{item}}</Text>
 
         <TextInput placeholder="Type in" (topTouchEnd)="$event.target.focus()" (topSubmitEditing)="$event.target.blur()"></TextInput>
-        <View [style]="styles.button" (topTouchEnd)="handleEvent($event)">
+        <View [style]="styles.button" highlight (tap)="handleEvent($event)">
           <Text>Button</Text>
         </View>
       </View>
