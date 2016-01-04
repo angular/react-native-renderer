@@ -22,8 +22,8 @@
     "gulp": "^3.9.0",
     "gulp-typescript": "^2.8.0",
     "gulp-watch": "~4.3.5",
-    "jasmine": "2.3.1",
-    "karma": "^0.13.10",
+    "jasmine": "2.4.1",
+    "karma": "^0.13.16",
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.6",
     "parse5": "1.5.0",
@@ -32,11 +32,11 @@
   },
   "dependencies": {
     "angular2": "2.0.0-beta.0",
-    "hammerjs": "2.0.4",
-    "react-native": "0.16.0",
+    "hammerjs": "2.0.6",
+    "react-native": "0.17.0",
     "reflect-metadata": "0.1.2",
     "zone.js": "0.5.10",
-    "es6-shim": "^0.33.6",
-    "systemjs": "^0.19.4"
+    "es6-shim": "^0.33.13",
+    "systemjs": "^0.19.9"
   }
 }

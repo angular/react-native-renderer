@@ -20,7 +20,7 @@ var PATHS = {
   modules: [
     'node_modules/angular2/**/*',
     'node_modules/es6-shim/**/*',
-    'node_modules/hammer.js/**/*',
+    'node_modules/hammerjs/**/*',
     'node_modules/reflect-metadata/**/*',
     'node_modules/rxjs/**/*',
     'node_modules/zone.js/**/*'
