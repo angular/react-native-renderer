@@ -29,7 +29,7 @@ if (globsIndex < 0) {
 var specFiles = args.map(function(globstr) { return glob.sync(globstr); })
   .reduce(function(specFiles, paths) { return specFiles.concat(paths); }, []);
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 100;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 
 jrunner.configureDefaultReporter({showColors: process.argv.indexOf('--no-color') === -1});
 

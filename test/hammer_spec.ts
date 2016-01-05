@@ -1,5 +1,5 @@
 import {
-  inject, TestComponentBuilder,
+  inject, injectAsync, TestComponentBuilder,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe
@@ -9,7 +9,8 @@ import {Component, Renderer, provide} from 'angular2/core';
 import {NgIf, NgFor} from 'angular2/common';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {ReactNativeRenderer, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../src/react_native_renderer';
-import {MockReactNativeWrapper, fireEvent} from "./mock_react_native_wrapper";
+import {MockReactNativeWrapper} from "./mock_react_native_wrapper";
+import {fireEvent} from './utils';
 
 var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
 
@@ -51,6 +52,93 @@ describe('ReactNativeRenderer', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.log.join(',')).toEqual('tap,tap,doubletap');
+    });
+  }));
+
+  it('should support pan', inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text (pan)="handleEvent($event)" (panstart)="handleEvent($event)" (panmove)="handleEvent($event)"
+     (panend)="handleEvent($event)" (pancancel)="handleEvent($event)" (panleft)="handleEvent($event)"
+     (panright)="handleEvent($event)" (panup)="handleEvent($event)" (pandown)="handleEvent($event)">foo</Text>`)
+      .createAsync(TestComponent).then((fixture) => {
+
+      var target = fixture.debugElement.nativeElement.children[0];
+      fireEvent('topTouchStart', target, 0, [[0, 0]]);
+      fireEvent('topTouchMove', target, 10, [[25, 0]]);
+      fireEvent('topTouchMove', target, 20, [[50, 0]]);
+      fireEvent('topTouchMove', target, 30, [[75, 0]]);
+      fireEvent('topTouchEnd', target, 40, [[100, 0]]);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.log.join(',')).toEqual('panstart,pan,panright,panmove,pan,panmove,pan,pan,panend');
+    });
+  }));
+
+  it('should support swipe', inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text (swipe)="handleEvent($event)" (swipeleft)="handleEvent($event)"
+    (swiperight)="handleEvent($event)" (swipeup)="handleEvent($event)" (swipedown)="handleEvent($event)">foo</Text>`)
+      .createAsync(TestComponent).then((fixture) => {
+
+      var target = fixture.debugElement.nativeElement.children[0];
+      fireEvent('topTouchStart', target, 0, [[0, 0]]);
+      fireEvent('topTouchMove', target, 10, [[25, 0]]);
+      fireEvent('topTouchMove', target, 20, [[50, 0]]);
+      fireEvent('topTouchMove', target, 30, [[75, 0]]);
+      fireEvent('topTouchEnd', target, 40, [[100, 0]]);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.log.join(',')).toEqual('swiperight,swipe');
+    });
+  }));
+
+  it('should support press', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    return tcb.overrideTemplate(TestComponent, `<Text (press)="handleEvent($event)" (pressup)="handleEvent($event)">foo</Text>`)
+      .createAsync(TestComponent).then((fixture) => {
+
+      var target = fixture.debugElement.nativeElement.children[0];
+      fireEvent('topTouchStart', target, 0);
+      fixture.detectChanges();
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          fireEvent('topTouchEnd', target, 300);
+          //fixture.detectChanges();
+          expect(fixture.componentInstance.log.join(',')).toEqual('press,pressup');
+          resolve();
+        }, 300);
+      });
+    });
+  }));
+
+  it('should support pinch', inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text (pinch)="handleEvent($event)" (pinchstart)="handleEvent($event)"
+    (pinchmove)="handleEvent($event)" (pinchend)="handleEvent($event)" (pinchcancel)="handleEvent($event)"
+    (pinchin)="handleEvent($event)" (pinchout)="handleEvent($event)">foo</Text>`)
+      .createAsync(TestComponent).then((fixture) => {
+
+      var target = fixture.debugElement.nativeElement.children[0];
+      fireEvent('topTouchStart', target, 0, [[0,0], [0, 150]], [0, 1]);
+      fireEvent('topTouchMove', target, 10, [[0,0], [0, 100]], [1]);
+      fireEvent('topTouchMove', target, 20, [[0,0], [0, 50]], [1]);
+      fireEvent('topTouchEnd', target, 30, [[0,0], [0, 0]], [1]);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.log.join(',')).toEqual('pinchstart,pinch,pinchin,pinchmove,pinch,pinchin,pinch,pinchin,pinchend');
+    });
+  }));
+
+  it('should support rotate', inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text (rotate)="handleEvent($event)" (rotatestart)="handleEvent($event)"
+    (rotatemove)="handleEvent($event)" (rotateend)="handleEvent($event)" (rotatecancel)="handleEvent($event)">foo</Text>`)
+      .createAsync(TestComponent).then((fixture) => {
+
+      var target = fixture.debugElement.nativeElement.children[0];
+      fireEvent('topTouchStart', target, 0, [[0,0], [0, 150]], [0, 1]);
+      fireEvent('topTouchMove', target, 10, [[0,0], [0, 100]], [1]);
+      fireEvent('topTouchMove', target, 20, [[0,0], [0, 50]], [1]);
+      fireEvent('topTouchEnd', target, 30, [[0,0], [0, 0]], [1]);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.log.join(',')).toEqual('rotatestart,rotate,rotatemove,rotate,rotatemove,rotate,rotate,rotateend');
     });
   }));
 

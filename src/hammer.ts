@@ -48,8 +48,16 @@ export class Hammer {
     return _eventNames.hasOwnProperty(eventName);
   }
 
-  static create(element: any, eventName: string, handler: Function) {
+  static create(element: any): any {
+    //TODO: Optimize recognizers added and configuration for native feel
+    //TODO: create a custom 'tap' with tapstart and tapcancel
     var mc = new hammer(element, {inputClass: NativeInput, cssProps: {}});
+    mc.get('pinch').set({ enable: true });
+    mc.get('rotate').set({ enable: true });
+    return mc;
+  }
+
+  static listen(mc: any, eventName: string, handler: Function) {
     mc.on(eventName, function(eventObj) { handler(eventObj); });
   }
 }
@@ -88,5 +96,14 @@ hammer.inherit(NativeInput, hammer.Input, {
 });
 
 function getTouches(event: any, type: string) {
-  return [[event], [event]];
+  if (event.touches == undefined || event.touches.length == 1) {
+    return [[event], [event]];
+  } else {
+    var changedTouches = [];
+    for (var i = 0; i < event.changedIndices.length; i++) {
+      changedTouches.push(event.touches[event.changedIndices[i]]);
+    }
+    return [event.touches, changedTouches];
+  }
+
 }

@@ -84,19 +84,28 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
 
     ReactNativeEventEmitter.receiveTouches = (eventTopLevelType: string, touches: Array<any>, changedIndices: Array<number>) => {
       this.$log('receiveTouches', eventTopLevelType, touches, changedIndices);
+      var event = touches[0];
+      if (event.target) {
+        event.target = nodeMap.get(event.target);
+        event.type = eventTopLevelType;
+        event.clientX = event.pageX;
+        event.clientY = event.pageY;
+        event.preventDefault = () => {};
+      }
+
       for (var i = 0; i < touches.length; i++) {
-        var element = nodeMap.get(touches[i].target);
         if (touches[i].target) {
-          touches[i].target = nodeMap.get(touches[i].target);
-          touches[i].type = eventTopLevelType;
           touches[i].clientX = touches[i].pageX;
           touches[i].clientY = touches[i].pageY;
-          touches[i].preventDefault = () => {};
         }
-        while (element) {
-          element.fireEvent(eventTopLevelType, touches[i]);
-          element = element.parent;
-        }
+      }
+      event.touches = touches;
+      event.changedIndices = changedIndices;
+
+      var element = event.target;
+      while (element) {
+        element.fireEvent(eventTopLevelType, event);
+        element = element.parent;
       }
     };
   }

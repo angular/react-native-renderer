@@ -1,9 +1,5 @@
 import {ReactNativeWrapper} from "../src/wrapper";
 
-export function fireEvent(name: string, target: any, timeStamp: number = 0, clientX: number = 0, clientY: number = 0) {
-  target.fireEvent(name, {type: name, clientX: clientX, clientY: clientY, timeStamp: timeStamp, target: target});
-}
-
 export class MockReactNativeWrapper extends ReactNativeWrapper {
   commandLogs: Array<Command>;
   root: NativeElement;

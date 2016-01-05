@@ -1,5 +1,5 @@
 import {Component} from 'angular2/core';
-import {NgIf, NgFor} from 'angular2/common'
+import {NgIf, NgFor} from 'angular2/common';
 import {HighLight} from './common';
 import {StyleSheet} from 'react-native';
 

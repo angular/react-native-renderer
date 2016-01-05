@@ -8,6 +8,7 @@ export abstract class Node {
   public children: Node[] = [];
   public nativeChildren: Array<number> = [];
   public eventListeners: Map<string, Array<Function>> = new Map<string, Array<Function>>();
+  private _hammer: any = null;
 
   public tagName: string = "";
   public properties: {[s: string]: any } = {};
@@ -130,7 +131,10 @@ export abstract class Node {
       this.eventListeners.set(eventName, handlers);
     }
     else {
-      Hammer.create(this, eventName, handler);
+      if (this._hammer == null) {
+        this._hammer = Hammer.create(this);
+      }
+      Hammer.listen(this._hammer, eventName, handler);
     }
   }
 
