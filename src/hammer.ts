@@ -2,67 +2,153 @@ if (typeof window === "undefined") window = {};
 if (typeof document === "undefined") document = {createElement: () => {return {style: {}};}};
 var hammer = (typeof window.Hammer === "undefined") ? require('hammerjs') : window.Hammer;
 
-var _eventNames = {
+var EVENT_RECOGNIZER_MAP = {
   //doubletap
-  'doubletap': true,
+  'doubletap': 'doubletap',
   // pan
-  'pan': true,
-  'panstart': true,
-  'panmove': true,
-  'panend': true,
-  'pancancel': true,
-  'panleft': true,
-  'panright': true,
-  'panup': true,
-  'pandown': true,
+  'pan': 'pan',
+  'panstart': 'pan',
+  'panmove': 'pan',
+  'panend': 'pan',
+  'pancancel': 'pan',
+  'panleft': 'pan',
+  'panright': 'pan',
+  'panup': 'pan',
+  'pandown': 'pan',
   // pinch
-  'pinch': true,
-  'pinchstart': true,
-  'pinchmove': true,
-  'pinchend': true,
-  'pinchcancel': true,
-  'pinchin': true,
-  'pinchout': true,
+  'pinch': 'pinch',
+  'pinchstart': 'pinch',
+  'pinchmove': 'pinch',
+  'pinchend': 'pinch',
+  'pinchcancel': 'pinch',
+  'pinchin': 'pinch',
+  'pinchout': 'pinch',
   // press
-  'press': true,
-  'pressup': true,
+  'press': 'press',
+  'pressup': 'press',
   // rotate
-  'rotate': true,
-  'rotatestart': true,
-  'rotatemove': true,
-  'rotateend': true,
-  'rotatecancel': true,
+  'rotate': 'rotate',
+  'rotatestart': 'rotate',
+  'rotatemove': 'rotate',
+  'rotateend': 'rotate',
+  'rotatecancel': 'rotate',
   // swipe
-  'swipe': true,
-  'swipeleft': true,
-  'swiperight': true,
-  'swipeup': true,
-  'swipedown': true,
+  'swipe': 'swipe',
+  'swipeleft': 'swipe',
+  'swiperight': 'swipe',
+  'swipeup': 'swipe',
+  'swipedown': 'swipe',
   // tap
-  'tap': true,
+  'tap': 'tap',
+  'tapstart': 'tap',
+  'tapcancel': 'tap'
 };
 
 export class Hammer {
   static supports(eventName: string): boolean {
     eventName = eventName.toLowerCase();
-    return _eventNames.hasOwnProperty(eventName);
+    return EVENT_RECOGNIZER_MAP.hasOwnProperty(eventName);
   }
 
   static create(element: any): any {
-    //TODO: Optimize recognizers added and configuration for native feel
-    //TODO: create a custom 'tap' with tapstart and tapcancel
-    var mc = new hammer(element, {inputClass: NativeInput, cssProps: {}});
-    mc.get('pinch').set({ enable: true });
-    mc.get('rotate').set({ enable: true });
-    return mc;
+    return new hammer(element, {inputClass: NativeInput, cssProps: {}, recognizers: []});
   }
 
-  static listen(mc: any, eventName: string, handler: Function) {
-    mc.on(eventName, function(eventObj) { handler(eventObj); });
+  static add(hammerInstance: any, eventName: string, handler: Function) {
+    var recognizerName = EVENT_RECOGNIZER_MAP[eventName];
+    var recognizer = hammerInstance.get(recognizerName);
+    if (recognizer == null) {
+      switch (recognizerName) {
+        case 'doubletap':
+          var doubletap = recognizer = new hammer.Tap({event: 'doubletap', taps: 2, time: Infinity});
+          hammerInstance.add(doubletap);
+          var tap = hammerInstance.get('tap');
+          if (tap) {
+            doubletap.recognizeWith(tap);
+          }
+          break;
+        case 'tap':
+          var tap = recognizer = new NativeTapRecognizer();
+          hammerInstance.add(tap);
+          var doubletap = hammerInstance.get('doubletap');
+          if (doubletap) {
+            doubletap.recognizeWith(tap);
+          }
+          var press = hammerInstance.get('press');
+          if (press) {
+            press.recognizeWith(tap);
+          }
+          break;
+        case 'pan':
+          var pan = recognizer = new hammer.Pan({direction: hammer.DIRECTION_ALL});
+          hammerInstance.add(pan);
+          var swipe = hammerInstance.get('swipe');
+          if (swipe) {
+            pan.recognizeWith(swipe);
+          }
+          break;
+        case 'swipe':
+          var swipe = recognizer = new hammer.Swipe({direction: hammer.DIRECTION_ALL});
+          hammerInstance.add(swipe);
+          var pan = hammerInstance.get('pan');
+          if (pan) {
+            pan.recognizeWith(swipe);
+          }
+          break;
+        case 'press':
+          var press = recognizer = new hammer.Press();
+          hammerInstance.add(press);
+          var tap = hammerInstance.get('tap');
+          if (tap) {
+            press.recognizeWith(tap);
+          }
+          break;
+        case 'pinch':
+          var pinch = recognizer = new hammer.Pinch();
+          hammerInstance.add(pinch);
+          var rotate = hammerInstance.get('rotate');
+          if (rotate) {
+            pinch.recognizeWith(rotate);
+          }
+          break;
+        case 'rotate':
+          var rotate = recognizer = new hammer.Rotate();
+          hammerInstance.add(rotate);
+          var pinch = hammerInstance.get('pinch');
+          if (pinch) {
+            pinch.recognizeWith(rotate);
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    hammerInstance.on(eventName, (eventObj) => { handler(eventObj); });
+    if (typeof recognizer._events == 'undefined') {
+      recognizer._events = new Map();
+    }
+    recognizer._events.set(eventName, true);
+  }
+
+  static remove(hammerInstance: any, eventName: string, handler: Function) {
+    hammerInstance.off(eventName, (eventObj) => { handler(eventObj); });
+    var recognizer = hammerInstance.get(EVENT_RECOGNIZER_MAP[eventName]);
+    var toBeDeleted = true;
+    recognizer._events.forEach((value, key) => {
+      toBeDeleted &= hammerInstance.handlers[key].length == 0;
+    });
+    if (toBeDeleted) {
+      hammerInstance.remove(recognizer);
+      if (hammerInstance.recognizers.length == 0) {
+        hammerInstance.destroy();
+        hammerInstance = null;
+      }
+    }
+    return hammerInstance;
   }
 }
 
-var TOUCH_INPUT_MAP = {
+var NATIVE_INPUT_MAP = {
   topTouchStart: hammer.INPUT_START,
   topTouchMove: hammer.INPUT_MOVE,
   topTouchEnd: hammer.INPUT_END,
@@ -80,7 +166,7 @@ function NativeInput() {
 
 hammer.inherit(NativeInput, hammer.Input, {
   handler: function NEhandler(event) {
-    var type = TOUCH_INPUT_MAP[event.type];
+    var type = NATIVE_INPUT_MAP[event.type];
     var touches = getTouches.call(this, event, type);
     if (!touches) {
       return;
@@ -105,5 +191,53 @@ function getTouches(event: any, type: string) {
     }
     return [event.touches, changedTouches];
   }
-
 }
+
+function NativeTapRecognizer() {
+  hammer.Recognizer.apply(this, arguments);
+  this.alreadyCancelled = false;
+}
+
+hammer.inherit(NativeTapRecognizer, hammer.Recognizer, {
+  defaults: {
+    event: 'tap',
+    pointers: 1,
+    threshold: 9
+  },
+
+  getTouchAction: function() {
+    return [hammer.TOUCH_ACTION_MANIPULATION];
+  },
+
+  process: function(input) {
+    var options = this.options;
+
+    var validPointers = input.pointers.length === options.pointers;
+    var validMovement = input.distance < options.threshold;
+
+    if ((input.eventType & hammer.INPUT_START)) {
+      this.alreadyCancelled = false;
+      this.manager.emit(this.options.event + 'start', input);
+      return hammer.STATE_FAILED;
+    }
+
+    if (validMovement && validPointers) {
+      if (input.eventType != hammer.INPUT_END) {
+        return hammer.STATE_FAILED;
+      }
+
+      return hammer.STATE_RECOGNIZED;
+    }
+    if (!this.alreadyCancelled) {
+      this.alreadyCancelled = true;
+      this.manager.emit(this.options.event + 'cancel', input);
+    }
+    return hammer.STATE_FAILED;
+  },
+
+  emit: function(input) {
+    if (this.state == hammer.STATE_RECOGNIZED) {
+      this.manager.emit(this.options.event, input);
+    }
+  }
+});

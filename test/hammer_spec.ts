@@ -28,15 +28,20 @@ describe('ReactNativeRenderer', () => {
   ]);
 
   it('should support tap', inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    tcb.overrideTemplate(TestComponent, `<Text (tap)="handleEvent($event)">foo</Text>`)
+    tcb.overrideTemplate(TestComponent, `<Text (tap)="handleEvent($event)" (tapstart)="handleEvent($event)" (tapcancel)="handleEvent($event)">foo</Text>`)
       .createAsync(TestComponent).then((fixture) => {
 
       var target = fixture.debugElement.nativeElement.children[0];
-      fireEvent('topTouchStart', target);
-      fireEvent('topTouchEnd', target);
+      fireEvent('topTouchStart', target, 0, [[0,0]]);
+      fireEvent('topTouchEnd', target, 1000, [[0,5]]);
       fixture.detectChanges();
+      expect(fixture.componentInstance.log.join(',')).toEqual('tapstart,tap');
 
-      expect(fixture.componentInstance.log.join(',')).toEqual('tap');
+      fixture.componentInstance.log = [];
+      fireEvent('topTouchStart', target, 0, [[0,0]]);
+      fireEvent('topTouchEnd', target, 1000, [[0,20]]);
+      fixture.detectChanges();
+      expect(fixture.componentInstance.log.join(',')).toEqual('tapstart,tapcancel');
     });
   }));
 
@@ -45,10 +50,10 @@ describe('ReactNativeRenderer', () => {
       .createAsync(TestComponent).then((fixture) => {
 
       var target = fixture.debugElement.nativeElement.children[0];
-      fireEvent('topTouchStart', target);
-      fireEvent('topTouchEnd', target);
-      fireEvent('topTouchStart', target);
-      fireEvent('topTouchEnd', target);
+      fireEvent('topTouchStart', target, 0);
+      fireEvent('topTouchEnd', target, 10);
+      fireEvent('topTouchStart', target, 20);
+      fireEvent('topTouchEnd', target, 30);
       fixture.detectChanges();
 
       expect(fixture.componentInstance.log.join(',')).toEqual('tap,tap,doubletap');
@@ -139,6 +144,45 @@ describe('ReactNativeRenderer', () => {
       fixture.detectChanges();
 
       expect(fixture.componentInstance.log.join(',')).toEqual('rotatestart,rotate,rotatemove,rotate,rotatemove,rotate,rotate,rotateend');
+    });
+  }));
+
+  it('should support multiple gestures', inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text (tap)="handleEvent($event)" (swipe)="handleEvent($event)">foo</Text>`)
+      .createAsync(TestComponent).then((fixture) => {
+
+      var target = fixture.debugElement.nativeElement.children[0];
+      fireEvent('topTouchStart', target, 0, [[0, 0]]);
+      fireEvent('topTouchMove', target, 10, [[25, 0]]);
+      fireEvent('topTouchMove', target, 20, [[50, 0]]);
+      fireEvent('topTouchMove', target, 30, [[75, 0]]);
+      fireEvent('topTouchEnd', target, 40, [[100, 0]]);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.log.join(',')).toEqual('swipe');
+    });
+  }));
+
+  it('should add and remove event listeners', inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<Text>foo</Text>`)
+      .createAsync(TestComponent).then((fixture) => {
+
+      var target = fixture.debugElement.nativeElement.children[0];
+      var handler = () => {};
+      expect(target._hammer).toEqual(null);
+      target.addEventListener('tap', handler);
+      expect(target._hammer.recognizers.length).toEqual(1);
+      target.addEventListener('swipe', handler);
+      expect(target._hammer.recognizers.length).toEqual(2);
+      target.addEventListener('swiperight', handler);
+      expect(target._hammer.recognizers.length).toEqual(2);
+
+      target.removeEventListener('swiperight', handler);
+      expect(target._hammer.recognizers.length).toEqual(2);
+      target.removeEventListener('tap', handler);
+      expect(target._hammer.recognizers.length).toEqual(1);
+      target.removeEventListener('swipe', handler);
+      expect(target._hammer).toEqual(null);
     });
   }));
 

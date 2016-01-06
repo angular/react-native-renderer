@@ -38,7 +38,9 @@ import {StyleSheet} from 'react-native';
   (swiperight)="handleEvent($event)"
   (swipeup)="handleEvent($event)"
   (swipedown)="handleEvent($event)"
-  (tap)="handleEvent($event)">
+  (tap)="handleEvent($event)"
+  (tapstart)="handleEvent($event)"
+  (tapcancel)="handleEvent($event)">
   <Text [style]="styles.buttonText">TOUCH ME</Text>
 </View>
 <View [style]="styles.button" flex="1" highlight (tap)="clearLogs()">

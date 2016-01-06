@@ -134,7 +134,7 @@ export abstract class Node {
       if (this._hammer == null) {
         this._hammer = Hammer.create(this);
       }
-      Hammer.listen(this._hammer, eventName, handler);
+      Hammer.add(this._hammer, eventName, handler);
     }
   }
 
@@ -149,7 +149,7 @@ export abstract class Node {
         }
       }
     } else {
-      //TODO: destroy hammer instance
+      this._hammer = Hammer.remove(this._hammer, eventName, handler);
     }
   }
 

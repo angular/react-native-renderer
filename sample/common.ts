@@ -15,11 +15,13 @@ export class HighLight implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._el.addEventListener('topTouchStart', this._highlight);
-    this._el.addEventListener('topTouchEnd', this._unhighlight);
+    this._el.addEventListener('tapstart', this._highlight);
+    this._el.addEventListener('tapcancel', this._unhighlight);
+    this._el.addEventListener('tap', this._unhighlight);
   }
   ngOnDestroy() {
-    this._el.removeEventListener('topTouchStart', this._highlight);
-    this._el.removeEventListener('topTouchEnd', this._unhighlight);
+    this._el.removeEventListener('tapstart', this._highlight);
+    this._el.removeEventListener('tapcancel', this._unhighlight);
+    this._el.removeEventListener('tap', this._unhighlight);
   }
 }
