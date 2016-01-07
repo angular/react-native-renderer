@@ -18,9 +18,13 @@ var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 
 const RCT_VIEW_NAMES: { [s: string]: string } = {
   "ImageView": "RCTImageView",
+  "ProgressBar": "AndroidProgressBar",
   "ScrollView": "RCTScrollView",
+  "HorizontalScrollView" : "AndroidHorizontalScrollView",
   "RawText": "RCTRawText",
+  "Switch": "AndroidSwitch",
   "Text": "RCTText",
+  "VirtualText": "RCTVirtualText",
   "TextInput": "AndroidTextInput",
   "View": "RCTView",
 }
@@ -109,12 +113,17 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
       }
       event.touches = touches;
       event.changedIndices = changedIndices;
-      event.target.fireEvent(eventTopLevelType, event);
+      if (event.target) {
+        event.target.fireEvent(eventTopLevelType, event);
+      } else {
+        //TODO: manage global event on "window" ?
+      }
+
     };
   }
   
   $log(...args: any[]) {
-    //console.log(...args);
+    console.log(...args);
   }
 }
 
@@ -128,23 +137,14 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
  ReactNativeViewAttributes.RCTView
 
  Android:
- AccessibilityEventTypes: Object
- AndroidDrawerLayout: Object
- AndroidHorizontalScrollView: Object
- AndroidProgressBar: Object
- AndroidSwitch: Object
- AndroidTextInput: Object
- AndroidViewPager: Object
- Dimensions: Object
- PopupMenu: Object
- RCTImageView: Object
- RCTRawText: Object
- RCTScrollView: Object
- RCTText: Object
- RCTView: Object
- RCTVirtualText: Object
- StyleConstants: Object
- ToolbarAndroid: Object
- UIText: Object
- UIView: Object
+   AndroidDrawerLayout: Object
+   AndroidViewPager: Object
+   ToolbarAndroid: Object
+
+   AccessibilityEventTypes: Object
+   Dimensions: Object
+   PopupMenu: Object
+   StyleConstants: Object
+   UIText: Object
+   UIView: Object
  */

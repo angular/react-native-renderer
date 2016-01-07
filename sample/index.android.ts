@@ -1,4 +1,4 @@
 import {bootstrapReactNative} from './bootstrap';
-import {GesturesApp} from "./gestures";
+import {KitchenSinkApp} from "./kitchensink.android";
 
-bootstrapReactNative('ngReactNative', GesturesApp);
+bootstrapReactNative('ngReactNative', KitchenSinkApp);
