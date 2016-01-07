@@ -166,13 +166,14 @@ hammer.inherit(NativeInput, hammer.Input, {
     if (!touches) {
       return;
     }
-
-    this.callback(this.manager, type, {
+    var newEvent = {
       pointers: touches[0],
       changedPointers: touches[1],
       pointerType: 'touch',
       srcEvent: event
-    });
+    };
+    newEvent['stopPropagation'] = () => {newEvent.srcEvent.stopPropagation()};
+    this.callback(this.manager, type, newEvent);
   }
 });
 

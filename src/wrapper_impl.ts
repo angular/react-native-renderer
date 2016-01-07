@@ -76,6 +76,10 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
         nativeEventParam.clientX = nativeEventParam.pageX;
         nativeEventParam.clientY = nativeEventParam.pageY;
         nativeEventParam.preventDefault = () => {};
+        nativeEventParam._stop = true;
+        nativeEventParam.stopPropagation = () => {
+          nativeEventParam._stop = true;
+        };
       }
       if (element) {
         element.fireEvent(topLevelType, nativeEventParam);
@@ -91,6 +95,10 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
         event.clientX = event.pageX;
         event.clientY = event.pageY;
         event.preventDefault = () => {};
+        event._stop = false;
+        event.stopPropagation = () => {
+          event._stop = true;
+        };
       }
 
       for (var i = 0; i < touches.length; i++) {
@@ -101,12 +109,7 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
       }
       event.touches = touches;
       event.changedIndices = changedIndices;
-
-      var element = event.target;
-      while (element) {
-        element.fireEvent(eventTopLevelType, event);
-        element = element.parent;
-      }
+      event.target.fireEvent(eventTopLevelType, event);
     };
   }
   

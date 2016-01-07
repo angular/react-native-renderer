@@ -159,6 +159,9 @@ export abstract class Node {
     if (handlers) {
       handlers.forEach((handler) => {handler(event)});
     }
+    if (this.parent && !event._stop) {
+      this.parent.fireEvent(name, event);
+    }
   }
 
   //TODO: generalize this TextInput specific code

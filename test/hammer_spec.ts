@@ -216,6 +216,30 @@ describe('ReactNativeRenderer', () => {
     });
   }));
 
+  it('should propagates event', inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<View (tap)="handleEvent($event)"><Text (tap)="handleEvent($event)">foo</Text></View>`)
+      .createAsync(TestComponent).then((fixture) => {
+
+      var target = fixture.debugElement.nativeElement.children[0].children[0];
+      fireEvent('topTouchStart', target, 0, [[0,0]]);
+      fireEvent('topTouchEnd', target, 1000, [[0,5]]);
+      fixture.detectChanges();
+      expect(fixture.componentInstance.log.join(',')).toEqual('tap,tap');
+    });
+  }));
+
+  it('should not propagate events after stopPropagation() call', inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<View (tap)="handleEvent($event)"><Text (tap)="handleEventWithStop($event)">foo</Text></View>`)
+      .createAsync(TestComponent).then((fixture) => {
+
+      var target = fixture.debugElement.nativeElement.children[0].children[0];
+      fireEvent('topTouchStart', target, 0, [[0,0]]);
+      fireEvent('topTouchEnd', target, 1000, [[0,5]]);
+      fixture.detectChanges();
+      expect(fixture.componentInstance.log.join(',')).toEqual('tapWithStop');
+    });
+  }));
+
 });
 
 
@@ -230,5 +254,10 @@ class TestComponent {
 
   handleEvent(evt) {
     this.log.push(evt.type);
+  }
+
+  handleEventWithStop(evt) {
+    this.log.push(evt.type + 'WithStop');
+    evt.stopPropagation();
   }
 }
