@@ -62,21 +62,12 @@ export class Hammer {
         case 'doubletap':
           var doubletap = recognizer = new hammer.Tap({event: 'doubletap', taps: 2, time: Infinity});
           hammerInstance.add(doubletap);
-          var tap = hammerInstance.get('tap');
-          if (tap) {
-            doubletap.recognizeWith(tap);
-          }
           break;
         case 'tap':
           var tap = recognizer = new NativeTapRecognizer();
           hammerInstance.add(tap);
-          var doubletap = hammerInstance.get('doubletap');
-          if (doubletap) {
-            doubletap.recognizeWith(tap);
-          }
-          var press = hammerInstance.get('press');
-          if (press) {
-            press.recognizeWith(tap);
+          for (var i = 0; i < hammerInstance.recognizers.length; i++) {
+            hammerInstance.recognizers[i].recognizeWith(tap);
           }
           break;
         case 'pan':
@@ -122,6 +113,10 @@ export class Hammer {
         default:
           break;
       }
+    }
+    var tap = hammerInstance.get('tap');
+    if (tap) {
+      recognizer.recognizeWith(tap);
     }
     hammerInstance.on(eventName, (eventObj) => { handler(eventObj); });
     if (typeof recognizer._events == 'undefined') {
@@ -217,8 +212,7 @@ hammer.inherit(NativeTapRecognizer, hammer.Recognizer, {
 
     if ((input.eventType & hammer.INPUT_START)) {
       this.alreadyCancelled = false;
-      this.manager.emit(this.options.event + 'start', input);
-      return hammer.STATE_FAILED;
+      return hammer.STATE_BEGAN;
     }
 
     if (validMovement && validPointers) {
@@ -228,16 +222,19 @@ hammer.inherit(NativeTapRecognizer, hammer.Recognizer, {
 
       return hammer.STATE_RECOGNIZED;
     }
-    if (!this.alreadyCancelled) {
-      this.alreadyCancelled = true;
-      this.manager.emit(this.options.event + 'cancel', input);
-    }
-    return hammer.STATE_FAILED;
+
+    var res = this.alreadyCancelled ? hammer.STATE_FAILED : hammer.STATE_CANCELLED;
+    this.alreadyCancelled = true;
+    return res;
   },
 
   emit: function(input) {
     if (this.state == hammer.STATE_RECOGNIZED) {
       this.manager.emit(this.options.event, input);
+    } else if (this.state == hammer.STATE_BEGAN) {
+      this.manager.emit(this.options.event + 'start', input);
+    } else if (this.state == hammer.STATE_CANCELLED) {
+      this.manager.emit(this.options.event + 'cancel', input);
     }
   }
 });
