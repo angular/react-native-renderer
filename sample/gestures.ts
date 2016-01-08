@@ -1,12 +1,12 @@
 import {Component} from 'angular2/core';
 import {NgFor} from 'angular2/common';
-import {HighLight} from './common';
+import {NativeFeedback} from './common';
 import {StyleSheet} from 'react-native';
 
 @Component({
   selector: 'gestures-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NgFor, HighLight],
+  directives: [NgFor, NativeFeedback],
   template: `
 <View [style]="styles.surface" flex="6"
   (doubletap)="handleEvent($event)"
@@ -43,7 +43,7 @@ import {StyleSheet} from 'react-native';
   (tapcancel)="handleEvent($event)">
   <Text [style]="styles.buttonText">TOUCH ME</Text>
 </View>
-<View [style]="styles.button" flex="1" highlight (tap)="clearLogs()">
+<View [style]="styles.button" flex="1" nativeFeedback (tap)="clearLogs()">
   <Text [style]="styles.buttonText">Clear logs</Text>
 </View>
 <ScrollView flex="12">

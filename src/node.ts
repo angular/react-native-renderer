@@ -166,10 +166,14 @@ export abstract class Node {
 
   //TODO: generalize this TextInput specific code
   focus() {
-    this.rnWrapper.dispatchCommand(this.nativeTag, 'focus');
+    this.rnWrapper.dispatchCommand(this.nativeTag, 'focusTextInput');
   }
   blur() {
-    this.rnWrapper.dispatchCommand(this.nativeTag, 'blur');
+    this.rnWrapper.dispatchCommand(this.nativeTag, 'blurTextInput');
+  }
+
+  dispatchCommand(command: string, params: any = null) {
+    this.rnWrapper.dispatchCommand(this.nativeTag, command, params);
   }
 
   //For testing only

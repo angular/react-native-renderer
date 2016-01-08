@@ -80,8 +80,8 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
     }
   }
 
-  dispatchCommand(tag: number, command: string) {
-    this.commandLogs.push(new Command('COMMAND', tag, command));
+  dispatchCommand(tag: number, command: string, params: any = null) {
+    this.commandLogs.push(new Command('COMMAND', tag, command + (params ? params.toString() : "")));
   }
 
   patchReactUpdates(zone: any): void {
@@ -92,6 +92,9 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
   };
   computeStyle(styles: Object) {
     //Not needed in Mock
+  }
+  processColor(color: string): number {
+    return -1
   }
 
   $log(...args: any[]) {

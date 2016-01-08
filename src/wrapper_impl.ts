@@ -17,6 +17,7 @@ var ReactNativeAttributePayload = require('ReactNativeAttributePayload');
 var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 
 const RCT_VIEW_NAMES: { [s: string]: string } = {
+  "DrawerLayout": "AndroidDrawerLayout",
   "ImageView": "RCTImageView",
   "ProgressBar": "AndroidProgressBar",
   "ScrollView": "RCTScrollView",
@@ -38,6 +39,10 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
     return ReactNativeAttributePayload.create({style: styles}, ReactNativeViewAttributes.RCTView);
   }
 
+  processColor(color: string): number {
+    return ReactNative.processColor(color);
+  }
+
   createView(tagName: string, root: number, properties: Object): number {
     var tag = ReactNativeTagHandles.allocateTag();
     var viewName = RCT_VIEW_NAMES[tagName] || RCT_VIEW_NAMES['View'];
@@ -56,14 +61,18 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
     UIManager.manageChildren(parentTag, moveFrom, moveTo, addTags, addAt, removeAt);
   }
 
-  dispatchCommand(tag: number, command: string) {
+  dispatchCommand(tag: number, command: string, params: any = null) {
     //TODO: generalize
     var commands: {[s: string]: number} = {
-      'blur': UIManager.AndroidTextInput.Commands.blurTextInput,
-      'focus':UIManager.AndroidTextInput.Commands.focusTextInput
+      'blurTextInput': UIManager.AndroidTextInput.Commands.blurTextInput,
+      'focusTextInput': UIManager.AndroidTextInput.Commands.focusTextInput,
+      'openDrawer': UIManager.AndroidDrawerLayout.Commands.openDrawer,
+      'closeDrawer': UIManager.AndroidDrawerLayout.Commands.closeDrawer,
+      'hotspotUpdate': UIManager.RCTView.Commands.hotspotUpdate,
+      'setPressed': UIManager.RCTView.Commands.setPressed
+
     };
-    //iOS: NativeModules.UIManager.blur(this.nativeTag);
-    UIManager.dispatchViewManagerCommand(tag, commands[command], null);
+    UIManager.dispatchViewManagerCommand(tag, commands[command], params);
   }
 
   patchReactUpdates(zone: any): void {
@@ -140,6 +149,8 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
    AndroidDrawerLayout: Object
    AndroidViewPager: Object
    ToolbarAndroid: Object
+
+  RCTWebView: Object
 
    AccessibilityEventTypes: Object
    Dimensions: Object
