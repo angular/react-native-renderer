@@ -2,7 +2,7 @@ if (typeof window === "undefined") window = {};
 if (typeof document === "undefined") document = {createElement: () => {return {style: {}};}};
 var hammer = (typeof window.Hammer === "undefined") ? require('hammerjs') : window.Hammer;
 
-var EVENT_RECOGNIZER_MAP = {
+var EVENT_RECOGNIZER_MAP: {[s: string]: string } = {
   //doubletap
   'doubletap': 'doubletap',
   // pan
@@ -118,7 +118,7 @@ export class Hammer {
     if (tap) {
       recognizer.recognizeWith(tap);
     }
-    hammerInstance.on(eventName, (eventObj) => { handler(eventObj); });
+    hammerInstance.on(eventName, (eventObj: any) => { handler(eventObj); });
     if (typeof recognizer._events == 'undefined') {
       recognizer._events = new Map();
     }
@@ -126,11 +126,11 @@ export class Hammer {
   }
 
   static remove(hammerInstance: any, eventName: string, handler: Function) {
-    hammerInstance.off(eventName, (eventObj) => { handler(eventObj); });
+    hammerInstance.off(eventName, (eventObj: any) => { handler(eventObj); });
     var recognizer = hammerInstance.get(EVENT_RECOGNIZER_MAP[eventName]);
     var toBeDeleted = true;
-    recognizer._events.forEach((value, key) => {
-      toBeDeleted &= hammerInstance.handlers[key].length == 0;
+    recognizer._events.forEach((value: any, key: any) => {
+      toBeDeleted = toBeDeleted && hammerInstance.handlers[key].length == 0;
     });
     if (toBeDeleted) {
       hammerInstance.remove(recognizer);
@@ -143,7 +143,7 @@ export class Hammer {
   }
 }
 
-var NATIVE_INPUT_MAP = {
+var NATIVE_INPUT_MAP: {[s: string]: any } = {
   topTouchStart: hammer.INPUT_START,
   topTouchMove: hammer.INPUT_MOVE,
   topTouchEnd: hammer.INPUT_END,
@@ -160,19 +160,19 @@ function NativeInput() {
 }
 
 hammer.inherit(NativeInput, hammer.Input, {
-  handler: function NEhandler(event) {
+  handler: function NEhandler(event: any) {
     var type = NATIVE_INPUT_MAP[event.type];
     var touches = getTouches.call(this, event, type);
     if (!touches) {
       return;
     }
-    var newEvent = {
+    var newEvent: {[s: string]: any } = {
       pointers: touches[0],
       changedPointers: touches[1],
       pointerType: 'touch',
       srcEvent: event
     };
-    newEvent['stopPropagation'] = () => {newEvent.srcEvent.stopPropagation()};
+    newEvent['stopPropagation'] = () => {newEvent['srcEvent'].stopPropagation()};
     this.callback(this.manager, type, newEvent);
   }
 });
@@ -181,7 +181,7 @@ function getTouches(event: any, type: string) {
   if (event.touches == undefined || event.touches.length == 1) {
     return [[event], [event]];
   } else {
-    var changedTouches = [];
+    var changedTouches: any[] = [];
     for (var i = 0; i < event.changedIndices.length; i++) {
       changedTouches.push(event.touches[event.changedIndices[i]]);
     }
@@ -205,7 +205,7 @@ hammer.inherit(NativeTapRecognizer, hammer.Recognizer, {
     return [hammer.TOUCH_ACTION_MANIPULATION];
   },
 
-  process: function(input) {
+  process: function(input: any) {
     var options = this.options;
 
     var validPointers = input.pointers.length === options.pointers;
@@ -229,7 +229,7 @@ hammer.inherit(NativeTapRecognizer, hammer.Recognizer, {
     return res;
   },
 
-  emit: function(input) {
+  emit: function(input: any) {
     if (this.state == hammer.STATE_RECOGNIZED) {
       this.manager.emit(this.options.event, input);
     } else if (this.state == hammer.STATE_BEGAN) {

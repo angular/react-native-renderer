@@ -58,11 +58,11 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
   }
 
   manageChildren(parentTag: number, moveFrom: Array<number>, moveTo: Array<number>, addTags: Array<number>, addAt: Array<number>, removeAt: Array<number>) {
+    this.$log(`Managing children of ${parentTag}:`, moveFrom, moveTo, addTags, addAt, removeAt);
     UIManager.manageChildren(parentTag, moveFrom, moveTo, addTags, addAt, removeAt);
   }
 
   dispatchCommand(tag: number, command: string, params: any = null) {
-    //TODO: generalize
     var commands: {[s: string]: number} = {
       'blurTextInput': UIManager.AndroidTextInput.Commands.blurTextInput,
       'focusTextInput': UIManager.AndroidTextInput.Commands.focusTextInput,
@@ -72,6 +72,7 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
       'setPressed': UIManager.RCTView.Commands.setPressed
 
     };
+    this.$log(`Dispatching command to ${tag}: ${command} with ${params}`);
     UIManager.dispatchViewManagerCommand(tag, commands[command], params);
   }
 
@@ -132,12 +133,12 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
   }
   
   $log(...args: any[]) {
-    console.log(...args);
+    //console.log(...args);
   }
 }
 
 /*
- At run time:
+ At run time: 
 
  NativeModules.UIManager.RCTText.NativeProps =
  {"opacity":"number","renderToHardwareTextureAndroid":"boolean","numberOfLines":"number","borderBottomWidth":"number","scaleY":"number","position":"String","paddingTop":"number","borderWidth":"number","color":"number","marginLeft":"number","fontFamily":"String","marginHorizontal":"number","fontStyle":"String","paddingBottom":"number","paddingHorizontal":"number","scaleX":"number","onLayout":"boolean","flexWrap":"String","borderTopWidth":"number","borderRightWidth":"number","marginTop":"number","translateX":"number","rotation":"number","accessibilityLiveRegion":"String","alignItems":"String","accessibilityComponentType":"String","paddingVertical":"number","flex":"number","marginBottom":"number","bottom":"number","textAlign":"String","justifyContent":"String","fontWeight":"String","padding":"number","alignSelf":"String","backgroundColor":"number","right":"number","borderLeftWidth":"number","height":"number","left":"number","translateY":"number","paddingRight":"number","lineHeight":"number","flexDirection":"String","importantForAccessibility":"String","marginVertical":"number","fontSize":"number","accessibilityLabel":"String","width":"number","paddingLeft":"number","text":"String","top":"number","margin":"number","decomposedMatrix":"Map","marginRight":"number","testID":"String"}

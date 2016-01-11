@@ -207,7 +207,6 @@ export class TodoMVC {
   }
 
   updateCount(diff: number) {
-    debugger;
     this.leftCount += diff;
     if (this.filter != 'all') {
       this.filterTodos();

@@ -1,21 +1,8 @@
-import {
-  Renderer,
-  RenderElementRef,
-  RenderFragmentRef,
-  RenderProtoViewRef,
-  RenderViewRef,
-  RenderViewWithFragments,
-  RenderTemplateCmd,
-  RenderEventDispatcher,
-  RenderComponentTemplate,
-  Inject,
-  OpaqueToken,
-  NgZone
-} from 'angular2/core';
+import {RootRenderer, Renderer, RenderComponentType, OpaqueToken, Inject, Injectable, NgZone} from 'angular2/core';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
-import {Node, ComponentNode, ElementNode, TextNode, AnchorNode, nodeMap} from './node';
-import {BuildContext, ReactNativetRenderViewBuilder} from "./builder";
+import {Node, ElementNode, AnchorNode, TextNode, InertNode, nodeMap} from './node';
 import {ReactNativeWrapper} from './wrapper';
+import {NativeCommand, NativeCommandCreate, NativeCommandUpdate, NativeCommandAttach, NativeCommandDetach, NativeCommandAttachAfter} from "./native_command";
 
 export const REACT_NATIVE_WRAPPER: OpaqueToken = new OpaqueToken("ReactNativeWrapper");
 
@@ -28,151 +15,212 @@ export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
   }
 }
 
-class ReactNativeProtoViewRef extends RenderProtoViewRef {
-  constructor(public template: RenderComponentTemplate, public cmds: RenderTemplateCmd[]) { super(); }
-}
+export class ReactNativeRootRenderer implements RootRenderer {
+  private _registeredComponents: Map<string, ReactNativeRenderer> = new Map<string, ReactNativeRenderer>();
 
-class ReactNativeRenderFragmentRef extends RenderFragmentRef {
-  constructor(public nodes: Node[]) { super(); }
-}
-
-class ReactNativeViewRef extends RenderViewRef {
-  hydrated: boolean = false;
-  eventDispatcher: RenderEventDispatcher = null;
-  private _zone: NgZone;
-
-  constructor(public fragments: ReactNativeRenderFragmentRef[], public boundTextNodes: TextNode[],
-              public boundElementNodes: Node[], zone: NgZone) {
-    super();
-    this._zone = zone;
-  }
-
-  dispatchRenderEvent(boundElementIndex: number, eventName: string, event: any):any {
-    if (this.eventDispatcher) {
-      var locals = new Map<string, any>();
-      locals.set('$event', event);
-      this._zone.run(() => this.eventDispatcher.dispatchRenderEvent(boundElementIndex, eventName, locals));
-    }
-  }
-}
-
-export class ReactNativeRenderer extends Renderer {
-  private _componentTpls: Map<string, RenderComponentTemplate> = new Map<string, RenderComponentTemplate>();
-  private _rootView: RenderViewWithFragments;
-  private rnWrapper: ReactNativeWrapper;
-  private _zone: NgZone;
-
-  constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper, zone: NgZone) {
-    super();
+  constructor(public wrapper: ReactNativeWrapper, public zone: NgZone) {
     wrapper.patchReactNativeEventEmitter(nodeMap);
-    this.rnWrapper = wrapper;
-    this._zone = zone;
   }
 
-  createProtoView(componentTemplateId: string, cmds:RenderTemplateCmd[]):RenderProtoViewRef {
-    return new ReactNativeProtoViewRef(this._componentTpls.get(componentTemplateId), cmds);
-  }
-
-  registerComponentTemplate(template: RenderComponentTemplate): void {
-    this._componentTpls.set(template.id, template);
-  }
-
-  createRootHostView(hostProtoViewRef:RenderProtoViewRef, fragmentCount:number, hostElementSelector:string):RenderViewWithFragments {
-    this._rootView = this._createView(hostProtoViewRef, true);
-    return this._rootView;
-  }
-
-  createView(protoViewRef:RenderProtoViewRef, fragmentCount:number):RenderViewWithFragments {
-    return this._createView(protoViewRef, false);
-  }
-
-  _createView(protoViewRef:RenderProtoViewRef, isHost: boolean): RenderViewWithFragments {
-    var view: ReactNativeViewRef;
-    var eventDispatcher = (boundElementIndex: number, eventName: string, event: any) =>
-      view.dispatchRenderEvent(boundElementIndex, eventName, event);
-    var context = new BuildContext(isHost, this.rnWrapper, eventDispatcher);
-    var builder = new ReactNativetRenderViewBuilder(this._componentTpls, (<ReactNativeProtoViewRef>protoViewRef).cmds, null, context);
-    context.build(builder);
-    var fragments: ReactNativeRenderFragmentRef[] = [];
-    for (var i = 0; i < context.fragments.length; i++) {
-      fragments.push(new ReactNativeRenderFragmentRef(context.fragments[i]));
+  renderComponent(componentType: RenderComponentType): Renderer {
+    var renderer = this._registeredComponents.get(componentType.id);
+    if (renderer == null) {
+      renderer = new ReactNativeRenderer(this, componentType);
+      this._registeredComponents.set(componentType.id, renderer);
     }
-    view = new ReactNativeViewRef(fragments, context.boundTextNodes, context.boundElementNodes, this._zone);
-    return new RenderViewWithFragments(view, view.fragments);
+    return renderer;
   }
 
-  destroyView(viewRef:RenderViewRef):any {
-    console.error('NOT IMPLEMENTED: destroyView', arguments);
-    return undefined;
+  executeCommands(): void {
+    this._registeredComponents.forEach((renderer: ReactNativeRenderer, key: string) => {
+      renderer.executeCommands();
+    })
+  }
+}
+
+@Injectable()
+export class ReactNativeRootRenderer_ extends ReactNativeRootRenderer {
+  constructor(@Inject(REACT_NATIVE_WRAPPER) _wrapper: ReactNativeWrapper, _zone: NgZone) {
+    super(_wrapper, _zone);
+  }
+}
+
+export class ReactNativeRenderer implements Renderer {
+  private _nativeCommands: Array<NativeCommand> = [];
+  private _propsEater: Map<Node, NativeCommandCreate | NativeCommandUpdate> = new Map<Node, NativeCommandCreate | NativeCommandUpdate>();
+
+  constructor(private _rootRenderer: ReactNativeRootRenderer, private componentProto: RenderComponentType) {
+    //Do nothing more as ViewEncapsulation.None is the only mode supported
   }
 
-  attachFragmentAfterFragment(previousFragmentRef:RenderFragmentRef, fragmentRef:RenderFragmentRef): void {
-    var previousNodes = (<ReactNativeRenderFragmentRef>previousFragmentRef).nodes;
-    if (previousNodes.length > 0) {
-      var sibling = previousNodes[previousNodes.length - 1];
-      var nodes = (<ReactNativeRenderFragmentRef>fragmentRef).nodes;
-      sibling.insertAfter(nodes);
+  renderComponent(componentType: RenderComponentType):Renderer {
+    return this._rootRenderer.renderComponent(componentType);
+  }
+
+  selectRootElement(selector: string): Node {
+    var root = this.createElement(null, selector.startsWith('#root') ? 'test-cmp' : selector);
+    this._createElementCommand(root);
+    this._nativeCommands.push(new NativeCommandAttach(root, true));
+    return root;
+  }
+
+  createElement(parentElement: Node, name: string): Node {
+    var node = new ElementNode(name, this._rootRenderer.wrapper, this._rootRenderer.zone);
+    node.attachTo(parentElement);
+    if (parentElement && parentElement.isCreated) {
+      this._createElementCommand(node);
+      this._nativeCommands.push(new NativeCommandAttach(node, false));
+    }
+    return node;
+  }
+
+  _createElementCommand(node: Node): void {
+    var cmd = new NativeCommandCreate(node);
+    node.isCreated = true;
+    this._nativeCommands.push(cmd);
+    this._propsEater.set(node, cmd);
+  }
+
+  createViewRoot(hostElement: Node): Node {
+    return hostElement;
+  }
+
+  createTemplateAnchor(parentElement: Node): Node {
+    var node = new AnchorNode(this._rootRenderer.wrapper, this._rootRenderer.zone);
+    node.attachTo(parentElement);
+    return node;
+  }
+
+  createText(parentElement: Node, value: string): Node {
+    var node: InertNode | TextNode;
+    if (!parentElement || (parentElement.tagName != "Text" && parentElement.tagName != "VirtualText")) {
+      node = new InertNode(this._rootRenderer.wrapper, this._rootRenderer.zone);
+    } else {
+      node = new TextNode(value, this._rootRenderer.wrapper, this._rootRenderer.zone);
+      if (parentElement && parentElement.isCreated) {
+        this._createTextCommand(<TextNode>node);
+        this._nativeCommands.push(new NativeCommandAttach(node, false));
+      }
+    }
+    node.attachTo(parentElement);
+    return node;
+  }
+
+  _createTextCommand(node: TextNode): void {
+    var cmd = new NativeCommandCreate(node);
+    node.isCreated = true;
+    cmd.props['text'] = node.properties['text'];
+    this._nativeCommands.push(cmd);
+    this._propsEater.set(node, cmd);
+  }
+
+  projectNodes(parentElement: Node, nodes: Node[]): void {
+    if (parentElement) {
+      for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        this._createNativeRecursively(node);
+        node.attachTo(parentElement);
+        this._nativeCommands.push(new NativeCommandAttach(node, false));
+      }
     }
   }
 
-  attachFragmentAfterElement(location:RenderElementRef, fragmentRef:RenderFragmentRef): void {
-    var sibling = (<ReactNativeViewRef>location.renderView).boundElementNodes[(<any>location).boundElementIndex];
-    var nodes = (<ReactNativeRenderFragmentRef>fragmentRef).nodes;
-    sibling.insertAfter(nodes);
-  }
-
-  detachFragment(fragmentRef:RenderFragmentRef): void {
-    var nodes = (<ReactNativeRenderFragmentRef>fragmentRef).nodes;
-    for (var i = 0; i < nodes.length; i++) {
-      nodes[i].detach();
+  attachViewAfter(node: Node, viewRootNodes: Node[]): void {
+    if (viewRootNodes.length > 0) {
+      var index = node.parent.children.indexOf(node);
+      var shift = 0;
+      for (var i = 0; i < viewRootNodes.length; i++) {
+        var viewRootNode = viewRootNodes[i];
+        viewRootNode.attachToAt(node.parent, index + i + 1);
+        if (!(viewRootNode instanceof InertNode)) {
+          this._createNativeRecursively(viewRootNode);
+          this._nativeCommands.push(new NativeCommandAttachAfter(viewRootNode, node, shift));
+          shift++;
+        }
+      }
     }
   }
 
-  hydrateView(viewRef:RenderViewRef): void {
-    (<ReactNativeViewRef>viewRef).hydrated = true;
+  _createNativeRecursively(node: Node) {
+    if (!node.isCreated && !(node instanceof InertNode)) {
+      node instanceof TextNode ? this._createTextCommand(node) : this._createElementCommand(node);
+      for (var i = 0; i < node.children.length; i++) {
+        var child = node.children[i];
+        this._createNativeRecursively(child);
+        this._nativeCommands.push(new NativeCommandAttach(child, false));
+      }
+    }
   }
 
-  dehydrateView(viewRef:RenderViewRef): void {
-    (<ReactNativeViewRef>viewRef).hydrated = false;
+  detachView(viewRootNodes: Node[]): void {
+    for (var i = 0; i < viewRootNodes.length; i++) {
+      var node = viewRootNodes[i];
+      this._nativeCommands.push(new NativeCommandDetach(node));
+    }
   }
 
-  getNativeElementSync(location:RenderElementRef):any {
-    return (<ReactNativeViewRef>location.renderView).boundElementNodes[(<any>location).boundElementIndex];
+  destroyView(hostElement:any, viewAllNodes:any[]):any {
+    //TODO: Nothing to do, detachView took care of it. Can it be improved to avoid destruction and creation?
   }
 
-  setElementProperty(location:RenderElementRef, propertyName:string, propertyValue:any): void {
-    var node = (<ReactNativeViewRef>location.renderView).boundElementNodes[(<any>location).boundElementIndex];
-    node.setProperty(propertyName, propertyValue);
+  listen(renderElement: Node, name: string, callback: Function): void {
+    renderElement.addEventListener(name, callback);
   }
 
-  setElementAttribute(location:RenderElementRef, attributeName:string, attributeValue:string): void {
-    var node = (<ReactNativeViewRef>location.renderView).boundElementNodes[(<any>location).boundElementIndex];
-    node.setProperty(attributeName, attributeValue);
+  listenGlobal(target: string, name: string, callback: Function): Function {
+    console.error('NOT IMPLEMENTED: listenGlobal', arguments);
+    return () => {};
   }
 
-  setBindingDebugInfo(location: RenderElementRef, propertyName: string,
-                      propertyValue: string): void {
-    // Do nothing
+  setElementProperty(renderElement: Node, propertyName: string, propertyValue: any): void {
+    renderElement.setProperty(propertyName, propertyValue);
+    if (renderElement.isCreated) {
+      var cmd = this._propsEater.get(renderElement);
+      if (cmd == null) {
+        cmd = new NativeCommandUpdate(renderElement, propertyName, propertyValue);
+        this._nativeCommands.push(cmd);
+        this._propsEater.set(renderElement, cmd);
+      }
+      cmd.props[propertyName] = propertyValue;
+    }
   }
 
-  setElementClass(location:RenderElementRef, className:string, isAdd:boolean): void {
+  setElementAttribute(renderElement: Node, attributeName: string, attributeValue: string): void {
+    var val: any = attributeValue;
+    if (attributeValue == "false") val = false;
+    if (attributeValue == "true") val = true;
+    if (!isNaN(parseInt(val))) val = parseInt(val);
+    this.setElementProperty(renderElement, attributeName, val);
+  }
+
+  setBindingDebugInfo(renderElement: Node, propertyName: string, propertyValue: string): void {
+    this.setElementProperty(renderElement, propertyName, propertyValue);
+  }
+
+  setElementClass(renderElement:any, className:string, isAdd:boolean):any {
     console.error('NOT IMPLEMENTED: setElementClass', arguments);
   }
 
-  setElementStyle(location:RenderElementRef, styleName:string, styleValue:string): void {
+  setElementStyle(renderElement:any, styleName:string, styleValue:string):any {
     console.error('NOT IMPLEMENTED: setElementStyle', arguments);
   }
 
-  invokeElementMethod(location:RenderElementRef, methodName:string, args:any[]): void {
-    console.error('NOT IMPLEMENTED: invokeElementMethod', arguments);
+  invokeElementMethod(renderElement: Node, methodName: string, args: any[]): void {
+    renderElement.dispatchCommand(methodName, args);
   }
 
-  setText(viewRef:RenderViewRef, textNodeIndex:number, text:string): void {
-    (<TextNode>(<ReactNativeViewRef>viewRef).boundTextNodes[textNodeIndex]).setText(text);
+  setText(renderNode: Node, text: string): void {
+    if (renderNode instanceof TextNode) {
+      var trimedText = renderNode.setText(text);
+      this.setElementProperty(renderNode, 'text', trimedText);
+    }
   }
 
-  setEventDispatcher(viewRef:RenderViewRef, dispatcher:RenderEventDispatcher): void {
-    (<ReactNativeViewRef>viewRef).eventDispatcher = dispatcher;
+  executeCommands(): void {
+    this._nativeCommands.forEach((command: NativeCommand) => {
+      command.execute(this._rootRenderer.wrapper);
+    });
+    this._nativeCommands = [];
+    this._propsEater.clear();
   }
-
 }

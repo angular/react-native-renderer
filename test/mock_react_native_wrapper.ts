@@ -84,15 +84,16 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
     this.commandLogs.push(new Command('COMMAND', tag, command + (params ? params.toString() : "")));
   }
 
+  computeStyle(styles: Object): Object {
+    return {flex: 1, collapse: true}
+  }
+
   patchReactUpdates(zone: any): void {
     //Not needed in Mock
   }
   patchReactNativeEventEmitter(nodeMap: Map<number, any>): void {
     //Not needed in Mock
   };
-  computeStyle(styles: Object) {
-    //Not needed in Mock
-  }
   processColor(color: string): number {
     return -1
   }

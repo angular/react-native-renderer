@@ -38,11 +38,11 @@ export class NativeFeedback implements OnInit, OnDestroy {
 
   constructor(el: ElementRef) {
     this._el = el.nativeElement;
-    this._start = (event) => {
+    this._start = (event: any) => {
       this._el.dispatchCommand('hotspotUpdate', [event.srcEvent.clientX || 0, event.srcEvent.clientY || 0]);
       this._el.dispatchCommand('setPressed', [true]);
     };
-    this._stop = (event) => {
+    this._stop = (event: any) => {
       this._el.dispatchCommand('hotspotUpdate', [event.srcEvent.clientX || 0, event.srcEvent.clientY || 0]);
       this._el.dispatchCommand('setPressed', [false]);
     };
