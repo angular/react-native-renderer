@@ -19,6 +19,7 @@ var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 const RCT_VIEW_NAMES: { [s: string]: string } = {
   "DrawerLayout": "AndroidDrawerLayout",
   "ImageView": "RCTImageView",
+  "PagerLayout": "AndroidViewPager",
   "ProgressBar": "AndroidProgressBar",
   "ScrollView": "RCTScrollView",
   "HorizontalScrollView" : "AndroidHorizontalScrollView",
@@ -28,6 +29,7 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   "VirtualText": "RCTVirtualText",
   "TextInput": "AndroidTextInput",
   "View": "RCTView",
+  "WebView": "RCTWebView"
 }
 
 export class ReactNativeWrapperImpl extends ReactNativeWrapper {
@@ -69,8 +71,12 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
       'openDrawer': UIManager.AndroidDrawerLayout.Commands.openDrawer,
       'closeDrawer': UIManager.AndroidDrawerLayout.Commands.closeDrawer,
       'hotspotUpdate': UIManager.RCTView.Commands.hotspotUpdate,
-      'setPressed': UIManager.RCTView.Commands.setPressed
-
+      'setPressed': UIManager.RCTView.Commands.setPressed,
+      'setPage': UIManager.AndroidViewPager.Commands.setPage,
+      'setPageWithoutAnimation': UIManager.AndroidViewPager.Commands.setPageWithoutAnimation,
+      'goForward': UIManager.RCTWebView.Commands.goForward,
+      'reload': UIManager.RCTWebView.Commands.reload,
+      'goBack': UIManager.RCTWebView.Commands.goBack
     };
     this.$log(`Dispatching command to ${tag}: ${command} with ${params}`);
     UIManager.dispatchViewManagerCommand(tag, commands[command], params);
@@ -133,12 +139,12 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
   }
   
   $log(...args: any[]) {
-    //console.log(...args);
+    console.log(...args);
   }
 }
 
 /*
- At run time: 
+ At run time:
 
  NativeModules.UIManager.RCTText.NativeProps =
  {"opacity":"number","renderToHardwareTextureAndroid":"boolean","numberOfLines":"number","borderBottomWidth":"number","scaleY":"number","position":"String","paddingTop":"number","borderWidth":"number","color":"number","marginLeft":"number","fontFamily":"String","marginHorizontal":"number","fontStyle":"String","paddingBottom":"number","paddingHorizontal":"number","scaleX":"number","onLayout":"boolean","flexWrap":"String","borderTopWidth":"number","borderRightWidth":"number","marginTop":"number","translateX":"number","rotation":"number","accessibilityLiveRegion":"String","alignItems":"String","accessibilityComponentType":"String","paddingVertical":"number","flex":"number","marginBottom":"number","bottom":"number","textAlign":"String","justifyContent":"String","fontWeight":"String","padding":"number","alignSelf":"String","backgroundColor":"number","right":"number","borderLeftWidth":"number","height":"number","left":"number","translateY":"number","paddingRight":"number","lineHeight":"number","flexDirection":"String","importantForAccessibility":"String","marginVertical":"number","fontSize":"number","accessibilityLabel":"String","width":"number","paddingLeft":"number","text":"String","top":"number","margin":"number","decomposedMatrix":"Map","marginRight":"number","testID":"String"}
@@ -147,11 +153,10 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
  ReactNativeViewAttributes.RCTView
 
  Android:
-   AndroidDrawerLayout: Object
-   AndroidViewPager: Object
-   ToolbarAndroid: Object
-
-  RCTWebView: Object
+   AndroidSwipeRefreshLayout
+   RCTTextInlineImage
+   ToolbarAndroid
+   RCTWebView
 
    AccessibilityEventTypes: Object
    Dimensions: Object
