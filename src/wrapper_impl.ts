@@ -18,7 +18,7 @@ var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 
 const RCT_VIEW_NAMES: { [s: string]: string } = {
   "DrawerLayout": "AndroidDrawerLayout",
-  "ImageView": "RCTImageView",
+  "Image": "RCTImageView",
   "PagerLayout": "AndroidViewPager",
   "ProgressBar": "AndroidProgressBar",
   "ScrollView": "RCTScrollView",
@@ -26,6 +26,7 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   "RawText": "RCTRawText",
   "Switch": "AndroidSwitch",
   "Text": "RCTText",
+  "InlineImage": "RCTTextInlineImage",
   "VirtualText": "RCTVirtualText",
   "TextInput": "AndroidTextInput",
   "View": "RCTView",
@@ -154,9 +155,7 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
 
  Android:
    AndroidSwipeRefreshLayout
-   RCTTextInlineImage
    ToolbarAndroid
-   RCTWebView
 
    AccessibilityEventTypes: Object
    Dimensions: Object

@@ -13,6 +13,7 @@ var PATHS = {
   sources: {
     src: 'src/**/*.ts',
     sample: 'sample/**/*.ts',
+    sampleAssets: 'sample/**/*.png',
     test: 'test/**/*.ts'
   },
   destination: 'dist/code',
@@ -41,7 +42,10 @@ gulp.task('init', ['!create'], function() {
   return gulp.src(PATHS.modules, { base: './node_modules/' }).pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules'));
 });
 
-gulp.task('!compile', function () {
+gulp.task('!assets', function () {
+  return gulp.src(PATHS.sources.sampleAssets).pipe(gulp.dest(PATHS.app + '/' + APP_NAME));
+});
+gulp.task('!compile', ['!assets'], function () {
   ts2js(PATHS.sources.sample, PATHS.app + '/' + APP_NAME);
   return ts2js(PATHS.sources.src, PATHS.app + '/' + APP_NAME);
 });
