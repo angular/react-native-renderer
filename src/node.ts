@@ -59,8 +59,13 @@ export abstract class Node {
     }
   }
 
-  setProperty(name: string, value: any) {
+  setProperty(name: string, value: any, updateNative: boolean = true) {
     this.properties[name] = value;
+    if (updateNative && this.nativeTag > -1) {
+      var prop = {};
+      prop[name] = value;
+      this.rnWrapper.updateView(this.nativeTag, this.tagName, prop);
+    }
   }
 
   addEventListener(eventName: string, handler: Function) {
@@ -136,7 +141,7 @@ export class TextNode extends Node {
 
   setText(text: string): string {
     var trimmedText = text ? text.trim() : '';
-    this.setProperty('text', trimmedText);
+    this.setProperty('text', trimmedText, false);
     return trimmedText;
   }
 }

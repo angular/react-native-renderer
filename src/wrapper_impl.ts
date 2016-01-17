@@ -25,6 +25,7 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   "HorizontalScrollView" : "AndroidHorizontalScrollView",
   "RawText": "RCTRawText",
   "Switch": "AndroidSwitch",
+  "SwipeRefreshLayout": "AndroidSwipeRefreshLayout",
   "Text": "RCTText",
   "InlineImage": "RCTTextInlineImage",
   "VirtualText": "RCTVirtualText",
@@ -91,17 +92,21 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
     ReactNativeEventEmitter.receiveEvent = (nativeTag: number, topLevelType: string, nativeEventParam: any) => {
       this.$log('receiveEvent', nativeTag, topLevelType, nativeEventParam);
       var element = nodeMap.get(nativeTag);
-      if (nativeEventParam.target) {
+      if (nativeEventParam && nativeEventParam.target) {
         nativeEventParam.target = nodeMap.get(nativeEventParam.target);
-        nativeEventParam.type = topLevelType;
         nativeEventParam.clientX = nativeEventParam.pageX;
         nativeEventParam.clientY = nativeEventParam.pageY;
-        nativeEventParam.preventDefault = () => {};
-        nativeEventParam._stop = true;
-        nativeEventParam.stopPropagation = () => {
-          nativeEventParam._stop = true;
-        };
       }
+      else {
+        nativeEventParam = {};
+        nativeEventParam.target = element;
+      }
+      nativeEventParam.type = topLevelType;
+      nativeEventParam.preventDefault = () => {};
+      nativeEventParam._stop = true;
+      nativeEventParam.stopPropagation = () => {
+        nativeEventParam._stop = true;
+      };
       if (element) {
         element.fireEvent(topLevelType, nativeEventParam);
       }

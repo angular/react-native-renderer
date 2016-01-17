@@ -6,19 +6,21 @@ var resolveAssetSource = require('resolveAssetSource');
   selector: 'hello-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   template: `
-<View [style]="styles.container">
-  <Text [style]="styles.welcome">
-    Welcome to ngReactNative!
-  </Text>
-  <Text [style]="styles.instructions">
-    To get started, use the drawer menu on the left
-  </Text>
-  <Text [style]="styles.instructions">
-    Shake or press menu button for dev menu
-  </Text>
-</View>
-<Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="angularLogo.uri" position ="absolute" top="0" left="0"></Image>
-<Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="reactLogo.uri" position ="absolute" top="0" right="0"></Image>
+<SwipeRefreshLayout position ="absolute" top="0" left="0" bottom="0" right="0" (topRefresh)="handleRefresh($event)">
+  <View [style]="styles.container">
+    <Text [style]="styles.welcome">
+      Welcome to ngReactNative!
+    </Text>
+    <Text [style]="styles.instructions">
+      To get started, use the drawer menu on the left
+    </Text>
+    <Text [style]="styles.instructions">
+      Shake or press menu button for dev menu
+    </Text>
+  </View>
+  <Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="angularLogo.uri" position ="absolute" top="0" left="0"></Image>
+  <Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="reactLogo.uri" position ="absolute" top="0" right="0"></Image>
+</SwipeRefreshLayout>
 `
 })
 export class HelloApp {
@@ -48,6 +50,9 @@ export class HelloApp {
         marginBottom: 5,
       }
     });
+  }
+  handleRefresh(evt) {
+    evt.target.setProperty('refreshing', false)
   }
 }
 

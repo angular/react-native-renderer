@@ -173,7 +173,7 @@ export class ReactNativeRenderer implements Renderer {
   }
 
   setElementProperty(renderElement: Node, propertyName: string, propertyValue: any): void {
-    renderElement.setProperty(propertyName, propertyValue);
+    renderElement.setProperty(propertyName, propertyValue, false);
     if (renderElement.isCreated) {
       var cmd = this._propsEater.get(renderElement);
       if (cmd == null) {
