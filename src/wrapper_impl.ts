@@ -30,6 +30,7 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   "InlineImage": "RCTTextInlineImage",
   "VirtualText": "RCTVirtualText",
   "TextInput": "AndroidTextInput",
+  "Toolbar": "ToolbarAndroid",
   "View": "RCTView",
   "WebView": "RCTWebView"
 }
@@ -98,7 +99,7 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
         nativeEventParam.clientY = nativeEventParam.pageY;
       }
       else {
-        nativeEventParam = {};
+        if (!nativeEventParam) nativeEventParam = {};
         nativeEventParam.target = element;
       }
       nativeEventParam.type = topLevelType;
@@ -159,9 +160,6 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
  ReactNativeViewAttributes.RCTView
 
  Android:
-   AndroidSwipeRefreshLayout
-   ToolbarAndroid
-
    AccessibilityEventTypes: Object
    Dimensions: Object
    PopupMenu: Object

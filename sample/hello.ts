@@ -18,8 +18,8 @@ var resolveAssetSource = require('resolveAssetSource');
       Shake or press menu button for dev menu
     </Text>
   </View>
-  <Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="angularLogo.uri" position ="absolute" top="0" left="0"></Image>
-  <Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="reactLogo.uri" position ="absolute" top="0" right="0"></Image>
+  <Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="angularLogo.uri" position ="absolute" bottom="0" left="0"></Image>
+  <Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="reactLogo.uri" position ="absolute" bottom="0" right="0"></Image>
 </SwipeRefreshLayout>
 `
 })

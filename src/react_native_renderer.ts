@@ -189,7 +189,9 @@ export class ReactNativeRenderer implements Renderer {
     var val: any = attributeValue;
     if (attributeValue == "false") val = false;
     if (attributeValue == "true") val = true;
+    if (attributeValue == "null") val = null;
     if (!isNaN(parseInt(val))) val = parseInt(val);
+    if (attributeValue.startsWith('#')) val = this._rootRenderer.wrapper.processColor(attributeValue);
     this.setElementProperty(renderElement, attributeName, val);
   }
 
