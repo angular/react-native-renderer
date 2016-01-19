@@ -15,12 +15,11 @@ import {StyleSheet} from 'react-native';
     <Text [style]="styles.buttonText">Forward</Text>
   </View>
 </View>
-<WebView flex="11" url="https://www.google.com" javaScriptEnabledAndroid="true" domStorageEnabled="true" automaticallyAdjustContentInsets="false">
+<WebView flex="11" url="https://www.google.com" javaScriptEnabled="true" domStorageEnabled="true" automaticallyAdjustContentInsets="false">
 </WebView>
 `
 })
 export class WebViewApp {
-  url: string = "https://www.angular.io";
   styles: any;
   _el : any = null;
   constructor(el: ElementRef) {

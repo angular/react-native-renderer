@@ -19,8 +19,6 @@ To launch the sample:
 * `gulp start` to launch it on the connected device or emulator, and watch sources for auto update (if enabled in F2/shake dev menu)
 (the `Reload JS` button may have to be hit sometimes)
 
-Tip: if your computer is too slow to start the file watcher, increase the timer in `.\dist\app\ngReactNative\node_modules\react-native\packager\react-packager\src\FileWatcher\index.js`
-
 To run tests in node:
 * Launch `gulp test.node`
 

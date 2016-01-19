@@ -33,7 +33,7 @@
   "dependencies": {
     "angular2": "2.0.0-beta.1",
     "hammerjs": "2.0.6",
-    "react-native": "0.17.0",
+    "react-native": "0.18.0",
     "reflect-metadata": "0.1.2",
     "zone.js": "0.5.10",
     "es6-shim": "^0.33.13",
