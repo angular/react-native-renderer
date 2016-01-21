@@ -1,7 +1,7 @@
 import {Component, Input, Output, EventEmitter} from 'angular2/core';
 import {NgIf, NgFor} from 'angular2/common';
 import {HighLight} from './common';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, AsyncStorage} from 'react-native';
 
 class Palette {
   static background: string = '#005eb8';
@@ -239,6 +239,21 @@ export class TodoMVC {
       if (b) this.leftCount++;
     }
     this.todos = this.filteredTodos = res;
+  }
+
+  save() {
+    AsyncStorage.setItem('todos:key', JSON.stringify({todos: this.todos, left: this.leftCount, filter: this.filter}));
+  }
+
+  load() {
+    this.empty();
+    AsyncStorage.getItem('todos:key').then((jsonString) => {
+      var json = JSON.parse(jsonString);
+      this.todos = json.todos;
+      this.leftCount = json.left;
+      this.filter = json.filter;
+      this.filterTodos();
+    });
   }
 
   _getStyles() {

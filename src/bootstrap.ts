@@ -1,15 +1,28 @@
-import 'reflect-metadata';
+//React Native wrapper
 import {ReactNativeWrapper} from "./wrapper";
 import {ReactNativeWrapperImpl} from './wrapper_impl';
-//Needed for Android or iOS, but to be imported after zone.js
+
+//Dependencies
+import 'reflect-metadata';
+  // Zone.js
+import {Zone} from 'zone.js/lib/core';
+global.zone = new Zone();
+import {patchSetClearFunction} from 'zone.js/lib/patch/functions';
+import {apply} from 'zone.js/lib/patch/promise';
+patchSetClearFunction(global, ['timeout', 'interval', 'immediate']);
+
+//Needed for Android or iOS, but to be imported after zone.js, and
+var originalIsExtensible = Object.isExtensible;
 import 'es6-shim';
+Object.isExtensible = originalIsExtensible;
+//Patch promises after es6-shim overrides them
+apply();
 
 // Finally, define the bootstrap
 import {RootRenderer, Renderer, provide, NgZone, Provider, enableProdMode} from 'angular2/core';
 import {bootstrap} from 'angular2/bootstrap';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from './react_native_renderer';
-
 
 export function bootstrapReactNative(appName:string, cpt: any) {
   ReactNativeWrapperImpl.registerApp(appName, function() {

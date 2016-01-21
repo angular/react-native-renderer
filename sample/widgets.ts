@@ -2,7 +2,7 @@ import {Component, ElementRef} from 'angular2/core';
 import {StyleSheet} from 'react-native';
 
 @Component({
-  selector: 'cpt-list',
+  selector: 'widgets-list',
   host: {flex: '1'},
   template: `
 <PagerLayout flex="1" justifyContent="center" alignItems="center" selectedPage="0">
@@ -46,7 +46,7 @@ import {StyleSheet} from 'react-native';
 </PagerLayout>
 `
 })
-export class ComponentsList {
+export class WidgetsList {
   styles: any;
   typed: string = "";
   switched: boolean = false;

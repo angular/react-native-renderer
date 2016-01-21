@@ -1,9 +1,3 @@
-// Zone.js
-import {Zone} from 'zone.js/lib/core';
-global.zone = new Zone();
-import {patchSetClearFunction} from 'zone.js/lib/patch/functions';
-patchSetClearFunction(global, ['timeout', 'interval', 'immediate']);
-
 //ReactNative
 import {ReactNativeWrapper} from "./wrapper";
 var ReactNative = require('react-native');
@@ -17,6 +11,9 @@ var ReactNativeAttributePayload = require('ReactNativeAttributePayload');
 var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 
 const RCT_VIEW_NAMES: { [s: string]: string } = {
+  //Not yet in 0.18.0
+  //"DropdownPicker": "AndroidDropdownPicker",
+  //"DialogPicker": "AndroidDialogPicker",
   "DrawerLayout": "AndroidDrawerLayout",
   "Image": "RCTImageView",
   "PagerLayout": "AndroidViewPager",
@@ -146,24 +143,6 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
   }
   
   $log(...args: any[]) {
-    console.log(...args);
+    //console.log(...args);
   }
 }
-
-/*
- At run time:
-
- NativeModules.UIManager.RCTText.NativeProps =
- {"opacity":"number","renderToHardwareTextureAndroid":"boolean","numberOfLines":"number","borderBottomWidth":"number","scaleY":"number","position":"String","paddingTop":"number","borderWidth":"number","color":"number","marginLeft":"number","fontFamily":"String","marginHorizontal":"number","fontStyle":"String","paddingBottom":"number","paddingHorizontal":"number","scaleX":"number","onLayout":"boolean","flexWrap":"String","borderTopWidth":"number","borderRightWidth":"number","marginTop":"number","translateX":"number","rotation":"number","accessibilityLiveRegion":"String","alignItems":"String","accessibilityComponentType":"String","paddingVertical":"number","flex":"number","marginBottom":"number","bottom":"number","textAlign":"String","justifyContent":"String","fontWeight":"String","padding":"number","alignSelf":"String","backgroundColor":"number","right":"number","borderLeftWidth":"number","height":"number","left":"number","translateY":"number","paddingRight":"number","lineHeight":"number","flexDirection":"String","importantForAccessibility":"String","marginVertical":"number","fontSize":"number","accessibilityLabel":"String","width":"number","paddingLeft":"number","text":"String","top":"number","margin":"number","decomposedMatrix":"Map","marginRight":"number","testID":"String"}
-
- Style:
- ReactNativeViewAttributes.RCTView
-
- Android:
-   AccessibilityEventTypes: Object
-   Dimensions: Object
-   PopupMenu: Object
-   StyleConstants: Object
-   UIText: Object
-   UIView: Object
- */

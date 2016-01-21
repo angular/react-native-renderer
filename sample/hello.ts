@@ -51,7 +51,7 @@ export class HelloApp {
       }
     });
   }
-  handleRefresh(evt) {
+  handleRefresh(evt: any) {
     evt.target.setProperty('refreshing', false)
   }
 }

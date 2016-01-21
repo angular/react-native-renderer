@@ -38,9 +38,16 @@ gulp.task('clean', function (done) {
 gulp.task('!create', ['clean'], function(done) {
   executeInAppDir('react-native init ' + APP_NAME, done, true);
 });
-gulp.task('init', ['!create'], function() {
+gulp.task('!postcreate', function() {
+  return gulp.src(PATHS.app + '/' + APP_NAME + '/android/app/src/main/AndroidManifest.xml')
+    .pipe(transformAndroidManifest())
+    .pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/android/app/src/main/'));
+
+});
+gulp.task('init', ['!postcreate'], function() {
   return gulp.src(PATHS.modules, { base: './node_modules/' }).pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules'));
 });
+
 
 gulp.task('!assets', function () {
   return gulp.src(PATHS.sources.sampleAssets).pipe(gulp.dest(PATHS.app + '/' + APP_NAME));
@@ -201,6 +208,19 @@ function transformCommonJSTests() {
   return through2.obj(function (file, encoding, done) {
     var content = `var parse5Adapter = require('angular2/src/platform/server/parse5_adapter');\r\n` +
       `parse5Adapter.Parse5DomAdapter.makeCurrent();\r\n` + String(file.contents);
+    file.contents = new Buffer(content);
+    this.push(file);
+    done();
+  });
+}
+
+function transformAndroidManifest() {
+  return through2.obj(function (file, encoding, done) {
+    var content = String(file.contents);
+    content = content.replace('<uses-permission android:name="android.permission.INTERNET" />',
+    `<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />`);
     file.contents = new Buffer(content);
     this.push(file);
     done();
