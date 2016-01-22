@@ -1,5 +1,6 @@
 import {Component, ElementRef, ViewChild} from 'angular2/core';
-import {NgSwitch, NgSwitchWhen} from 'angular2/common';
+import {NgFor} from 'angular2/common';
+import {Router, RouteConfig, ROUTER_DIRECTIVES, LocationStrategy} from 'angular2/router';
 import {StyleSheet, BackAndroid, Alert} from 'react-native';
 var resolveAssetSource = require('resolveAssetSource');
 
@@ -15,57 +16,43 @@ import {NativeFeedback} from "./common";
 @Component({
   selector: 'kitchensink-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NgSwitch, NgSwitchWhen, NativeFeedback, HelloApp, TodoMVC, GesturesApp, WidgetsList, WebViewApp, APIsList, HttpApp],
+  directives: [NgFor, NativeFeedback, ROUTER_DIRECTIVES],
   template: `
 <DrawerLayout drawerWidth="300" drawerPosition="8388611" flex="1">
   <View position="absolute" top="0" left="0" right="0" bottom="0" collapsable="false">
     <Toolbar [style]="styles.toolbar" [navIcon]="hamburgerIcon" [overflowIcon]="moreIcon" title="Kitchen Sink" titleColor="#FFFFFF" subtitle="null" (topSelect)="handleToolbar($event)"></Toolbar>
-    <View [ngSwitch]="state" position="absolute" top="50" left="0" right="0" bottom="0" collapsable="false">
-      <hello-app *ngSwitchWhen="0"></hello-app>
-      <todo-mvc *ngSwitchWhen="1"></todo-mvc>
-      <gestures-app *ngSwitchWhen="2"></gestures-app>
-      <widgets-list *ngSwitchWhen="3"></widgets-list>
-      <webview-app *ngSwitchWhen="4"></webview-app>
-      <apis-list *ngSwitchWhen="5"></apis-list>
-      <http-app *ngSwitchWhen="6"></http-app>
+    <View position="absolute" top="50" left="0" right="0" bottom="0" collapsable="false">
+      <router-outlet></router-outlet>
     </View>
   </View>
   <View position="absolute" top="0" bottom="0" width="300" collapsable="false">
     <View flex="1" [style]="styles.drawer">
-      <View [style]="styles.menuItem" (tap)="switchContent(0)" nativeFeedback="#00a9e0">
-        <Text [style]="styles.menuText">Hello world</Text>
-      </View>
-      <View [style]="styles.menuItem" (tap)="switchContent(1)" nativeFeedback="#00a9e0">
-        <Text [style]="styles.menuText">TodoMVC</Text>
-      </View>
-      <View [style]="styles.menuItem" (tap)="switchContent(2)" nativeFeedback="#00a9e0">
-        <Text [style]="styles.menuText">Gestures</Text>
-      </View>
-      <View [style]="styles.menuItem" (tap)="switchContent(3)" nativeFeedback="#00a9e0">
-        <Text [style]="styles.menuText">Widgets</Text>
-      </View>
-      <View [style]="styles.menuItem" (tap)="switchContent(4)" nativeFeedback="#00a9e0">
-        <Text [style]="styles.menuText">WebView</Text>
-      </View>
-      <View [style]="styles.menuItem" (tap)="switchContent(5)" nativeFeedback="#00a9e0">
-        <Text [style]="styles.menuText">APIs</Text>
-      </View>
-      <View [style]="styles.menuItem" (tap)="switchContent(6)" nativeFeedback="#00a9e0">
-        <Text [style]="styles.menuText">Http</Text>
+      <View *ngFor="#item of menuItems" [style]="styles.menuItem" (tap)="navigate(item.path)" nativeFeedback="#00a9e0">
+        <Text [style]="styles.menuText">{{item.name}}</Text>
       </View>
     </View>
   </View>
 </DrawerLayout>
 `
 })
+@RouteConfig([
+  { path: '/', component: HelloApp, as: 'HelloApp' },
+  { path: '/todomvc', component: TodoMVC, as: 'TodoMVC' },
+  { path: '/gestures', component: GesturesApp, as: 'GesturesApp' },
+  { path: '/widgets', component: WidgetsList, as: 'WidgetsList' },
+  { path: '/webview', component: WebViewApp, as: 'WebViewApp' },
+  { path: '/apis', component: APIsList, as: 'APIsList' },
+  { path: '/http', component: HttpApp, as: 'HttpApp' }
+])
 export class KitchenSinkApp {
   @ViewChild(TodoMVC) viewChild:TodoMVC;
   hamburgerIcon: any = resolveAssetSource(require('./icon_hamburger.png'));
   moreIcon: any = resolveAssetSource(require('./icon_more.png'));
-  state: number = 0;
+  menuItems: Array = [{name: 'Hello world', path: '/'}, {name: 'TodoMVC', path: '/todomvc'}, {name: 'Gestures', path: '/gestures'}, {name: 'Widgets', path: '/widgets'},
+    {name: 'WebView', path: '/webview'}, {name: 'APIs', path: '/apis'}, {name: 'Http', path: '/http'}]
   styles: any;
   _el : any = null;
-  constructor(el: ElementRef) {
+  constructor(el: ElementRef, private router: Router, private locationStrategy: LocationStrategy) {
     BackAndroid.addEventListener('hardwareBackPress', function() {
       Alert.alert(
         'Close App',
@@ -102,14 +89,15 @@ export class KitchenSinkApp {
     });
   }
 
-  switchContent(index: number = 0) {
+  navigate(url: string) {
     this._el.children[1].dispatchCommand('closeDrawer');
-    if (this.state != 1 && index == 1) {
+    var currentPath = this.locationStrategy.path();
+    if (currentPath != '/todomvc' && url == '/todomvc') {
       this._addMoreInToolbar();
-    } else if (this.state == 1 && index != 1) {
+    } else if (currentPath == '/todomvc' && url != '/todomvc') {
       this._removeMoreInToolbar();
     }
-    this.state = index;
+    this.router.navigateByUrl(url);
   }
 
   handleToolbar(event: any) {
