@@ -11,6 +11,7 @@ import {WidgetsList} from "./widgets";
 import {WebViewApp} from './webview';
 import {APIsList} from "./apis";
 import {HttpApp} from "./http";
+import {AnimationApp} from './animation';
 import {NativeFeedback} from "./common";
 
 @Component({
@@ -42,14 +43,15 @@ import {NativeFeedback} from "./common";
   { path: '/widgets', component: WidgetsList, as: 'WidgetsList' },
   { path: '/webview', component: WebViewApp, as: 'WebViewApp' },
   { path: '/apis', component: APIsList, as: 'APIsList' },
-  { path: '/http', component: HttpApp, as: 'HttpApp' }
+  { path: '/http', component: HttpApp, as: 'HttpApp' },
+  { path: '/animation', component: AnimationApp, as: 'AnimationApp'}
 ])
 export class KitchenSinkApp {
   @ViewChild(TodoMVC) viewChild:TodoMVC;
   hamburgerIcon: any = resolveAssetSource(require('./icon_hamburger.png'));
   moreIcon: any = resolveAssetSource(require('./icon_more.png'));
   menuItems: Array = [{name: 'Hello world', path: '/'}, {name: 'TodoMVC', path: '/todomvc'}, {name: 'Gestures', path: '/gestures'}, {name: 'Widgets', path: '/widgets'},
-    {name: 'WebView', path: '/webview'}, {name: 'APIs', path: '/apis'}, {name: 'Http', path: '/http'}]
+    {name: 'WebView', path: '/webview'}, {name: 'APIs', path: '/apis'}, {name: 'Http', path: '/http'}, {name: 'Animation', path: '/animation'}]
   styles: any;
   _el : any = null;
   constructor(el: ElementRef, private router: Router, private locationStrategy: LocationStrategy) {

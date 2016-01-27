@@ -68,6 +68,13 @@ export abstract class Node {
     }
   }
 
+  setProperties(properties:  {[s: string]: any }) {
+    for (var propName in properties) {
+      this.properties[propName] = properties[propName];
+    }
+    this.rnWrapper.updateView(this.nativeTag, this.tagName, properties);
+  }
+
   addEventListener(eventName: string, handler: Function) {
     if (!Hammer.supports(eventName)) {
       if (!this.eventListeners.has(eventName)) {
