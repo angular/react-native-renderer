@@ -1,4 +1,6 @@
 var gulp = require('gulp');
+var filter = require('gulp-filter');
+var strip = require('gulp-strip-comments');
 var typescript = require('gulp-typescript');
 var watch = require('gulp-watch');
 var exec = require('child_process').exec;
@@ -45,7 +47,12 @@ gulp.task('!postcreate', ['!create'], function() {
 
 });
 gulp.task('init', ['!postcreate'], function() {
-  return gulp.src(PATHS.modules, { base: './node_modules/' }).pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules'));
+  var filterJS = filter('angular2/**/*.js', {restore: true});
+  return gulp.src(PATHS.modules, { base: './node_modules/' })
+  .pipe(filterJS)
+  .pipe(strip())
+  .pipe(filterJS.restore)
+  .pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules'));
 });
 
 
@@ -56,18 +63,23 @@ gulp.task('!compile', ['!assets'], function () {
   ts2js(PATHS.sources.sample, PATHS.app + '/' + APP_NAME);
   return ts2js(PATHS.sources.src, PATHS.app + '/' + APP_NAME);
 });
-gulp.task('!launch', ['!compile'], function(done) {
+gulp.task('!launch.android', ['!compile'], function(done) {
   executeInAppDir('react-native run-android', done);
 });
-gulp.task('!start', ['!launch'], function(neverDone) {
+gulp.task('!launch.ios', ['!compile'], function(done) {
+  executeInAppDir('react-native run-ios', done);
+});
+gulp.task('!start.android', ['!launch.android'], function(neverDone) {
   executeInAppDir('react-native start');
 });
-gulp.task('!watch', function(neverDone) {
+gulp.task('watch', function(neverDone) {
   watch([PATHS.sources.src, PATHS.sources.sample], function() {
     runSequence('!compile');
   });
 });
-gulp.task('start', ['!start', '!watch'], function (neverDone) {
+gulp.task('start.android', ['!start.android', 'watch'], function (neverDone) {
+});
+gulp.task('start.ios', ['!launch.ios', 'watch'], function (neverDone) {
 });
 
 function executeInAppDir(command, done, inParentFolder) {

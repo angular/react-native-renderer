@@ -7,20 +7,26 @@ Based on https://github.com/angular/react-native-renderer
 ## Development
 
 ### Preparing your environment
-* Set up React Native for Android following [Getting started](https://facebook.github.io/react-native/docs/getting-started.html) and [Android setup](https://facebook.github.io/react-native/docs/android-setup.htmlt)
+* Set up React Native for iOS and/or Android following [Getting started](https://facebook.github.io/react-native/docs/getting-started.html) and [Android setup](https://facebook.github.io/react-native/docs/android-setup.htmlt)
 * Clone this repository or a fork of it
 * Install Gulp and React Native CLI globally: `npm install -g gulp react-native-cli`
 * Install local npm modules: `npm install`
 
 ### Running scripts
 
-To launch the sample:
-* `gulp init` to create the react-native project
-* `gulp start` to launch it on the connected device or emulator, and watch sources for auto update (if enabled in F2/shake dev menu)
-(the `Reload JS` button may have to be hit sometimes)
+Creating the sample project:
+* `gulp init` to create the react-native project  
+*On Mac, run the command twice*
+*For iOS only, open `.dist/app/ngReactNative/node_modules/reflect-metadata/Reflect.js` and delete `&& require("crypto")` in it.
 
-To run tests in node:
-* Launch `gulp test.node`
+Android:
+* `gulp start.android` to launch the sample on the connected device or emulator, and watch sources for auto update (if enabled in F2/shake dev menu)  
+*use the `Reload JS` button after the initial red screen*
 
-To run tests in Chrome:
-* Launch `gulp test.browser`
+iOS:
+* `gulp start.ios` to launch the sample on an emulator, and watch sources for auto update
+* OR, `gulp watch` and  open `.dist/app/ngReactNative/ios/ngReactNative.xcodeproj` in Xcode and hit `Run`
+
+Tests:
+* `gulp test.node` to run tests in Node
+* `gulp test.browser` to run tests in Chrome

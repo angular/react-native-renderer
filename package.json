@@ -20,6 +20,8 @@
     "del": "^1.2.0",
     "glob": "^4.0.6",
     "gulp": "^3.9.0",
+    "gulp-filter": "^3.0.1",
+    "gulp-strip-comments": "^2.2.1",
     "gulp-typescript": "^2.8.0",
     "gulp-watch": "~4.3.5",
     "jasmine": "2.4.1",
