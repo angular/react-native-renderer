@@ -38,7 +38,7 @@ gulp.task('clean', function (done) {
 gulp.task('!create', ['clean'], function(done) {
   executeInAppDir('react-native init ' + APP_NAME, done, true);
 });
-gulp.task('!postcreate', function() {
+gulp.task('!postcreate', ['!create'], function() {
   return gulp.src(PATHS.app + '/' + APP_NAME + '/android/app/src/main/AndroidManifest.xml')
     .pipe(transformAndroidManifest())
     .pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/android/app/src/main/'));

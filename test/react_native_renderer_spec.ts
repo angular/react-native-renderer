@@ -129,7 +129,7 @@ describe('ReactNativeRenderer', () => {
     });
   }));
 
-  it('should support binding to attributes (same as interpolated properties)', inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  xit('should support binding to attributes (same as interpolated properties)', inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<Text [attr.foo]="s">foo</Text>`)
       .createAsync(TestComponent).then((fixture) => {

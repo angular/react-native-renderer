@@ -163,8 +163,9 @@ export class ReactNativeRenderer implements Renderer {
     //TODO: Nothing to do, detachView took care of it. Can it be improved to avoid destruction and creation?
   }
 
-  listen(renderElement: Node, name: string, callback: Function): void {
+  listen(renderElement: Node, name: string, callback: Function): Function {
     renderElement.addEventListener(name, callback);
+    return () => {renderElement.removeEventListener(name, callback);};
   }
 
   listenGlobal(target: string, name: string, callback: Function): Function {
