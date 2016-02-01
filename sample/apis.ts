@@ -1,5 +1,5 @@
 import {Component, ElementRef, NgZone} from 'angular2/core';
-import {StyleSheet, Alert, IntentAndroid, ToastAndroid, Clipboard, Platform, PixelRatio, NetInfo} from 'react-native';
+import {StyleSheet, Alert, IntentAndroid, ToastAndroid, Clipboard, Platform, PixelRatio, NetInfo, AppState} from 'react-native';
 import {NativeFeedback} from './common';
 
 @Component({
@@ -34,6 +34,8 @@ import {NativeFeedback} from './common';
     <Text>{{location}}</Text>
     <Text [style]="styles.subtitle">NetInfo</Text>
     <Text>{{connectionType}} connection is {{isConnected ? 'on' : 'off'}} and {{isConnectionExpensive ? 'expensive' : 'not expensive'}}</Text>
+    <Text [style]="styles.subtitle">AppState</Text>
+    <Text>Current state is {{appState}}</Text>
   </View>
 </PagerLayout>
 `
@@ -47,6 +49,7 @@ export class APIsList {
   connectionType: string = 'Unknown';
   isConnectionExpensive: boolean = false;
   isConnected: boolean = false;
+  appState: string = AppState.currentState;
   constructor(private zone: NgZone) {
     this.styles = this._getStyles();
     this.platform = `OS: ${Platform.OS}, version: ${Platform.Version}`;

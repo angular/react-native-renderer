@@ -33,6 +33,9 @@ import {StyleSheet} from 'react-native';
     <TextInput placeholder="Type in" (topTouchEnd)="$event.target.dispatchCommand('focusTextInput')" (topSubmitEditing)="typed=$event.text; $event.target.dispatchCommand('blurTextInput')"></TextInput>
     <Text margin="10">Switch ({{switched}})</Text>
     <Switch height="27" width="50" (topChange)="switched=$event.value; $event.target.setProperty('on', $event.value)"></Switch>
+    <Text margin="10">Pickers ({{selected}})</Text>
+    <DropdownPicker [selected]="selected" prompt="Please select an item" [items]="items" height="30" width="80" (topSelect)="selected=$event.position"></DropdownPicker>
+    <DialogPicker [selected]="selected" prompt="Please select an item" [items]="items" height="30" width="80" (topSelect)="selected=$event.position"></DialogPicker>
     <Text margin="10">Virtual text</Text>
     <Text color="#ce0058">NormalText<VirtualText fontSize="20" color="#00a9e0">VirtualText</VirtualText></Text>
   </View>
@@ -50,6 +53,8 @@ export class WidgetsList {
   styles: any;
   typed: string = "";
   switched: boolean = false;
+  selected: number = 0;
+  items: Array<any> = [{label: 'aaa', value: 'a'}, {label: 'bbb', value: 'b'}, {label: 'ccc', value: 'c'}, {label: 'ddd', value: 'd'}, {label: 'eee', value: 'e'}];
   constructor() {
     this.styles = StyleSheet.create({
       odd: {
