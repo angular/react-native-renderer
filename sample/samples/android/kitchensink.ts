@@ -48,9 +48,9 @@ import {NativeFeedback} from "./common";
 ])
 export class KitchenSinkApp {
   @ViewChild(TodoMVC) viewChild:TodoMVC;
-  hamburgerIcon: any = resolveAssetSource(require('./icon_hamburger.png'));
-  moreIcon: any = resolveAssetSource(require('./icon_more.png'));
-  menuItems: Array = [{name: 'Hello world', path: '/'}, {name: 'Widgets', path: '/widgets'}, {name: 'WebView', path: '/webview'}, {name: 'APIs', path: '/apis'},
+  hamburgerIcon: any = resolveAssetSource(require('../../assets/icon_hamburger.png'));
+  moreIcon: any = resolveAssetSource(require('../../assets/icon_more.png'));
+  menuItems: Array<any> = [{name: 'Hello world', path: '/'}, {name: 'Widgets', path: '/widgets'}, {name: 'WebView', path: '/webview'}, {name: 'APIs', path: '/apis'},
     {name: 'TodoMVC', path: '/todomvc'}, {name: 'Gestures', path: '/gestures'}, {name: 'Http', path: '/http'}, {name: 'Animation', path: '/animation'}]
   styles: any;
   _el : any = null;

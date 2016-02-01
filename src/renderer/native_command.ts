@@ -1,5 +1,5 @@
 import {Node, nodeMap} from './node';
-import {ReactNativeWrapper} from './wrapper';
+import {ReactNativeWrapper} from './../wrapper/wrapper';
 
 export abstract class NativeCommand {
   constructor(public target: Node) {}

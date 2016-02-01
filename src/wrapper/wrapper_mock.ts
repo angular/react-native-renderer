@@ -1,19 +1,20 @@
-import {ReactNativeWrapper} from "../src/wrapper";
+import {ReactNativeWrapper} from "./wrapper";
 
 export class MockReactNativeWrapper extends ReactNativeWrapper {
   commandLogs: Array<Command>;
   root: NativeElement;
   nativeElementMap: Map<number, NativeElement>;
-  private _lastTagUsed;
+  private _lastTagUsed: number;
 
   constructor() {
+    super();
     this.reset();
   }
 
   reset() {
     this.commandLogs = [];
     this.root = new NativeElement('root', 1, {});
-    this.nativeElementMap = new Map();
+    this.nativeElementMap = new Map<number, NativeElement>();
     this._lastTagUsed = 1;
     this.nativeElementMap.set(1, this.root);
   }
@@ -44,8 +45,8 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
   manageChildren(parentTag: number, moveFrom: Array<number>, moveTo: Array<number>, addTags: Array<number>, addAt: Array<number>, removeFrom: Array<number>) {
     var parentElement = this.nativeElementMap.get(parentTag);
     var toBeDeleted = removeFrom || [];
-    var toBeAdded = [];
-    var toBeMoved = [];
+    var toBeAdded: Array<any> = [];
+    var toBeMoved: Array<any> = [];
     if (moveFrom && moveTo && moveFrom.length == moveTo.length) {
       toBeDeleted = toBeDeleted.concat(moveFrom).sort();
       for (var i = 0; i < moveFrom.length; i++) {
@@ -67,7 +68,7 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
       if (toBeMoved.indexOf(tag) == -1) {
         this.nativeElementMap.delete(tag);
       }
-      this.commandLogs.push(new Command('DETACH', parentTag, index));
+      this.commandLogs.push(new Command('DETACH', parentTag, '' + index));
     }
     //Attach
     toBeAdded.sort((a, b) => { return a.index - b.index});
@@ -104,7 +105,7 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
 }
 
 class Command {
-  constructor(public name: string, public target: number, public details:string) {  }
+  constructor(public name: string, public target: number, public details: string) {  }
   toString(): string {
     return `${this.name}+${this.target}+${this.details}`;
   }

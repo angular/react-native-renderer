@@ -247,7 +247,7 @@ export class TodoMVC {
 
   load() {
     this.empty();
-    AsyncStorage.getItem('todos:key').then((jsonString) => {
+    AsyncStorage.getItem('todos:key').then((jsonString: string) => {
       var json = JSON.parse(jsonString);
       this.todos = json.todos;
       this.leftCount = json.left;

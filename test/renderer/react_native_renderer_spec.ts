@@ -8,8 +8,8 @@ import {
 import {Component, RootRenderer, provide, Injector} from 'angular2/core';
 import {NgIf, NgFor} from 'angular2/common';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
-import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../src/react_native_renderer';
-import {MockReactNativeWrapper} from "./mock_react_native_wrapper";
+import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/react_native_renderer';
+import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 
 var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
 var rootRenderer: ReactNativeRootRenderer = null;

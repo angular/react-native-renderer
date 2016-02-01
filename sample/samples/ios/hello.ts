@@ -19,8 +19,8 @@ var resolveAssetSource = require('resolveAssetSource');
 `
 })
 export class HelloApp {
-  angularLogo: any = resolveAssetSource(require('./angular.png'));
-  reactLogo: any = resolveAssetSource(require('./react.png'));
+  angularLogo: any = resolveAssetSource(require('../../assets/angular.png'));
+  reactLogo: any = resolveAssetSource(require('../../assets/react.png'));
   styles: any;
   constructor() {
     this.styles = StyleSheet.create({

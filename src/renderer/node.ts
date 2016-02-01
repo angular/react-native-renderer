@@ -1,6 +1,6 @@
-import {ReactNativeWrapper} from './wrapper';
+import {ReactNativeWrapper} from './../wrapper/wrapper';
 import {NgZone} from 'angular2/core';
-import {Hammer} from './hammer';
+import {Hammer} from './../events/hammer';
 
 export var nodeMap: Map<number, Node> = new Map<number, Node>();
 
@@ -62,7 +62,7 @@ export abstract class Node {
   setProperty(name: string, value: any, updateNative: boolean = true) {
     this.properties[name] = value;
     if (updateNative && this.nativeTag > -1) {
-      var prop = {};
+      var prop: any = {};
       prop[name] = value;
       this.rnWrapper.updateView(this.nativeTag, this.tagName, prop);
     }

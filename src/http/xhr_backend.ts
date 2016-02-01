@@ -10,7 +10,7 @@ export class ReactNativeXHRConnection implements Connection {
   readyState: ReadyState;
   constructor(req: Request, browserXHR: BrowserXhr, baseResponseOptions: ResponseOptions, private zone: NgZone) {
     this.request = req;
-    this.response = new Observable(responseObserver => {
+    this.response = new Observable((responseObserver: any) => {
       let _xhr: XMLHttpRequest = browserXHR.build();
       _xhr.open(RequestMethod[req.method].toUpperCase(), req.url);
       // load event handler
@@ -76,7 +76,7 @@ function getResponseURL(xhr: any): string {
 export const HTTP_PROVIDERS: any[] = [
   provide(Http,
     {
-      useFactory: (xhrBackend, requestOptions) => new Http(xhrBackend, requestOptions),
+      useFactory: (xhrBackend: ReactNativeXHRBackend, requestOptions: RequestOptions) => new Http(xhrBackend, requestOptions),
       deps: [ReactNativeXHRBackend, RequestOptions]
     }),
   BrowserXhr,

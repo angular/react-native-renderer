@@ -7,6 +7,7 @@ import {TodoMVC} from "./todomvc";
 @Component({
   selector: 'ball',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
+  inputs: ['color', 'x', 'y', 'radius'],
   directives: [NgIf, TodoMVC],
   template: `
 <View [style]="styles.ball" [top]="_y" [left]="_x" [backgroundColor]="_color" [borderRadius]="_radius" [width]="_radius*2" [height]="_radius*2"
@@ -16,10 +17,6 @@ import {TodoMVC} from "./todomvc";
 `
 })
 export class Ball {
-  @Input() color: string = "#FFFFFF";
-  @Input() x: number = 0;
-  @Input() y: number = 0;
-  @Input() radius: number = 50;
   @Input() withTodoMVC: boolean = false;
   @Output() startMove: EventEmitter<any> = new EventEmitter();
 

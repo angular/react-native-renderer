@@ -1,6 +1,6 @@
 //React Native wrapper
-import {ReactNativeWrapper} from "./wrapper";
-import {ReactNativeWrapperImpl} from './wrapper_impl';
+import {ReactNativeWrapper} from "./../wrapper/wrapper";
+import {ReactNativeWrapperImpl} from './../wrapper/wrapper_impl';
 
 //Dependencies
 import 'reflect-metadata';
@@ -23,9 +23,9 @@ import {RootRenderer, Renderer, provide, NgZone, Provider, enableProdMode} from 
 import {bootstrap} from 'angular2/bootstrap';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from './react_native_renderer';
-import {HTTP_PROVIDERS} from './xhr_backend';
+import {HTTP_PROVIDERS} from './../http/xhr_backend';
 import {ROUTER_PROVIDERS, LocationStrategy} from 'angular2/router';
-import {ReactNativeLocationStrategy} from "./location_strategy";
+import {ReactNativeLocationStrategy} from "./../router/location_strategy";
 
 
 export function bootstrapReactNative(appName:string, cpt: any) {

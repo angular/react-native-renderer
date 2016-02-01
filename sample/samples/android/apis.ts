@@ -54,15 +54,15 @@ export class APIsList {
     this.styles = this._getStyles();
     this.platform = `OS: ${Platform.OS}, version: ${Platform.Version}`;
     this.ratio = PixelRatio.get();
-    Clipboard.getString((content) => this.zone.run(() => this.clipcoardContent = content));
+    Clipboard.getString((content: string) => this.zone.run(() => this.clipcoardContent = content));
     navigator.geolocation.getCurrentPosition(
       (position) => this.zone.run(() => this.location = JSON.stringify(position)),
       (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
-    NetInfo.fetch().then((reach) => { this.connectionType = reach });
-    NetInfo.isConnectionExpensive((isConnectionExpensive) => { this.isConnectionExpensive = isConnectionExpensive });
-    NetInfo.isConnected.fetch().then((isConnected) => { this.isConnected = isConnected });
+    NetInfo.fetch().then((reach: string) => { this.connectionType = reach });
+    NetInfo.isConnectionExpensive((isConnectionExpensive: boolean) => { this.isConnectionExpensive = isConnectionExpensive });
+    NetInfo.isConnected.fetch().then((isConnected: boolean) => { this.isConnected = isConnected });
   }
 
   showAlert() {
@@ -83,7 +83,7 @@ export class APIsList {
 
   launchIntent() {
     var url = 'https://www.angular.io';
-    IntentAndroid.canOpenURL(url, (supported) => {
+    IntentAndroid.canOpenURL(url, (supported: boolean) => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
       } else {
@@ -95,7 +95,7 @@ export class APIsList {
   setClipboard() {
     var newValue = this.clipcoardContent == 'foo' ? 'bar' : 'foo';
     Clipboard.setString(newValue);
-    Clipboard.getString((content) => this.zone.run(() => this.clipcoardContent = content));
+    Clipboard.getString((content: string) => this.zone.run(() => this.clipcoardContent = content));
   }
 
   _getStyles() {

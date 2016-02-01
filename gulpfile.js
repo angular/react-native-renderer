@@ -61,7 +61,7 @@ gulp.task('!assets', function () {
 });
 gulp.task('!compile', ['!assets'], function () {
   ts2js(PATHS.sources.sample, PATHS.app + '/' + APP_NAME);
-  return ts2js(PATHS.sources.src, PATHS.app + '/' + APP_NAME);
+  return ts2js(PATHS.sources.src, PATHS.app + '/' + APP_NAME + '/node_modules/react-native-renderer');
 });
 gulp.task('!launch.android', ['!compile'], function(done) {
   executeInAppDir('react-native run-android', done);
@@ -106,7 +106,7 @@ gulp.task('ts2commonjs', ['clean.code'], function () {
 });
 
 gulp.task('transformTests', ['ts2commonjs'], function() {
-  return gulp.src(PATHS.destination + '/test/**/*')
+  return gulp.src(PATHS.destination + '/test/**/*_spec.js')
     .pipe(transformCommonJSTests())
     .pipe(gulp.dest(PATHS.destination + '/test'));
 });
