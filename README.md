@@ -19,7 +19,7 @@ Then initialize an example:
 	# usage: gulp init <example>
 	gulp init todoApp
 
-When modifying the example (src/EXAMPLE_NAME/**) or the renderer (src/**/*.ts), update by running:
+When modifying the example (src/EXAMPLE_NAME/\*\*) or the renderer (src/\*\*/*.ts), update by running:
 
 	# usage: gulp build <example>
 	gulp build todoApp
