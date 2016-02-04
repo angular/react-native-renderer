@@ -7,14 +7,14 @@ import {StyleSheet} from 'react-native';
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   directives: [NativeFeedback],
   template: `
-<View flexDirection="row" flex="1">
-  <View [style]="styles.button" flex="1" nativeFeedback (tap)="goBack()">
+<native-view flexDirection="row" flex="1">
+  <native-view [style]="styles.button" flex="1" nativeFeedback (tap)="goBack()">
     <Text [style]="styles.buttonText">Back</Text>
-  </View>
-  <View [style]="styles.button" flex="1" nativeFeedback (tap)="goForward()">
+  </native-view>
+  <native-view [style]="styles.button" flex="1" nativeFeedback (tap)="goForward()">
     <Text [style]="styles.buttonText">Forward</Text>
-  </View>
-</View>
+  </native-view>
+</native-view>
 <WebView flex="11" url="https://www.angular.io" javaScriptEnabled="true" domStorageEnabled="true" automaticallyAdjustContentInsets="false">
 </WebView>
 `

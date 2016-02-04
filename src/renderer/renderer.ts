@@ -18,6 +18,12 @@ export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
 export class ReactNativeRootRenderer implements RootRenderer {
   private _registeredComponents: Map<string, ReactNativeRenderer> = new Map<string, ReactNativeRenderer>();
 
+  private _createCommands: Map <Node, NativeCommandCreate> = new Map<Node, NativeCommandCreate>();
+  private _updateCommands: Map <Node, NativeCommandUpdate> = new Map<Node, NativeCommandUpdate>();
+  private _attachCommands: Map <Node, NativeCommandAttach> = new Map<Node, NativeCommandAttach>();
+  private _attachAfterCommands: Map <Node, NativeCommandAttachAfter> = new Map<Node, NativeCommandAttachAfter>();
+  private _detachCommands: Map <Node, NativeCommandDetach> = new Map<Node, NativeCommandDetach>();
+
   constructor(public wrapper: ReactNativeWrapper, public zone: NgZone) {
     wrapper.patchReactNativeEventEmitter(nodeMap);
   }
@@ -31,10 +37,48 @@ export class ReactNativeRootRenderer implements RootRenderer {
     return renderer;
   }
 
+  addCreateCommand(node: Node, props: {[s: string]: any } = null) {
+    var cmd = new NativeCommandCreate(node);
+    if (props) {
+      cmd.props = props;
+    }
+    this._createCommands.set(node, cmd);
+  }
+
+  addUpdateCommand(node: Node, key: string, value: any) {
+    var propEater: NativeCommandCreate | NativeCommandUpdate =
+      <NativeCommandCreate | NativeCommandUpdate>this._createCommands.get(node) || this._updateCommands.get(node);
+    if (propEater) {
+      propEater.props[key] = value;
+    } else {
+      this._updateCommands.set(node, new NativeCommandUpdate(node, key, value));
+    }
+  }
+
+  addAttachCommand(node: Node, toRoot: boolean) {
+    this._attachCommands.set(node, new NativeCommandAttach(node, toRoot));
+  }
+
+  addAttachAfterCommand(node: Node, anchor: Node, shift: number) {
+    this._attachAfterCommands.set(node, new NativeCommandAttachAfter(node, anchor, shift));
+  }
+
+  addDetachCommand(node: Node) {
+    this._detachCommands.set(node, new NativeCommandDetach(node));
+  }
+
   executeCommands(): void {
-    this._registeredComponents.forEach((renderer: ReactNativeRenderer, key: string) => {
-      renderer.executeCommands();
-    })
+    this._detachCommands.forEach((command: NativeCommand) => command.execute(this.wrapper));
+    this._createCommands.forEach((command: NativeCommand) => command.execute(this.wrapper));
+    this._updateCommands.forEach((command: NativeCommand) => command.execute(this.wrapper));
+    this._attachCommands.forEach((command: NativeCommand) => command.execute(this.wrapper));
+    this._attachAfterCommands.forEach((command: NativeCommand) => command.execute(this.wrapper));
+
+    this._detachCommands.clear();
+    this._createCommands.clear();
+    this._updateCommands.clear();
+    this._attachCommands.clear();
+    this._attachAfterCommands.clear();
   }
 }
 
@@ -46,12 +90,8 @@ export class ReactNativeRootRenderer_ extends ReactNativeRootRenderer {
 }
 
 export class ReactNativeRenderer implements Renderer {
-  private _nativeCommands: Array<NativeCommand> = [];
-  private _propsEater: Map<Node, NativeCommandCreate | NativeCommandUpdate> = new Map<Node, NativeCommandCreate | NativeCommandUpdate>();
 
-  constructor(private _rootRenderer: ReactNativeRootRenderer, private componentProto: RenderComponentType) {
-    //Do nothing more as ViewEncapsulation.None is the only mode supported
-  }
+  constructor(private _rootRenderer: ReactNativeRootRenderer, private componentProto: RenderComponentType) { }
 
   renderComponent(componentType: RenderComponentType):Renderer {
     return this._rootRenderer.renderComponent(componentType);
@@ -60,25 +100,23 @@ export class ReactNativeRenderer implements Renderer {
   selectRootElement(selector: string): Node {
     var root = this.createElement(null, selector.startsWith('#root') ? 'test-cmp' : selector);
     this._createElementCommand(root);
-    this._nativeCommands.push(new NativeCommandAttach(root, true));
+    this._rootRenderer.addAttachCommand(root, true);
     return root;
   }
 
   createElement(parentElement: Node, name: string): Node {
     var node = new ElementNode(name, this._rootRenderer.wrapper, this._rootRenderer.zone);
     node.attachTo(parentElement);
-    if (parentElement && parentElement.isCreated) {
+    if (!node.isVirtual && node.getAncestorWithNativeCreated()) {
       this._createElementCommand(node);
-      this._nativeCommands.push(new NativeCommandAttach(node, false));
+      this._rootRenderer.addAttachCommand(node, false);
     }
     return node;
   }
 
   _createElementCommand(node: Node): void {
-    var cmd = new NativeCommandCreate(node);
+    this._rootRenderer.addCreateCommand(node);
     node.isCreated = true;
-    this._nativeCommands.push(cmd);
-    this._propsEater.set(node, cmd);
   }
 
   createViewRoot(hostElement: Node): Node {
@@ -99,7 +137,7 @@ export class ReactNativeRenderer implements Renderer {
       node = new TextNode(value, this._rootRenderer.wrapper, this._rootRenderer.zone);
       if (parentElement && parentElement.isCreated) {
         this._createTextCommand(<TextNode>node);
-        this._nativeCommands.push(new NativeCommandAttach(node, false));
+        this._rootRenderer.addAttachCommand(node, false);
       }
     }
     node.attachTo(parentElement);
@@ -107,20 +145,22 @@ export class ReactNativeRenderer implements Renderer {
   }
 
   _createTextCommand(node: TextNode): void {
+    this._rootRenderer.addCreateCommand(node, {text: node.properties['text']});
     var cmd = new NativeCommandCreate(node);
     node.isCreated = true;
-    cmd.props['text'] = node.properties['text'];
-    this._nativeCommands.push(cmd);
-    this._propsEater.set(node, cmd);
   }
 
   projectNodes(parentElement: Node, nodes: Node[]): void {
     if (parentElement) {
       for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
-        this._createNativeRecursively(node);
         node.attachTo(parentElement);
-        this._nativeCommands.push(new NativeCommandAttach(node, false));
+        if (node.getAncestorWithNativeCreated()) {
+          this._createNativeRecursively(node);
+          if (!node.isVirtual) {
+            this._rootRenderer.addAttachCommand(node, false);
+          }
+        }
       }
     }
   }
@@ -133,8 +173,12 @@ export class ReactNativeRenderer implements Renderer {
         var viewRootNode = viewRootNodes[i];
         viewRootNode.attachToAt(node.parent, index + i + 1);
         if (!(viewRootNode instanceof InertNode)) {
-          this._createNativeRecursively(viewRootNode);
-          this._nativeCommands.push(new NativeCommandAttachAfter(viewRootNode, node, shift));
+          if (viewRootNode.getAncestorWithNativeCreated()) {
+            this._createNativeRecursively(viewRootNode);
+            if (!viewRootNode.isVirtual) {
+              this._rootRenderer.addAttachAfterCommand(viewRootNode, node, shift);
+            }
+          }
           shift++;
         }
       }
@@ -142,12 +186,16 @@ export class ReactNativeRenderer implements Renderer {
   }
 
   _createNativeRecursively(node: Node) {
-    if (!node.isCreated && !(node instanceof InertNode)) {
-      node instanceof TextNode ? this._createTextCommand(node) : this._createElementCommand(node);
+    if (!node.isCreated) {
+      if (!node.isVirtual) {
+        node instanceof TextNode ? this._createTextCommand(node) : this._createElementCommand(node);
+      }
       for (var i = 0; i < node.children.length; i++) {
         var child = node.children[i];
         this._createNativeRecursively(child);
-        this._nativeCommands.push(new NativeCommandAttach(child, false));
+        if (!child.isVirtual) {
+          this._rootRenderer.addAttachCommand(child, false);
+        }
       }
     }
   }
@@ -155,7 +203,7 @@ export class ReactNativeRenderer implements Renderer {
   detachView(viewRootNodes: Node[]): void {
     for (var i = 0; i < viewRootNodes.length; i++) {
       var node = viewRootNodes[i];
-      this._nativeCommands.push(new NativeCommandDetach(node));
+      this._rootRenderer.addDetachCommand(node);
     }
   }
 
@@ -176,13 +224,7 @@ export class ReactNativeRenderer implements Renderer {
   setElementProperty(renderElement: Node, propertyName: string, propertyValue: any): void {
     renderElement.setProperty(propertyName, propertyValue, false);
     if (renderElement.isCreated) {
-      var cmd = this._propsEater.get(renderElement);
-      if (cmd == null) {
-        cmd = new NativeCommandUpdate(renderElement, propertyName, propertyValue);
-        this._nativeCommands.push(cmd);
-        this._propsEater.set(renderElement, cmd);
-      }
-      cmd.props[propertyName] = propertyValue;
+      this._rootRenderer.addUpdateCommand(renderElement, propertyName, propertyValue);
     }
   }
 
@@ -221,13 +263,5 @@ export class ReactNativeRenderer implements Renderer {
       var trimedText = renderNode.setText(text);
       this.setElementProperty(renderNode, 'text', trimedText);
     }
-  }
-
-  executeCommands(): void {
-    this._nativeCommands.forEach((command: NativeCommand) => {
-      command.execute(this._rootRenderer.wrapper);
-    });
-    this._nativeCommands = [];
-    this._propsEater.clear();
   }
 }

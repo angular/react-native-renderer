@@ -10,10 +10,10 @@ import {TodoMVC} from "./todomvc";
   inputs: ['color', 'x', 'y', 'radius'],
   directives: [NgIf, TodoMVC],
   template: `
-<View [style]="styles.ball" [top]="_y" [left]="_x" [backgroundColor]="_color" [borderRadius]="_radius" [width]="_radius*2" [height]="_radius*2"
+<native-view [style]="styles.ball" [top]="_y" [left]="_x" [backgroundColor]="_color" [borderRadius]="_radius" [width]="_radius*2" [height]="_radius*2"
   (pan)="moveBall($event)" (panend)="endMoveBall($event)">
   <todo-mvc *ngIf="withTodoMVC"></todo-mvc>
-</View>
+</native-view>
 `
 })
 export class Ball {

@@ -8,7 +8,7 @@ import {StyleSheet} from 'react-native';
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   directives: [NgFor, NativeFeedback],
   template: `
-<View [style]="styles.surface" flex="6"
+<native-view [style]="styles.surface" flex="6"
   (doubletap)="handleEvent($event)"
   (pan)="handleEvent($event)"
   (panstart)="handleEvent($event)"
@@ -42,16 +42,16 @@ import {StyleSheet} from 'react-native';
   (tapstart)="handleEvent($event)"
   (tapcancel)="handleEvent($event)">
   <Text [style]="styles.buttonText">TOUCH ME</Text>
-</View>
-<View [style]="styles.button" flex="1" nativeFeedback (tap)="clearLogs()">
+</native-view>
+<native-view [style]="styles.button" flex="1" nativeFeedback (tap)="clearLogs()">
   <Text [style]="styles.buttonText">Clear logs</Text>
-</View>
+</native-view>
 <ScrollView flex="12">
-  <View collapsable="false">
-    <View [style]="styles.logs">
+  <native-view collapsable="false">
+    <native-view [style]="styles.logs">
       <Text *ngFor="#log of logs">{{log}}</Text>
-    </View>
-  </View>
+    </native-view>
+  </native-view>
 </ScrollView>
 `
 })

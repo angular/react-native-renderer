@@ -11,6 +11,8 @@ var ReactNativeAttributePayload = require('ReactNativeAttributePayload');
 var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 
 const RCT_VIEW_NAMES: { [s: string]: string } = {
+  'native-view': 'RCTView',
+
   "DropdownPicker": "AndroidDropdownPicker",
   "DialogPicker": "AndroidDialogPicker",
   "DrawerLayout": "AndroidDrawerLayout",
@@ -27,7 +29,6 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   "VirtualText": "RCTVirtualText",
   "TextInput": "AndroidTextInput",
   "Toolbar": "ToolbarAndroid",
-  "View": "RCTView",
   "WebView": "RCTWebView"
 }
 
@@ -46,14 +47,14 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
 
   createView(tagName: string, root: number, properties: Object): number {
     var tag = ReactNativeTagHandles.allocateTag();
-    var viewName = RCT_VIEW_NAMES[tagName] || RCT_VIEW_NAMES['View'];
+    var viewName = RCT_VIEW_NAMES[tagName] || RCT_VIEW_NAMES['native-view'];
     this.$log(`Creating a ${viewName} with tag ${tag} and attribs:`, properties);
     UIManager.createView(tag, viewName, 1, properties);
     return tag;
   }
 
   updateView(tag: number, tagName: string, properties: Object) {
-    var viewName = RCT_VIEW_NAMES[tagName] || RCT_VIEW_NAMES['View'];
+    var viewName = RCT_VIEW_NAMES[tagName] || RCT_VIEW_NAMES['native-view'];
     this.$log(`Updating property ${viewName} in ${tag} to`, properties);
     UIManager.updateView(tag, viewName, properties);
   }

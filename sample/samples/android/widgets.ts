@@ -6,28 +6,28 @@ import {StyleSheet} from 'react-native';
   host: {flex: '1'},
   template: `
 <PagerLayout flex="1" justifyContent="center" alignItems="center" selectedPage="0">
-  <View [style]="styles.container">
+  <native-view [style]="styles.container">
     <Text [style]="styles.title">Scroll views</Text>
     <Text margin="10">Vertical</Text>
     <ScrollView height="150" width="400" backgroundColor="#FF0000">
-      <View collapsable="false">
-        <View [style]="styles.odd" height="120"></View>
-        <View [style]="styles.even" height="120"></View>
-        <View [style]="styles.odd" height="120"></View>
-        <View [style]="styles.even" height="120"></View>
-      </View>
+      <native-view collapsable="false">
+        <native-view [style]="styles.odd" height="120"></native-view>
+        <native-view [style]="styles.even" height="120"></native-view>
+        <native-view [style]="styles.odd" height="120"></native-view>
+        <native-view [style]="styles.even" height="120"></native-view>
+      </native-view>
     </ScrollView>
     <Text margin="10">Horizontal</Text>
     <HorizontalScrollView height="150" width="400">
-      <View collapsable="false" alignSelf="flex-start" flexDirection="row">
-        <View [style]="styles.odd" height="150" width="300"></View>
-        <View [style]="styles.even" height="150" width="300"></View>
-        <View [style]="styles.odd" height="150" width="300"></View>
-        <View [style]="styles.even" height="150" width="300"></View>
-      </View>
+      <native-view collapsable="false" alignSelf="flex-start" flexDirection="row">
+        <native-view [style]="styles.odd" height="150" width="300"></native-view>
+        <native-view [style]="styles.even" height="150" width="300"></native-view>
+        <native-view [style]="styles.odd" height="150" width="300"></native-view>
+        <native-view [style]="styles.even" height="150" width="300"></native-view>
+      </native-view>
     </HorizontalScrollView>
-  </View>
-  <View [style]="styles.container">
+  </native-view>
+  <native-view [style]="styles.container">
     <Text [style]="styles.title">Inputs and text</Text>
     <Text margin="10">Text input {{typed.length > 0 ? '-> ' + typed : ''}}</Text>
     <TextInput placeholder="Type in" (topTouchEnd)="$event.target.dispatchCommand('focusTextInput')" (topSubmitEditing)="typed=$event.text; $event.target.dispatchCommand('blurTextInput')"></TextInput>
@@ -38,14 +38,14 @@ import {StyleSheet} from 'react-native';
     <DialogPicker [selected]="selected" prompt="Please select an item" [items]="items" height="30" width="80" (topSelect)="selected=$event.position"></DialogPicker>
     <Text margin="10">Virtual text</Text>
     <Text color="#ce0058">NormalText<VirtualText fontSize="20" color="#00a9e0">VirtualText</VirtualText></Text>
-  </View>
-  <View [style]="styles.container">
+  </native-view>
+  <native-view [style]="styles.container">
     <Text [style]="styles.title">Progress bars</Text>
     <ProgressBar styleAttr="Large"></ProgressBar>
     <ProgressBar styleAttr="Inverse" color="#ce0058"></ProgressBar>
     <ProgressBar styleAttr="Small"></ProgressBar>
     <ProgressBar styleAttr="Horizontal"></ProgressBar>
-  </View>
+  </native-view>
 </PagerLayout>
 `
 })

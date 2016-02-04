@@ -8,7 +8,7 @@ import {
 import {Component, RootRenderer, provide} from 'angular2/core';
 import {NgIf, NgFor} from 'angular2/common';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
-import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/react_native_renderer';
+import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {fireEvent} from './../utils';
 import {CustomTestComponentBuilder} from "../../src/testing/test_component_builder";
@@ -220,7 +220,7 @@ describe('Hammer', () => {
   }));
 
   it('should propagates event', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<View (tap)="handleEvent($event)"><Text (tap)="handleEvent($event)">foo</Text></View>`)
+    return tcb.overrideTemplate(TestComponent, `<native-view (tap)="handleEvent($event)"><Text (tap)="handleEvent($event)">foo</Text></native-view>`)
       .createAsync(TestComponent).then((fixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0].children[0];
@@ -232,7 +232,7 @@ describe('Hammer', () => {
   }));
 
   it('should not propagate events after stopPropagation() call', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<View (tap)="handleEvent($event)"><Text (tap)="handleEventWithStop($event)">foo</Text></View>`)
+    return tcb.overrideTemplate(TestComponent, `<native-view (tap)="handleEvent($event)"><Text (tap)="handleEventWithStop($event)">foo</Text></native-view>`)
       .createAsync(TestComponent).then((fixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0].children[0];

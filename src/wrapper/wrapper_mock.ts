@@ -31,8 +31,8 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
     return this._lastTagUsed;
   }
 
-  updateView(tag: number, tagName: string, properties: Object) {
-    var element = this.nativeElementMap.get(tag);
+  updateView(tag: number, tagName: string, properties: any) {
+    var element: any = this.nativeElementMap.get(tag);
     element.name = tagName;
     for (var key in properties) {
       element.properties[key] = properties[key];
@@ -82,11 +82,22 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
   }
 
   dispatchCommand(tag: number, command: string, params: any = null) {
-    this.commandLogs.push(new Command('COMMAND', tag, command + (params ? params.toString() : "")));
+    this.commandLogs.push(new Command('COMMAND', tag, command + (params ? '+' + params.toString() : "")));
   }
 
-  computeStyle(styles: Object): Object {
-    return {flex: 1, collapse: true}
+  computeStyle(styles: Array<any>): Object {
+    var res: any = {};
+    styles.forEach((style) => {
+      if (!isNaN(parseInt(style))) {
+        res['flex'] = 1;
+        res['collapse'] = true;
+      } else {
+        for (var key in style) {
+          res[key] = style[key];
+        }
+      }
+    });
+    return res;
   }
 
   patchReactUpdates(zone: any): void {
@@ -105,7 +116,7 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
 }
 
 class Command {
-  constructor(public name: string, public target: number, public details: string) {  }
+  constructor(public name: string, public target: number, public details: string) { }
   toString(): string {
     return `${this.name}+${this.target}+${this.details}`;
   }

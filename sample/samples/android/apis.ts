@@ -8,23 +8,23 @@ import {NativeFeedback} from './common';
   directives: [NativeFeedback],
   template: `
 <PagerLayout flex="1" justifyContent="center" alignItems="center" selectedPage="0">
-  <View [style]="styles.container">
+  <native-view [style]="styles.container">
     <Text [style]="styles.title">Actionable</Text>
-    <View [style]="styles.button" nativeFeedback (tap)="showAlert()">
+    <native-view [style]="styles.button" nativeFeedback (tap)="showAlert()">
       <Text [style]="styles.buttonText">Alert</Text>
-    </View>
-    <View [style]="styles.button" nativeFeedback (tap)="showToast()">
+    </native-view>
+    <native-view [style]="styles.button" nativeFeedback (tap)="showToast()">
       <Text [style]="styles.buttonText">Toast</Text>
-    </View>
-    <View [style]="styles.button" nativeFeedback (tap)="launchIntent()">
+    </native-view>
+    <native-view [style]="styles.button" nativeFeedback (tap)="launchIntent()">
       <Text [style]="styles.buttonText">Intent</Text>
-    </View>
-    <View [style]="styles.button" nativeFeedback (tap)="setClipboard()">
+    </native-view>
+    <native-view [style]="styles.button" nativeFeedback (tap)="setClipboard()">
       <Text [style]="styles.buttonText">Clipboard</Text>
-    </View>
+    </native-view>
     <Text>Current clipboard value: {{clipcoardContent}}</Text>
-  </View>
-  <View [style]="styles.container">
+  </native-view>
+  <native-view [style]="styles.container">
     <Text [style]="styles.title">Infos</Text>
     <Text [style]="styles.subtitle">Platform</Text>
     <Text>{{platform}}</Text>
@@ -36,7 +36,7 @@ import {NativeFeedback} from './common';
     <Text>{{connectionType}} connection is {{isConnected ? 'on' : 'off'}} and {{isConnectionExpensive ? 'expensive' : 'not expensive'}}</Text>
     <Text [style]="styles.subtitle">AppState</Text>
     <Text>Current state is {{appState}}</Text>
-  </View>
+  </native-view>
 </PagerLayout>
 `
 })

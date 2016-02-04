@@ -20,19 +20,19 @@ import {NativeFeedback} from "./common";
   directives: [NgFor, NativeFeedback, ROUTER_DIRECTIVES],
   template: `
 <DrawerLayout drawerWidth="300" drawerPosition="8388611" flex="1">
-  <View position="absolute" top="0" left="0" right="0" bottom="0" collapsable="false">
+  <native-view position="absolute" top="0" left="0" right="0" bottom="0" collapsable="false">
     <Toolbar [style]="styles.toolbar" [navIcon]="hamburgerIcon" [overflowIcon]="moreIcon" title="Kitchen Sink" titleColor="#FFFFFF" subtitle="null" (topSelect)="handleToolbar($event)"></Toolbar>
-    <View position="absolute" top="50" left="0" right="0" bottom="0" collapsable="false">
+    <native-view position="absolute" top="50" left="0" right="0" bottom="0" collapsable="false">
       <router-outlet></router-outlet>
-    </View>
-  </View>
-  <View position="absolute" top="0" bottom="0" width="300" collapsable="false">
-    <View flex="1" [style]="styles.drawer">
-      <View *ngFor="#item of menuItems" [style]="styles.menuItem" (tap)="navigate(item.path)" nativeFeedback="#00a9e0">
+    </native-view>
+  </native-view>
+  <native-view position="absolute" top="0" bottom="0" width="300" collapsable="false">
+    <native-view flex="1" [style]="styles.drawer">
+      <native-view *ngFor="#item of menuItems" [style]="styles.menuItem" (tap)="navigate(item.path)" nativeFeedback="#00a9e0">
         <Text [style]="styles.menuText">{{item.name}}</Text>
-      </View>
-    </View>
-  </View>
+      </native-view>
+    </native-view>
+  </native-view>
 </DrawerLayout>
 `
 })

@@ -9,6 +9,7 @@ export abstract class Node {
   public children: Node[] = [];
   public tagName: string = "";
   public properties: {[s: string]: any } = {};
+  public isVirtual: boolean = false;
 
   public nativeTag: number = -1;
   public isCreated: boolean = false;
@@ -60,6 +61,26 @@ export abstract class Node {
       }
     }
     return nativeIndex + 1;
+  }
+
+  getAncestorWithNativeCreated(): Node {
+    var next = this.parent;
+    while (next && !next.isCreated) {
+      next = next.parent
+    }
+    return next;
+  }
+
+  getFirstCreatedChild() : Node {
+    var result: Node = null
+    for (var i = 0; i < this.children.length; i++) {
+      var child = this.children[i];
+      if (child.isCreated) {
+        result = child;
+        break;
+      }
+    }
+    return result;
   }
 
   destroyNative() {
@@ -149,6 +170,10 @@ export abstract class Node {
 export class ElementNode extends Node {
   constructor(public tagName: string, wrapper: ReactNativeWrapper, zone: NgZone) {
     super(wrapper, zone);
+    //TODO: generalize the mechanism (list? regexp? meta data?)
+    if (tagName == 'View') {
+      this.isVirtual = true;
+    }
   }
 }
 
@@ -167,9 +192,9 @@ export class TextNode extends Node {
 }
 
 export class AnchorNode extends Node {
-  constructor(wrapper: ReactNativeWrapper, zone: NgZone) { super(wrapper, zone);}
+  constructor(wrapper: ReactNativeWrapper, zone: NgZone) { super(wrapper, zone); this.isVirtual = true;}
 }
 
 export class InertNode extends Node {
-  constructor(wrapper: ReactNativeWrapper, zone: NgZone) { super(wrapper, zone);}
+  constructor(wrapper: ReactNativeWrapper, zone: NgZone) { super(wrapper, zone); this.isVirtual = true;}
 }

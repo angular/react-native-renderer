@@ -107,6 +107,18 @@ describe('MockReactNativeWrapper', () => {
     mock.dispatchCommand(2, 'foo');
     expect(mock.commandLogs.length).toEqual(1);
     expect(mock.commandLogs.toString()).toEqual('COMMAND+2+foo');
+    mock.clearLogs();
+    mock.dispatchCommand(2, 'foo', true);
+    expect(mock.commandLogs.length).toEqual(1);
+    expect(mock.commandLogs.toString()).toEqual('COMMAND+2+foo+true');
+  });
+
+  it('should compute styles', () => {
+    var mock = new MockReactNativeWrapper();
+    expect(mock.computeStyle([])).toEqual({});
+    expect(mock.computeStyle([{margin: 10}])).toEqual({margin: 10});
+    expect(mock.computeStyle([20])).toEqual({flex: 1, collapse: true});
+    expect(mock.computeStyle([20, {margin: 10}])).toEqual({flex: 1, collapse: true, margin: 10});
   });
 
 });

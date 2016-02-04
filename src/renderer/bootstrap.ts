@@ -23,19 +23,21 @@ Object.isExtensible = originalIsExtensible;
 apply();
 
 // Finally, define the bootstrap
-import {RootRenderer, Renderer, provide, NgZone, Provider, enableProdMode} from 'angular2/core';
+import {RootRenderer, Renderer, provide, NgZone, Provider, enableProdMode, PLATFORM_DIRECTIVES} from 'angular2/core';
 import {bootstrap} from 'angular2/bootstrap';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
-import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from './react_native_renderer';
+import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from './renderer';
 import {HTTP_PROVIDERS} from './../http/xhr_backend';
 import {ROUTER_PROVIDERS, LocationStrategy} from 'angular2/router';
 import {ReactNativeLocationStrategy} from "./../router/location_strategy";
+import {View} from "./../components/view";
 
 
 export function bootstrapReactNative(appName:string, cpt: any) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
+      provide(PLATFORM_DIRECTIVES, {useValue: [View], multi:true}),
       ROUTER_PROVIDERS,
       provide(LocationStrategy, { useClass: ReactNativeLocationStrategy }),
       HTTP_PROVIDERS,

@@ -8,13 +8,13 @@ import {
 import {Component, RootRenderer, provide} from 'angular2/core';
 import {NgIf, NgFor} from 'angular2/common';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
-import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/react_native_renderer';
+import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {CustomTestComponentBuilder} from "../../src/testing/test_component_builder";
 
 var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
 
-describe('ReactNativeRenderer', () => {
+describe('Element', () => {
 
   beforeEach(() => {
     mock.reset();
@@ -38,20 +38,20 @@ describe('ReactNativeRenderer', () => {
 
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0');
+          'CREATE+2+test-cmp+{},CREATE+3+Text+{},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
   }));
 
   it('should ignore invalid text nodes (only permitted in Text and VirtualText)', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
    var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View> <View> {{s}} </View> a <View> b </View> {{s}} </View>`)
+    return tcb.overrideTemplate(TestComponent, `<native-view> <native-view> {{s}} </native-view> a <native-view> b </native-view> {{s}} </native-view>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
 
       return new Promise((resolve) => {
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+View+{},ATTACH+2+3+0,CREATE+4+View+{},ATTACH+3+4+0,CREATE+5+View+{},ATTACH+3+5+1');
+          'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},CREATE+5+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1');
         resolve();
       });
     });
@@ -64,7 +64,7 @@ describe('ReactNativeRenderer', () => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{"fontSize":20},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+Text+{"fontSize":20},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
@@ -75,30 +75,31 @@ describe('ReactNativeRenderer', () => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{"flex":1,"collapse":true},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+Text+{"flex":1,"collapse":true},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
   it('should render component', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><sub></sub></View>`)
+    return tcb.overrideTemplate(TestComponent, `<native-view><sub></sub></native-view>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+View+{},ATTACH+2+3+0,' +
-        'CREATE+4+sub+{"flex":1},ATTACH+3+4+0,CREATE+5+Text+{},ATTACH+4+5+0,CREATE+6+RawText+{"text":"foo"},ATTACH+5+6+0');
+        'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+sub+{"flex":1},CREATE+5+Text+{},CREATE+6+RawText+{"text":"foo"},' +
+        'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+4+5+0,ATTACH+5+6+0');
     });
   }));
 
   it('should render component with statement', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><sub *ngIf="b"></sub></View>`)
+    return tcb.overrideTemplate(TestComponent, `<native-view><sub *ngIf="b"></sub></native-view>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+View+{},ATTACH+2+3+0,CREATE+4+sub+{"flex":1},CREATE+5+Text+{},CREATE+6+RawText+{"text":"foo"},ATTACH+5+6+0,ATTACH+4+5+0,ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+sub+{"flex":1},CREATE+5+Text+{},CREATE+6+RawText+{"text":"foo"},' +
+        'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+5+6+0,ATTACH+4+5+0,ATTACH+3+4+0');
     });
   }));
 
@@ -109,7 +110,7 @@ describe('ReactNativeRenderer', () => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},ATTACH+2+3+0,CREATE+4+RawText+{"text":"bar"},ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+Text+{},CREATE+4+RawText+{"text":"bar"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
@@ -120,7 +121,7 @@ describe('ReactNativeRenderer', () => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{"foo":"bar"},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+Text+{"foo":"bar"},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
@@ -131,7 +132,7 @@ describe('ReactNativeRenderer', () => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{"fontSize":20},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+Text+{"fontSize":20},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
@@ -142,7 +143,7 @@ describe('ReactNativeRenderer', () => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{"foo":"bar"},ATTACH+2+3+0,CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+Text+{"foo":"bar"},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
@@ -153,7 +154,7 @@ describe('ReactNativeRenderer', () => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0,ATTACH+2+3+0');
+        'CREATE+2+test-cmp+{},CREATE+3+Text+{},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+3+4+0,ATTACH+2+3+0');
 
       mock.clearLogs();
       fixture.debugElement.componentInstance.b = false;
@@ -218,13 +219,13 @@ describe('ReactNativeRenderer', () => {
 
   it('should support ng-content', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<proj><Text>foo</Text><View></View></proj>`)
+    return tcb.overrideTemplate(TestComponent, `<proj><Text>foo</Text><native-view></native-view></proj>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+proj+{},ATTACH+2+3+0,' +
-        'CREATE+4+View+{},ATTACH+3+4+0,CREATE+5+Text+{},CREATE+6+RawText+{"text":"foo"},ATTACH+5+6+0,ATTACH+3+5+1');
+        'CREATE+2+test-cmp+{},CREATE+3+proj+{},CREATE+4+native-view+{},CREATE+5+Text+{},CREATE+6+RawText+{"text":"foo"},' +
+        'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+5+6+0,ATTACH+3+5+1');
     });
   }));
 
@@ -235,7 +236,7 @@ describe('ReactNativeRenderer', () => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},ATTACH+1+2+0,CREATE+3+Text+{},CREATE+4+RawText+{"text":"foo"},ATTACH+3+4+0,ATTACH+2+3+0');
+        'CREATE+2+test-cmp+{},CREATE+3+Text+{},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+3+4+0,ATTACH+2+3+0');
 
       mock.clearLogs();
       fixture.elementRef.nativeElement.children[1].fireEvent('someEvent', {});
@@ -258,7 +259,7 @@ class SubComponent {
 }
 @Component({
   selector: 'proj',
-  template: `<ng-content select="View"></ng-content><ng-content></ng-content>`
+  template: `<ng-content select="native-view"></ng-content><ng-content></ng-content>`
 })
 class SubComponentWithProjection {
 }
