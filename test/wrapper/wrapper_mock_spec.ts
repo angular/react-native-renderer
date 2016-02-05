@@ -2,7 +2,7 @@ import {
   inject, TestComponentBuilder,
   beforeEachProviders, beforeEach,
   iit, it, xit,
-  describe, ddescribe, xdescribe
+  describe, ddescribe, xdescribe,
   expect
 } from 'angular2/testing';
 import {MockReactNativeWrapper} from './../../src/wrapper/wrapper_mock'

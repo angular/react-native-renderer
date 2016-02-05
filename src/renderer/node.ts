@@ -1,5 +1,5 @@
 import {ReactNativeWrapper} from './../wrapper/wrapper';
-import {NgZone} from 'angular2/core';
+import {NgZone, Injector} from 'angular2/core';
 import {Hammer} from './../events/hammer';
 
 export var nodeMap: Map<number, Node> = new Map<number, Node>();
@@ -17,7 +17,20 @@ export abstract class Node {
   public eventListeners: Map<string, Array<Function>> = new Map<string, Array<Function>>();
   private _hammer: any = null;
 
+  //Debug info
+  providerTokens: any[];
+  locals: Map<string, any>;
+  injector: Injector;
+  componentInstance: any;
+
   constructor(public rnWrapper: ReactNativeWrapper, public zone: NgZone) {}
+
+  setDebugInfo(info: any) {
+    this.injector = info.injector;
+    this.providerTokens = info.providerTokens;
+    this.locals = info.locals;
+    this.componentInstance = info.component;
+  }
 
   attachTo(parent: Node): void {
     if (parent) {

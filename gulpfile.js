@@ -101,7 +101,7 @@ function executeInAppDir(command, done, inParentFolder) {
 /**********************************************************************************/
 gulp.task('ts2commonjs', ['clean.code'], function () {
   ts2js(PATHS.sources.sample, PATHS.destination + '/sample');
-  ts2js(PATHS.sources.test, PATHS.destination + '/test', false, true);
+  ts2js(PATHS.sources.test, PATHS.destination + '/test', false);
   return ts2js(PATHS.sources.src, PATHS.destination + '/src');
 });
 
@@ -133,7 +133,7 @@ gulp.task('test.node', function(neverDone) {
 /**********************************************************************************/
 gulp.task('ts2system', ['clean.code'], function () {
   ts2js(PATHS.sources.sample, PATHS.destination + '/sample', true);
-  ts2js(PATHS.sources.test, PATHS.destination + '/test', true, true);
+  ts2js(PATHS.sources.test, PATHS.destination + '/test', true);
   return ts2js(PATHS.sources.src, PATHS.destination + '/src', true);
 });
 
@@ -173,7 +173,7 @@ gulp.task('clean.code', function (done) {
   del([PATHS.destination], done);
 });
 
-function ts2js(path, dest, toSystem, isSilent) {
+function ts2js(path, dest, toSystem) {
   var tsResult = gulp.src(path)
     .pipe(typescript({
       noImplicitAny: true,
@@ -184,8 +184,7 @@ function ts2js(path, dest, toSystem, isSilent) {
       experimentalDecorators: true
     },
       undefined,
-      //TODO: remove once angular2/testing typings are solved
-      isSilent ? typescript.reporter.nullReporter() : typescript.reporter.defaultReporter()));
+      customReporter()));
   return tsResult.js.pipe(gulp.dest(dest));
 }
 
@@ -237,4 +236,15 @@ function transformAndroidManifest() {
     this.push(file);
     done();
   });
+}
+
+function customReporter() {
+  return {
+    error: (error) => {
+      if (error.relativeFilename && error.message.indexOf(`does not exist on type 'NgMatchers'`) == -1) {
+        console.error(error.message);
+      }
+    },
+    finish: typescript.reporter.defaultFinishHandler
+  };
 }

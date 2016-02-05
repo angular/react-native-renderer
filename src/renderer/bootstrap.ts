@@ -5,11 +5,15 @@ import {ReactNativeWrapperImpl} from './../wrapper/wrapper_impl';
 //Dependencies
 import 'reflect-metadata';
   // Zone.js
-import {Zone} from 'zone.js/lib/core';
+import {Zone} from 'zone.js/build/lib/core';
+global.Zone = Zone;
 global.zone = new Zone();
-import {patchSetClearFunction} from 'zone.js/lib/patch/functions';
-import {apply} from 'zone.js/lib/patch/promise';
-patchSetClearFunction(global, ['timeout', 'interval', 'immediate']);
+import {patchSetClearFunction} from 'zone.js/build/lib/patch/functions';
+import {apply} from 'zone.js/build/lib/patch/promise';
+patchSetClearFunction(global, global.Zone,
+  [['setTimeout', 'clearTimeout', false, false],
+  ['setInterval', 'clearInterval', true, false],
+  ['setImmediate', 'clearImmediate', false, false]]);
 
 //Needed for Android or iOS, but to be imported after zone.js, and
 var originalIsExtensible = Object.isExtensible;

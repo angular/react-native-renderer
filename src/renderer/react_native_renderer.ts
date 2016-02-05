@@ -200,6 +200,10 @@ export class ReactNativeRenderer implements Renderer {
     this.setElementProperty(renderElement, propertyName, propertyValue);
   }
 
+  setElementDebugInfo(renderElement: Node, info: any) {
+    renderElement.setDebugInfo(info);
+  }
+
   setElementClass(renderElement:any, className:string, isAdd:boolean):any {
     console.error('NOT IMPLEMENTED: setElementClass', arguments);
   }
