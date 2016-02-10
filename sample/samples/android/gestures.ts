@@ -41,15 +41,15 @@ import {StyleSheet} from 'react-native';
   (tap)="handleEvent($event)"
   (tapstart)="handleEvent($event)"
   (tapcancel)="handleEvent($event)">
-  <Text [style]="styles.buttonText">TOUCH ME</Text>
+  <native-text [style]="styles.buttonText">TOUCH ME</native-text>
 </native-view>
 <native-view [style]="styles.button" flex="1" nativeFeedback (tap)="clearLogs()">
-  <Text [style]="styles.buttonText">Clear logs</Text>
+  <native-text [style]="styles.buttonText">Clear logs</native-text>
 </native-view>
 <ScrollView flex="12">
   <native-view collapsable="false">
     <native-view [style]="styles.logs">
-      <Text *ngFor="#log of logs">{{log}}</Text>
+      <native-text *ngFor="#log of logs">{{log}}</native-text>
     </native-view>
   </native-view>
 </ScrollView>

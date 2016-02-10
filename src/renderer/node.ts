@@ -83,6 +83,10 @@ export abstract class Node {
     return result;
   }
 
+  isTextContainer(): boolean {
+    return this.tagName == 'native-text' || this.tagName == 'VirtualText';
+  }
+
   destroyNative() {
     this.isCreated = false;
     nodeMap.delete(this.nativeTag);
@@ -171,7 +175,7 @@ export class ElementNode extends Node {
   constructor(public tagName: string, wrapper: ReactNativeWrapper, zone: NgZone) {
     super(wrapper, zone);
     //TODO: generalize the mechanism (list? regexp? meta data?)
-    if (tagName == 'View') {
+    if (['View', 'Text'].indexOf(tagName) > -1) {
       this.isVirtual = true;
     }
   }
@@ -180,7 +184,7 @@ export class ElementNode extends Node {
 export class TextNode extends Node {
   constructor(value: string, wrapper: ReactNativeWrapper, zone: NgZone) {
     super(wrapper, zone);
-    this.tagName = 'RawText';
+    this.tagName = 'native-rawtext';
     this.setText(value);
   }
 
@@ -192,9 +196,5 @@ export class TextNode extends Node {
 }
 
 export class AnchorNode extends Node {
-  constructor(wrapper: ReactNativeWrapper, zone: NgZone) { super(wrapper, zone); this.isVirtual = true;}
-}
-
-export class InertNode extends Node {
   constructor(wrapper: ReactNativeWrapper, zone: NgZone) { super(wrapper, zone); this.isVirtual = true;}
 }

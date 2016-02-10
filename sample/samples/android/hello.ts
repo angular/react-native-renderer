@@ -7,14 +7,14 @@ var resolveAssetSource = require('resolveAssetSource');
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   template: `
 <SwipeRefreshLayout position ="absolute" top="0" left="0" bottom="0" right="0" (topRefresh)="handleRefresh($event)">
-  <View [styleSheets]="styles.container">
-    <Text [style]="styles.welcome">
+  <View [styleSheet]="styles.container">
+    <Text [styleSheet]="styles.welcome">
       Welcome to ngReactNative!
     </Text>
-    <Text [style]="styles.instructions">
+    <Text [styleSheet]="styles.instructions">
       To get started, use the drawer menu on the left
     </Text>
-    <Text [style]="styles.instructions">
+    <Text [styleSheet]="styles.instructions">
       Shake or press menu button for dev menu
     </Text>
   </View>

@@ -25,10 +25,10 @@ class Todo {
   directives: [NgIf, HighLight],
   template: `
 <native-view [style]="styles.row">
-<Text [style]="[styles.tick, item.active ? styles.tickOff : styles.tickOn]" highlight (tap)="toggle($event)">{{item.active ? "[  ]" : "[x]"}}</Text>
-<Text *ngIf="!item.edited" [style]="[styles.main, item.active ? styles.mainOff : styles.mainOn]" (doubletap)="startEdit()">{{item.value}}</Text>
+<native-text [style]="[styles.tick, item.active ? styles.tickOff : styles.tickOn]" highlight (tap)="toggle($event)">{{item.active ? "[  ]" : "[x]"}}</native-text>
+<native-text *ngIf="!item.edited" [style]="[styles.main, item.active ? styles.mainOff : styles.mainOn]" (doubletap)="startEdit()">{{item.value}}</native-text>
 <TextInput *ngIf="item.edited" [style]="styles.editor" [text]="item.value" mostRecentEventCount="0" (tap)="$event.target.focus()" (topSubmitEditing)="stopEdit($event)"></TextInput>
-<Text [style]="styles.cross" highlight (tap)="delete()">X</Text>
+<native-text [style]="styles.cross" highlight (tap)="delete()">X</native-text>
 </native-view>
 `
 })
@@ -115,7 +115,7 @@ export class TodoItem {
   directives: [NgFor, NgIf, TodoItem, HighLight],
   template: `
 <native-view flexDirection="row">
-  <Text [style]="[styles.all, leftCount == 0 ? styles.allOn : styles.allOff]" (tap)="selectAll()">V</Text>
+  <native-text [style]="[styles.all, leftCount == 0 ? styles.allOn : styles.allOff]" (tap)="selectAll()">V</native-text>
   <TextInput [style]="styles.input" text="" mostRecentEventCount="0" placeholder="What needs to be done?" (tap)="$event.target.focus()" (topSubmitEditing)="createTodo($event)"></TextInput>
 </native-view>
 <ScrollView [style]="styles.scroll">
@@ -127,21 +127,21 @@ export class TodoItem {
 </ScrollView>
 <native-view [style]="styles.footer">
   <native-view width="60">
-    <Text [style]="styles.counter" fontSize="20">{{leftCount}}</Text>
-    <Text [style]="styles.counter">item{{leftCount == 1 ? '' : 's'}} left</Text>
+    <native-text [style]="styles.counter" fontSize="20">{{leftCount}}</native-text>
+    <native-text [style]="styles.counter">item{{leftCount == 1 ? '' : 's'}} left</native-text>
   </native-view>
   <native-view flex="1" flexDirection="row" justifyContent="center">
     <native-view [style]="[styles.filter, filter == 'all' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'all')">
-      <Text [style]="[styles.filterText, filter == 'all' ? styles.filterTextOn : styles.filterTextOff]">All</Text>
+      <native-text [style]="[styles.filterText, filter == 'all' ? styles.filterTextOn : styles.filterTextOff]">All</native-text>
     </native-view>
     <native-view [style]="[styles.filter, filter == 'active' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'active')">
-      <Text [style]="[styles.filterText, filter == 'active' ? styles.filterTextOn : styles.filterTextOff]">Active</Text>
+      <native-text [style]="[styles.filterText, filter == 'active' ? styles.filterTextOn : styles.filterTextOff]">Active</native-text>
     </native-view>
     <native-view [style]="[styles.filter, filter == 'done' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'done')">
-      <Text [style]="[styles.filterText, filter == 'done' ? styles.filterTextOn : styles.filterTextOff]">Done</Text>
+      <native-text [style]="[styles.filterText, filter == 'done' ? styles.filterTextOn : styles.filterTextOff]">Done</native-text>
     </native-view>
   </native-view>
-    <native-view [style]="styles.clear" highlight (tap)="clearDone($event)"><Text [style]="styles.clearText">Clear\ndone</Text></native-view>
+    <native-view [style]="styles.clear" highlight (tap)="clearDone($event)"><native-text [style]="styles.clearText">Clear\ndone</native-text></native-view>
 </native-view>
 `
 })

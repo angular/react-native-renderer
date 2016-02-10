@@ -9,33 +9,33 @@ import {NativeFeedback} from './common';
   template: `
 <PagerLayout flex="1" justifyContent="center" alignItems="center" selectedPage="0">
   <native-view [style]="styles.container">
-    <Text [style]="styles.title">Actionable</Text>
+    <native-text [style]="styles.title">Actionable</native-text>
     <native-view [style]="styles.button" nativeFeedback (tap)="showAlert()">
-      <Text [style]="styles.buttonText">Alert</Text>
+      <native-text [style]="styles.buttonText">Alert</native-text>
     </native-view>
     <native-view [style]="styles.button" nativeFeedback (tap)="showToast()">
-      <Text [style]="styles.buttonText">Toast</Text>
+      <native-text [style]="styles.buttonText">Toast</native-text>
     </native-view>
     <native-view [style]="styles.button" nativeFeedback (tap)="launchIntent()">
-      <Text [style]="styles.buttonText">Intent</Text>
+      <native-text [style]="styles.buttonText">Intent</native-text>
     </native-view>
     <native-view [style]="styles.button" nativeFeedback (tap)="setClipboard()">
-      <Text [style]="styles.buttonText">Clipboard</Text>
+      <native-text [style]="styles.buttonText">Clipboard</native-text>
     </native-view>
-    <Text>Current clipboard value: {{clipcoardContent}}</Text>
+    <native-text>Current clipboard value: {{clipcoardContent}}</native-text>
   </native-view>
   <native-view [style]="styles.container">
-    <Text [style]="styles.title">Infos</Text>
-    <Text [style]="styles.subtitle">Platform</Text>
-    <Text>{{platform}}</Text>
-    <Text [style]="styles.subtitle">PixelRatio</Text>
-    <Text>{{ratio}}</Text>
-    <Text [style]="styles.subtitle">Geoloation</Text>
-    <Text>{{location}}</Text>
-    <Text [style]="styles.subtitle">NetInfo</Text>
-    <Text>{{connectionType}} connection is {{isConnected ? 'on' : 'off'}} and {{isConnectionExpensive ? 'expensive' : 'not expensive'}}</Text>
-    <Text [style]="styles.subtitle">AppState</Text>
-    <Text>Current state is {{appState}}</Text>
+    <native-text [style]="styles.title">Infos</native-text>
+    <native-text [style]="styles.subtitle">Platform</native-text>
+    <native-text>{{platform}}</native-text>
+    <native-text [style]="styles.subtitle">PixelRatio</native-text>
+    <native-text>{{ratio}}</native-text>
+    <native-text [style]="styles.subtitle">Geoloation</native-text>
+    <native-text>{{location}}</native-text>
+    <native-text [style]="styles.subtitle">NetInfo</native-text>
+    <native-text>{{connectionType}} connection is {{isConnected ? 'on' : 'off'}} and {{isConnectionExpensive ? 'expensive' : 'not expensive'}}</native-text>
+    <native-text [style]="styles.subtitle">AppState</native-text>
+    <native-text>Current state is {{appState}}</native-text>
   </native-view>
 </PagerLayout>
 `

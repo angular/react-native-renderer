@@ -12,7 +12,7 @@ import {StyleSheet} from 'react-native';
   directives: [NativeFeedback, NgFor],
   template: `
 <TextInput text="" mostRecentEventCount="0" placeholder="Search Wikipedia" (tap)="$event.target.focus()" (topSubmitEditing)="sendXHR($event)"></TextInput>
-<Text *ngFor="#page of pages">{{page}}</Text>
+<native-text *ngFor="#page of pages">{{page}}</native-text>
 `
 })
 export class HttpApp {

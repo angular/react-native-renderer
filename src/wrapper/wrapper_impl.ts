@@ -12,6 +12,9 @@ var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 
 const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-view': 'RCTView',
+  'native-text': 'RCTText',
+  'native-rawtext': 'RCTRawText',
+  'native-virtualtext': 'RCTVirtualText',
 
   "DropdownPicker": "AndroidDropdownPicker",
   "DialogPicker": "AndroidDialogPicker",
@@ -21,12 +24,9 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   "ProgressBar": "AndroidProgressBar",
   "ScrollView": "RCTScrollView",
   "HorizontalScrollView" : "AndroidHorizontalScrollView",
-  "RawText": "RCTRawText",
   "Switch": "AndroidSwitch",
   "SwipeRefreshLayout": "AndroidSwipeRefreshLayout",
-  "Text": "RCTText",
   "InlineImage": "RCTTextInlineImage",
-  "VirtualText": "RCTVirtualText",
   "TextInput": "AndroidTextInput",
   "Toolbar": "ToolbarAndroid",
   "WebView": "RCTWebView"

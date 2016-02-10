@@ -7,8 +7,8 @@ import {StyleSheet} from 'react-native';
   template: `
 <PagerLayout flex="1" justifyContent="center" alignItems="center" selectedPage="0">
   <native-view [style]="styles.container">
-    <Text [style]="styles.title">Scroll views</Text>
-    <Text margin="10">Vertical</Text>
+    <native-text [style]="styles.title">Scroll views</native-text>
+    <native-text margin="10">Vertical</native-text>
     <ScrollView height="150" width="400" backgroundColor="#FF0000">
       <native-view collapsable="false">
         <native-view [style]="styles.odd" height="120"></native-view>
@@ -17,7 +17,7 @@ import {StyleSheet} from 'react-native';
         <native-view [style]="styles.even" height="120"></native-view>
       </native-view>
     </ScrollView>
-    <Text margin="10">Horizontal</Text>
+    <native-text margin="10">Horizontal</native-text>
     <HorizontalScrollView height="150" width="400">
       <native-view collapsable="false" alignSelf="flex-start" flexDirection="row">
         <native-view [style]="styles.odd" height="150" width="300"></native-view>
@@ -28,19 +28,19 @@ import {StyleSheet} from 'react-native';
     </HorizontalScrollView>
   </native-view>
   <native-view [style]="styles.container">
-    <Text [style]="styles.title">Inputs and text</Text>
-    <Text margin="10">Text input {{typed.length > 0 ? '-> ' + typed : ''}}</Text>
+    <native-text [style]="styles.title">Inputs and text</native-text>
+    <native-text margin="10">Text input {{typed.length > 0 ? '-> ' + typed : ''}}</native-text>
     <TextInput placeholder="Type in" (topTouchEnd)="$event.target.dispatchCommand('focusTextInput')" (topSubmitEditing)="typed=$event.text; $event.target.dispatchCommand('blurTextInput')"></TextInput>
-    <Text margin="10">Switch ({{switched}})</Text>
+    <native-text margin="10">Switch ({{switched}})</native-text>
     <Switch height="27" width="50" (topChange)="switched=$event.value; $event.target.setProperty('on', $event.value)"></Switch>
-    <Text margin="10">Pickers ({{selected}})</Text>
+    <native-text margin="10">Pickers ({{selected}})</native-text>
     <DropdownPicker [selected]="selected" prompt="Please select an item" [items]="items" height="30" width="80" (topSelect)="selected=$event.position"></DropdownPicker>
     <DialogPicker [selected]="selected" prompt="Please select an item" [items]="items" height="30" width="80" (topSelect)="selected=$event.position"></DialogPicker>
-    <Text margin="10">Virtual text</Text>
-    <Text color="#ce0058">NormalText<VirtualText fontSize="20" color="#00a9e0">VirtualText</VirtualText></Text>
+    <native-text margin="10">Nested text</native-text>
+    <Text [style]="{color: '#ce0058'}">Normal text<Text [style]="{color: '#00a9e0',fontSize: 20}">Nested one</Text></Text>
   </native-view>
   <native-view [style]="styles.container">
-    <Text [style]="styles.title">Progress bars</Text>
+    <native-text [style]="styles.title">Progress bars</native-text>
     <ProgressBar styleAttr="Large"></ProgressBar>
     <ProgressBar styleAttr="Inverse" color="#ce0058"></ProgressBar>
     <ProgressBar styleAttr="Small"></ProgressBar>

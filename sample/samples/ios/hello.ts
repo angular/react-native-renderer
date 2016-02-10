@@ -7,12 +7,12 @@ var resolveAssetSource = require('resolveAssetSource');
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   template: `
 <native-view [style]="styles.container">
-  <Text [style]="styles.welcome">
+  <native-text [style]="styles.welcome">
     Welcome to ngReactNative!
-  </Text>
-  <Text [style]="styles.instructions">
+  </native-text>
+  <native-text [style]="styles.instructions">
     Shake or press cmd + ctrl + Z for dev menu
-  </Text>
+  </native-text>
 </native-view>
 <Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="angularLogo.uri" position ="absolute" bottom="0" left="0"></Image>
 <Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="reactLogo.uri" position ="absolute" bottom="0" right="0"></Image>

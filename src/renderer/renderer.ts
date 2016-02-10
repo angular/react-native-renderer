@@ -1,6 +1,6 @@
 import {RootRenderer, Renderer, RenderComponentType, OpaqueToken, Inject, Injectable, NgZone} from 'angular2/core';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
-import {Node, ElementNode, AnchorNode, TextNode, InertNode, nodeMap} from './node';
+import {Node, ElementNode, AnchorNode, TextNode, nodeMap} from './node';
 import {ReactNativeWrapper} from './../wrapper/wrapper';
 import {NativeCommand, NativeCommandCreate, NativeCommandUpdate, NativeCommandAttach, NativeCommandDetach, NativeCommandAttachAfter} from "./native_command";
 
@@ -130,15 +130,10 @@ export class ReactNativeRenderer implements Renderer {
   }
 
   createText(parentElement: Node, value: string): Node {
-    var node: InertNode | TextNode;
-    if (!parentElement || (parentElement.tagName != "Text" && parentElement.tagName != "VirtualText")) {
-      node = new InertNode(this._rootRenderer.wrapper, this._rootRenderer.zone);
-    } else {
-      node = new TextNode(value, this._rootRenderer.wrapper, this._rootRenderer.zone);
-      if (parentElement && parentElement.isCreated) {
-        this._createTextCommand(<TextNode>node);
-        this._rootRenderer.addAttachCommand(node, false);
-      }
+    var node = new TextNode(value, this._rootRenderer.wrapper, this._rootRenderer.zone);
+    if (parentElement && parentElement.isCreated) {
+      this._createTextCommand(<TextNode>node);
+      this._rootRenderer.addAttachCommand(node, false);
     }
     node.attachTo(parentElement);
     return node;
@@ -172,15 +167,13 @@ export class ReactNativeRenderer implements Renderer {
       for (var i = 0; i < viewRootNodes.length; i++) {
         var viewRootNode = viewRootNodes[i];
         viewRootNode.attachToAt(node.parent, index + i + 1);
-        if (!(viewRootNode instanceof InertNode)) {
-          if (viewRootNode.getAncestorWithNativeCreated()) {
-            this._createNativeRecursively(viewRootNode);
-            if (!viewRootNode.isVirtual) {
-              this._rootRenderer.addAttachAfterCommand(viewRootNode, node, shift);
-            }
+        if (viewRootNode.getAncestorWithNativeCreated()) {
+          this._createNativeRecursively(viewRootNode);
+          if (!viewRootNode.isVirtual) {
+            this._rootRenderer.addAttachAfterCommand(viewRootNode, node, shift);
           }
-          shift++;
         }
+        shift++;
       }
     }
   }

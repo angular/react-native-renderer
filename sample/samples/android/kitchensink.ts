@@ -29,7 +29,7 @@ import {NativeFeedback} from "./common";
   <native-view position="absolute" top="0" bottom="0" width="300" collapsable="false">
     <native-view flex="1" [style]="styles.drawer">
       <native-view *ngFor="#item of menuItems" [style]="styles.menuItem" (tap)="navigate(item.path)" nativeFeedback="#00a9e0">
-        <Text [style]="styles.menuText">{{item.name}}</Text>
+        <native-text [style]="styles.menuText">{{item.name}}</native-text>
       </native-view>
     </native-view>
   </native-view>

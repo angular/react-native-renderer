@@ -9,10 +9,10 @@ import {StyleSheet} from 'react-native';
   template: `
 <native-view flexDirection="row" flex="1">
   <native-view [style]="styles.button" flex="1" nativeFeedback (tap)="goBack()">
-    <Text [style]="styles.buttonText">Back</Text>
+    <native-text [style]="styles.buttonText">Back</native-text>
   </native-view>
   <native-view [style]="styles.button" flex="1" nativeFeedback (tap)="goForward()">
-    <Text [style]="styles.buttonText">Forward</Text>
+    <native-text [style]="styles.buttonText">Forward</native-text>
   </native-view>
 </native-view>
 <WebView flex="11" url="https://www.angular.io" javaScriptEnabled="true" domStorageEnabled="true" automaticallyAdjustContentInsets="false">

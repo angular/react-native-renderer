@@ -102,7 +102,7 @@ describe('Component without host', () => {
 
   it('should support nested ngIf', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><View *ngIf="b"></View></View>`)
+    return tcb.overrideTemplate(TestComponent, `<View> <View *ngIf="b"> </View> </View>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();

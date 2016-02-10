@@ -1,4 +1,4 @@
-import {Node, nodeMap} from './node';
+import {Node, TextNode, nodeMap} from './node';
 import {ReactNativeWrapper} from './../wrapper/wrapper';
 
 export abstract class NativeCommand {
@@ -7,7 +7,7 @@ export abstract class NativeCommand {
 
   manageStyleProp(wrapper: ReactNativeWrapper, props: {[s: string]: any }): {[s: string]: any } {
     var styles: Array<any> = [];
-    styles = styles.concat(this._toArray(props['styleSheets']));
+    styles = styles.concat(this._toArray(props['styleSheet']));
     styles = styles.concat(this._toArray(props['style']));
     if (styles.length > 0) {
       var computedStyle: { [s: string]: any } = {};
@@ -19,7 +19,7 @@ export abstract class NativeCommand {
       for (var key in computedStyle) {
         props[key] = computedStyle[key];
       }
-      delete props['styleSheets'];
+      delete props['styleSheet'];
       delete props['style'];
     }
     return props;
@@ -47,8 +47,26 @@ export class NativeCommandCreate extends NativeCommand {
     for (var attrName in this.props) {
       props[attrName] = this.props[attrName];
     }
-    this.target.nativeTag = wrapper.createView(this.target.tagName, 1, this.manageStyleProp(wrapper, props));
-    nodeMap.set(this.target.nativeTag, this.target);
+    var ancestor = this.target.getAncestorWithNativeCreated();
+    var toBeCreated = false;
+    if (!(this.target instanceof TextNode)) {
+      toBeCreated = true;
+    } else {
+      toBeCreated = ancestor.isTextContainer();
+    }
+    if (toBeCreated) {
+      //TODO: generalize in a cleaner way
+      var tagName = this.target.tagName;
+      if (this.target.isTextContainer() && ancestor.isTextContainer()) {
+        tagName = 'native-virtualtext';
+      }
+      this.target.nativeTag = wrapper.createView(tagName, 1, this.manageStyleProp(wrapper, props));
+      nodeMap.set(this.target.nativeTag, this.target);
+    } else {
+      this.target.isVirtual = true;
+      this.target.isCreated = false;
+    }
+
   }
 }
 
@@ -74,7 +92,7 @@ export class NativeCommandAttach extends NativeCommand {
       wrapper.manageChildren(1, null, null, [this.target.nativeTag], [0], null);
     } else {
       var parent = this.target.parent;
-      if (parent && this.target.isCreated) {
+      if (parent && this.target.isCreated && !this.target.isVirtual) {
         var ancestor = this.target.getAncestorWithNativeCreated();
         if (ancestor) {
           wrapper.manageChildren(ancestor.nativeTag, null, null, [this.target.nativeTag], [ancestor.nativeChildren.length], null);
@@ -93,7 +111,7 @@ export class NativeCommandAttachAfter extends NativeCommand {
   execute(wrapper: ReactNativeWrapper) {
     var nativeIndex = this.anchor.getInsertionNativeIndex() + this.shift;
     var parent = this.target.parent;
-    if (parent && this.target.isCreated) {
+    if (parent && this.target.isCreated && !this.target.isVirtual) {
       var ancestor = this.target.getAncestorWithNativeCreated();
       if (ancestor) {
         wrapper.manageChildren(ancestor.nativeTag, null, null, [this.target.nativeTag], [nativeIndex], null);

@@ -12,14 +12,14 @@ import {Node} from '../renderer/node';
     //iOS
     'accessibilityTraits', 'shouldRasterizeIOS',
     //style
-    'styleSheets', 'style'
+    'styleSheet', 'style'
   ],
   template: `
 <native-view [accessible]="_accessible" [accessibilityLabel]="_accessibilityLabel" [testID]="_testID" [pointerEvents]="_pointerEvents" [removeClippedSubviews]="_removeClippedSubviews"
   [onLayout]="_onLayout" [collapsable]="_collapsable" [accessibilityLiveRegion]="_accessibilityLiveRegion" [accessibilityComponentType]="_accessibilityComponentType"
   [importantForAccessibility]="_importantForAccessibility" [needsOffscreenAlphaCompositing]="_needsOffscreenAlphaCompositing" [renderToHardwareTextureAndroid]="_renderToHardwareTextureAndroid"
   [nativeBackgroundAndroid]="_nativeBackgroundAndroid" [accessibilityTraits]="_accessibilityTraits" [shouldRasterizeIOS]="_shouldRasterizeIOS"
-  [styleSheets]="_styleSheets" [style]="_style">
+  [styleSheet]="_styleSheet" [style]="_style">
   <ng-content></ng-content>
 </native-view>`
 })
@@ -72,8 +72,8 @@ export class View {
   set shouldRasterizeIOS(value: any) { this._shouldRasterizeIOS = value == true || value == 'true';}
 
   //Style
-  private _styleSheets: Array<number>;
+  private _styleSheet: Array<number>;
   private _style: {[s: string]: any };
-  set styleSheets(value: Array<number>) {this._styleSheets = value;}
+  set styleSheet(value: Array<number>) {this._styleSheet = value;}
   set style(value: {[s: string]: any }) {this._style = value;}
 }

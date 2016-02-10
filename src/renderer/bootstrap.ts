@@ -31,13 +31,14 @@ import {HTTP_PROVIDERS} from './../http/xhr_backend';
 import {ROUTER_PROVIDERS, LocationStrategy} from 'angular2/router';
 import {ReactNativeLocationStrategy} from "./../router/location_strategy";
 import {View} from "./../components/view";
+import {Text} from "../components/text";
 
 
 export function bootstrapReactNative(appName:string, cpt: any) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
-      provide(PLATFORM_DIRECTIVES, {useValue: [View], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text], multi:true}),
       ROUTER_PROVIDERS,
       provide(LocationStrategy, { useClass: ReactNativeLocationStrategy }),
       HTTP_PROVIDERS,

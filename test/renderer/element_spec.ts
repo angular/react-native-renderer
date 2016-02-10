@@ -32,13 +32,13 @@ describe('Element', () => {
 
   it('should render element', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text>foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text>foo</native-text>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
 
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+Text+{},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-text+{},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
   }));
 
@@ -59,23 +59,23 @@ describe('Element', () => {
 
   it('should render element with attributes', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text fontSize="20">foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text fontSize="20">foo</native-text>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+Text+{"fontSize":20},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+native-text+{"fontSize":20},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
   it('should render element with style', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text [style]="n">foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text [style]="n">foo</native-text>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+Text+{"flex":1,"collapse":true},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+native-text+{"flex":1,"collapse":true},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
@@ -86,7 +86,7 @@ describe('Element', () => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+sub+{"flex":1},CREATE+5+Text+{},CREATE+6+RawText+{"text":"foo"},' +
+        'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+sub+{"flex":1},CREATE+5+native-text+{},CREATE+6+native-rawtext+{"text":"foo"},' +
         'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+4+5+0,ATTACH+5+6+0');
     });
   }));
@@ -98,63 +98,63 @@ describe('Element', () => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+sub+{"flex":1},CREATE+5+Text+{},CREATE+6+RawText+{"text":"foo"},' +
+        'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+sub+{"flex":1},CREATE+5+native-text+{},CREATE+6+native-rawtext+{"text":"foo"},' +
         'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+5+6+0,ATTACH+4+5+0,ATTACH+3+4+0');
     });
   }));
 
   it('should support interpolation', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text>{{s}}</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text>{{s}}</native-text>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+Text+{},CREATE+4+RawText+{"text":"bar"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+native-text+{},CREATE+4+native-rawtext+{"text":"bar"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
   it('should support binding to interpolated properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text foo="{{s}}">foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text foo="{{s}}">foo</native-text>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+Text+{"foo":"bar"},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+native-text+{"foo":"bar"},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
   it('should support binding to properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text [fontSize]="n">foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text [fontSize]="n">foo</native-text>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+Text+{"fontSize":20},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+native-text+{"fontSize":20},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
   it('should support binding to attributes (same as interpolated properties)', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text [attr.foo]="s">foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text [attr.foo]="s">foo</native-text>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+Text+{"foo":"bar"},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+        'CREATE+2+test-cmp+{},CREATE+3+native-text+{"foo":"bar"},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
     });
   }));
 
   it('should support NgIf', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text *ngIf="b">foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text *ngIf="b">foo</native-text>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+Text+{},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+3+4+0,ATTACH+2+3+0');
+        'CREATE+2+test-cmp+{},CREATE+3+native-text+{},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+3+4+0,ATTACH+2+3+0');
 
       mock.clearLogs();
       fixture.debugElement.componentInstance.b = false;
@@ -166,13 +166,13 @@ describe('Element', () => {
       fixture.debugElement.componentInstance.b = true;
       fixture.detectChanges();
       rootRenderer.executeCommands();
-      expect(mock.commandLogs.toString()).toEqual('CREATE+5+Text+{},CREATE+6+RawText+{"text":"foo"},ATTACH+5+6+0,ATTACH+2+5+0');
+      expect(mock.commandLogs.toString()).toEqual('CREATE+5+native-text+{},CREATE+6+native-rawtext+{"text":"foo"},ATTACH+5+6+0,ATTACH+2+5+0');
     });
   }));
 
   it('should support NgFor', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text *ngFor="#item of a">{{item}}</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text *ngFor="#item of a">{{item}}</native-text>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
@@ -198,7 +198,7 @@ describe('Element', () => {
   it('should support NgFor in a <template> and with line return', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<template ngFor #item [ngForOf]="a">
-    <Text>{{item}}</Text>
+    <native-text>{{item}}</native-text>
     </template>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
@@ -209,7 +209,7 @@ describe('Element', () => {
 
   it('should support NgFor with several children and right order', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<template ngFor #item [ngForOf]="d"><Text>{{item.a}}</Text><Text>{{item.b}}</Text></template>`)
+    return tcb.overrideTemplate(TestComponent, `<template ngFor #item [ngForOf]="d"><native-text>{{item.a}}</native-text><native-text>{{item.b}}</native-text></template>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
@@ -219,24 +219,24 @@ describe('Element', () => {
 
   it('should support ng-content', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<proj><Text>foo</Text><native-view></native-view></proj>`)
+    return tcb.overrideTemplate(TestComponent, `<proj><native-text>foo</native-text><native-view></native-view></proj>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+proj+{},CREATE+4+native-view+{},CREATE+5+Text+{},CREATE+6+RawText+{"text":"foo"},' +
+        'CREATE+2+test-cmp+{},CREATE+3+proj+{},CREATE+4+native-view+{},CREATE+5+native-text+{},CREATE+6+native-rawtext+{"text":"foo"},' +
         'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+5+6+0,ATTACH+3+5+1');
     });
   }));
 
   it('should support events', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text *ngIf="b" (someEvent)="handleEvent($event)">foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text *ngIf="b" (someEvent)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
-        'CREATE+2+test-cmp+{},CREATE+3+Text+{},CREATE+4+RawText+{"text":"foo"},ATTACH+1+2+0,ATTACH+3+4+0,ATTACH+2+3+0');
+        'CREATE+2+test-cmp+{},CREATE+3+native-text+{},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+3+4+0,ATTACH+2+3+0');
 
       mock.clearLogs();
       fixture.elementRef.nativeElement.children[1].fireEvent('someEvent', {});
@@ -253,7 +253,7 @@ describe('Element', () => {
 @Component({
   selector: 'sub',
   host: {flex: '1'},
-  template: `<Text>foo</Text>`
+  template: `<native-text>foo</native-text>`
 })
 class SubComponent {
 }
