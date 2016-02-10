@@ -104,18 +104,20 @@ export class NativeCommandAttach extends NativeCommand {
 }
 
 export class NativeCommandAttachAfter extends NativeCommand {
-  constructor(public target: Node, public anchor: Node, public shift: number = 0) {
+  constructor(public target: Node, public anchor: Node) {
     super(target);
   }
 
-  execute(wrapper: ReactNativeWrapper) {
-    var nativeIndex = this.anchor.getInsertionNativeIndex() + this.shift;
+  executeWithCounters(wrapper: ReactNativeWrapper, counters: Map<Node, number>) {
     var parent = this.target.parent;
     if (parent && this.target.isCreated && !this.target.isVirtual) {
       var ancestor = this.target.getAncestorWithNativeCreated();
       if (ancestor) {
+        var shift = counters.get(this.anchor) || 0;
+        var nativeIndex = this.anchor.getInsertionNativeIndex() + shift;
         wrapper.manageChildren(ancestor.nativeTag, null, null, [this.target.nativeTag], [nativeIndex], null);
         ancestor.nativeChildren.splice(nativeIndex, 0, this.target.nativeTag);
+        counters.set(this.anchor, shift + 1);
       }
     }
   }

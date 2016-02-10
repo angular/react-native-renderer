@@ -197,13 +197,16 @@ describe('Element', () => {
 
   it('should support NgFor in a <template> and with line return', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<template ngFor #item [ngForOf]="a">
+    return tcb.overrideTemplate(TestComponent, `
+<native-view>
+  <template ngFor #item [ngForOf]="a">
     <native-text>{{item}}</native-text>
-    </template>`)
+  </template>
+</native-view>`)
       .createAsync(TestComponent).then((fixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
-      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('1,2,3');
+      expect(mock.nativeElementMap.get(1).children[0].children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('1,2,3');
     });
   }));
 
@@ -253,7 +256,9 @@ describe('Element', () => {
 @Component({
   selector: 'sub',
   host: {flex: '1'},
-  template: `<native-text>foo</native-text>`
+  template: `
+<native-text>foo</native-text>
+`
 })
 class SubComponent {
 }

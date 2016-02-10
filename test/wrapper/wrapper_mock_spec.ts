@@ -54,6 +54,13 @@ describe('MockReactNativeWrapper', () => {
     expect(mock.root.children).toEqual([element1, element2]);
   });
 
+  it('should throw when attaching to impossible position', () => {
+    var mock = new MockReactNativeWrapper();
+    mock.createView('RCTView', 1, {});
+    mock.clearLogs();
+    expect(() => mock.manageChildren(1, null, null, [2], [1], null)).toThrow();
+  });
+
   it('should delete a native element', () => {
     var mock = new MockReactNativeWrapper();
     mock.createView('RCTView', 1, {});

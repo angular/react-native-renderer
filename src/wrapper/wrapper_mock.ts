@@ -76,7 +76,12 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
       var item = toBeAdded[i];
       var element = this.nativeElementMap.get(item.tag);
       element.parent = parentElement;
-      parentElement.children.splice(item.index, 0, element);
+      if (item.index <= parentElement.children.length) {
+        parentElement.children.splice(item.index, 0, element);
+      } else {
+        throw new Error(`manageChildren - ATTACH - Invalid index ${item.index},  size is ${parentElement.children.length}`);
+      }
+
       this.commandLogs.push(new Command('ATTACH', parentTag, item.tag + '+' + item.index));
     }
   }

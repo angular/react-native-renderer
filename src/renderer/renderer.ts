@@ -59,8 +59,8 @@ export class ReactNativeRootRenderer implements RootRenderer {
     this._attachCommands.set(node, new NativeCommandAttach(node, toRoot));
   }
 
-  addAttachAfterCommand(node: Node, anchor: Node, shift: number) {
-    this._attachAfterCommands.set(node, new NativeCommandAttachAfter(node, anchor, shift));
+  addAttachAfterCommand(node: Node, anchor: Node) {
+    this._attachAfterCommands.set(node, new NativeCommandAttachAfter(node, anchor));
   }
 
   addDetachCommand(node: Node) {
@@ -68,11 +68,13 @@ export class ReactNativeRootRenderer implements RootRenderer {
   }
 
   executeCommands(): void {
-    this._detachCommands.forEach((command: NativeCommand) => command.execute(this.wrapper));
-    this._createCommands.forEach((command: NativeCommand) => command.execute(this.wrapper));
-    this._updateCommands.forEach((command: NativeCommand) => command.execute(this.wrapper));
-    this._attachCommands.forEach((command: NativeCommand) => command.execute(this.wrapper));
-    this._attachAfterCommands.forEach((command: NativeCommand) => command.execute(this.wrapper));
+    this._detachCommands.forEach((command: NativeCommandDetach) => command.execute(this.wrapper));
+    this._createCommands.forEach((command: NativeCommandCreate) => command.execute(this.wrapper));
+    this._updateCommands.forEach((command: NativeCommandUpdate) => command.execute(this.wrapper));
+    this._attachCommands.forEach((command: NativeCommandAttach) => command.execute(this.wrapper));
+    var counters: Map<Node,number> = new Map<Node, number>();
+    this._attachAfterCommands.forEach((command: NativeCommandAttachAfter) => command.executeWithCounters(this.wrapper, counters));
+    counters.clear();
 
     this._detachCommands.clear();
     this._createCommands.clear();
@@ -163,17 +165,15 @@ export class ReactNativeRenderer implements Renderer {
   attachViewAfter(node: Node, viewRootNodes: Node[]): void {
     if (viewRootNodes.length > 0) {
       var index = node.parent.children.indexOf(node);
-      var shift = 0;
       for (var i = 0; i < viewRootNodes.length; i++) {
         var viewRootNode = viewRootNodes[i];
         viewRootNode.attachToAt(node.parent, index + i + 1);
         if (viewRootNode.getAncestorWithNativeCreated()) {
           this._createNativeRecursively(viewRootNode);
           if (!viewRootNode.isVirtual) {
-            this._rootRenderer.addAttachAfterCommand(viewRootNode, node, shift);
+            this._rootRenderer.addAttachAfterCommand(viewRootNode, node);
           }
         }
-        shift++;
       }
     }
   }
