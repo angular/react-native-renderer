@@ -1,31 +1,21 @@
-import {Component, ElementRef} from 'angular2/core';
+import {Component, ElementRef, Inject} from 'angular2/core';
+import {REACT_NATIVE_WRAPPER} from './../renderer/renderer';
+import {ReactNativeWrapper} from './../wrapper/wrapper';
 import {Node} from '../renderer/node';
+import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
 @Component({
   selector: 'View',
-  inputs: [
-    //all
-    'accessible', 'accessibilityLabel', 'testID', 'pointerEvents', 'removeClippedSubviews', 'onLayout',
-    //Android
-    'collapsable', 'accessibilityLiveRegion', 'accessibilityComponentType', 'importantForAccessibility',
-    'needsOffscreenAlphaCompositing', 'renderToHardwareTextureAndroid ', 'nativeBackgroundAndroid',
-    //iOS
-    'accessibilityTraits', 'shouldRasterizeIOS',
-    //style
-    'styleSheet', 'style'
-  ],
+  inputs: GENERIC_INPUTS,
   template: `
-<native-view [accessible]="_accessible" [accessibilityLabel]="_accessibilityLabel" [testID]="_testID" [pointerEvents]="_pointerEvents" [removeClippedSubviews]="_removeClippedSubviews"
-  [onLayout]="_onLayout" [collapsable]="_collapsable" [accessibilityLiveRegion]="_accessibilityLiveRegion" [accessibilityComponentType]="_accessibilityComponentType"
-  [importantForAccessibility]="_importantForAccessibility" [needsOffscreenAlphaCompositing]="_needsOffscreenAlphaCompositing" [renderToHardwareTextureAndroid]="_renderToHardwareTextureAndroid"
-  [nativeBackgroundAndroid]="_nativeBackgroundAndroid" [accessibilityTraits]="_accessibilityTraits" [shouldRasterizeIOS]="_shouldRasterizeIOS"
-  [styleSheet]="_styleSheet" [style]="_style">
+<native-view ${GENERIC_BINDINGS}>
   <ng-content></ng-content>
 </native-view>`
 })
-export class View {
+export class View extends HighLevelComponent {
   private _nativeElement: Node;
-  constructor(el: ElementRef) {
+  constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper, el: ElementRef) {
+    super(wrapper);
     this._nativeElement = el.nativeElement;
   }
 
@@ -36,44 +26,4 @@ export class View {
   hotspotUpdate(x: number, y: number) {
     this._nativeElement.children[1].dispatchCommand('hotspotUpdate', [x || 0, y || 0]);
   }
-
-  //Properties
-  private _accessible: boolean;
-  private _accessibilityLabel: string;
-  private _testID: string;
-  private _pointerEvents: string;
-  private _removeClippedSubviews: boolean;
-  private _onLayout: boolean;
-  set accessible(value: any) { this._accessible = value == true || value == 'true';}
-  set accessibilityLabel(value: string) {this._accessibilityLabel = value;}
-  set testID(value: string) {this._testID = value;}
-  set pointerEvents(value: string) {this._pointerEvents = (['box-none', 'none', 'box-only', 'auto'].indexOf(value) > -1) ? value : 'auto';}
-  set removeClippedSubviews(value: any) { this._removeClippedSubviews = value == true || value == 'true';}
-  set onLayout(value: any) { this._onLayout = value == true || value == 'true';}
-
-  private _collapsable: boolean;
-  private _accessibilityLiveRegion: string;
-  private _accessibilityComponentType: string;
-  private _importantForAccessibility: string;
-  private _needsOffscreenAlphaCompositing: boolean;
-  private _renderToHardwareTextureAndroid: boolean;
-  private _nativeBackgroundAndroid: any;
-  set collapsable(value: any) { this._collapsable = value == true || value == 'true';}
-  set accessibilityLiveRegion(value: string) {this._accessibilityLiveRegion = value;}
-  set accessibilityComponentType(value: string) {this._accessibilityComponentType = value;}
-  set importantForAccessibility(value: string) {this._importantForAccessibility = value;}
-  set needsOffscreenAlphaCompositing(value: any) { this._needsOffscreenAlphaCompositing = value == true || value == 'true';}
-  set renderToHardwareTextureAndroid(value: any) { this._renderToHardwareTextureAndroid = value == true || value == 'true';}
-  set nativeBackgroundAndroid(value: any) {this._nativeBackgroundAndroid = value;}
-
-  private _accessibilityTraits: any;
-  private _shouldRasterizeIOS: boolean;
-  set accessibilityTraits(value: any) {this._accessibilityTraits = value;}
-  set shouldRasterizeIOS(value: any) { this._shouldRasterizeIOS = value == true || value == 'true';}
-
-  //Style
-  private _styleSheet: Array<number>;
-  private _style: {[s: string]: any };
-  set styleSheet(value: Array<number>) {this._styleSheet = value;}
-  set style(value: {[s: string]: any }) {this._style = value;}
 }

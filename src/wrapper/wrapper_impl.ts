@@ -15,6 +15,7 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-text': 'RCTText',
   'native-rawtext': 'RCTRawText',
   'native-virtualtext': 'RCTVirtualText',
+  'native-switch': 'AndroidSwitch',
 
   "DropdownPicker": "AndroidDropdownPicker",
   "DialogPicker": "AndroidDialogPicker",
@@ -24,7 +25,6 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   "ProgressBar": "AndroidProgressBar",
   "ScrollView": "RCTScrollView",
   "HorizontalScrollView" : "AndroidHorizontalScrollView",
-  "Switch": "AndroidSwitch",
   "SwipeRefreshLayout": "AndroidSwipeRefreshLayout",
   "InlineImage": "RCTTextInlineImage",
   "TextInput": "AndroidTextInput",

@@ -107,7 +107,7 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
     //Not needed in Mock
   };
   processColor(color: string): number {
-    return -1
+    return 42;
   }
 
   $log(...args: any[]) {

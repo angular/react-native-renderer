@@ -20,3 +20,9 @@ export function fireEvent(name: string, target: any, timeStamp: number = 0, touc
   target.fireEvent(name, event);
 
 }
+
+export function fireFunctionalEvent(name: string, target: any, data: any) {
+  data._stop = true;
+  data.type = name;
+  target.fireEvent(name, data);
+}

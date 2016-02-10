@@ -10,11 +10,12 @@ import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {CustomTestComponentBuilder} from "../../src/testing/test_component_builder";
-import {Text} from "./../../src/components/text";
+import {Switch} from "./../../src/components/switch";
+import {fireFunctionalEvent} from './../utils';
 
 var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
 
-describe('Text component', () => {
+describe('Switch component', () => {
 
   beforeEach(() => {
     mock.reset();
@@ -32,56 +33,73 @@ describe('Text component', () => {
 
   it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text>foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<Switch></Switch>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-text+{},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-switch+{"on":false,"enabled":true,"height":31,"width":51},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
   it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text [accessible]="true" testID="foo" allowFontScaling="{{true}}">foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<Switch [accessible]="true" testID="foo" thumbTintColor="#ABC123"></Switch>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-text+{"allowFontScaling":true,"accessible":true,"testID":"foo"},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-switch+{"on":false,"enabled":true,"thumbTintColor":42,"accessible":true,"testID":"foo","height":31,"width":51},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
   it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text [styleSheet]="20" [style]="{fontSize: 42}">foo</Text>`)
+    return tcb.overrideTemplate(TestComponent, `<Switch [styleSheet]="20" [style]="{width: 100}"></Switch>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-text+{"flex":1,"collapse":true,"fontSize":42},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-switch+{"on":false,"enabled":true,"height":31,"width":100,"flex":1,"collapse":true},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
-  it('should support nested Text', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should fire change event', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Text>foo<Text>bar</Text></Text>`)
+    return tcb.overrideTemplate(TestComponent, `<Switch (changed)="handleChange($event)"></Switch>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
-        expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-text+{},CREATE+4+native-rawtext+{"text":"foo"},CREATE+5+native-virtualtext+{},CREATE+6+native-rawtext+{"text":"bar"},' +
-          'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+5+6+0,ATTACH+3+5+1');
+        mock.clearLogs();
+
+        var target = fixture.elementRef.nativeElement.children[0].children[0];
+        fireFunctionalEvent('topChange', target, {value: true});
+        fixture.detectChanges();
+
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            expect(fixture.componentInstance.log.join(',')).toEqual('true');
+            fixture.detectChanges();
+            rootRenderer.executeCommands();
+            expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-switch+{"on":true}');
+            resolve();
+          }, 30);
+        });
+
       });
   }));
-
 });
 
 @Component({
   selector: 'test-cmp',
   template: `to be overriden`,
-  directives: [Text]
+  directives: [Switch]
 })
 class TestComponent {
-  @ViewChild(Text) text: Text
+  @ViewChild(Switch) switch: Switch;
+  log: Array<boolean> = [];
+
+  handleChange(state: boolean) {
+    this.log.push(state);
+  }
 }

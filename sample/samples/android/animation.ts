@@ -100,7 +100,7 @@ export class Ball {
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   directives: [NgFor, NativeFeedback, Ball],
   template: `
-<Switch height="27" width="50" (topChange)="withTodoMVC=$event.value; $event.target.setProperty('on', $event.value)"></Switch>
+<native-switch height="27" width="50" (topChange)="withTodoMVC=$event.value; $event.target.setProperty('on', $event.value)"></native-switch>
 <ball *ngFor="#ball of balls" x="{{ball.x}}" y="{{ball.y}}" color="{{ball.color}}" radius="{{ball.radius}}" [withTodoMVC]="withTodoMVC" (tap)="moveAll()" (startMove)="startMove()"></ball>
 `
 })

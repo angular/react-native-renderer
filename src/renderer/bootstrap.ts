@@ -6,6 +6,7 @@ import {ReactNativeWrapperImpl} from './../wrapper/wrapper_impl';
 import 'reflect-metadata';
   // Zone.js
 import {Zone} from 'zone.js/build/lib/core';
+
 global.Zone = Zone;
 global.zone = new Zone();
 import {patchSetClearFunction} from 'zone.js/build/lib/patch/functions';
@@ -32,13 +33,13 @@ import {ROUTER_PROVIDERS, LocationStrategy} from 'angular2/router';
 import {ReactNativeLocationStrategy} from "./../router/location_strategy";
 import {View} from "./../components/view";
 import {Text} from "../components/text";
-
+import {Switch} from "../components/switch";
 
 export function bootstrapReactNative(appName:string, cpt: any) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
-      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch], multi:true}),
       ROUTER_PROVIDERS,
       provide(LocationStrategy, { useClass: ReactNativeLocationStrategy }),
       HTTP_PROVIDERS,
