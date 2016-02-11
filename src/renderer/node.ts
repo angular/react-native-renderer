@@ -56,6 +56,12 @@ export abstract class Node {
         if (prev.nativeTag > -1) {
           nativeIndex = this.parent.nativeChildren.indexOf(prev.nativeTag);
           count = 0;
+        } else if (prev.isVirtual) {
+          var nativeChild = prev.getFirstCreatedChild();
+          if (nativeChild) {
+            nativeIndex = this.parent.nativeChildren.indexOf(nativeChild.nativeTag);
+            count = 0;
+          }
         }
         count--;
       }

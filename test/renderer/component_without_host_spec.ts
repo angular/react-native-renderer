@@ -140,6 +140,23 @@ describe('Component without host', () => {
       });
   }));
 
+  it('should support ngFor on an element next to a component', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+    var rootRenderer = _rootRenderer;
+    return tcb.overrideTemplate(TestComponent, `<View></View><native-view *ngFor="#item of a"></native-view>`)
+      .createAsync(TestComponent).then((fixture) => {
+        fixture.detectChanges();
+        rootRenderer.executeCommands();
+        expect(mock.commandLogs.toString()).toEqual(
+          'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},CREATE+5+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+2+4+1,ATTACH+2+5+2');
+
+        mock.clearLogs();
+        fixture.debugElement.componentInstance.a.pop();
+        fixture.detectChanges();
+        rootRenderer.executeCommands();
+        expect(mock.commandLogs.toString()).toEqual('DETACH+2+2');
+      });
+  }));
+
   it('should support projection', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<proj><sub></sub><View></View></proj>`)
