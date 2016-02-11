@@ -35,7 +35,7 @@ export abstract class HighLevelComponent {
   set accessible(value: any) { this._accessible = this.processBoolean(value);}
   set accessibilityLabel(value: string) {this._accessibilityLabel = value;}
   set testID(value: string) {this._testID = value;}
-  set pointerEvents(value: string) {this._pointerEvents = (['box-none', 'none', 'box-only', 'auto'].indexOf(value) > -1) ? value : 'auto';}
+  set pointerEvents(value: string) {this._pointerEvents = this.processEnum(value, ['auto', 'box-none', 'none', 'box-only']);}
   set removeClippedSubviews(value: any) { this._removeClippedSubviews = this.processBoolean(value);}
   set onLayout(value: any) { this._onLayout = this.processBoolean(value);}
 
@@ -77,7 +77,15 @@ export abstract class HighLevelComponent {
     return value == true || value == 'true';
   }
 
+  processNumber(value: any): number {
+    return (!isNaN(parseInt(value))) ? parseInt(value) : value;
+  }
+
   processColor(color: string): number {
     return this._wrapper.processColor(color);
+  }
+
+  processEnum(value: string, list: Array<String>) {
+    return list.indexOf(value) > -1 ? value : list[0];
   }
 }

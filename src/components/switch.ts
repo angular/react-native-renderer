@@ -13,7 +13,7 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component"
   ].concat(GENERIC_INPUTS),
   template: `<native-switch [on]="_on" [enabled]="_enabled"
   [onTintColor]="_onTintColor" [thumbTintColor]="_thumbTintColor" [tintColor]="_tintColor"
-  (topChange)="_handleChange($event)" ${GENERIC_BINDINGS}><ng-content></ng-content></native-switch>`
+  (topChange)="_handleChange($event)" ${GENERIC_BINDINGS}></native-switch>`
 })
 export class Switch extends HighLevelComponent {
   constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
@@ -22,7 +22,7 @@ export class Switch extends HighLevelComponent {
   }
 
   //Events
-  @Output() changed: EventEmitter<boolean> = new EventEmitter();
+  @Output() change: EventEmitter<boolean> = new EventEmitter();
 
   //Properties
   private _on: boolean = false;
@@ -39,6 +39,6 @@ export class Switch extends HighLevelComponent {
 
   _handleChange(event: any) {
     this._on = event.value;
-    this.changed.emit(this._on);
+    this.change.emit(this._on);
   }
 }

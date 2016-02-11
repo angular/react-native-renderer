@@ -34,12 +34,13 @@ import {ReactNativeLocationStrategy} from "./../router/location_strategy";
 import {View} from "./../components/view";
 import {Text} from "../components/text";
 import {Switch} from "../components/switch";
+import {TextInput} from "../components/textinput";
 
 export function bootstrapReactNative(appName:string, cpt: any) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
-      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput], multi:true}),
       ROUTER_PROVIDERS,
       provide(LocationStrategy, { useClass: ReactNativeLocationStrategy }),
       HTTP_PROVIDERS,

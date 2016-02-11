@@ -16,6 +16,7 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-rawtext': 'RCTRawText',
   'native-virtualtext': 'RCTVirtualText',
   'native-switch': 'AndroidSwitch',
+  'native-textinput' : 'AndroidTextInput',
 
   "DropdownPicker": "AndroidDropdownPicker",
   "DialogPicker": "AndroidDialogPicker",

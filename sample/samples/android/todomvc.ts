@@ -27,7 +27,7 @@ class Todo {
 <native-view [style]="styles.row">
 <native-text [style]="[styles.tick, item.active ? styles.tickOff : styles.tickOn]" highlight (tap)="toggle($event)">{{item.active ? "[  ]" : "[x]"}}</native-text>
 <native-text *ngIf="!item.edited" [style]="[styles.main, item.active ? styles.mainOff : styles.mainOn]" (doubletap)="startEdit()">{{item.value}}</native-text>
-<TextInput *ngIf="item.edited" [style]="styles.editor" [text]="item.value" mostRecentEventCount="0" (tap)="$event.target.focus()" (topSubmitEditing)="stopEdit($event)"></TextInput>
+<native-input *ngIf="item.edited" [style]="styles.editor" [text]="item.value" mostRecentEventCount="0" (tap)="$event.target.focus()" (topSubmitEditing)="stopEdit($event)"></native-input>
 <native-text [style]="styles.cross" highlight (tap)="delete()">X</native-text>
 </native-view>
 `
@@ -116,7 +116,7 @@ export class TodoItem {
   template: `
 <native-view flexDirection="row">
   <native-text [style]="[styles.all, leftCount == 0 ? styles.allOn : styles.allOff]" (tap)="selectAll()">V</native-text>
-  <TextInput [style]="styles.input" text="" mostRecentEventCount="0" placeholder="What needs to be done?" (tap)="$event.target.focus()" (topSubmitEditing)="createTodo($event)"></TextInput>
+  <native-input [style]="styles.input" text="" mostRecentEventCount="0" placeholder="What needs to be done?" (tap)="$event.target.focus()" (topSubmitEditing)="createTodo($event)"></native-input>
 </native-view>
 <ScrollView [style]="styles.scroll">
   <native-view collapsable="false">

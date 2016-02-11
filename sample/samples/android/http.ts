@@ -1,8 +1,9 @@
-import {Component} from 'angular2/core';
+import {Component, ViewChild} from 'angular2/core';
 import {NgFor} from 'angular2/common';
 import {Http} from 'angular2/http';
 import 'rxjs/add/operator/map';
 
+import {TextInput} from 'react-native-renderer/react-native-renderer';
 import {NativeFeedback} from './common';
 import {StyleSheet} from 'react-native';
 
@@ -11,17 +12,18 @@ import {StyleSheet} from 'react-native';
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   directives: [NativeFeedback, NgFor],
   template: `
-<TextInput text="" mostRecentEventCount="0" placeholder="Search Wikipedia" (tap)="$event.target.focus()" (topSubmitEditing)="sendXHR($event)"></TextInput>
+<TextInput placeholder="Search Wikipedia" (submit)="sendXHR($event)"></TextInput>
 <native-text *ngFor="#page of pages">{{page}}</native-text>
 `
 })
 export class HttpApp {
+  @ViewChild(TextInput) textInput: TextInput;
   pages: Array<any> = [];
   constructor(private http: Http) {}
 
-  sendXHR(event: any) {
-    if (event.text && event.text.length > 0) {
-      this.http.get('https://en.wikipedia.org/w/api.php?format=json&action=query&generator=allpages&gaplimit=10&gapfrom=' + event.text)
+  sendXHR(text: string) {
+    if (text && text.length > 0) {
+      this.http.get('https://en.wikipedia.org/w/api.php?format=json&action=query&generator=allpages&gaplimit=10&gapfrom=' + text)
         .map(res => res.json())
         .subscribe(data => {
           this.pages = [];
@@ -30,7 +32,8 @@ export class HttpApp {
             this.pages.push(raw[key].title);
           }
         });
+      this.textInput.blurTextInput();
     }
-    event.target.blur();
+
   }
 }

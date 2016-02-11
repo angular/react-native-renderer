@@ -7,10 +7,7 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component"
 @Component({
   selector: 'View',
   inputs: GENERIC_INPUTS,
-  template: `
-<native-view ${GENERIC_BINDINGS}>
-  <ng-content></ng-content>
-</native-view>`
+  template: `<native-view ${GENERIC_BINDINGS}><ng-content></ng-content></native-view>`
 })
 export class View extends HighLevelComponent {
   private _nativeElement: Node;
@@ -21,9 +18,10 @@ export class View extends HighLevelComponent {
 
   //Commands
   setPressed(isPressed: boolean) {
-    this._nativeElement.children[1].dispatchCommand('setPressed', [isPressed]);
+    this._nativeElement.children[0].dispatchCommand('setPressed', [isPressed]);
   }
+
   hotspotUpdate(x: number, y: number) {
-    this._nativeElement.children[1].dispatchCommand('hotspotUpdate', [x || 0, y || 0]);
+    this._nativeElement.children[0].dispatchCommand('hotspotUpdate', [x || 0, y || 0]);
   }
 }

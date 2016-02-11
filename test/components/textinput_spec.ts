@@ -10,12 +10,12 @@ import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {CustomTestComponentBuilder} from "../../src/testing/test_component_builder";
-import {Switch} from "./../../src/components/switch";
+import {TextInput} from "./../../src/components/textinput";
 import {fireFunctionalEvent} from './../utils';
 
 var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
 
-describe('Switch component', () => {
+describe('Input component', () => {
 
   beforeEach(() => {
     mock.reset();
@@ -33,70 +33,104 @@ describe('Switch component', () => {
 
   it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Switch></Switch>`)
+    return tcb.overrideTemplate(TestComponent, `<TextInput></TextInput>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-switch+{"on":false,"enabled":true,"height":31,"width":51},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
   it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Switch [accessible]="true" testID="foo" thumbTintColor="#ABC123"></Switch>`)
+    return tcb.overrideTemplate(TestComponent, `<TextInput [accessible]="true" testID="foo" defaultValue="bar"></TextInput>
+    <TextInput [accessible]="true" testID="foo" defaultValue="bar" value="{{'baz'}}"></TextInput>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-switch+{"on":false,"enabled":true,"thumbTintColor":42,"accessible":true,"testID":"foo","height":31,"width":51},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{"text":"bar","accessible":true,"testID":"foo"},' +
+          'CREATE+4+native-textinput+{"text":"baz","accessible":true,"testID":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+2+4+1');
       });
   }));
 
   it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Switch [styleSheet]="20" [style]="{width: 100}"></Switch>`)
+    return tcb.overrideTemplate(TestComponent, `<TextInput [styleSheet]="20" [style]="{width: 100}"></TextInput>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-switch+{"on":false,"enabled":true,"height":31,"width":100,"flex":1,"collapse":true},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{"flex":1,"collapse":true,"width":100},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
   it('should fire change event', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Switch (change)="handleChange($event)"></Switch>`)
+    return tcb.overrideTemplate(TestComponent, `<TextInput value="bar" (change)="handleChange($event)"></TextInput>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
-        fireFunctionalEvent('topChange', target, {value: true});
+        fireFunctionalEvent('topChange', target, {text: "foo"});
         fixture.detectChanges();
 
         return new Promise((resolve) => {
           setTimeout(() => {
-            expect(fixture.componentInstance.log.join(',')).toEqual('true');
-            fixture.detectChanges();
             rootRenderer.executeCommands();
-            expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-switch+{"on":true}');
+            expect(fixture.componentInstance.log.join(',')).toEqual('foo');
+            expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-textinput+{"text":"bar"}');
             resolve();
           }, 30);
         });
 
       });
   }));
+
+  it('should dispatch commands', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+    var rootRenderer = _rootRenderer;
+    return tcb.overrideTemplate(TestComponent, `<TextInput></TextInput>`)
+      .createAsync(TestComponent).then((fixture) => {
+        fixture.detectChanges();
+        rootRenderer.executeCommands();
+        mock.clearLogs();
+
+        fixture.debugElement.componentInstance.textInput.focusTextInput();
+        expect(mock.commandLogs.toString()).toEqual(
+          'COMMAND+3+focusTextInput');
+      });
+  }));
+
+  it('should autofocus', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+    var rootRenderer = _rootRenderer;
+    return tcb.overrideTemplate(TestComponent, `<TextInput [autoFocus]="true"></TextInput>`)
+      .createAsync(TestComponent).then((fixture) => {
+        fixture.detectChanges();
+        rootRenderer.executeCommands();
+        mock.clearLogs();
+
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            fixture.detectChanges();
+            expect(mock.commandLogs.toString()).toEqual('COMMAND+3+focusTextInput');
+            resolve();
+          }, 50);
+        });
+      });
+  }));
+
 });
 
 @Component({
   selector: 'test-cmp',
   template: `to be overriden`,
-  directives: [Switch]
+  directives: [TextInput]
 })
 class TestComponent {
-  @ViewChild(Switch) switch: Switch;
+  @ViewChild(TextInput) textInput: TextInput;
   log: Array<boolean> = [];
 
   handleChange(state: boolean) {
