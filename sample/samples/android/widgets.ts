@@ -30,7 +30,7 @@ import {StyleSheet} from 'react-native';
   <native-view [style]="styles.container">
     <native-text [style]="styles.title">Inputs and text</native-text>
     <native-text margin="10">Text input {{typed.length > 0 ? '-> ' + typed : ''}}</native-text>
-    <native-input placeholder="Type in" (topTouchEnd)="$event.target.dispatchCommand('focusTextInput')" (topSubmitEditing)="typed=$event.text; $event.target.dispatchCommand('blurTextInput')"></native-input>
+    <native-textinput placeholder="Type in" (topTouchEnd)="$event.target.dispatchCommand('focusTextInput')" (topSubmitEditing)="typed=$event.text; $event.target.dispatchCommand('blurTextInput')"></native-textinput>
     <native-text margin="10">Switch ({{switched}})</native-text>
     <Switch (change)="switched=$event"></Switch>
     <native-text margin="10">Pickers ({{selected}})</native-text>
