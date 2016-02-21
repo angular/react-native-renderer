@@ -22,7 +22,7 @@ import {NativeFeedback} from './common';
     <native-view [style]="styles.button" nativeFeedback (tap)="setClipboard()">
       <native-text [style]="styles.buttonText">Clipboard</native-text>
     </native-view>
-    <native-text>Current clipboard value: {{clipcoardContent}}</native-text>
+    <native-text>Current clipboard value: {{clipBoardContent}}</native-text>
   </native-view>
   <native-view [style]="styles.container">
     <native-text [style]="styles.title">Infos</native-text>
@@ -42,7 +42,7 @@ import {NativeFeedback} from './common';
 })
 export class APIsList {
   styles: any;
-  clipcoardContent: string = '';
+  clipBoardContent: string = '';
   platform: string = '';
   ratio: string = '';
   location: string = 'Fetching ...';
@@ -54,7 +54,7 @@ export class APIsList {
     this.styles = this._getStyles();
     this.platform = `OS: ${Platform.OS}, version: ${Platform.Version}`;
     this.ratio = PixelRatio.get();
-    Clipboard.getString((content: string) => this.zone.run(() => this.clipcoardContent = content));
+    Clipboard.getString().then((content: string) => this.clipBoardContent = content);
     navigator.geolocation.getCurrentPosition(
       (position) => this.zone.run(() => this.location = JSON.stringify(position)),
       (error) => alert(error.message),
@@ -93,9 +93,9 @@ export class APIsList {
   }
 
   setClipboard() {
-    var newValue = this.clipcoardContent == 'foo' ? 'bar' : 'foo';
+    var newValue = this.clipBoardContent == 'foo' ? 'bar' : 'foo';
     Clipboard.setString(newValue);
-    Clipboard.getString((content: string) => this.zone.run(() => this.clipcoardContent = content));
+    Clipboard.getString().then((content: string) => this.clipBoardContent = content);
   }
 
   _getStyles() {

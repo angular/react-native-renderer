@@ -15,7 +15,7 @@ import {StyleSheet} from 'react-native';
     <native-text [style]="styles.buttonText">Forward</native-text>
   </native-view>
 </native-view>
-<WebView flex="11" url="https://www.angular.io" javaScriptEnabled="true" domStorageEnabled="true" automaticallyAdjustContentInsets="false">
+<WebView flex="11" [source]="{uri: 'https://www.angular.io'}" javaScriptEnabled="true" domStorageEnabled="true" automaticallyAdjustContentInsets="false">
 </WebView>
 `
 })

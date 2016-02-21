@@ -48,10 +48,15 @@ gulp.task('!postcreate', ['!create'], function() {
 });
 gulp.task('init', ['!postcreate'], function() {
   var filterJS = filter('angular2/**/*.js', {restore: true});
+  //TODO: remove hack once Babbel is somehow fixed
+  var tmpHack = filter('rxjs/util/SymbolShim.js', {restore: true});
   return gulp.src(PATHS.modules, { base: './node_modules/' })
   .pipe(filterJS)
   .pipe(strip())
   .pipe(filterJS.restore)
+  .pipe(tmpHack)
+  .pipe(transformSymbolShim())
+  .pipe(tmpHack.restore)
   .pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules'));
 });
 
@@ -225,6 +230,14 @@ function transformCommonJSTests() {
   });
 }
 
+function transformSymbolShim() {
+  return through2.obj(function (file, encoding, done) {
+    file.contents = new Buffer(fixedSymbolShim);
+    this.push(file);
+    done();
+  });
+}
+
 function transformAndroidManifest() {
   return through2.obj(function (file, encoding, done) {
     var content = String(file.contents);
@@ -248,3 +261,72 @@ function customReporter() {
     finish: typescript.reporter.defaultFinishHandler
   };
 }
+
+var fixedSymbolShim = `var root_1 = require('./root');
+function polyfillSymbol(root) {
+    var Symbol = ensureSymbol(root);
+    ensureIterator(Symbol, root);
+    ensureObservable(Symbol);
+    ensureFor(Symbol);
+    return Symbol;
+}
+exports.polyfillSymbol = polyfillSymbol;
+function ensureFor(Symboll) {
+    if (!Symboll.for) {
+        Symboll.for = symbolForPolyfill;
+    }
+}
+exports.ensureFor = ensureFor;
+var id = 0;
+function ensureSymbol(root) {
+    if (!root.Symbol) {
+        root.Symbol = function symbolFuncPolyfill(description) {
+            return "@@Symbol(" + description + "):" + id++;
+        };
+    }
+    return root.Symbol;
+}
+exports.ensureSymbol = ensureSymbol;
+function symbolForPolyfill(key) {
+    return '@@' + key;
+}
+exports.symbolForPolyfill = symbolForPolyfill;
+function ensureIterator(Symboll, root) {
+    if (!Symboll.iterator) {
+        if (typeof Symboll.for === 'function') {
+            Symboll.iterator = Symboll.for('iterator');
+        }
+        else if (root.Set && typeof new root.Set()['@@iterator'] === 'function') {
+            // Bug for mozilla version
+            Symboll.iterator = '@@iterator';
+        }
+        else if (root.Map) {
+            // es6-shim specific logic
+            var keys = Object.getOwnPropertyNames(root.Map.prototype);
+            for (var i = 0; i < keys.length; ++i) {
+                var key = keys[i];
+                if (key !== 'entries' && key !== 'size' && root.Map.prototype[key] === root.Map.prototype['entries']) {
+                    Symboll.iterator = key;
+                    break;
+                }
+            }
+        }
+        else {
+            Symboll.iterator = '@@iterator';
+        }
+    }
+}
+exports.ensureIterator = ensureIterator;
+function ensureObservable(Symboll) {
+    if (!Symboll.observable) {
+        if (typeof Symboll.for === 'function') {
+            Symboll.observable = Symboll.for('observable');
+        }
+        else {
+            Symboll.observable = '@@observable';
+        }
+    }
+}
+exports.ensureObservable = ensureObservable;
+exports.SymbolShim = polyfillSymbol(root_1.root);
+//# sourceMappingURL=SymbolShim.js.map`;
