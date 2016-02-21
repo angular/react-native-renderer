@@ -1,5 +1,5 @@
 //ReactNative
-import {ReactNativeWrapper} from "./wrapper";
+import {ReactNativeWrapper, overridePlatform} from "./wrapper";
 var ReactNative = require('react-native');
 var AppRegistry = ReactNative.AppRegistry;
 var UIManager = ReactNative.NativeModules.UIManager;
@@ -9,6 +9,8 @@ var ReactNativeEventEmitter = require('ReactNativeEventEmitter');
 var ReactNativeTagHandles = require('ReactNativeTagHandles');
 var ReactNativeAttributePayload = require('ReactNativeAttributePayload');
 var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
+
+overridePlatform(ReactNative.Platform.OS);
 
 const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-view': 'RCTView',
@@ -141,6 +143,10 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
       }
 
     };
+  }
+
+  isAndroid(): boolean {
+    return ReactNative.Platform.OS == 'android';
   }
   
   $log(...args: any[]) {

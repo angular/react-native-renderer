@@ -1,16 +1,20 @@
 import {Component} from 'angular2/core';
+import {isAndroid} from './../wrapper/wrapper';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
+
+var ANDROID_INPUTS: Array<string> = [];
+var IOS_INPUTS: Array<string> = ['allowFontScaling', 'suppressHighlighting'];
+
+var ANDROID_BINDINGS: string = ``;
+var IOS_BINDINGS: string = `[allowFontScaling]="_allowFontScaling" [suppressHighlighting]="_suppressHighlighting"`;
 
 @Component({
   selector: 'Text',
   inputs: [
-    //Both
-    'numberOfLines',
-    //iOS
-    'allowFontScaling', 'suppressHighlighting'
-  ].concat(GENERIC_INPUTS),
-  template: `<native-text [numberOfLines]="_numberOfLines"[allowFontScaling]="_allowFontScaling" [suppressHighlighting]="_suppressHighlighting"
-  ${GENERIC_BINDINGS}><ng-content></ng-content></native-text>`
+    'numberOfLines'
+  ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
+  template: `<native-text [numberOfLines]="_numberOfLines"
+  ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}><ng-content></ng-content></native-text>`
 })
 export class Text extends HighLevelComponent{
   //Properties

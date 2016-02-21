@@ -48,7 +48,7 @@ describe('Text component', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-text+{"allowFontScaling":true,"accessible":true,"testID":"foo"},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-text+{"accessible":true,"testID":"foo"},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
   }));
 

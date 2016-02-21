@@ -1,10 +1,11 @@
-import {ReactNativeWrapper} from "./wrapper";
+import {ReactNativeWrapper, overridePlatform} from "./wrapper";
 
 export class MockReactNativeWrapper extends ReactNativeWrapper {
   commandLogs: Array<Command>;
   root: NativeElement;
   nativeElementMap: Map<number, NativeElement>;
   private _lastTagUsed: number;
+  private _platform: string;
 
   constructor() {
     super();
@@ -17,6 +18,7 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
     this.nativeElementMap = new Map<number, NativeElement>();
     this._lastTagUsed = 1;
     this.nativeElementMap.set(1, this.root);
+    this._platform = 'android';
   }
 
   clearLogs() {
@@ -113,6 +115,15 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
   };
   processColor(color: string): number {
     return 42;
+  }
+
+  isAndroid(): boolean {
+    return this._platform == 'android';
+  }
+
+  setPlatform(platform: string): void {
+    this._platform = platform;
+    overridePlatform(platform);
   }
 
   $log(...args: any[]) {

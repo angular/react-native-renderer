@@ -128,4 +128,11 @@ describe('MockReactNativeWrapper', () => {
     expect(mock.computeStyle([20, {margin: 10}])).toEqual({flex: 1, collapse: true, margin: 10});
   });
 
+  it('should support platform', () => {
+    var mock = new MockReactNativeWrapper();
+    expect(mock.isAndroid()).toEqual(true);
+    mock.setPlatform('iOS');
+    expect(mock.isAndroid()).toEqual(false);
+  });
+
 });

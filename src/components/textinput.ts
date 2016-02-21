@@ -1,28 +1,30 @@
 import {Component, Inject, NgZone, ElementRef, Input, Output, EventEmitter, OnInit} from 'angular2/core';
 import {REACT_NATIVE_WRAPPER} from './../renderer/renderer';
-import {ReactNativeWrapper} from './../wrapper/wrapper';
+import {ReactNativeWrapper, isAndroid} from './../wrapper/wrapper';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
+
+var ANDROID_INPUTS: Array<string> = ['numberOfLines', 'underlineColorAndroid'];
+var IOS_INPUTS: Array<string> = ['blurOnSubmit', 'clearButtonMode', 'clearTextOnFocus', 'enablesReturnKeyAutomatically',
+  'keyboardAppearance', 'returnKeyType',  'selectTextOnFocus'];
+
+var ANDROID_BINDINGS: string = `[numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid"`;
+var IOS_BINDINGS: string = `[blurOnSubmit]="_blurOnSubmit" [clearButtonMode]="_clearButtonMode" [clearTextOnFocus]="_clearTextOnFocus"
+  [enablesReturnKeyAutomatically]="_enablesReturnKeyAutomatically"
+  [keyboardAppearance]="_keyboardAppearance" [returnKeyType]="_returnKeyType" [selectTextOnFocus]="_selectTextOnFocus"`;
 
 @Component({
   selector: 'TextInput',
   inputs: [
     //Non-native
     'autoFocus',
-    //Both
+    //Native
     'autoCapitalize', 'autoCorrect', 'editable', 'keyboardType', 'maxLength', 'multiline',
-    'password', 'placeholder', 'placeholderTextColor', 'selectionColor',
-    //Android
-    'numberOfLines', 'underlineColorAndroid',
-    //iOS
-    'blurOnSubmit', 'clearButtonMode', 'clearTextOnFocus', 'enablesReturnKeyAutomatically', 'keyboardAppearance', 'returnKeyType',  'selectTextOnFocus'
-  ].concat(GENERIC_INPUTS),
+    'password', 'placeholder', 'placeholderTextColor', 'selectionColor'
+  ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `<native-textinput [text]="_getText()" [autoCapitalize]="_autoCapitalize " [autoCorrect]="_autoCorrect" [editable]="_editable" [keyboardType]="_keyboardType"
   [maxLength]="_maxLength" [multiline]="_multiline" [password]="_password" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor" [selectionColor]="_selectionColor"
-  [numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid"
-  [blurOnSubmit]="_blurOnSubmit" [clearButtonMode]="_clearButtonMode" [clearTextOnFocus]="_clearTextOnFocus" [enablesReturnKeyAutomatically]="_enablesReturnKeyAutomatically"
-  [keyboardAppearance]="_keyboardAppearance" [returnKeyType]="_returnKeyType" [selectTextOnFocus]="_selectTextOnFocus"
   (tap)="focusTextInput()" (topFocus)="_handleFocus()" (topChange)="_handleChange($event)" (topTextInput)="_handleTextInput($event)" (topSubmitEditing)="_handleSubmitEditing($event)"
-  (topBlur)="_handleBlur()" (topEndEditing)="_handleEndEditing($event)" ${GENERIC_BINDINGS}></native-textinput>`
+  (topBlur)="_handleBlur()" (topEndEditing)="_handleEndEditing($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-textinput>`
 })
 export class TextInput extends HighLevelComponent implements OnInit {
   private _nativeElement: Node;

@@ -43,12 +43,12 @@ describe('View component', () => {
 
   it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View [accessible]="true" testID="foo" pointerEvents="{{'foo'}}"></View>`)
+    return tcb.overrideTemplate(TestComponent, `<View [accessible]="true" testID="foo" pointerEvents="{{'foo'}}" collapsable="true" shouldRasterizeIOS="true"></View>`)
       .createAsync(TestComponent).then((fixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-view+{"accessible":true,"testID":"foo","pointerEvents":"auto"},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-view+{"accessible":true,"testID":"foo","pointerEvents":"auto","collapsable":true},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 

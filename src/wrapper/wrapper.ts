@@ -1,3 +1,13 @@
+var IS_ANDROID = true;
+
+export function isAndroid(): boolean {
+  return IS_ANDROID;
+}
+
+export function overridePlatform(platform: string): void {
+  IS_ANDROID = platform == 'android';
+}
+
 export class ReactNativeWrapper {
   computeStyle(styles: Object): Object {return undefined;}
   processColor(color: string): number {return -1}
@@ -7,5 +17,6 @@ export class ReactNativeWrapper {
   dispatchCommand(tag: number, command: string, params: any): void {}
   patchReactUpdates(zone: any): void {}
   patchReactNativeEventEmitter(nodeMap: Map<number, any>): void {}
+  isAndroid(): boolean {return true;}
   $log(...args: any[]): void {};
 }

@@ -1,19 +1,21 @@
 import {Component, Inject, Output, EventEmitter} from 'angular2/core';
 import {REACT_NATIVE_WRAPPER} from './../renderer/renderer';
-import {ReactNativeWrapper} from './../wrapper/wrapper';
+import {ReactNativeWrapper, isAndroid} from './../wrapper/wrapper';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
+
+var ANDROID_INPUTS: Array<string> = [];
+var IOS_INPUTS: Array<string> = ['onTintColor', 'thumbTintColor', 'tintColor'];
+
+var ANDROID_BINDINGS: string = ``;
+var IOS_BINDINGS: string = `[onTintColor]="_onTintColor" [thumbTintColor]="_thumbTintColor" [tintColor]="_tintColor"`;
 
 @Component({
   selector: 'Switch',
   inputs: [
-    //Both
-   'on', 'enabled',
-    //iOS
-    'onTintColor', 'thumbTintColor', 'tintColor'
-  ].concat(GENERIC_INPUTS),
+   'on', 'enabled'
+  ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `<native-switch [on]="_on" [enabled]="_enabled"
-  [onTintColor]="_onTintColor" [thumbTintColor]="_thumbTintColor" [tintColor]="_tintColor"
-  (topChange)="_handleChange($event)" ${GENERIC_BINDINGS}></native-switch>`
+  (topChange)="_handleChange($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-switch>`
 })
 export class Switch extends HighLevelComponent {
   constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
