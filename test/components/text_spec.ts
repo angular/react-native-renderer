@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder,
+  injectAsync, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -33,7 +33,7 @@ describe('Text component', () => {
   it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<Text>foo</Text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -44,7 +44,7 @@ describe('Text component', () => {
   it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<Text [accessible]="true" testID="foo" allowFontScaling="{{true}}">foo</Text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -55,7 +55,7 @@ describe('Text component', () => {
   it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<Text [styleSheet]="20" [style]="{fontSize: 42}">foo</Text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -66,7 +66,7 @@ describe('Text component', () => {
   it('should support nested Text', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<Text>foo<Text>bar</Text></Text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(

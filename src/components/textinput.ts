@@ -1,5 +1,6 @@
 import {Component, Inject, NgZone, ElementRef, Input, Output, EventEmitter, OnInit} from 'angular2/core';
 import {REACT_NATIVE_WRAPPER} from './../renderer/renderer';
+import {Node} from '../renderer/node';
 import {ReactNativeWrapper, isAndroid} from './../wrapper/wrapper';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 

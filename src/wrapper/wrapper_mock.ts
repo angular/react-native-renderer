@@ -138,7 +138,7 @@ class Command {
   }
 }
 
-class NativeElement {
+export class NativeElement {
   name: string;
   tag: number;
   properties: {[s: string]: any };

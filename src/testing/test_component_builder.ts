@@ -57,18 +57,18 @@ export class CustomTestComponentBuilder extends TestComponentBuilder {
   createAsync(rootComponentType: Type): Promise<ComponentFixture> {
     var mockDirectiveResolver = this._injector.get(DirectiveResolver);
     var mockViewResolver = this._injector.get(ViewResolver);
-    this._viewOverrides.forEach((view, type) => mockViewResolver.setView(type, view));
-    this._templateOverrides.forEach((template, type) =>
+    this._viewOverrides.forEach((view: any, type: any) => mockViewResolver.setView(type, view));
+    this._templateOverrides.forEach((template: any, type: any) =>
       mockViewResolver.setInlineTemplate(type, template));
-    this._directiveOverrides.forEach((overrides, component) => {
+    this._directiveOverrides.forEach((overrides: any, component: any) => {
       overrides.forEach(
-        (to, from) => { mockViewResolver.overrideViewDirective(component, from, to); });
+        (to: any, from: any) => { mockViewResolver.overrideViewDirective(component, from, to); });
     });
 
-    this._bindingsOverrides.forEach((bindings, type) =>
+    this._bindingsOverrides.forEach((bindings: any, type: any) =>
       mockDirectiveResolver.setBindingsOverride(type, bindings));
     this._viewBindingsOverrides.forEach(
-      (bindings, type) => mockDirectiveResolver.setViewBindingsOverride(type, bindings));
+      (bindings: any, type: any) => mockDirectiveResolver.setViewBindingsOverride(type, bindings));
 
 
     return this._injector.get(DynamicComponentLoader)

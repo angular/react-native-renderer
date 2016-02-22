@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder,
+  injectAsync, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -34,7 +34,7 @@ describe('Component without host', () => {
   it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<View></View>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -45,7 +45,7 @@ describe('Component without host', () => {
   it('should support nesting', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<View><View></View></View>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -56,7 +56,7 @@ describe('Component without host', () => {
   it('should support heavy nesting', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<View><View><View><View><View></View></View></View></View></View>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -69,7 +69,7 @@ describe('Component without host', () => {
   it('should support sub-components', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<View><sub></sub></View>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -80,7 +80,7 @@ describe('Component without host', () => {
   it('should support ngIf', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<View *ngIf="b"></View>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -103,7 +103,7 @@ describe('Component without host', () => {
   it('should support nested ngIf', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<View> <View *ngIf="b"> </View> </View>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -126,7 +126,7 @@ describe('Component without host', () => {
   it('should support ngFor', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<View *ngFor="#item of a"></View>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -143,7 +143,7 @@ describe('Component without host', () => {
   it('should support ngFor on an element next to a component', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<View></View><native-view *ngFor="#item of a"></native-view>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -160,7 +160,7 @@ describe('Component without host', () => {
   it('should support projection', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<proj><sub></sub><View></View></proj>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(

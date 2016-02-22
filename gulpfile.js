@@ -179,7 +179,7 @@ gulp.task('clean.code', function (done) {
 });
 
 function ts2js(path, dest, toSystem) {
-  var tsResult = gulp.src(path)
+  var tsResult = gulp.src([path].concat(['typings/main.d.ts', 'src/react-native-renderer.d.ts']))
     .pipe(typescript({
       noImplicitAny: true,
       module: toSystem ? 'system' : 'commonjs',
@@ -254,7 +254,9 @@ function transformAndroidManifest() {
 function customReporter() {
   return {
     error: (error) => {
-      if (error.relativeFilename && error.message.indexOf(`does not exist on type 'NgMatchers'`) == -1) {
+      if (error.relativeFilename && error.message.indexOf(`Module '"react-native"' has no exported member`) == -1 &&
+      error.message.indexOf(`Module '"react-native-renderer/react-native-renderer"' has no exported member`) == -1 &&
+        error.message.indexOf(`src\\react-native-renderer.d.ts`) == -1) {
         console.error(error.message);
       }
     },

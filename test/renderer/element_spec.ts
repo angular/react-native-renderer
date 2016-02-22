@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder,
+  injectAsync, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -11,6 +11,7 @@ import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {CustomTestComponentBuilder} from "../../src/testing/test_component_builder";
+import {NativeElement} from "../../src/wrapper/wrapper_mock";
 
 var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
 
@@ -33,7 +34,7 @@ describe('Element', () => {
   it('should render element', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-text>foo</native-text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
 
         rootRenderer.executeCommands();
@@ -45,10 +46,10 @@ describe('Element', () => {
   it('should ignore invalid text nodes (only permitted in Text and VirtualText)', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
    var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-view> <native-view> {{s}} </native-view> a <native-view> b </native-view> {{s}} </native-view>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
 
-      return new Promise((resolve) => {
+      return new Promise((resolve: any) => {
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},CREATE+5+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1');
@@ -60,7 +61,7 @@ describe('Element', () => {
   it('should render element with attributes', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-text fontSize="20">foo</native-text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -71,7 +72,7 @@ describe('Element', () => {
   it('should render element with style', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-text [style]="n">foo</native-text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -82,7 +83,7 @@ describe('Element', () => {
   it('should render component', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-view><sub></sub></native-view>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -94,7 +95,7 @@ describe('Element', () => {
   it('should render component with statement', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-view><sub *ngIf="b"></sub></native-view>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -106,7 +107,7 @@ describe('Element', () => {
   it('should support interpolation', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-text>{{s}}</native-text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -117,7 +118,7 @@ describe('Element', () => {
   it('should support binding to interpolated properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-text foo="{{s}}">foo</native-text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -128,7 +129,7 @@ describe('Element', () => {
   it('should support binding to properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-text [fontSize]="n">foo</native-text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -139,7 +140,7 @@ describe('Element', () => {
   it('should support binding to attributes (same as interpolated properties)', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-text [attr.foo]="s">foo</native-text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -150,7 +151,7 @@ describe('Element', () => {
   it('should support NgIf', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-text *ngIf="b">foo</native-text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -173,25 +174,25 @@ describe('Element', () => {
   it('should support NgFor', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-text *ngFor="#item of a">{{item}}</native-text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
-      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('1,2,3');
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1,2,3');
 
       fixture.debugElement.componentInstance.a.pop();
       fixture.detectChanges();
       rootRenderer.executeCommands();
-      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('1,2');
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1,2');
 
       fixture.debugElement.componentInstance.a = [];
       fixture.detectChanges();
       rootRenderer.executeCommands();
-      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('');
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('');
 
       fixture.debugElement.componentInstance.a.push(8);
       fixture.detectChanges();
       rootRenderer.executeCommands();
-      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('8');
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('8');
     });
   }));
 
@@ -203,27 +204,27 @@ describe('Element', () => {
     <native-text>{{item}}</native-text>
   </template>
 </native-view>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
-      expect(mock.nativeElementMap.get(1).children[0].children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('1,2,3');
+      expect(mock.nativeElementMap.get(1).children[0].children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1,2,3');
     });
   }));
 
   it('should support NgFor with several children and right order', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<template ngFor #item [ngForOf]="d"><native-text>{{item.a}}</native-text><native-text>{{item.b}}</native-text></template>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
-      expect(mock.nativeElementMap.get(1).children[0].children.map((a) => a.children[0].properties['text']).join(',')).toEqual('0,1,8,9');
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('0,1,8,9');
     });
   }));
 
   it('should support ng-content', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<proj><native-text>foo</native-text><native-view></native-view></proj>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
@@ -235,7 +236,7 @@ describe('Element', () => {
   it('should support events', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<native-text *ngIf="b" (someEvent)="handleEvent($event)">foo</native-text>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(

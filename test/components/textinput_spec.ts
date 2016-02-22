@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder,
+  injectAsync, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -34,7 +34,7 @@ describe('Input component', () => {
   it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<TextInput></TextInput>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -46,7 +46,7 @@ describe('Input component', () => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<TextInput [accessible]="true" testID="foo" defaultValue="bar"></TextInput>
     <TextInput [accessible]="true" testID="foo" defaultValue="bar" value="{{'baz'}}"></TextInput>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -58,7 +58,7 @@ describe('Input component', () => {
   it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<TextInput [styleSheet]="20" [style]="{width: 100}"></TextInput>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -69,7 +69,7 @@ describe('Input component', () => {
   it('should fire change event', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<TextInput value="bar" (change)="handleChange($event)"></TextInput>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
@@ -78,7 +78,7 @@ describe('Input component', () => {
         fireFunctionalEvent('topChange', target, {text: "foo"});
         fixture.detectChanges();
 
-        return new Promise((resolve) => {
+        return new Promise((resolve: any) => {
           setTimeout(() => {
             rootRenderer.executeCommands();
             expect(fixture.componentInstance.log.join(',')).toEqual('foo');
@@ -93,7 +93,7 @@ describe('Input component', () => {
   it('should dispatch commands', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<TextInput></TextInput>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
@@ -107,12 +107,12 @@ describe('Input component', () => {
   it('should autofocus', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<TextInput [autoFocus]="true"></TextInput>`)
-      .createAsync(TestComponent).then((fixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
-        return new Promise((resolve) => {
+        return new Promise((resolve: any) => {
           setTimeout(() => {
             fixture.detectChanges();
             expect(mock.commandLogs.toString()).toEqual('COMMAND+3+focusTextInput');

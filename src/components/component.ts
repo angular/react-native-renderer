@@ -86,7 +86,7 @@ export abstract class HighLevelComponent {
     return this._wrapper.processColor(color);
   }
 
-  processEnum(value: string, list: Array<String>) {
+  processEnum(value: string, list: Array<string>): string {
     return list.indexOf(value) > -1 ? value : list[0];
   }
 }

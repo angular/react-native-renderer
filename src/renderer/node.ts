@@ -16,7 +16,7 @@ export abstract class Node {
   public nativeChildren: Array<number> = [];
 
   public eventListeners: Map<string, Array<Function>> = new Map<string, Array<Function>>();
-  private _hammer: any = null;
+  public _hammer: any = null;
 
   //Debug info
   providerTokens: any[];

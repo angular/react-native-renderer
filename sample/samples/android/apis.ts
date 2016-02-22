@@ -44,7 +44,7 @@ export class APIsList {
   styles: any;
   clipBoardContent: string = '';
   platform: string = '';
-  ratio: string = '';
+  ratio: number = 0;
   location: string = 'Fetching ...';
   connectionType: string = 'Unknown';
   isConnectionExpensive: boolean = false;
