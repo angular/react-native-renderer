@@ -4,3 +4,4 @@ export * from './components/switch';
 export * from './components/text';
 export * from './components/textinput';
 export * from './components/view';
+export * from './components/webview';

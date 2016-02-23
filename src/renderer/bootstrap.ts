@@ -35,12 +35,13 @@ import {View} from "./../components/view";
 import {Text} from "../components/text";
 import {Switch} from "../components/switch";
 import {TextInput} from "../components/textinput";
+import {WebView} from "../components/webview";
 
 export function bootstrapReactNative(appName:string, cpt: any) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
-      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView], multi:true}),
       ROUTER_PROVIDERS,
       provide(LocationStrategy, { useClass: ReactNativeLocationStrategy }),
       HTTP_PROVIDERS,

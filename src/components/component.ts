@@ -89,4 +89,8 @@ export abstract class HighLevelComponent {
   processEnum(value: string, list: Array<string>): string {
     return list.indexOf(value) > -1 ? value : list[0];
   }
+
+  resolveAssetSource(source: any): any {
+    return this._wrapper.resolveAssetSource(source);
+  };
 }

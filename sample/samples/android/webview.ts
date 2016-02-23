@@ -1,6 +1,7 @@
-import {Component, ElementRef} from 'angular2/core';
+import {Component, ElementRef, ViewChild} from 'angular2/core';
 import {NativeFeedback} from './common';
 import {StyleSheet} from 'react-native';
+import {WebView} from 'react-native-renderer/react-native-renderer';
 
 @Component({
   selector: 'webview-app',
@@ -15,11 +16,12 @@ import {StyleSheet} from 'react-native';
     <native-text [style]="styles.buttonText">Forward</native-text>
   </native-view>
 </native-view>
-<WebView flex="11" [source]="{uri: 'https://www.angular.io'}" javaScriptEnabled="true" domStorageEnabled="true" automaticallyAdjustContentInsets="false">
+<WebView [source]="{uri: 'https://www.angular.io'}" javaScriptEnabled="true" domStorageEnabled="true" automaticallyAdjustContentInsets="false" [style]="{flex: 11}">
 </WebView>
 `
 })
 export class WebViewApp {
+  @ViewChild(WebView) webView: WebView;
   styles: any;
   _el : any = null;
   constructor(el: ElementRef) {
@@ -39,11 +41,11 @@ export class WebViewApp {
   }
 
   goBack() {
-    this._el.children[3].dispatchCommand('goBack');
+    this.webView.goBack();
   }
 
   goForward() {
-    this._el.children[3].dispatchCommand('goForward');
+    this.webView.goForward();
   }
 }
 

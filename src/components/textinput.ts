@@ -22,14 +22,14 @@ var IOS_BINDINGS: string = `[blurOnSubmit]="_blurOnSubmit" [clearButtonMode]="_c
     'autoCapitalize', 'autoCorrect', 'editable', 'keyboardType', 'maxLength', 'multiline',
     'password', 'placeholder', 'placeholderTextColor', 'selectionColor'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
-  template: `<native-textinput [text]="_getText()" [autoCapitalize]="_autoCapitalize " [autoCorrect]="_autoCorrect" [editable]="_editable" [keyboardType]="_keyboardType"
+  template: `<native-textinput [text]="_getText()" [autoCapitalize]="_autoCapitalize" [autoCorrect]="_autoCorrect" [editable]="_editable" [keyboardType]="_keyboardType"
   [maxLength]="_maxLength" [multiline]="_multiline" [password]="_password" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor" [selectionColor]="_selectionColor"
   (tap)="focusTextInput()" (topFocus)="_handleFocus()" (topChange)="_handleChange($event)" (topTextInput)="_handleTextInput($event)" (topSubmitEditing)="_handleSubmitEditing($event)"
   (topBlur)="_handleBlur()" (topEndEditing)="_handleEndEditing($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-textinput>`
 })
 export class TextInput extends HighLevelComponent implements OnInit {
   private _nativeElement: Node;
-  constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper, el: ElementRef, private _zone: NgZone) {
+  constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper, el: ElementRef) {
     super(wrapper);
     this._nativeElement = el.nativeElement;
   }

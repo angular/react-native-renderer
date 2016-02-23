@@ -3,6 +3,7 @@ import {ReactNativeWrapper, overridePlatform} from "./wrapper";
 var ReactNative = require('react-native');
 var AppRegistry = ReactNative.AppRegistry;
 var UIManager = ReactNative.NativeModules.UIManager;
+var resolveAssetSource = require('resolveAssetSource');
 
 var ReactUpdates =  require('ReactUpdates');
 var ReactNativeEventEmitter = require('ReactNativeEventEmitter');
@@ -19,6 +20,7 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-virtualtext': 'RCTVirtualText',
   'native-switch': 'AndroidSwitch',
   'native-textinput' : 'AndroidTextInput',
+  'native-webview': 'RCTWebView',
 
   "DropdownPicker": "AndroidDropdownPicker",
   "DialogPicker": "AndroidDialogPicker",
@@ -32,7 +34,6 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   "InlineImage": "RCTTextInlineImage",
   "TextInput": "AndroidTextInput",
   "Toolbar": "ToolbarAndroid",
-  "WebView": "RCTWebView"
 }
 
 export class ReactNativeWrapperImpl extends ReactNativeWrapper {
@@ -47,6 +48,10 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
   processColor(color: string): number {
     return ReactNative.processColor(color);
   }
+
+  resolveAssetSource(source: any): any {
+    return resolveAssetSource(source);
+  };
 
   createView(tagName: string, root: number, properties: Object): number {
     var tag = ReactNativeTagHandles.allocateTag();

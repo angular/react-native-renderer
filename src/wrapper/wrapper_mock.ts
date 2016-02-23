@@ -116,6 +116,9 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
   processColor(color: string): number {
     return 42;
   }
+  resolveAssetSource(source: any): any {
+    return source;
+  };
 
   isAndroid(): boolean {
     return this._platform == 'android';
