@@ -5,7 +5,7 @@ import {StyleSheet} from 'react-native';
   selector: 'widgets-list',
   host: {flex: '1'},
   template: `
-<PagerLayout flex="1" justifyContent="center" alignItems="center" selectedPage="0">
+<PagerLayout initialPage="0" [style]="{flex: 1, justifyContent: 'center', alignItems: 'center'}">
   <native-view [style]="styles.container">
     <native-text [style]="styles.title">Scroll views</native-text>
     <native-text margin="10">Vertical</native-text>

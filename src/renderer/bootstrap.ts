@@ -37,12 +37,13 @@ import {Switch} from "../components/switch";
 import {TextInput} from "../components/textinput";
 import {WebView} from "../components/webview";
 import {ProgressBar} from "../components/android/progress_bar";
+import {PagerLayout} from "../components/android/pager_layout";
 
 export function bootstrapReactNative(appName:string, cpt: any) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
-      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView, ProgressBar], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView, ProgressBar, PagerLayout], multi:true}),
       ROUTER_PROVIDERS,
       provide(LocationStrategy, { useClass: ReactNativeLocationStrategy }),
       HTTP_PROVIDERS,

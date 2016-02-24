@@ -6,4 +6,5 @@ export * from './components/textinput';
 export * from './components/view';
 export * from './components/webview';
 
+export * from './components/android/pager_layout';
 export * from './components/android/progress_bar';
