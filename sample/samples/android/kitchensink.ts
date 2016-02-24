@@ -2,6 +2,7 @@ import {Component, ElementRef, ViewChild} from 'angular2/core';
 import {NgFor} from 'angular2/common';
 import {Router, RouteConfig, ROUTER_DIRECTIVES, LocationStrategy} from 'angular2/router';
 import {StyleSheet, BackAndroid, Alert} from 'react-native';
+import {DrawerLayout} from "react-native-renderer/react-native-renderer";
 var resolveAssetSource = require('resolveAssetSource');
 
 import {HelloApp} from "./hello";
@@ -19,20 +20,20 @@ import {NativeFeedback} from "./common";
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   directives: [NgFor, NativeFeedback, ROUTER_DIRECTIVES],
   template: `
-<DrawerLayout drawerWidth="300" drawerPosition="8388611" flex="1">
-  <native-view position="absolute" top="0" left="0" right="0" bottom="0" collapsable="false">
+<DrawerLayout drawerWidth="240" drawerPosition="left" [style]="{flex: 1}">
+  <DrawerLayoutSide>
     <Toolbar [style]="styles.toolbar" [navIcon]="hamburgerIcon" [overflowIcon]="moreIcon" title="Kitchen Sink" titleColor="#FFFFFF" subtitle="null" (topSelect)="handleToolbar($event)"></Toolbar>
     <native-view position="absolute" top="50" left="0" right="0" bottom="0" collapsable="false">
       <router-outlet></router-outlet>
     </native-view>
-  </native-view>
-  <native-view position="absolute" top="0" bottom="0" width="300" collapsable="false">
+  </DrawerLayoutSide>
+  <DrawerLayoutContent>
     <native-view flex="1" [style]="styles.drawer">
       <native-view *ngFor="#item of menuItems" [style]="styles.menuItem" (tap)="navigate(item.path)" nativeFeedback="#00a9e0">
         <native-text [style]="styles.menuText">{{item.name}}</native-text>
       </native-view>
     </native-view>
-  </native-view>
+  </DrawerLayoutContent>
 </DrawerLayout>
 `
 })
@@ -47,7 +48,8 @@ import {NativeFeedback} from "./common";
   { path: '/animation', component: AnimationApp, as: 'AnimationApp'}
 ])
 export class KitchenSinkApp {
-  @ViewChild(TodoMVC) viewChild:TodoMVC;
+  @ViewChild(TodoMVC) viewChild: TodoMVC;
+  @ViewChild(DrawerLayout) drawerLayout: DrawerLayout;
   hamburgerIcon: any = resolveAssetSource(require('../../assets/icon_hamburger.png'));
   moreIcon: any = resolveAssetSource(require('../../assets/icon_more.png'));
   menuItems: Array<any> = [{name: 'Hello world', path: '/'}, {name: 'Widgets', path: '/widgets'}, {name: 'WebView', path: '/webview'}, {name: 'APIs', path: '/apis'},
@@ -92,7 +94,7 @@ export class KitchenSinkApp {
   }
 
   navigate(url: string) {
-    this._el.children[1].dispatchCommand('closeDrawer');
+    this.drawerLayout.closeDrawer();
     var currentPath = this.locationStrategy.path();
     if (currentPath != '/todomvc' && url == '/todomvc') {
       this._addMoreInToolbar();
@@ -105,7 +107,7 @@ export class KitchenSinkApp {
   handleToolbar(event: any) {
     var position = event.position;
     if (position == -1) {
-      this._el.children[1].dispatchCommand('openDrawer');
+      this.drawerLayout.openDrawer();
     } else if (position == 0 && this.viewChild) {
       this.viewChild.reset();
     } else if (position == 1 && this.viewChild) {

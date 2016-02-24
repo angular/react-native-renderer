@@ -4,6 +4,7 @@ var ReactNative = require('react-native');
 var AppRegistry = ReactNative.AppRegistry;
 var UIManager = ReactNative.NativeModules.UIManager;
 var resolveAssetSource = require('resolveAssetSource');
+var dismissKeyboard = require('dismissKeyboard');
 
 var ReactUpdates =  require('ReactUpdates');
 var ReactNativeEventEmitter = require('ReactNativeEventEmitter');
@@ -23,10 +24,10 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-webview': 'RCTWebView',
   "native-progressbar": "AndroidProgressBar",
   "native-pagerlayout": "AndroidViewPager",
+  "native-drawerlayout": "AndroidDrawerLayout",
 
   "DropdownPicker": "AndroidDropdownPicker",
   "DialogPicker": "AndroidDialogPicker",
-  "DrawerLayout": "AndroidDrawerLayout",
   "Image": "RCTImageView",
   "ScrollView": "RCTScrollView",
   "HorizontalScrollView" : "AndroidHorizontalScrollView",
@@ -51,7 +52,15 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
 
   resolveAssetSource(source: any): any {
     return resolveAssetSource(source);
-  };
+  }
+
+  dismissKeyboard(): void {
+    dismissKeyboard();
+  }
+
+  getUIManager(): any {
+    return UIManager;
+  }
 
   createView(tagName: string, root: number, properties: Object): number {
     var tag = ReactNativeTagHandles.allocateTag();

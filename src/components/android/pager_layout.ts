@@ -7,11 +7,9 @@ import {ReactNativeWrapper} from "../../wrapper/wrapper";
   selector: 'PagerLayout',
   inputs: [
     //Non-native
-    'initialPage',
-    //Native
-    'keyboardDismissMode',
+    'initialPage', 'keyboardDismissMode',
   ].concat(GENERIC_INPUTS),
-  template: `<native-pagerlayout [keyboardDismissMode]="_keyboardDismissMode"
+  template: `<native-pagerlayout
   (topPageScroll)="_handlePageScroll($event)" (topPageScrollStateChanged)="_handlePageScrollStateChanged($event)" (topPageSelected)="_handlePageSelected($event)"
   ${GENERIC_BINDINGS}><ng-content></ng-content></native-pagerlayout>`
 })
@@ -29,15 +27,17 @@ export class PagerLayout extends HighLevelComponent implements OnInit {
 
   //Properties
   private _initialPage: number;
-  set initialPage(value: any) { this._initialPage = this.processNumber(value);}
-
   private _keyboardDismissMode: string;
+  set initialPage(value: any) { this._initialPage = this.processNumber(value);}
   set keyboardDismissMode(value: string) {this._keyboardDismissMode = this.processEnum(value, ['none', 'on-drag']);}
 
   //Event handlers
   _handlePageScroll(event: any) {
     //Event example: {offset: 0.75, position: 0}
     this.pageScroll.emit(event);
+    if (this._keyboardDismissMode === 'on-drag') {
+      this.dismissKeyboard();
+    }
   }
 
   _handlePageScrollStateChanged(event: any) {

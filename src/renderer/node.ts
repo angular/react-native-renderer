@@ -181,7 +181,8 @@ export class ElementNode extends Node {
   constructor(public tagName: string, wrapper: ReactNativeWrapper, zone: NgZone) {
     super(wrapper, zone);
     //TODO: generalize the mechanism (list? regexp? meta data?)
-    if (['View', 'Text', 'Switch', 'TextInput', 'WebView', 'ProgressBar', 'PagerLayout'].indexOf(tagName) > -1) {
+    if (['View', 'Text', 'Switch', 'TextInput', 'WebView', 'ProgressBar', 'PagerLayout',
+        'DrawerLayout', 'DrawerLayoutSide', 'DrawerLayoutContent'].indexOf(tagName) > -1) {
       this.isVirtual = true;
     }
   }

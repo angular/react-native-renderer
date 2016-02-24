@@ -112,13 +112,28 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
   }
   patchReactNativeEventEmitter(nodeMap: Map<number, any>): void {
     //Not needed in Mock
-  };
+  }
+
   processColor(color: string): number {
     return 42;
   }
+
   resolveAssetSource(source: any): any {
     return source;
-  };
+  }
+
+  dismissKeyboard(): void {
+    this.commandLogs.push(new Command('DISMISS_KEYBOARD', -1, ''));
+  }
+
+  getUIManager(): any {
+    return {
+      AndroidDrawerLayout: {
+        Constants: {DrawerPosition: {Right: 1, Left: -1}}
+      }
+    };
+
+  }
 
   isAndroid(): boolean {
     return this._platform == 'android';

@@ -86,11 +86,19 @@ export abstract class HighLevelComponent {
     return this._wrapper.processColor(color);
   }
 
-  processEnum(value: string, list: Array<string>): string {
+  processEnum<T>(value: T, list: Array<T>): T {
     return list.indexOf(value) > -1 ? value : list[0];
   }
 
   resolveAssetSource(source: any): any {
     return this._wrapper.resolveAssetSource(source);
-  };
+  }
+
+  dismissKeyboard(): void {
+    this._wrapper.dismissKeyboard();
+  }
+
+  getUIManager(): any {
+    return this._wrapper.getUIManager();
+  }
 }
