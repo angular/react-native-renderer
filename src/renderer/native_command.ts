@@ -59,6 +59,8 @@ export class NativeCommandCreate extends NativeCommand {
       var tagName = this.target.tagName;
       if (this.target.isTextContainer() && ancestor.isTextContainer()) {
         tagName = 'native-virtualtext';
+      } else if (this.target.isImageContainer() && ancestor.isTextContainer()) {
+        tagName = 'native-inlineimage';
       }
       this.target.nativeTag = wrapper.createView(tagName, 1, this.manageStyleProp(wrapper, props));
       nodeMap.set(this.target.nativeTag, this.target);

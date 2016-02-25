@@ -93,6 +93,10 @@ export abstract class Node {
     return this.tagName == 'native-text' || this.tagName == 'VirtualText';
   }
 
+  isImageContainer(): boolean {
+    return this.tagName == 'native-image';
+  }
+
   destroyNative() {
     this.isCreated = false;
     nodeMap.delete(this.nativeTag);
@@ -181,7 +185,7 @@ export class ElementNode extends Node {
   constructor(public tagName: string, wrapper: ReactNativeWrapper, zone: NgZone) {
     super(wrapper, zone);
     //TODO: generalize the mechanism (list? regexp? meta data?)
-    if (['View', 'Text', 'Switch', 'TextInput', 'WebView', 'ProgressBar', 'PagerLayout',
+    if (['View', 'Text', 'Switch', 'TextInput', 'WebView', 'Image', 'ProgressBar', 'PagerLayout',
         'DrawerLayout', 'DrawerLayoutSide', 'DrawerLayoutContent', 'RefreshControl', 'Toolbar'].indexOf(tagName) > -1) {
       this.isVirtual = true;
     }

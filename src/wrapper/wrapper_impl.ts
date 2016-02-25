@@ -27,13 +27,13 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-drawerlayout': "AndroidDrawerLayout",
   'native-refreshcontrol': 'AndroidSwipeRefreshLayout',
   'native-toolbar': 'ToolbarAndroid',
+  'native-image': 'RCTImageView',
+  'native-inlineimage': 'RCTTextInlineImage',
 
   "DropdownPicker": "AndroidDropdownPicker",
   "DialogPicker": "AndroidDialogPicker",
-  "Image": "RCTImageView",
   "ScrollView": "RCTScrollView",
-  "HorizontalScrollView" : "AndroidHorizontalScrollView",
-  "InlineImage": "RCTTextInlineImage",
+  "HorizontalScrollView" : "AndroidHorizontalScrollView"
 
 }
 

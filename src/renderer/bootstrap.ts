@@ -40,12 +40,13 @@ import {PagerLayout} from "../components/android/pager_layout";
 import {DrawerLayout, DrawerLayoutSide, DrawerLayoutContent} from "../components/android/drawer_layout";
 import {RefreshControl} from "../components/refresh_control";
 import {Toolbar} from "../components/android/toolbar";
+import {Image} from '../components/image';
 
 export function bootstrapReactNative(appName:string, cpt: any) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
-      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView, ProgressBar, PagerLayout,
+      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView, Image, ProgressBar, PagerLayout,
         DrawerLayout, DrawerLayoutSide, DrawerLayoutContent, RefreshControl, Toolbar], multi:true}),
       ROUTER_PROVIDERS,
       provide(LocationStrategy, { useClass: ReactNativeLocationStrategy }),
