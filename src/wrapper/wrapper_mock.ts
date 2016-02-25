@@ -130,6 +130,12 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
     return {
       AndroidDrawerLayout: {
         Constants: {DrawerPosition: {Right: 1, Left: -1}}
+      },
+      AndroidSwipeRefreshLayout: {
+        Constants: {SIZE: {DEFAULT: 1, LARGE: 0}}
+      },
+      ToolbarAndroid: {
+        Constants: {ShowAsAction: {always: 2, never: 0, ifRoom: 1}}
       }
     };
 

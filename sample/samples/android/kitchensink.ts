@@ -2,8 +2,7 @@ import {Component, ElementRef, ViewChild} from 'angular2/core';
 import {NgFor} from 'angular2/common';
 import {Router, RouteConfig, ROUTER_DIRECTIVES, LocationStrategy} from 'angular2/router';
 import {StyleSheet, BackAndroid, Alert} from 'react-native';
-import {DrawerLayout} from "react-native-renderer/react-native-renderer";
-var resolveAssetSource = require('resolveAssetSource');
+import {DrawerLayout, Toolbar} from "react-native-renderer/react-native-renderer";
 
 import {HelloApp} from "./hello";
 import {TodoMVC} from "./todomvc";
@@ -22,7 +21,8 @@ import {NativeFeedback} from "./common";
   template: `
 <DrawerLayout drawerWidth="240" drawerPosition="left" [style]="{flex: 1}">
   <DrawerLayoutSide>
-    <Toolbar [style]="styles.toolbar" [navIcon]="hamburgerIcon" [overflowIcon]="moreIcon" title="Kitchen Sink" titleColor="#FFFFFF" subtitle="null" (topSelect)="handleToolbar($event)"></Toolbar>
+    <Toolbar [styleSheet]="styles.toolbar" [navIcon]="hamburgerIcon" [overflowIcon]="moreIcon"
+    title="Kitchen Sink" titleColor="#FFFFFF" (select)="handleToolbar($event)"></Toolbar>
     <native-view position="absolute" top="50" left="0" right="0" bottom="0" collapsable="false">
       <router-outlet></router-outlet>
     </native-view>
@@ -50,8 +50,9 @@ import {NativeFeedback} from "./common";
 export class KitchenSinkApp {
   @ViewChild(TodoMVC) viewChild: TodoMVC;
   @ViewChild(DrawerLayout) drawerLayout: DrawerLayout;
-  hamburgerIcon: any = resolveAssetSource(require('../../assets/icon_hamburger.png'));
-  moreIcon: any = resolveAssetSource(require('../../assets/icon_more.png'));
+  @ViewChild(Toolbar) toolbar: Toolbar;
+  hamburgerIcon: any = require('../../assets/icon_hamburger.png');
+  moreIcon: any = require('../../assets/icon_more.png');
   menuItems: Array<any> = [{name: 'Hello world', path: '/'}, {name: 'Widgets', path: '/widgets'}, {name: 'WebView', path: '/webview'}, {name: 'APIs', path: '/apis'},
     {name: 'TodoMVC', path: '/todomvc'}, {name: 'Gestures', path: '/gestures'}, {name: 'Http', path: '/http'}, {name: 'Animation', path: '/animation'}]
   styles: any;
@@ -122,16 +123,16 @@ export class KitchenSinkApp {
   }
 
   private _addMoreInToolbar():void {
-    this._el.children[1].children[1].children[1].setProperty('nativeActions', [
+    this.toolbar.actions = [
       {title: 'Reset list', show: 0},
       {title: 'Empty list', show: 0},
       {title: 'Fill list with 100 items', show: 0},
       {title: 'Save', show: 0},
       {title: 'Load', show: 0}
-    ]);
+    ];
   }
 
   private _removeMoreInToolbar():void {
-    this._el.children[1].children[1].children[1].setProperty('nativeActions', []);
+    this.toolbar.actions = [];
   }
 }

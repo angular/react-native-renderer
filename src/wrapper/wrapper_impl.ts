@@ -26,6 +26,7 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-pagerlayout': 'AndroidViewPager',
   'native-drawerlayout': "AndroidDrawerLayout",
   'native-refreshcontrol': 'AndroidSwipeRefreshLayout',
+  'native-toolbar': 'ToolbarAndroid',
 
   "DropdownPicker": "AndroidDropdownPicker",
   "DialogPicker": "AndroidDialogPicker",
@@ -33,7 +34,7 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   "ScrollView": "RCTScrollView",
   "HorizontalScrollView" : "AndroidHorizontalScrollView",
   "InlineImage": "RCTTextInlineImage",
-  "Toolbar": "ToolbarAndroid",
+
 }
 
 export class ReactNativeWrapperImpl extends ReactNativeWrapper {

@@ -151,7 +151,7 @@ describe('PagerLayout component (Android)', () => {
 })
 class TestComponent {
   @ViewChild(PagerLayout) pagerLayout: PagerLayout
-  log: Array<boolean> = [];
+  log: Array<any> = [];
 
   handleChange(event: any) {
     this.log.push(event.position);
