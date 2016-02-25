@@ -6,7 +6,7 @@ var resolveAssetSource = require('resolveAssetSource');
   selector: 'hello-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   template: `
-<SwipeRefreshLayout position ="absolute" top="0" left="0" bottom="0" right="0" (topRefresh)="handleRefresh($event)">
+<RefreshControl progressBackgroundColor="#ce0058" [colors]="['#00a9e0', '#309712']" [style]="{position: 'absolute', top: 0, left: 0, bottom: 0, right: 0}">
   <View [styleSheet]="styles.container">
     <Text [styleSheet]="styles.welcome">
       Welcome to ngReactNative!
@@ -20,7 +20,7 @@ var resolveAssetSource = require('resolveAssetSource');
   </View>
   <Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="angularLogo.uri" position ="absolute" bottom="0" left="0"></Image>
   <Image height="100" width="100" overflow="hidden" shouldNotifyLoadEvents="false" [src]="reactLogo.uri" position ="absolute" bottom="0" right="0"></Image>
-</SwipeRefreshLayout>
+</RefreshControl>
 `
 })
 export class HelloApp {
@@ -50,9 +50,6 @@ export class HelloApp {
         marginBottom: 5,
       }
     });
-  }
-  handleRefresh(evt: any) {
-    evt.target.setProperty('refreshing', false)
   }
 }
 

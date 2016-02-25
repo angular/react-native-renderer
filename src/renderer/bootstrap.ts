@@ -7,6 +7,7 @@ import 'reflect-metadata';
   // Zone.js
 import {Zone} from 'zone.js/build/lib/core';
 
+
 global.Zone = Zone;
 global.zone = new Zone();
 import {patchSetClearFunction} from 'zone.js/build/lib/patch/functions';
@@ -39,12 +40,14 @@ import {WebView} from "../components/webview";
 import {ProgressBar} from "../components/android/progress_bar";
 import {PagerLayout} from "../components/android/pager_layout";
 import {DrawerLayout, DrawerLayoutSide, DrawerLayoutContent} from "../components/android/drawer_layout";
+import {RefreshControl} from "../components/refresh_control";
 
 export function bootstrapReactNative(appName:string, cpt: any) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
-      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView, ProgressBar, PagerLayout, DrawerLayout, DrawerLayoutSide, DrawerLayoutContent], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView, ProgressBar, PagerLayout,
+        DrawerLayout, DrawerLayoutSide, DrawerLayoutContent, RefreshControl], multi:true}),
       ROUTER_PROVIDERS,
       provide(LocationStrategy, { useClass: ReactNativeLocationStrategy }),
       HTTP_PROVIDERS,

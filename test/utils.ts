@@ -24,5 +24,6 @@ export function fireEvent(name: string, target: any, timeStamp: number = 0, touc
 export function fireFunctionalEvent(name: string, target: any, data: any) {
   data._stop = true;
   data.type = name;
+  data.target = target;
   target.fireEvent(name, data);
 }

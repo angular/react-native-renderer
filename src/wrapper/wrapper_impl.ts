@@ -22,18 +22,17 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-switch': 'AndroidSwitch',
   'native-textinput' : 'AndroidTextInput',
   'native-webview': 'RCTWebView',
-  "native-progressbar": "AndroidProgressBar",
-  "native-pagerlayout": "AndroidViewPager",
-  "native-drawerlayout": "AndroidDrawerLayout",
+  'native-progressbar': 'AndroidProgressBar',
+  'native-pagerlayout': 'AndroidViewPager',
+  'native-drawerlayout': "AndroidDrawerLayout",
+  'native-refreshcontrol': 'AndroidSwipeRefreshLayout',
 
   "DropdownPicker": "AndroidDropdownPicker",
   "DialogPicker": "AndroidDialogPicker",
   "Image": "RCTImageView",
   "ScrollView": "RCTScrollView",
   "HorizontalScrollView" : "AndroidHorizontalScrollView",
-  "SwipeRefreshLayout": "AndroidSwipeRefreshLayout",
   "InlineImage": "RCTTextInlineImage",
-  "TextInput": "AndroidTextInput",
   "Toolbar": "ToolbarAndroid",
 }
 
