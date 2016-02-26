@@ -136,6 +136,9 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
       },
       ToolbarAndroid: {
         Constants: {ShowAsAction: {always: 2, never: 0, ifRoom: 1}}
+      },
+      RCTScrollView: {
+        Constants : {DecelerationRate: {normal: 0.9, fast: 0.998}}
       }
     };
 

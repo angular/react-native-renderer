@@ -29,12 +29,11 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-toolbar': 'ToolbarAndroid',
   'native-image': 'RCTImageView',
   'native-inlineimage': 'RCTTextInlineImage',
+  'native-scrollview': 'RCTScrollView',
+  'native-horizontalscrollview' : 'AndroidHorizontalScrollView',
 
   "DropdownPicker": "AndroidDropdownPicker",
-  "DialogPicker": "AndroidDialogPicker",
-  "ScrollView": "RCTScrollView",
-  "HorizontalScrollView" : "AndroidHorizontalScrollView"
-
+  "DialogPicker": "AndroidDialogPicker"
 }
 
 export class ReactNativeWrapperImpl extends ReactNativeWrapper {
@@ -93,7 +92,9 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
       'setPageWithoutAnimation': UIManager.AndroidViewPager.Commands.setPageWithoutAnimation,
       'goForward': UIManager.RCTWebView.Commands.goForward,
       'reload': UIManager.RCTWebView.Commands.reload,
-      'goBack': UIManager.RCTWebView.Commands.goBack
+      'goBack': UIManager.RCTWebView.Commands.goBack,
+      'scrollTo': UIManager.RCTScrollView.Commands.scrollTo,
+      'scrollWithoutAnimationTo': UIManager.RCTScrollView.Commands.scrollWithoutAnimationTo
     };
     this.$log(`Dispatching command to ${tag}: ${command} with ${params}`);
     UIManager.dispatchViewManagerCommand(tag, commands[command], params);

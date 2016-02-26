@@ -9,23 +9,19 @@ import {StyleSheet} from 'react-native';
   <native-view [style]="styles.container">
     <native-text [style]="styles.title">Scroll views</native-text>
     <native-text margin="10">Vertical</native-text>
-    <ScrollView height="150" width="400" backgroundColor="#FF0000">
-      <native-view collapsable="false">
-        <native-view [style]="styles.odd" height="120"></native-view>
-        <native-view [style]="styles.even" height="120"></native-view>
-        <native-view [style]="styles.odd" height="120"></native-view>
-        <native-view [style]="styles.even" height="120"></native-view>
-      </native-view>
+    <ScrollView [style]="{height: 150, width: 400}">
+      <native-view [style]="styles.odd" height="120"></native-view>
+      <native-view [style]="styles.even" height="120"></native-view>
+      <native-view [style]="styles.odd" height="120"></native-view>
+      <native-view [style]="styles.even" height="120"></native-view>
     </ScrollView>
     <native-text margin="10">Horizontal</native-text>
-    <HorizontalScrollView height="150" width="400">
-      <native-view collapsable="false" alignSelf="flex-start" flexDirection="row">
-        <native-view [style]="styles.odd" height="150" width="300"></native-view>
-        <native-view [style]="styles.even" height="150" width="300"></native-view>
-        <native-view [style]="styles.odd" height="150" width="300"></native-view>
-        <native-view [style]="styles.even" height="150" width="300"></native-view>
-      </native-view>
-    </HorizontalScrollView>
+    <ScrollView horizontal="true" [style]="{height: 150, width: 400}">
+      <native-view [style]="styles.odd" height="150" width="300"></native-view>
+      <native-view [style]="styles.even" height="150" width="300"></native-view>
+      <native-view [style]="styles.odd" height="150" width="300"></native-view>
+      <native-view [style]="styles.even" height="150" width="300"></native-view>
+    </ScrollView>
   </native-view>
   <native-view [style]="styles.container">
     <native-text [style]="styles.title">Inputs and text</native-text>

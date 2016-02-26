@@ -55,13 +55,7 @@ export class NativeCommandCreate extends NativeCommand {
       toBeCreated = ancestor.isTextContainer();
     }
     if (toBeCreated) {
-      //TODO: generalize in a cleaner way
-      var tagName = this.target.tagName;
-      if (this.target.isTextContainer() && ancestor.isTextContainer()) {
-        tagName = 'native-virtualtext';
-      } else if (this.target.isImageContainer() && ancestor.isTextContainer()) {
-        tagName = 'native-inlineimage';
-      }
+      var tagName = this.target.overrideTagName(ancestor);
       this.target.nativeTag = wrapper.createView(tagName, 1, this.manageStyleProp(wrapper, props));
       nodeMap.set(this.target.nativeTag, this.target);
     } else {
@@ -80,7 +74,9 @@ export class NativeCommandUpdate extends NativeCommand {
   }
 
   execute(wrapper: ReactNativeWrapper) {
-    wrapper.updateView(this.target.nativeTag, this.target.tagName, this.manageStyleProp(wrapper, this.props));
+    var ancestor = this.target.getAncestorWithNativeCreated();
+    var tagName = this.target.overrideTagName(ancestor);
+    wrapper.updateView(this.target.nativeTag, tagName, this.manageStyleProp(wrapper, this.props));
   }
 }
 

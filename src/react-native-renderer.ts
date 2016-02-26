@@ -2,6 +2,7 @@ export * from './renderer/bootstrap';
 
 export * from './components/image';
 export * from './components/refresh_control';
+export * from './components/scrollview';
 export * from './components/switch';
 export * from './components/text';
 export * from './components/textinput';

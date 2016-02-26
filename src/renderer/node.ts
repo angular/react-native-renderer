@@ -97,6 +97,18 @@ export abstract class Node {
     return this.tagName == 'native-image';
   }
 
+  overrideTagName(ancestor: Node): string {
+    var tagName = this.tagName;
+    if (this.isTextContainer() && ancestor.isTextContainer()) {
+      tagName = 'native-virtualtext';
+    } else if (this.isImageContainer() && ancestor.isTextContainer()) {
+      tagName = 'native-inlineimage';
+    } else if (tagName == 'native-scrollview' && this.properties['horizontal'] && this.rnWrapper.isAndroid()) {
+      tagName = 'native-horizontalscrollview';
+    }
+    return tagName;
+  }
+
   destroyNative() {
     this.isCreated = false;
     nodeMap.delete(this.nativeTag);
@@ -185,7 +197,7 @@ export class ElementNode extends Node {
   constructor(public tagName: string, wrapper: ReactNativeWrapper, zone: NgZone) {
     super(wrapper, zone);
     //TODO: generalize the mechanism (list? regexp? meta data?)
-    if (['View', 'Text', 'Switch', 'TextInput', 'WebView', 'Image', 'ProgressBar', 'PagerLayout',
+    if (['View', 'Text', 'Switch', 'TextInput', 'WebView', 'Image', 'ProgressBar', 'PagerLayout', 'ScrollView',
         'DrawerLayout', 'DrawerLayoutSide', 'DrawerLayoutContent', 'RefreshControl', 'Toolbar'].indexOf(tagName) > -1) {
       this.isVirtual = true;
     }
