@@ -31,9 +31,8 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-inlineimage': 'RCTTextInlineImage',
   'native-scrollview': 'RCTScrollView',
   'native-horizontalscrollview' : 'AndroidHorizontalScrollView',
-
-  "DropdownPicker": "AndroidDropdownPicker",
-  "DialogPicker": "AndroidDialogPicker"
+  'native-dropdownpicker': 'AndroidDropdownPicker',
+  'native-dialogpicker': 'AndroidDialogPicker'
 }
 
 export class ReactNativeWrapperImpl extends ReactNativeWrapper {

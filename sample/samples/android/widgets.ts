@@ -30,8 +30,8 @@ import {StyleSheet} from 'react-native';
     <native-text margin="10">Switch ({{switched}})</native-text>
     <Switch (change)="switched=$event"></Switch>
     <native-text margin="10">Pickers ({{selected}})</native-text>
-    <DropdownPicker [selected]="selected" prompt="Please select an item" [items]="items" height="30" width="80" (topSelect)="selected=$event.position"></DropdownPicker>
-    <DialogPicker [selected]="selected" prompt="Please select an item" [items]="items" height="30" width="80" (topSelect)="selected=$event.position"></DialogPicker>
+    <Picker [selectedValue]="selected" prompt="Please select an item" [items]="items" [style]="{width: 80}" (select)="selected=$event"></Picker>
+    <Picker mode="dropdown" [selectedValue]="selected" [items]="items" [style]="{width: 80}" (select)="selected=$event"></Picker>
     <native-text margin="10">Nested text</native-text>
     <Text [style]="{color: '#ce0058'}">Normal text<Text [style]="{color: '#00a9e0',fontSize: 20}">Nested one</Text></Text>
   </native-view>

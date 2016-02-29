@@ -49,7 +49,7 @@ export class ScrollView extends HighLevelComponent{
   @Output() scrollEndDrag: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _contentContainerStyle: boolean;
+  private _contentContainerStyle: any;
   private _horizontal: boolean;
   private _keyboardDismissMode: string;
   private _keyboardShouldPersistTaps: boolean;
