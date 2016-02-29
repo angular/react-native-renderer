@@ -1,5 +1,5 @@
 import {Component, ElementRef, NgZone} from 'angular2/core';
-import {StyleSheet, Alert, IntentAndroid, ToastAndroid, Clipboard, Platform, PixelRatio, NetInfo, AppState} from 'react-native';
+import {StyleSheet, Alert, Linking, ToastAndroid, Clipboard, Platform, PixelRatio, NetInfo, AppState, DatePickerAndroid, TimePickerAndroid} from 'react-native';
 import {NativeFeedback} from './common';
 
 @Component({
@@ -7,7 +7,7 @@ import {NativeFeedback} from './common';
   host: {flex: '1'},
   directives: [NativeFeedback],
   template: `
-<PagerLayout flex="1" justifyContent="center" alignItems="center" selectedPage="0">
+<PagerLayout initialPage="0" [style]="{flex: 1, justifyContent: 'center', alignItems: 'center'}">
   <native-view [style]="styles.container">
     <native-text [style]="styles.title">Actionable</native-text>
     <native-view [style]="styles.button" nativeFeedback (tap)="showAlert()">
@@ -23,6 +23,15 @@ import {NativeFeedback} from './common';
       <native-text [style]="styles.buttonText">Clipboard</native-text>
     </native-view>
     <native-text>Current clipboard value: {{clipBoardContent}}</native-text>
+  </native-view>
+  <native-view [style]="styles.container">
+    <native-text [style]="styles.title">More actionable</native-text>
+    <native-view [style]="styles.button" nativeFeedback (tap)="pickDate()">
+      <native-text [style]="styles.buttonText">Pick a date: {{pickedDate}}</native-text>
+    </native-view>
+    <native-view [style]="styles.button" nativeFeedback (tap)="pickTime()">
+      <native-text [style]="styles.buttonText">Pick a time: {{pickedTime}}</native-text>
+    </native-view>
   </native-view>
   <native-view [style]="styles.container">
     <native-text [style]="styles.title">Infos</native-text>
@@ -43,6 +52,8 @@ import {NativeFeedback} from './common';
 export class APIsList {
   styles: any;
   clipBoardContent: string = '';
+  pickedDate: Date;
+  pickedTime: string;
   platform: string = '';
   ratio: number = 0;
   location: string = 'Fetching ...';
@@ -83,11 +94,11 @@ export class APIsList {
 
   launchIntent() {
     var url = 'https://www.angular.io';
-    IntentAndroid.canOpenURL(url, (supported: boolean) => {
+    Linking.canOpenURL(url).then((supported: boolean) => {
       if (!supported) {
         console.log('Can\'t handle url: ' + url);
       } else {
-        IntentAndroid.openURL(url);
+        Linking.openURL(url);
       }
     });
   }
@@ -96,6 +107,18 @@ export class APIsList {
     var newValue = this.clipBoardContent == 'foo' ? 'bar' : 'foo';
     Clipboard.setString(newValue);
     Clipboard.getString().then((content: string) => this.clipBoardContent = content);
+  }
+
+  pickDate() {
+    DatePickerAndroid.open().then(({action, year, month, day}) => {
+      this.pickedDate = new Date(year, month, day);
+    });
+  }
+
+  pickTime() {
+    TimePickerAndroid.open().then(({action, hour, minute}) => {
+      this.pickedTime = hour + ':' + (minute < 10 ? '0' + minute : minute);
+    });
   }
 
   _getStyles() {

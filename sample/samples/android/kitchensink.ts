@@ -1,7 +1,7 @@
 import {Component, ElementRef, ViewChild} from 'angular2/core';
 import {NgFor} from 'angular2/common';
 import {Router, RouteConfig, ROUTER_DIRECTIVES, LocationStrategy} from 'angular2/router';
-import {StyleSheet, BackAndroid, Alert} from 'react-native';
+import {StyleSheet, BackAndroid, Alert, NativeModules, processColor} from 'react-native';
 import {DrawerLayout, Toolbar} from "react-native-renderer/react-native-renderer";
 
 import {HelloApp} from "./hello";
@@ -58,6 +58,7 @@ export class KitchenSinkApp {
   styles: any;
   _el : any = null;
   constructor(el: ElementRef, private router: Router, private locationStrategy: LocationStrategy) {
+    NativeModules.StatusBarManager.setColor(processColor('#00a9e0'), true);
     BackAndroid.addEventListener('hardwareBackPress', function() {
       Alert.alert(
         'Close App',

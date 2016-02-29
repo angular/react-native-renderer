@@ -46,11 +46,9 @@ import {StyleSheet} from 'react-native';
 <native-view [style]="styles.button" flex="1" nativeFeedback (tap)="clearLogs()">
   <native-text [style]="styles.buttonText">Clear logs</native-text>
 </native-view>
-<ScrollView flex="12">
-  <native-view collapsable="false">
-    <native-view [style]="styles.logs">
-      <native-text *ngFor="#log of logs">{{log}}</native-text>
-    </native-view>
+<ScrollView [style]="{flex: 12}">
+  <native-view [style]="styles.logs">
+    <native-text *ngFor="#log of logs">{{log}}</native-text>
   </native-view>
 </ScrollView>
 `

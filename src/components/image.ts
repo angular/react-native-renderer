@@ -3,11 +3,11 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component"
 import {REACT_NATIVE_WRAPPER} from './../renderer/renderer';
 import {ReactNativeWrapper, isAndroid} from "../wrapper/wrapper";
 
-var ANDROID_INPUTS: Array<string> = ['fadeDuration', 'loadingIndicatorSrc', 'progressiveRenderingEnabled', 'shouldNotifyLoadEvents'];
+var ANDROID_INPUTS: Array<string> = ['fadeDuration', 'loadingIndicatorSrc', 'overlayColor', 'progressiveRenderingEnabled', 'shouldNotifyLoadEvents'];
 var IOS_INPUTS: Array<string> = ['capInsets', 'defaultSource'];
 
 var ANDROID_BINDINGS: string = `[fadeDuration]="_fadeDuration" [loadingIndicatorSrc]="_loadingIndicatorSrc ? _loadingIndicatorSrc.uri : null"
-  [progressiveRenderingEnabled]="_progressiveRenderingEnabled" [shouldNotifyLoadEvents]="_shouldNotifyLoadEvents" [src]="_source ? _source.uri: null"`;
+  [overlayColor]="_overlayColor" [progressiveRenderingEnabled]="_progressiveRenderingEnabled" [shouldNotifyLoadEvents]="_shouldNotifyLoadEvents" [src]="_source ? _source.uri: null"`;
 var IOS_BINDINGS: string = `[capInsets]="_capInsets" [defaultSource]="_defaultSource" [source]="_source"`;
 
 //TODO: add iOS specific events (onError, on Progress) and specific cases (tintColor, resizeMode)
@@ -39,10 +39,12 @@ export class Image extends HighLevelComponent {
 
   private _fadeDuration: number;
   private _loadingIndicatorSrc: any;
+  private _overlayColor: number;
   private _progressiveRenderingEnabled: boolean;
   private _shouldNotifyLoadEvents: boolean;
   set fadeDuration(value: any) {this._fadeDuration = this.processNumber(value);}
   set loadingIndicatorSrc(value: any) {this._loadingIndicatorSrc = this.resolveAssetSource(value);}
+  set overlayColor(value: string) {this._overlayColor = this.processColor(value);}
   set progressiveRenderingEnabled(value: any) {this._progressiveRenderingEnabled = this.processBoolean(value);}
   set shouldNotifyLoadEvents(value: any) {this._shouldNotifyLoadEvents = this.processBoolean(value);}
 
