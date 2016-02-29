@@ -48,19 +48,26 @@ export abstract class Node {
 
   getInsertionNativeIndex(): number {
     var nativeIndex = -1;
-    if (this.parent) {
-      var index = this.parent.children.indexOf(this);
+    var ancestor = this.getAncestorWithNativeCreated();
+    if (ancestor) {
+      var childrenOfAncestor = this;
+      while (childrenOfAncestor.parent != ancestor) {
+        childrenOfAncestor = childrenOfAncestor.parent;
+      }
+      var index = ancestor.children.indexOf(childrenOfAncestor);
       var count = index;
       while (count >= 0) {
-        var prev = this.parent.children[count];
+        var prev = ancestor.children[count];
         if (prev.nativeTag > -1) {
-          nativeIndex = this.parent.nativeChildren.indexOf(prev.nativeTag);
+          nativeIndex = ancestor.nativeChildren.indexOf(prev.nativeTag);
           count = 0;
         } else if (prev.isVirtual) {
           var nativeChild = prev.getFirstCreatedChild();
           if (nativeChild) {
-            nativeIndex = this.parent.nativeChildren.indexOf(nativeChild.nativeTag);
-            count = 0;
+            nativeIndex = ancestor.nativeChildren.indexOf(nativeChild.nativeTag);
+            if (nativeIndex > -1) {
+              count = 0;
+            }
           }
         }
         count--;

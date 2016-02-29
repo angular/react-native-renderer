@@ -10,6 +10,7 @@ import {NgIf, NgFor} from 'angular2/common';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
+import {Picker} from "../../src/components/picker";
 import {View} from "./../../src/components/view"
 import {CustomTestComponentBuilder} from "../../src/testing/test_component_builder";
 
@@ -168,6 +169,17 @@ describe('Component without host', () => {
       });
   }));
 
+  it('should support components with ngIf in their templates', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+    var rootRenderer = _rootRenderer;
+    return tcb.overrideTemplate(TestComponent, `<View></View><Picker></Picker>`)
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+        fixture.detectChanges();
+        rootRenderer.executeCommands();
+        expect(mock.commandLogs.toString()).toEqual(
+          'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-dialogpicker+{"items":[],"mode":"dialog","height":50},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+2+4+1');
+      });
+  }));
+
 });
 
 @Component({
@@ -186,7 +198,7 @@ class SubComponentWithProjection {
 @Component({
   selector: 'test-cmp',
   template: `to be overriden`,
-  directives: [View, SubComponent, SubComponentWithProjection, NgIf, NgFor]
+  directives: [View, Picker, SubComponent, SubComponentWithProjection, NgIf, NgFor]
 })
 class TestComponent {
   s: string = 'bar';

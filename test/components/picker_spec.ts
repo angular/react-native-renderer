@@ -44,7 +44,7 @@ describe('Picker component', () => {
 
   it('should render in dropdown mode', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Picker mode="dropdown"></Picker>`o)
+    return tcb.overrideTemplate(TestComponent, `<Picker mode="dropdown"></Picker>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
