@@ -6,42 +6,42 @@ import {StyleSheet} from 'react-native';
   host: {flex: '1'},
   template: `
 <PagerLayout initialPage="0" [style]="{flex: 1, justifyContent: 'center', alignItems: 'center'}">
-  <native-view [style]="styles.container">
-    <native-text [style]="styles.title">Scroll views</native-text>
-    <native-text margin="10">Vertical</native-text>
+  <View [styleSheet]="styles.container">
+    <Text [styleSheet]="styles.title">Scroll views</Text>
+    <Text [style]="{margin: 10}">Vertical</Text>
     <ScrollView [style]="{height: 150, width: 400}">
-      <native-view [style]="styles.odd" height="120"></native-view>
-      <native-view [style]="styles.even" height="120"></native-view>
-      <native-view [style]="styles.odd" height="120"></native-view>
-      <native-view [style]="styles.even" height="120"></native-view>
+      <View [styleSheet]="styles.odd" [style]="{height: 120}"></View>
+      <View [styleSheet]="styles.even" [style]="{height: 120}"></View>
+      <View [styleSheet]="styles.odd" [style]="{height: 120}"></View>
+      <View [styleSheet]="styles.even" [style]="{height: 120}"></View>
     </ScrollView>
-    <native-text margin="10">Horizontal</native-text>
+    <Text [style]="{margin: 10}">Horizontal</Text>
     <ScrollView horizontal="true" [style]="{height: 150, width: 400}">
-      <native-view [style]="styles.odd" height="150" width="300"></native-view>
-      <native-view [style]="styles.even" height="150" width="300"></native-view>
-      <native-view [style]="styles.odd" height="150" width="300"></native-view>
-      <native-view [style]="styles.even" height="150" width="300"></native-view>
+      <View [styleSheet]="styles.odd" [style]="{height: 150, width: 300}"></View>
+      <View [styleSheet]="styles.even" [style]="{height: 150, width: 300}"></View>
+      <View [styleSheet]="styles.odd" [style]="{height: 150, width: 300}"></View>
+      <View [styleSheet]="styles.even" [style]="{height: 150, width: 300}"></View>
     </ScrollView>
-  </native-view>
-  <native-view [style]="styles.container">
-    <native-text [style]="styles.title">Inputs and text</native-text>
-    <native-text margin="10">Text input {{typed.length > 0 ? '-> ' + typed : ''}}</native-text>
-    <native-textinput placeholder="Type in" (topTouchEnd)="$event.target.dispatchCommand('focusTextInput')" (topSubmitEditing)="typed=$event.text; $event.target.dispatchCommand('blurTextInput')"></native-textinput>
-    <native-text margin="10">Switch ({{switched}})</native-text>
+  </View>
+  <View [styleSheet]="styles.container">
+    <Text [styleSheet]="styles.title">Inputs and text</Text>
+    <Text [style]="{margin: 10}">Text input {{typed.length > 0 ? '-> ' + typed : ''}}</Text>
+    <TextInput placeholder="Type in" (submit)="typed=$event"></TextInput>
+    <Text [style]="{margin: 10}">Switch ({{switched}})</Text>
     <Switch (change)="switched=$event"></Switch>
-    <native-text margin="10">Pickers ({{selected}})</native-text>
+    <Text margin="10">Pickers ({{selected}})</Text>
     <Picker [selectedValue]="selected" prompt="Please select an item" [items]="items" [style]="{width: 80}" (select)="selected=$event"></Picker>
     <Picker mode="dropdown" [selectedValue]="selected" [items]="items" [style]="{width: 80}" (select)="selected=$event"></Picker>
-    <native-text margin="10">Nested text</native-text>
+    <Text [style]="{margin: 10}">Nested text</Text>
     <Text [style]="{color: '#ce0058'}">Normal text<Text [style]="{color: '#00a9e0',fontSize: 20}">Nested one</Text></Text>
-  </native-view>
-  <native-view [style]="styles.container">
-    <native-text [style]="styles.title">Progress bars</native-text>
+  </View>
+  <View [styleSheet]="styles.container">
+    <Text [styleSheet]="styles.title">Progress bars</Text>
     <ProgressBar styleAttr="Large"></ProgressBar>
     <ProgressBar styleAttr="Inverse" color="#ce0058"></ProgressBar>
     <ProgressBar styleAttr="Small"></ProgressBar>
     <ProgressBar styleAttr="Horizontal"></ProgressBar>
-  </native-view>
+  </View>
 </PagerLayout>
 `
 })

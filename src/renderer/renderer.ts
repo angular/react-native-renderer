@@ -215,9 +215,11 @@ export class ReactNativeRenderer implements Renderer {
   }
 
   setElementProperty(renderElement: Node, propertyName: string, propertyValue: any): void {
-    renderElement.setProperty(propertyName, propertyValue, false);
-    if (renderElement.isCreated) {
-      this._rootRenderer.addUpdateCommand(renderElement, propertyName, propertyValue);
+    if (typeof propertyValue !== 'undefined') {
+      renderElement.setProperty(propertyName, propertyValue, false);
+      if (renderElement.isCreated) {
+        this._rootRenderer.addUpdateCommand(renderElement, propertyName, propertyValue);
+      }
     }
   }
 

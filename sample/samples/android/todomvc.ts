@@ -1,7 +1,8 @@
-import {Component, Input, Output, EventEmitter} from 'angular2/core';
+import {Component, Input, Output, EventEmitter, ViewChild} from 'angular2/core';
 import {NgIf, NgFor} from 'angular2/common';
 import {HighLight} from './common';
 import {StyleSheet, AsyncStorage} from 'react-native';
+import {TextInput} from "react-native-renderer/react-native-renderer";
 
 class Palette {
   static background: string = '#005eb8';
@@ -24,15 +25,16 @@ class Todo {
   selector: 'todo-item',
   directives: [NgIf, HighLight],
   template: `
-<native-view [style]="styles.row">
-<native-text [style]="[styles.tick, item.active ? styles.tickOff : styles.tickOn]" highlight (tap)="toggle($event)">{{item.active ? "[  ]" : "[x]"}}</native-text>
-<native-text *ngIf="!item.edited" [style]="[styles.main, item.active ? styles.mainOff : styles.mainOn]" (doubletap)="startEdit()">{{item.value}}</native-text>
-<native-textinput *ngIf="item.edited" [style]="styles.editor" [text]="item.value" mostRecentEventCount="0" (tap)="$event.target.focus()" (topSubmitEditing)="stopEdit($event)"></native-textinput>
-<native-text [style]="styles.cross" highlight (tap)="delete()">X</native-text>
-</native-view>
+<View [styleSheet]="styles.row">
+<Text [styleSheet]="[styles.tick, item.active ? styles.tickOff : styles.tickOn]" highlight (tap)="toggle($event)">{{item.active ? "[  ]" : "[x]"}}</Text>
+<Text *ngIf="!item.edited" [styleSheet]="[styles.main, item.active ? styles.mainOff : styles.mainOn]" (doubletap)="startEdit()">{{item.value}}</Text>
+<TextInput *ngIf="item.edited" [styleSheet]="styles.editor" [text]="item.value" (submit)="stopEdit($event)"></TextInput>
+<Text [styleSheet]="styles.cross" highlight (tap)="delete()">X</Text>
+</View>
 `
 })
 export class TodoItem {
+  @ViewChild(TextInput) textInput: TextInput;
   styles: any;
   @Input() item: Todo;
   @Output() toggled: EventEmitter<number> = new EventEmitter();
@@ -55,11 +57,11 @@ export class TodoItem {
     this.item.edited = true;
   }
 
-  stopEdit(event: any) {
-    event.target.blur();
+  stopEdit(text: string) {
+    this.textInput.blurTextInput();
     this.item.edited = false;
-    if (event.text && event.text.length > 0) {
-      this.item.value = event.text;
+    if (text && text.length > 0) {
+      this.item.value = text;
     }
   }
 
@@ -114,38 +116,39 @@ export class TodoItem {
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   directives: [NgFor, NgIf, TodoItem, HighLight],
   template: `
-<native-view flexDirection="row">
-  <native-text [style]="[styles.all, leftCount == 0 ? styles.allOn : styles.allOff]" (tap)="selectAll()">V</native-text>
-  <native-textinput [style]="styles.input" text="" mostRecentEventCount="0" placeholder="What needs to be done?" (tap)="$event.target.focus()" (topSubmitEditing)="createTodo($event)"></native-textinput>
-</native-view>
-<ScrollView [style]="styles.scroll">
-  <native-view collapsable="false">
-    <template ngFor #todo [ngForOf]="filteredTodos">
-      <todo-item [item]="todo" (toggled)="updateCount($event)" (deleted)="deleteTodo($event)"></todo-item>
-    </template>
-  </native-view>
+<View [style]="{flexDirection: 'row'}">
+  <Text [styleSheet]="[styles.all, leftCount == 0 ? styles.allOn : styles.allOff]" (tap)="selectAll()">V</Text>
+  <TextInput [styleSheet]="styles.input" text="" placeholder="What needs to be done?" (submit)="createTodo($event)"></TextInput>
+</View>
+<ScrollView [styleSheet]="styles.scroll">
+  <template ngFor #todo [ngForOf]="filteredTodos">
+    <todo-item [item]="todo" (toggled)="updateCount($event)" (deleted)="deleteTodo($event)"></todo-item>
+  </template>
 </ScrollView>
-<native-view [style]="styles.footer">
-  <native-view width="60">
-    <native-text [style]="styles.counter" fontSize="20">{{leftCount}}</native-text>
-    <native-text [style]="styles.counter">item{{leftCount == 1 ? '' : 's'}} left</native-text>
-  </native-view>
-  <native-view flex="1" flexDirection="row" justifyContent="center">
-    <native-view [style]="[styles.filter, filter == 'all' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'all')">
-      <native-text [style]="[styles.filterText, filter == 'all' ? styles.filterTextOn : styles.filterTextOff]">All</native-text>
-    </native-view>
-    <native-view [style]="[styles.filter, filter == 'active' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'active')">
-      <native-text [style]="[styles.filterText, filter == 'active' ? styles.filterTextOn : styles.filterTextOff]">Active</native-text>
-    </native-view>
-    <native-view [style]="[styles.filter, filter == 'done' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'done')">
-      <native-text [style]="[styles.filterText, filter == 'done' ? styles.filterTextOn : styles.filterTextOff]">Done</native-text>
-    </native-view>
-  </native-view>
-    <native-view [style]="styles.clear" highlight (tap)="clearDone($event)"><native-text [style]="styles.clearText">Clear\ndone</native-text></native-view>
-</native-view>
+<View [styleSheet]="styles.footer">
+  <View [style]="{width: 60}">
+    <Text [styleSheet]="styles.counter" fontSize="20">{{leftCount}}</Text>
+    <Text [styleSheet]="styles.counter">item{{leftCount == 1 ? '' : 's'}} left</Text>
+  </View>
+  <View [style]="{flex: 1, flexDirection: 'row', justifyContent: 'center'}">
+    <View [styleSheet]="[styles.filter, filter == 'all' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'all')">
+      <Text [styleSheet]="[styles.filterText, filter == 'all' ? styles.filterTextOn : styles.filterTextOff]">All</Text>
+    </View>
+    <View [styleSheet]="[styles.filter, filter == 'active' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'active')">
+      <Text [styleSheet]="[styles.filterText, filter == 'active' ? styles.filterTextOn : styles.filterTextOff]">Active</Text>
+    </View>
+    <View [styleSheet]="[styles.filter, filter == 'done' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'done')">
+      <Text [styleSheet]="[styles.filterText, filter == 'done' ? styles.filterTextOn : styles.filterTextOff]">Done</Text>
+    </View>
+  </View>
+  <View [styleSheet]="styles.clear" highlight (tap)="clearDone($event)">
+    <Text [styleSheet]="styles.clearText">Clear\ndone</Text>
+  </View>
+</View>
 `
 })
 export class TodoMVC {
+  @ViewChild(TextInput) textInput: TextInput;
   styles: any;
   todos: Array<Todo> = [];
   filteredTodos: Array<Todo> = [];
@@ -157,13 +160,13 @@ export class TodoMVC {
     this.reset();
   }
 
-  createTodo(event: any) {
-    if (event.text && event.text.length > 0) {
-      this.todos.push(new Todo(event.text, true, false));
+  createTodo(text: string) {
+    if (text && text.length > 0) {
+      this.todos.push(new Todo(text, true, false));
       this.leftCount++;
     }
     this.filterTodos();
-    event.target.blur();
+    this.textInput.blurTextInput();
   }
 
   deleteTodo(todo: Todo) {

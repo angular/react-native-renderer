@@ -8,44 +8,44 @@ import {NativeFeedback} from './common';
   directives: [NativeFeedback],
   template: `
 <PagerLayout initialPage="0" [style]="{flex: 1, justifyContent: 'center', alignItems: 'center'}">
-  <native-view [style]="styles.container">
-    <native-text [style]="styles.title">Actionable</native-text>
-    <native-view [style]="styles.button" nativeFeedback (tap)="showAlert()">
-      <native-text [style]="styles.buttonText">Alert</native-text>
-    </native-view>
-    <native-view [style]="styles.button" nativeFeedback (tap)="showToast()">
-      <native-text [style]="styles.buttonText">Toast</native-text>
-    </native-view>
-    <native-view [style]="styles.button" nativeFeedback (tap)="launchIntent()">
-      <native-text [style]="styles.buttonText">Intent</native-text>
-    </native-view>
-    <native-view [style]="styles.button" nativeFeedback (tap)="setClipboard()">
-      <native-text [style]="styles.buttonText">Clipboard</native-text>
-    </native-view>
-    <native-text>Current clipboard value: {{clipBoardContent}}</native-text>
-  </native-view>
-  <native-view [style]="styles.container">
-    <native-text [style]="styles.title">More actionable</native-text>
-    <native-view [style]="styles.button" nativeFeedback (tap)="pickDate()">
-      <native-text [style]="styles.buttonText">Pick a date: {{pickedDate}}</native-text>
-    </native-view>
-    <native-view [style]="styles.button" nativeFeedback (tap)="pickTime()">
-      <native-text [style]="styles.buttonText">Pick a time: {{pickedTime}}</native-text>
-    </native-view>
-  </native-view>
-  <native-view [style]="styles.container">
-    <native-text [style]="styles.title">Infos</native-text>
-    <native-text [style]="styles.subtitle">Platform</native-text>
-    <native-text>{{platform}}</native-text>
-    <native-text [style]="styles.subtitle">PixelRatio</native-text>
-    <native-text>{{ratio}}</native-text>
-    <native-text [style]="styles.subtitle">Geoloation</native-text>
-    <native-text>{{location}}</native-text>
-    <native-text [style]="styles.subtitle">NetInfo</native-text>
-    <native-text>{{connectionType}} connection is {{isConnected ? 'on' : 'off'}} and {{isConnectionExpensive ? 'expensive' : 'not expensive'}}</native-text>
-    <native-text [style]="styles.subtitle">AppState</native-text>
-    <native-text>Current state is {{appState}}</native-text>
-  </native-view>
+  <View [styleSheet]="styles.container">
+    <Text [styleSheet]="styles.title">Actionable</Text>
+    <View [styleSheet]="styles.button" nativeFeedback (tap)="showAlert()">
+      <Text [style]="styles.buttonText">Alert</Text>
+    </View>
+    <View [styleSheet]="styles.button" nativeFeedback (tap)="showToast()">
+      <Text [styleSheet]="styles.buttonText">Toast</Text>
+    </View>
+    <View [styleSheet]="styles.button" nativeFeedback (tap)="launchIntent()">
+      <Text [styleSheet]="styles.buttonText">Intent</Text>
+    </View>
+    <View [styleSheet]="styles.button" nativeFeedback (tap)="setClipboard()">
+      <Text [styleSheet]="styles.buttonText">Clipboard</Text>
+    </View>
+    <Text>Current clipboard value: {{clipBoardContent}}</Text>
+  </View>
+  <View [styleSheet]="styles.container">
+    <Text [styleSheet]="styles.title">More actionable</Text>
+    <View [styleSheet]="styles.button" nativeFeedback (tap)="pickDate()">
+      <Text [styleSheet]="styles.buttonText">Pick a date: {{pickedDate}}</Text>
+    </View>
+    <View [styleSheet]="styles.button" nativeFeedback (tap)="pickTime()">
+      <Text [styleSheet]="styles.buttonText">Pick a time: {{pickedTime}}</Text>
+    </View>
+  </View>
+  <View [styleSheet]="styles.container">
+    <Text [styleSheet]="styles.title">Infos</Text>
+    <Text [styleSheet]="styles.subtitle">Platform</Text>
+    <Text>{{platform}}</Text>
+    <Text [styleSheet]="styles.subtitle">PixelRatio</Text>
+    <Text>{{ratio}}</Text>
+    <Text [styleSheet]="styles.subtitle">Geoloation</Text>
+    <Text>{{location}}</Text>
+    <Text [styleSheet]="styles.subtitle">NetInfo</Text>
+    <Text>{{connectionType}} connection is {{isConnected ? 'on' : 'off'}} and {{isConnectionExpensive ? 'expensive' : 'not expensive'}}</Text>
+    <Text [styleSheet]="styles.subtitle">AppState</Text>
+    <Text>Current state is {{appState}}</Text>
+  </View>
 </PagerLayout>
 `
 })

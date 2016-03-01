@@ -5,17 +5,17 @@ import {WebView} from 'react-native-renderer/react-native-renderer';
 
 @Component({
   selector: 'webview-app',
-  host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   directives: [NativeFeedback],
+  host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   template: `
-<native-view flexDirection="row" flex="1">
-  <native-view [style]="styles.button" flex="1" nativeFeedback (tap)="goBack()">
-    <native-text [style]="styles.buttonText">Back</native-text>
-  </native-view>
-  <native-view [style]="styles.button" flex="1" nativeFeedback (tap)="goForward()">
-    <native-text [style]="styles.buttonText">Forward</native-text>
-  </native-view>
-</native-view>
+<View [style]="{flexDirection: 'row', flex: 1}">
+  <View [styleSheet]="styles.button" nativeFeedback (tap)="goBack()">
+    <Text [styleSheet]="styles.buttonText">Back</Text>
+  </View>
+  <View [styleSheet]="styles.button" nativeFeedback (tap)="goForward()">
+    <Text [styleSheet]="styles.buttonText">Forward</Text>
+  </View>
+</View>
 <WebView [source]="{uri: 'https://www.angular.io'}" javaScriptEnabled="true" domStorageEnabled="true" automaticallyAdjustContentInsets="false" [style]="{flex: 11}">
 </WebView>
 `
@@ -30,7 +30,8 @@ export class WebViewApp {
       button: {
         padding: 5,
         margin: 5,
-        backgroundColor: '#005eb8'
+        backgroundColor: '#005eb8',
+        flex: 1
       },
       buttonText: {
         color: '#FFFFFF',

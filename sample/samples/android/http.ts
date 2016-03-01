@@ -4,16 +4,15 @@ import {Http} from 'angular2/http';
 import 'rxjs/add/operator/map';
 
 import {TextInput} from 'react-native-renderer/react-native-renderer';
-import {NativeFeedback} from './common';
 import {StyleSheet} from 'react-native';
 
 @Component({
   selector: 'http-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NativeFeedback, NgFor],
+  directives: [NgFor],
   template: `
 <TextInput placeholder="Search Wikipedia" (submit)="sendXHR($event)"></TextInput>
-<native-text *ngFor="#page of pages">{{page}}</native-text>
+<Text *ngFor="#page of pages">{{page}}</Text>
 `
 })
 export class HttpApp {

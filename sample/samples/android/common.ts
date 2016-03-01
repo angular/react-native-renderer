@@ -11,19 +11,19 @@ export class HighLight implements OnInit, OnDestroy {
 
   constructor(el: ElementRef) {
     this._el = el.nativeElement;
-    this._highlight = () => {this._el.setProperty('opacity', 0.5)};
-    this._unhighlight = () => {this._el.setProperty('opacity', 1)};
+    this._highlight = () => {this._el.children[0].setProperty('opacity', 0.5)};
+    this._unhighlight = () => {this._el.children[0].setProperty('opacity', 1)};
   }
 
   ngOnInit() {
-    this._el.addEventListener('tapstart', this._highlight);
-    this._el.addEventListener('tapcancel', this._unhighlight);
-    this._el.addEventListener('tap', this._unhighlight);
+    this._el.children[0].addEventListener('tapstart', this._highlight);
+    this._el.children[0].addEventListener('tapcancel', this._unhighlight);
+    this._el.children[0].addEventListener('tap', this._unhighlight);
   }
   ngOnDestroy() {
-    this._el.removeEventListener('tapstart', this._highlight);
-    this._el.removeEventListener('tapcancel', this._unhighlight);
-    this._el.removeEventListener('tap', this._unhighlight);
+    this._el.children[0].removeEventListener('tapstart', this._highlight);
+    this._el.children[0].removeEventListener('tapcancel', this._unhighlight);
+    this._el.children[0].removeEventListener('tap', this._unhighlight);
   }
 }
 
@@ -39,24 +39,26 @@ export class NativeFeedback implements OnInit, OnDestroy {
   constructor(el: ElementRef) {
     this._el = el.nativeElement;
     this._start = (event: any) => {
-      this._el.dispatchCommand('hotspotUpdate', [event.srcEvent.clientX || 0, event.srcEvent.clientY || 0]);
-      this._el.dispatchCommand('setPressed', [true]);
+      this._el.children[0].dispatchCommand('hotspotUpdate', [event.srcEvent.pageX || 0, event.srcEvent.pageY || 0]);
+      this._el.children[0].dispatchCommand('setPressed', [true]);
     };
     this._stop = (event: any) => {
-      this._el.dispatchCommand('hotspotUpdate', [event.srcEvent.clientX || 0, event.srcEvent.clientY || 0]);
-      this._el.dispatchCommand('setPressed', [false]);
+      this._el.children[0].dispatchCommand('hotspotUpdate', [event.srcEvent.pageX || 0, event.srcEvent.pageY || 0]);
+      this._el.children[0].dispatchCommand('setPressed', [false]);
     };
   }
 
   ngOnInit() {
-    this._el.setProperty('nativeBackgroundAndroid', {type: 'RippleAndroid', color: processColor(this.nativeFeedback) || -1, borderless: false});
-    this._el.addEventListener('tapstart', this._start);
-    this._el.addEventListener('tapcancel', this._stop);
-    this._el.addEventListener('tap', this._stop);
+    this._el.children[0].addEventListener('tapstart', this._start);
+    this._el.children[0].addEventListener('tapcancel', this._stop);
+    this._el.children[0].addEventListener('tap', this._stop);
+    setTimeout(() => {
+      this._el.children[0].setProperty('nativeBackgroundAndroid', {type: 'RippleAndroid', color: processColor(this.nativeFeedback) || -1, borderless: false});
+    }, 0);
   }
   ngOnDestroy() {
-    this._el.removeEventListener('tapstart', this._start);
-    this._el.removeEventListener('tapcancel', this._stop);
-    this._el.removeEventListener('tap', this._stop);
+    this._el.children[0].removeEventListener('tapstart', this._start);
+    this._el.children[0].removeEventListener('tapcancel', this._stop);
+    this._el.children[0].removeEventListener('tap', this._stop);
   }
 }

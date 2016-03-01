@@ -1,7 +1,6 @@
 import {Component, Input, Output, ElementRef, NgZone, EventEmitter, ViewChildren, QueryList} from 'angular2/core';
 import {NgFor, NgIf} from 'angular2/common';
-import {NativeFeedback} from './common';
-import {StyleSheet, processColor} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {TodoMVC} from "./todomvc";
 
 @Component({
@@ -10,10 +9,10 @@ import {TodoMVC} from "./todomvc";
   inputs: ['color', 'x', 'y', 'radius'],
   directives: [NgIf, TodoMVC],
   template: `
-<native-view [style]="styles.ball" [top]="_y" [left]="_x" [backgroundColor]="_color" [borderRadius]="_radius" [width]="_radius*2" [height]="_radius*2"
+<View [styleSheet]="styles.ball" [style]="{top: _y, left: _x, backgroundColor: _color, borderRadius: _radius, width: _radius*2, height: _radius*2}"
   (pan)="moveBall($event)" (panend)="endMoveBall($event)">
   <todo-mvc *ngIf="withTodoMVC"></todo-mvc>
-</native-view>
+</View>
 `
 })
 export class Ball {
@@ -33,17 +32,12 @@ export class Ball {
     this.styles = StyleSheet.create({
       ball: {
         position: 'absolute'
-      },
-      ballText: {
-        color: '#FFFFFF',
-        textAlign: 'center',
-        fontSize: 20
       }
     });
   }
 
   moveBall(event: any) {
-    this._el.children[1].setProperties({top: this._y + event.deltaY, left: this._x + event.deltaX});
+    this._el.children[1].children[0].setProperties({top: this._y + event.deltaY, left: this._x + event.deltaX});
   }
 
   endMoveBall(event: any) {
@@ -92,15 +86,15 @@ export class Ball {
   set x (value: any) { this._x = (!isNaN(parseInt(value))) ? parseInt(value) : value;  }
   set y (value: any) { this._y = (!isNaN(parseInt(value))) ? parseInt(value) : value; }
   set radius (value: any) { this._radius = (!isNaN(parseInt(value))) ? parseInt(value) : value; }
-  set color (value: any) { this._color = processColor(value); }
+  set color (value: any) { this._color = value;}
 }
 
 @Component({
   selector: 'animation-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NgFor, NativeFeedback, Ball],
+  directives: [NgFor, Ball],
   template: `
-<native-switch height="27" width="50" (topChange)="withTodoMVC=$event.value; $event.target.setProperty('on', $event.value)"></native-switch>
+<Switch (change)="withTodoMVC=$event"></Switch>
 <ball *ngFor="#ball of balls" x="{{ball.x}}" y="{{ball.y}}" color="{{ball.color}}" radius="{{ball.radius}}" [withTodoMVC]="withTodoMVC" (tap)="moveAll()" (startMove)="startMove()"></ball>
 `
 })

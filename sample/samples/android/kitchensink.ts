@@ -23,16 +23,16 @@ import {NativeFeedback} from "./common";
   <DrawerLayoutSide>
     <Toolbar [styleSheet]="styles.toolbar" [navIcon]="hamburgerIcon" [overflowIcon]="moreIcon"
     title="Kitchen Sink" titleColor="#FFFFFF" (select)="handleToolbar($event)"></Toolbar>
-    <native-view position="absolute" top="50" left="0" right="0" bottom="0" collapsable="false">
+    <View [styleSheet]="styles.content">
       <router-outlet></router-outlet>
-    </native-view>
+    </View>
   </DrawerLayoutSide>
   <DrawerLayoutContent>
-    <native-view flex="1" [style]="styles.drawer">
-      <native-view *ngFor="#item of menuItems" [style]="styles.menuItem" (tap)="navigate(item.path)" nativeFeedback="#00a9e0">
-        <native-text [style]="styles.menuText">{{item.name}}</native-text>
-      </native-view>
-    </native-view>
+    <View [styleSheet]="styles.drawer">
+      <View *ngFor="#item of menuItems" [styleSheet]="styles.menuItem" (tap)="navigate(item.path)" nativeFeedback="#00a9e0">
+        <Text [styleSheet]="styles.menuText">{{item.name}}</Text>
+      </View>
+    </View>
   </DrawerLayoutContent>
 </DrawerLayout>
 `
@@ -82,6 +82,14 @@ export class KitchenSinkApp {
       },
       drawer: {
         backgroundColor: '#DDDDDD',
+        flex: 1
+      },
+      content: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 50,
+        bottom: 0
       },
       menuItem: {
         backgroundColor: '#FFFFFF',
