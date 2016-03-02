@@ -70,11 +70,9 @@ describe('MockReactNativeWrapper', () => {
     mock.manageChildren(1, null, null, null, null, [0]);
     expect(mock.commandLogs.length).toEqual(1);
     expect(mock.commandLogs.toString()).toEqual('DETACH+1+0');
-    var element1 = mock.nativeElementMap.get(2);
-    var element2 = mock.nativeElementMap.get(3);
-    expect(element1).toEqual(undefined);
-    expect(element2.parent).toEqual(mock.root);
-    expect(mock.root.children).toEqual([element2]);
+    var element = mock.nativeElementMap.get(3);
+    expect(element.parent).toEqual(mock.root);
+    expect(mock.root.children).toEqual([element]);
   });
 
   it('should move a native element', () => {
@@ -85,8 +83,8 @@ describe('MockReactNativeWrapper', () => {
     mock.manageChildren(1, null, null, [2,3,4], [0,1,2], null);
     mock.clearLogs();
     mock.manageChildren(1, [1], [2], null, null, null);
-    expect(mock.commandLogs.length).toEqual(2);
-    expect(mock.commandLogs.toString()).toEqual('DETACH+1+1,ATTACH+1+3+2');
+    expect(mock.commandLogs.length).toEqual(1);
+    expect(mock.commandLogs.toString()).toEqual('MOVE+1+1+2');
     var element = mock.nativeElementMap.get(3);
     expect(element.parent).toEqual(mock.root);
     expect(mock.root.children[2]).toEqual(element);
@@ -102,8 +100,8 @@ describe('MockReactNativeWrapper', () => {
     mock.createView('RCTView', 1, {});
     mock.clearLogs();
     mock.manageChildren(1, [0,1], [1,2], [5,6], [0,3], [2]);
-    expect(mock.commandLogs.length).toEqual(7);
-    expect(mock.commandLogs.toString()).toEqual('DETACH+1+2,DETACH+1+1,DETACH+1+0,ATTACH+1+5+0,ATTACH+1+2+1,ATTACH+1+3+2,ATTACH+1+6+3');
+    expect(mock.commandLogs.length).toEqual(4);
+    expect(mock.commandLogs.toString()).toEqual('DETACH+1+2,MOVE+1+0,1+1,2,ATTACH+1+5+0,ATTACH+1+6+3');
     expect(mock.nativeElementMap.get(1).children.map((a) => a.tag).join(',')).toEqual('5,2,3,6');
   });
 

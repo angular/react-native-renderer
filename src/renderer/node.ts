@@ -10,6 +10,8 @@ export abstract class Node {
   public tagName: string = "";
   public properties: {[s: string]: any } = {};
   public isVirtual: boolean = false;
+  public toBeDestroyed: boolean = false;
+  public toBeMoved: boolean = false;
 
   public nativeTag: number = -1;
   public isCreated: boolean = false;
@@ -121,6 +123,7 @@ export abstract class Node {
     nodeMap.delete(this.nativeTag);
     this.nativeTag = -1;
     this.nativeChildren = [];
+    this.toBeDestroyed = this.toBeMoved = false;
     for (var i = 0; i < this.children.length; i++) {
       this.children[i].destroyNative();
     }

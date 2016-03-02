@@ -135,8 +135,18 @@ export class NativeCommandAttachAfter extends NativeCommand {
   private _attach(wrapper: ReactNativeWrapper, node: Node, ancestor: Node, counters: Map<Node, number>, baseNativeIndex: number): void {
     var shift = counters.get(this.anchor) || 0;
     var nativeIndex = baseNativeIndex + shift;
-    wrapper.manageChildren(ancestor.nativeTag, null, null, [node.nativeTag], [nativeIndex], null);
-    ancestor.nativeChildren.splice(nativeIndex, 0, node.nativeTag);
+    if (!node.toBeMoved) {
+      wrapper.manageChildren(ancestor.nativeTag, null, null, [node.nativeTag], [nativeIndex], null);
+      ancestor.nativeChildren.splice(nativeIndex, 0, node.nativeTag);
+    } else {
+      var currentIndex = ancestor.nativeChildren.indexOf(node.nativeTag);
+      if (currentIndex != nativeIndex) {
+        wrapper.manageChildren(ancestor.nativeTag, [currentIndex], [nativeIndex], null, null, null);
+        ancestor.nativeChildren.splice(currentIndex, 1);
+        ancestor.nativeChildren.splice(nativeIndex, 0, node.nativeTag);
+      }
+      node.toBeMoved = false;
+    }
     counters.set(this.anchor, shift + 1);
   }
 }
@@ -148,14 +158,18 @@ export class NativeCommandDetach extends NativeCommand {
 
   execute(wrapper: ReactNativeWrapper) {
     var parent = this.target.parent;
-    var index = parent.children.indexOf(this.target);
-    parent.children.splice(index, 1);
     var toDetach = this.target.nativeTag > -1 ? this.target : (this.target.isVirtual ? this.target.getFirstCreatedChild() : null);
     if (toDetach) {
-      var nativeIndex = parent.nativeChildren.indexOf(toDetach.nativeTag);
-      parent.nativeChildren.splice(nativeIndex, 1);
-      wrapper.manageChildren(parent.nativeTag, null, null, null, null, [nativeIndex]);
-      toDetach.destroyNative();
+      if (toDetach.toBeDestroyed) {
+        var nativeIndex = parent.nativeChildren.indexOf(toDetach.nativeTag);
+        parent.nativeChildren.splice(nativeIndex, 1);
+        wrapper.manageChildren(parent.nativeTag, null, null, null, null, [nativeIndex]);
+        toDetach.destroyNative();
+      }
+      else {
+        //Node is being moved
+        this.target.toBeMoved = true;
+      }
     }
   }
 }

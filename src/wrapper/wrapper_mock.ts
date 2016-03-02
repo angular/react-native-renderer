@@ -1,5 +1,12 @@
 import {ReactNativeWrapper, overridePlatform} from "./wrapper";
 
+class Command {
+  constructor(public name: string, public target: number, public details: string) { }
+  toString(): string {
+    return `${this.name}+${this.target}+${this.details}`;
+  }
+}
+
 export class MockReactNativeWrapper extends ReactNativeWrapper {
   commandLogs: Array<Command>;
   root: NativeElement;
@@ -46,34 +53,44 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
   // moveTo and addAt are both relative to the final state of the View's children.
   manageChildren(parentTag: number, moveFrom: Array<number>, moveTo: Array<number>, addTags: Array<number>, addAt: Array<number>, removeFrom: Array<number>) {
     var parentElement = this.nativeElementMap.get(parentTag);
-    var toBeDeleted = removeFrom || [];
+    var toBeDeleted = [];
     var toBeAdded: Array<any> = [];
-    var toBeMoved: Array<any> = [];
-    if (moveFrom && moveTo && moveFrom.length == moveTo.length) {
-      toBeDeleted = toBeDeleted.concat(moveFrom).sort();
+    if (moveFrom && moveTo && moveFrom.length != moveTo.length) {
+      throw new Error(`manageChildren - MOVE - Invalid lengths: ${moveFrom.length} vs ${moveTo.length}`);
+    }
+    if (addTags && addAt && addTags.length != addAt.length) {
+      throw new Error(`manageChildren - MOVE - Invalid lengths: ${addTags.length} vs ${addAt.length}`);
+    }
+    //Detach commands
+    if (removeFrom) {
+      for (var i = 0; i < removeFrom.length; i++) {
+        var index = removeFrom[removeFrom.length - i - 1];
+        toBeDeleted.push(index);
+        this.commandLogs.push(new Command('DETACH', parentTag, '' + index));
+      }
+    }
+    //Move commands
+    if (moveFrom) {
       for (var i = 0; i < moveFrom.length; i++) {
         var tag = parentElement.children[moveFrom[i]].tag;
+        toBeDeleted.push(moveFrom[i]);
         toBeAdded.push({index: moveTo[i], tag: tag});
-        toBeMoved.push(tag);
       }
+      this.commandLogs.push(new Command('MOVE', parentTag, '' + moveFrom.join(',') + '+' + moveTo.join(',')));
     }
-    if (addTags && addAt && addTags.length == addAt.length) {
+    //Attach commands
+    if (addTags) {
       for (var i = 0; i < addTags.length; i++) {
         toBeAdded.push({index: addAt[i], tag: addTags[i]});
+        this.commandLogs.push(new Command('ATTACH', parentTag, addTags[i] + '+' + addAt[i]));
       }
     }
-    //Detach
-    for (var i = 0; i < toBeDeleted.length; i++) {
-      var index = toBeDeleted[toBeDeleted.length - i - 1];
-      var tag = parentElement.children[index].tag;
-      parentElement.children.splice(index, 1);
-      if (toBeMoved.indexOf(tag) == -1) {
-        this.nativeElementMap.delete(tag);
-      }
-      this.commandLogs.push(new Command('DETACH', parentTag, '' + index));
-    }
-    //Attach
+    //Update data structure
+    toBeDeleted.sort();
     toBeAdded.sort((a, b) => { return a.index - b.index});
+    for (var i = 0; i < toBeDeleted.length; i++) {
+      parentElement.children.splice(toBeDeleted[toBeDeleted.length - i - 1], 1);
+    }
     for (var i = 0; i < toBeAdded.length; i++) {
       var item = toBeAdded[i];
       var element = this.nativeElementMap.get(item.tag);
@@ -83,8 +100,6 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
       } else {
         throw new Error(`manageChildren - ATTACH - Invalid index ${item.index},  size is ${parentElement.children.length}`);
       }
-
-      this.commandLogs.push(new Command('ATTACH', parentTag, item.tag + '+' + item.index));
     }
   }
 
@@ -155,13 +170,6 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
 
   $log(...args: any[]) {
     //console.log(...args);
-  }
-}
-
-class Command {
-  constructor(public name: string, public target: number, public details: string) { }
-  toString(): string {
-    return `${this.name}+${this.target}+${this.details}`;
   }
 }
 

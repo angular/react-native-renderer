@@ -179,10 +179,17 @@ describe('Element', () => {
       rootRenderer.executeCommands();
       expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1,2,3');
 
+      mock.clearLogs();
+      fixture.debugElement.componentInstance.a.splice(1, 1);
+      fixture.detectChanges();
+      rootRenderer.executeCommands();
+      expect(mock.commandLogs.toString()).toEqual('DETACH+2+1'); //MOVE+2+1+1 is removed for optimization
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1,3');
+
       fixture.debugElement.componentInstance.a.pop();
       fixture.detectChanges();
       rootRenderer.executeCommands();
-      expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1,2');
+      expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1');
 
       fixture.debugElement.componentInstance.a = [];
       fixture.detectChanges();

@@ -192,12 +192,18 @@ export class ReactNativeRenderer implements Renderer {
   detachView(viewRootNodes: Node[]): void {
     for (var i = 0; i < viewRootNodes.length; i++) {
       var node = viewRootNodes[i];
+      var parent = node.parent;
+      var index = parent.children.indexOf(node);
+      parent.children.splice(index, 1);
       this._rootRenderer.addDetachCommand(node);
     }
   }
 
-  destroyView(hostElement:any, viewAllNodes:any[]):any {
-    //TODO: Nothing to do, detachView took care of it. Can it be improved to avoid destruction and creation?
+  destroyView(hostElement: any, viewAllNodes: Node[]): void {
+    for (var i = 0; i < viewAllNodes.length; i++) {
+      var node = viewAllNodes[i];
+      node.toBeDestroyed = true;
+    }
   }
 
   listen(renderElement: Node, name: string, callback: Function): Function {
