@@ -11,7 +11,8 @@ import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {Picker} from "../../src/components/picker";
-import {View} from "./../../src/components/view"
+import {View} from "./../../src/components/view";
+import {Text} from './../../src/components/text';
 import {CustomTestComponentBuilder} from "../../src/testing/test_component_builder";
 
 var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
@@ -160,12 +161,12 @@ describe('Component without host', () => {
 
   it('should support projection', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<proj><sub></sub><View></View></proj>`)
+    return tcb.overrideTemplate(TestComponent, `<proj><sub></sub><Text></Text></proj>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+proj+{},CREATE+4+native-view+{},CREATE+5+sub+{},CREATE+6+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+5+6+0,ATTACH+3+5+1');
+          'CREATE+2+test-cmp+{},CREATE+3+proj+{},CREATE+4+native-text+{},CREATE+5+sub+{},CREATE+6+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+5+6+0,ATTACH+3+5+1');
       });
   }));
 
@@ -180,6 +181,17 @@ describe('Component without host', () => {
       });
   }));
 
+  it('should support sub-components with ngIf in their templates', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+    var rootRenderer = _rootRenderer;
+    return tcb.overrideTemplate(TestComponent, `<sub-with-if></sub-with-if>`)
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+        fixture.detectChanges();
+        rootRenderer.executeCommands();
+        expect(mock.commandLogs.toString()).toEqual(
+          'CREATE+2+test-cmp+{},CREATE+3+sub-with-if+{},CREATE+4+native-view+{},CREATE+5+native-view+{},CREATE+6+native-text+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1,ATTACH+3+6+1');
+      });
+  }));
+
 });
 
 @Component({
@@ -190,15 +202,23 @@ describe('Component without host', () => {
 class SubComponent {
 }
 @Component({
+  selector: 'sub-with-if',
+  template: `<View></View><Text *ngIf="b"></Text><View></View>`,
+  directives: [View, Text, NgIf]
+})
+class SubComponentWithIf {
+  b: boolean = true;
+}
+@Component({
   selector: 'proj',
-  template: `<ng-content select="View"></ng-content><ng-content></ng-content>`
+  template: `<ng-content select="Text"></ng-content><ng-content></ng-content>`
 })
 class SubComponentWithProjection {
 }
 @Component({
   selector: 'test-cmp',
   template: `to be overriden`,
-  directives: [View, Picker, SubComponent, SubComponentWithProjection, NgIf, NgFor]
+  directives: [View, Picker, Text, SubComponent, SubComponentWithIf, SubComponentWithProjection, NgIf, NgFor]
 })
 class TestComponent {
   s: string = 'bar';

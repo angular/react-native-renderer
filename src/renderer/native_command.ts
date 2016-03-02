@@ -89,12 +89,20 @@ export class NativeCommandAttach extends NativeCommand {
     if (this.toRoot) {
       wrapper.manageChildren(1, null, null, [this.target.nativeTag], [0], null);
     } else {
-      var parent = this.target.parent;
-      if (parent && this.target.isCreated && !this.target.isVirtual) {
+      if (this.target.parent) {
         var ancestor = this.target.getAncestorWithNativeCreated();
         if (ancestor) {
-          wrapper.manageChildren(ancestor.nativeTag, null, null, [this.target.nativeTag], [ancestor.nativeChildren.length], null);
-          ancestor.nativeChildren.push(this.target.nativeTag);
+          if (this.target.isCreated && !this.target.isVirtual) {
+            wrapper.manageChildren(ancestor.nativeTag, null, null, [this.target.nativeTag], [ancestor.nativeChildren.length], null);
+            ancestor.nativeChildren.push(this.target.nativeTag);
+          } else {
+            this.target.children.forEach((child) => {
+              if (child.isCreated && !child.isVirtual) {
+                wrapper.manageChildren(ancestor.nativeTag, null, null, [child.nativeTag], [ancestor.nativeChildren.length], null);
+                ancestor.nativeChildren.push(child.nativeTag);
+              }
+            });
+          }
         }
       }
     }
@@ -107,17 +115,29 @@ export class NativeCommandAttachAfter extends NativeCommand {
   }
 
   executeWithCounters(wrapper: ReactNativeWrapper, counters: Map<Node, number>) {
-    var parent = this.target.parent;
-    if (parent && this.target.isCreated && !this.target.isVirtual) {
+    if (this.target.parent) {
       var ancestor = this.target.getAncestorWithNativeCreated();
       if (ancestor) {
-        var shift = counters.get(this.anchor) || 0;
-        var nativeIndex = this.anchor.getInsertionNativeIndex() + shift;
-        wrapper.manageChildren(ancestor.nativeTag, null, null, [this.target.nativeTag], [nativeIndex], null);
-        ancestor.nativeChildren.splice(nativeIndex, 0, this.target.nativeTag);
-        counters.set(this.anchor, shift + 1);
+        var baseNativeIndex = this.anchor.getInsertionNativeIndex();
+        if (this.target.isCreated && !this.target.isVirtual) {
+          this._attach(wrapper, this.target, ancestor, counters, baseNativeIndex);
+        } else {
+          this.target.children.forEach((child) => {
+            if (child.isCreated && !child.isVirtual) {
+              this._attach(wrapper, child, ancestor, counters, baseNativeIndex);
+            }
+          });
+        }
       }
     }
+  }
+
+  private _attach(wrapper: ReactNativeWrapper, node: Node, ancestor: Node, counters: Map<Node, number>, baseNativeIndex: number): void {
+    var shift = counters.get(this.anchor) || 0;
+    var nativeIndex = baseNativeIndex + shift;
+    wrapper.manageChildren(ancestor.nativeTag, null, null, [node.nativeTag], [nativeIndex], null);
+    ancestor.nativeChildren.splice(nativeIndex, 0, node.nativeTag);
+    counters.set(this.anchor, shift + 1);
   }
 }
 
