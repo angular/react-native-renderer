@@ -34,6 +34,41 @@ export abstract class NativeCommand {
     }
     return result;
   }
+
+  static mergers : Map<Node, any> = new Map<Node, any>();
+
+  static addToMergers(node: Node, moveTag: number, addTag: number, removeTag: number): void {
+    var args = {moveTag: moveTag, addTag: addTag, removeTag: removeTag};
+    if (!NativeCommand.mergers.has(node)) {
+      NativeCommand.mergers.set(node, {initialState: node.nativeChildren.slice(0), commands: [args]});
+    } else {
+      NativeCommand.mergers.get(node).commands.push(args);
+    }
+  }
+
+  static mergeAndApply(wrapper: ReactNativeWrapper) {
+    NativeCommand.mergers.forEach((args: any, node: Node) => {
+      var initialState = args.initialState;
+      var finalState = node.nativeChildren;
+      var moveFrom: Array<number> = [], moveTo: Array<number> = [], addTags: Array<number> = [], addAt: Array<number> = [], removeFrom: Array<number> = [];
+      args.commands.forEach((cmd) => {
+        if (cmd.moveTag) {
+          moveFrom.push(initialState.indexOf(cmd.moveTag));
+          moveTo.push(finalState.indexOf(cmd.moveTag));
+        }
+        if (cmd.addTag) {
+          addTags.push(cmd.addTag);
+          addAt.push(finalState.indexOf(cmd.addTag));
+        }
+        if (cmd.removeTag) {
+          removeFrom.push(initialState.indexOf(cmd.removeTag));
+        }
+      });
+      wrapper.manageChildren(node.nativeTag, moveFrom.length > 0 ? moveFrom : null, moveTo.length > 0 ? moveTo : null,
+        addTags.length > 0 ? addTags : null, addAt.length > 0 ? addAt : null, removeFrom.length > 0 ? removeFrom : null);
+      NativeCommand.mergers.delete(node);
+    });
+  }
 }
 
 export class NativeCommandCreate extends NativeCommand {
@@ -93,12 +128,12 @@ export class NativeCommandAttach extends NativeCommand {
         var ancestor = this.target.getAncestorWithNativeCreated();
         if (ancestor) {
           if (this.target.isCreated && !this.target.isVirtual) {
-            wrapper.manageChildren(ancestor.nativeTag, null, null, [this.target.nativeTag], [ancestor.nativeChildren.length], null);
+            NativeCommand.addToMergers(ancestor, null, this.target.nativeTag, null);
             ancestor.nativeChildren.push(this.target.nativeTag);
           } else {
             this.target.children.forEach((child) => {
               if (child.isCreated && !child.isVirtual) {
-                wrapper.manageChildren(ancestor.nativeTag, null, null, [child.nativeTag], [ancestor.nativeChildren.length], null);
+                NativeCommand.addToMergers(ancestor, null, child.nativeTag, null);
                 ancestor.nativeChildren.push(child.nativeTag);
               }
             });
@@ -136,12 +171,12 @@ export class NativeCommandAttachAfter extends NativeCommand {
     var shift = counters.get(this.anchor) || 0;
     var nativeIndex = baseNativeIndex + shift;
     if (!node.toBeMoved) {
-      wrapper.manageChildren(ancestor.nativeTag, null, null, [node.nativeTag], [nativeIndex], null);
+      NativeCommand.addToMergers(ancestor, null, node.nativeTag, null);
       ancestor.nativeChildren.splice(nativeIndex, 0, node.nativeTag);
     } else {
       var currentIndex = ancestor.nativeChildren.indexOf(node.nativeTag);
       if (currentIndex != nativeIndex) {
-        wrapper.manageChildren(ancestor.nativeTag, [currentIndex], [nativeIndex], null, null, null);
+        NativeCommand.addToMergers(ancestor, node.nativeTag, null, null);
         ancestor.nativeChildren.splice(currentIndex, 1);
         ancestor.nativeChildren.splice(nativeIndex, 0, node.nativeTag);
       }
@@ -162,8 +197,8 @@ export class NativeCommandDetach extends NativeCommand {
     if (toDetach) {
       if (toDetach.toBeDestroyed) {
         var nativeIndex = parent.nativeChildren.indexOf(toDetach.nativeTag);
+        NativeCommand.addToMergers(parent, null, null, toDetach.nativeTag);
         parent.nativeChildren.splice(nativeIndex, 1);
-        wrapper.manageChildren(parent.nativeTag, null, null, null, null, [nativeIndex]);
         toDetach.destroyNative();
       }
       else {

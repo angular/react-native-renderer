@@ -75,6 +75,7 @@ export class ReactNativeRootRenderer implements RootRenderer {
     var counters: Map<Node,number> = new Map<Node, number>();
     this._attachAfterCommands.forEach((command: NativeCommandAttachAfter) => command.executeWithCounters(this.wrapper, counters));
     counters.clear();
+    NativeCommand.mergeAndApply(this.wrapper);
 
     this._detachCommands.clear();
     this._createCommands.clear();
