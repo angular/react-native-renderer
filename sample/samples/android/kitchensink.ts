@@ -133,11 +133,11 @@ export class KitchenSinkApp {
 
   private _addMoreInToolbar():void {
     this.toolbar.actions = [
-      {title: 'Reset list', show: 0},
-      {title: 'Empty list', show: 0},
-      {title: 'Fill list with 100 items', show: 0},
-      {title: 'Save', show: 0},
-      {title: 'Load', show: 0}
+      {title: 'Reset list', show: 'never'},
+      {title: 'Empty list', show: 'never'},
+      {title: 'Fill list with 100 items', show: 'never'},
+      {title: 'Save', show: 'never'},
+      {title: 'Load', show: 'never'}
     ];
   }
 

@@ -34,10 +34,16 @@ export class Toolbar extends HighLevelComponent {
   private _titleColor: number;
   set actions(value: Array<any>) {this._actions = value.map((action) => {
     var result: any = {};
-    result['title'] = action.title;
-    result['icon'] = this.resolveAssetSource(action.icon);
-    result['show'] = this.getUIManager().ToolbarAndroid.Constants.ShowAsAction[action.show];
-    result['showWithText'] = action.showWithText;
+    if (typeof action.title != 'undefined') {
+      result['title'] = action.title;
+    }
+    if (typeof action.icon != 'undefined') {
+      result['icon'] = this.resolveAssetSource(action.icon);
+    }
+    result['show'] = this.getUIManager().ToolbarAndroid.Constants.ShowAsAction[action.show] || 0;
+    if (typeof action.icon != 'undefined') {
+      result['showWithText'] = action.showWithText;
+    }
     return result;
   });}
   set contentInsetStart(value: any) {this._contentInsetStart = this.processNumber(value);}
