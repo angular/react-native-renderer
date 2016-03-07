@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter} from 'angular2/core';
+import {Injectable, EventEmitter, NgZone} from 'angular2/core';
 import {LocationStrategy} from 'angular2/router';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class ReactNativeLocationStrategy extends LocationStrategy {
   urlChanges: string[] = [];
   /** @internal */
   _subject: EventEmitter<any> = new EventEmitter();
-  constructor() { super(); }
+  constructor(private zone: NgZone) { super(); }
 
   simulatePopState(url: string): void {
     this.internalPath = url;
@@ -53,11 +53,15 @@ export class ReactNativeLocationStrategy extends LocationStrategy {
     if (this.urlChanges.length > 0) {
       this.urlChanges.pop();
       var nextUrl = this.urlChanges.length > 0 ? this.urlChanges[this.urlChanges.length - 1] : '';
-      this.simulatePopState(nextUrl);
+      this.zone.run(() => this.simulatePopState(nextUrl));
     }
   }
 
   forward(): void { throw 'not implemented'; }
+
+  canGoBack(): boolean {
+    return this.urlChanges.length > 1;
+  }
 }
 
 class _MockPopStateEvent {

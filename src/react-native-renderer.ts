@@ -15,4 +15,7 @@ export * from './components/android/pager_layout';
 export * from './components/android/progress_bar';
 export * from './components/android/toolbar';
 
+export * from './router/router_link';
+export * from './router/location_strategy';
+
 

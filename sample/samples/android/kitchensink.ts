@@ -1,8 +1,8 @@
 import {Component, ElementRef, ViewChild} from 'angular2/core';
 import {NgFor} from 'angular2/common';
-import {Router, RouteConfig, ROUTER_DIRECTIVES, LocationStrategy} from 'angular2/router';
+import {Router, RouteConfig, RouterOutlet, LocationStrategy} from 'angular2/router';
 import {StyleSheet, BackAndroid, Alert, NativeModules, processColor} from 'react-native';
-import {DrawerLayout, Toolbar} from "react-native-renderer/react-native-renderer";
+import {DrawerLayout, Toolbar, RouterLink} from "react-native-renderer/react-native-renderer";
 
 import {HelloApp} from "./hello";
 import {TodoMVC} from "./todomvc";
@@ -17,7 +17,7 @@ import {NativeFeedback} from "./common";
 @Component({
   selector: 'kitchensink-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NgFor, NativeFeedback, ROUTER_DIRECTIVES],
+  directives: [NgFor, NativeFeedback, RouterOutlet, RouterLink],
   template: `
 <DrawerLayout drawerWidth="240" drawerPosition="left" [style]="{flex: 1}">
   <DrawerLayoutSide>
@@ -29,7 +29,7 @@ import {NativeFeedback} from "./common";
   </DrawerLayoutSide>
   <DrawerLayoutContent>
     <View [styleSheet]="styles.drawer">
-      <View *ngFor="#item of menuItems" [styleSheet]="styles.menuItem" (tap)="navigate(item.path)" nativeFeedback="#00a9e0">
+      <View *ngFor="#item of menuItems" [styleSheet]="styles.menuItem" [routerLink]="['/' + item.as]" nativeFeedback="#00a9e0">
         <Text [styleSheet]="styles.menuText">{{item.name}}</Text>
       </View>
     </View>
@@ -53,21 +53,29 @@ export class KitchenSinkApp {
   @ViewChild(Toolbar) toolbar: Toolbar;
   hamburgerIcon: any = require('../../assets/icon_hamburger.png');
   moreIcon: any = require('../../assets/icon_more.png');
-  menuItems: Array<any> = [{name: 'Hello world', path: '/'}, {name: 'Widgets', path: '/widgets'}, {name: 'WebView', path: '/webview'}, {name: 'APIs', path: '/apis'},
-    {name: 'TodoMVC', path: '/todomvc'}, {name: 'Gestures', path: '/gestures'}, {name: 'Http', path: '/http'}, {name: 'Animation', path: '/animation'}]
+  menuItems: Array<any> = [{name: 'Hello world', as: 'HelloApp'}, {name: 'Widgets', as: 'WidgetsList'}, {name: 'WebView', as: 'WebViewApp'}, {name: 'APIs', as: 'APIsList'},
+    {name: 'TodoMVC', as: 'TodoMVC'}, {name: 'Gestures', as: 'GesturesApp'}, {name: 'Http', as: 'HttpApp'}, {name: 'Animation', as: 'AnimationApp'}]
   styles: any;
   _el : any = null;
   constructor(el: ElementRef, private router: Router, private locationStrategy: LocationStrategy) {
+    this.router.subscribe((url) => {
+      this._afterNavigate(url);
+    })
     NativeModules.StatusBarManager.setColor(processColor('#00a9e0'), true);
+
     BackAndroid.addEventListener('hardwareBackPress', function() {
-      Alert.alert(
-        'Close App',
-        'Are you sure you want to close the app?',
-        [
-          {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-          {text: 'OK', onPress: () => BackAndroid.exitApp()},
-        ]
-      );
+      if ((<any>locationStrategy).canGoBack()) {
+        locationStrategy.back();
+      } else {
+        Alert.alert(
+          'Close App',
+          'Are you sure you want to close the app?',
+          [
+            {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+            {text: 'OK', onPress: () => BackAndroid.exitApp()},
+          ]
+        );
+      }
       return true;
     });
     this._el = el.nativeElement;
@@ -103,7 +111,7 @@ export class KitchenSinkApp {
     });
   }
 
-  navigate(url: string) {
+  _afterNavigate(url: string) {
     this.drawerLayout.closeDrawer();
     var currentPath = this.locationStrategy.path();
     if (currentPath != '/todomvc' && url == '/todomvc') {
@@ -111,7 +119,6 @@ export class KitchenSinkApp {
     } else if (currentPath == '/todomvc' && url != '/todomvc') {
       this._removeMoreInToolbar();
     }
-    this.router.navigateByUrl(url);
   }
 
   handleToolbar(event: any) {
