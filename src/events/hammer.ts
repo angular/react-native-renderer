@@ -1,6 +1,6 @@
-if (typeof window === "undefined") window = {};
-if (typeof document === "undefined") document = {createElement: () => {return {style: {}};}};
-var hammer = (typeof window.Hammer === "undefined") ? require('hammerjs') : window.Hammer;
+if (typeof global.window === "undefined") global.window = {};
+if (typeof global.document === "undefined") global.document = {createElement: () => {return {style: {}};}};
+var hammer = (typeof global.window.Hammer === "undefined") ? require('hammerjs') : global.window.Hammer;
 
 var EVENT_RECOGNIZER_MAP: {[s: string]: string } = {
   //doubletap

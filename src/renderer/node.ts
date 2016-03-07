@@ -52,7 +52,7 @@ export abstract class Node {
     var nativeIndex = -1;
     var ancestor = this.getAncestorWithNativeCreated();
     if (ancestor) {
-      var childrenOfAncestor = this;
+      var childrenOfAncestor: Node = this;
       while (childrenOfAncestor.parent != ancestor) {
         childrenOfAncestor = childrenOfAncestor.parent;
       }

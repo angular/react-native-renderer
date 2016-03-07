@@ -53,7 +53,7 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
   // moveTo and addAt are both relative to the final state of the View's children.
   manageChildren(parentTag: number, moveFrom: Array<number>, moveTo: Array<number>, addTags: Array<number>, addAt: Array<number>, removeFrom: Array<number>) {
     var parentElement = this.nativeElementMap.get(parentTag);
-    var toBeDeleted = [];
+    var toBeDeleted: Array<any> = [];
     var toBeAdded: Array<any> = [];
     if (moveFrom && moveTo && moveFrom.length != moveTo.length) {
       throw new Error(`manageChildren - MOVE - Invalid lengths: ${moveFrom.length} vs ${moveTo.length}`);

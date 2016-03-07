@@ -255,8 +255,9 @@ function customReporter() {
   return {
     error: (error) => {
       if (error.relativeFilename && error.message.indexOf(`Module '"react-native"' has no exported member`) == -1 &&
-      error.message.indexOf(`Module '"react-native-renderer/react-native-renderer"' has no exported member`) == -1 &&
-        error.message.indexOf(`src\\react-native-renderer.d.ts`) == -1) {
+        error.message.indexOf(`Module '"react-native-renderer/react-native-renderer"' has no exported member`) == -1 &&
+        error.message.indexOf(`src\\react-native-renderer.d.ts`) == -1 &&
+        error.message.indexOf(`does not exist on type 'Global'.`) == -1) {
         console.error(error.message);
       }
     },

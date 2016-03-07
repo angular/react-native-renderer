@@ -51,7 +51,7 @@ export abstract class NativeCommand {
       var initialState = args.initialState;
       var finalState = node.nativeChildren;
       var moveFrom: Array<number> = [], moveTo: Array<number> = [], addTags: Array<number> = [], addAt: Array<number> = [], removeFrom: Array<number> = [];
-      args.commands.forEach((cmd) => {
+      args.commands.forEach((cmd: any) => {
         if (cmd.moveTag) {
           moveFrom.push(initialState.indexOf(cmd.moveTag));
           moveTo.push(finalState.indexOf(cmd.moveTag));
