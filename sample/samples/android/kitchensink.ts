@@ -2,7 +2,7 @@ import {Component, ElementRef, ViewChild} from 'angular2/core';
 import {NgFor} from 'angular2/common';
 import {Router, RouteConfig, RouterOutlet, LocationStrategy} from 'angular2/router';
 import {StyleSheet, BackAndroid, Alert, NativeModules, processColor} from 'react-native';
-import {DrawerLayout, Toolbar, RouterLink} from "react-native-renderer/react-native-renderer";
+import {DrawerLayout, Toolbar, RouterLink, RippleFeedback} from "react-native-renderer/react-native-renderer";
 
 import {HelloApp} from "./hello";
 import {TodoMVC} from "./todomvc";
@@ -12,12 +12,11 @@ import {WebViewApp} from './webview';
 import {APIsList} from "./apis";
 import {HttpApp} from "./http";
 import {AnimationApp} from './animation';
-import {NativeFeedback} from "./common";
 
 @Component({
   selector: 'kitchensink-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NgFor, NativeFeedback, RouterOutlet, RouterLink],
+  directives: [NgFor, RippleFeedback, RouterOutlet, RouterLink],
   template: `
 <DrawerLayout drawerWidth="240" drawerPosition="left" [style]="{flex: 1}">
   <DrawerLayoutSide>
@@ -29,7 +28,7 @@ import {NativeFeedback} from "./common";
   </DrawerLayoutSide>
   <DrawerLayoutContent>
     <View [styleSheet]="styles.drawer">
-      <View *ngFor="#item of menuItems" [styleSheet]="styles.menuItem" [routerLink]="['/' + item.as]" nativeFeedback="#00a9e0">
+      <View *ngFor="#item of menuItems" [styleSheet]="styles.menuItem" [routerLink]="['/' + item.as]" rippleFeedback="#00a9e0">
         <Text [styleSheet]="styles.menuText">{{item.name}}</Text>
       </View>
     </View>

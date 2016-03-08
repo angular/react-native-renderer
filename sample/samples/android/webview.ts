@@ -1,18 +1,17 @@
 import {Component, ElementRef, ViewChild} from 'angular2/core';
-import {NativeFeedback} from './common';
 import {StyleSheet} from 'react-native';
-import {WebView} from 'react-native-renderer/react-native-renderer';
+import {WebView, RippleFeedback} from 'react-native-renderer/react-native-renderer';
 
 @Component({
   selector: 'webview-app',
-  directives: [NativeFeedback],
+  directives: [RippleFeedback],
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   template: `
 <View [style]="{flexDirection: 'row', flex: 1}">
-  <View [styleSheet]="styles.button" nativeFeedback (tap)="goBack()">
+  <View [styleSheet]="styles.button" rippleFeedback (tap)="goBack()">
     <Text [styleSheet]="styles.buttonText">Back</Text>
   </View>
-  <View [styleSheet]="styles.button" nativeFeedback (tap)="goForward()">
+  <View [styleSheet]="styles.button" rippleFeedback (tap)="goForward()">
     <Text [styleSheet]="styles.buttonText">Forward</Text>
   </View>
 </View>

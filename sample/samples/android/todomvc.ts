@@ -1,8 +1,7 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from 'angular2/core';
 import {NgIf, NgFor} from 'angular2/common';
-import {HighLight} from './common';
 import {StyleSheet, AsyncStorage} from 'react-native';
-import {TextInput} from "react-native-renderer/react-native-renderer";
+import {TextInput, OpacityFeedback} from "react-native-renderer/react-native-renderer";
 
 class Palette {
   static background: string = '#005eb8';
@@ -23,13 +22,13 @@ class Todo {
 
 @Component({
   selector: 'todo-item',
-  directives: [NgIf, HighLight],
+  directives: [NgIf, OpacityFeedback],
   template: `
 <View [styleSheet]="styles.row">
-<Text [styleSheet]="[styles.tick, item.active ? styles.tickOff : styles.tickOn]" highlight (tap)="toggle($event)">{{item.active ? "[  ]" : "[x]"}}</Text>
+<Text [styleSheet]="[styles.tick, item.active ? styles.tickOff : styles.tickOn]" opacityFeedback (tap)="toggle($event)">{{item.active ? "[  ]" : "[x]"}}</Text>
 <Text *ngIf="!item.edited" [styleSheet]="[styles.main, item.active ? styles.mainOff : styles.mainOn]" (doubletap)="startEdit()">{{item.value}}</Text>
 <TextInput *ngIf="item.edited" [styleSheet]="styles.editor" [text]="item.value" (submit)="stopEdit($event)"></TextInput>
-<Text [styleSheet]="styles.cross" highlight (tap)="delete()">X</Text>
+<Text [styleSheet]="styles.cross" opacityFeedback (tap)="delete()">X</Text>
 </View>
 `
 })
@@ -114,7 +113,7 @@ export class TodoItem {
 @Component({
   selector: 'todo-mvc',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NgFor, NgIf, TodoItem, HighLight],
+  directives: [NgFor, NgIf, TodoItem, OpacityFeedback],
   template: `
 <View [style]="{flexDirection: 'row'}">
   <Text [styleSheet]="[styles.all, leftCount == 0 ? styles.allOn : styles.allOff]" (tap)="selectAll()">V</Text>
@@ -131,17 +130,17 @@ export class TodoItem {
     <Text [styleSheet]="styles.counter">item{{leftCount == 1 ? '' : 's'}} left</Text>
   </View>
   <View [style]="{flex: 1, flexDirection: 'row', justifyContent: 'center'}">
-    <View [styleSheet]="[styles.filter, filter == 'all' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'all')">
+    <View [styleSheet]="[styles.filter, filter == 'all' ? styles.filterOn : styles.filterOff]" opacityFeedback (tap)="setFilter($event, 'all')">
       <Text [styleSheet]="[styles.filterText, filter == 'all' ? styles.filterTextOn : styles.filterTextOff]">All</Text>
     </View>
-    <View [styleSheet]="[styles.filter, filter == 'active' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'active')">
+    <View [styleSheet]="[styles.filter, filter == 'active' ? styles.filterOn : styles.filterOff]" opacityFeedback (tap)="setFilter($event, 'active')">
       <Text [styleSheet]="[styles.filterText, filter == 'active' ? styles.filterTextOn : styles.filterTextOff]">Active</Text>
     </View>
-    <View [styleSheet]="[styles.filter, filter == 'done' ? styles.filterOn : styles.filterOff]" highlight (tap)="setFilter($event, 'done')">
+    <View [styleSheet]="[styles.filter, filter == 'done' ? styles.filterOn : styles.filterOff]" opacityFeedback (tap)="setFilter($event, 'done')">
       <Text [styleSheet]="[styles.filterText, filter == 'done' ? styles.filterTextOn : styles.filterTextOff]">Done</Text>
     </View>
   </View>
-  <View [styleSheet]="styles.clear" highlight (tap)="clearDone($event)">
+  <View [styleSheet]="styles.clear" opacityFeedback (tap)="clearDone($event)">
     <Text [styleSheet]="styles.clearText">Clear\ndone</Text>
   </View>
 </View>

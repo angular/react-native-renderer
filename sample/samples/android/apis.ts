@@ -1,35 +1,35 @@
 import {Component, ElementRef, NgZone} from 'angular2/core';
 import {StyleSheet, Alert, Linking, ToastAndroid, Clipboard, Platform, PixelRatio, NetInfo, AppState, DatePickerAndroid, TimePickerAndroid} from 'react-native';
-import {NativeFeedback} from './common';
+import {RippleFeedback} from "react-native-renderer/react-native-renderer";
 
 @Component({
   selector: 'apis-list',
   host: {flex: '1'},
-  directives: [NativeFeedback],
+  directives: [RippleFeedback],
   template: `
 <PagerLayout initialPage="0" [style]="{flex: 1, justifyContent: 'center', alignItems: 'center'}">
   <View [styleSheet]="styles.container">
     <Text [styleSheet]="styles.title">Actionable</Text>
-    <View [styleSheet]="styles.button" nativeFeedback (tap)="showAlert()">
+    <View [styleSheet]="styles.button" rippleFeedback (tap)="showAlert()">
       <Text [style]="styles.buttonText">Alert</Text>
     </View>
-    <View [styleSheet]="styles.button" nativeFeedback (tap)="showToast()">
+    <View [styleSheet]="styles.button" rippleFeedback (tap)="showToast()">
       <Text [styleSheet]="styles.buttonText">Toast</Text>
     </View>
-    <View [styleSheet]="styles.button" nativeFeedback (tap)="launchIntent()">
+    <View [styleSheet]="styles.button" rippleFeedback (tap)="launchIntent()">
       <Text [styleSheet]="styles.buttonText">Intent</Text>
     </View>
-    <View [styleSheet]="styles.button" nativeFeedback (tap)="setClipboard()">
+    <View [styleSheet]="styles.button" rippleFeedback (tap)="setClipboard()">
       <Text [styleSheet]="styles.buttonText">Clipboard</Text>
     </View>
     <Text>Current clipboard value: {{clipBoardContent}}</Text>
   </View>
   <View [styleSheet]="styles.container">
     <Text [styleSheet]="styles.title">More actionable</Text>
-    <View [styleSheet]="styles.button" nativeFeedback (tap)="pickDate()">
+    <View [styleSheet]="styles.button" rippleFeedback (tap)="pickDate()">
       <Text [styleSheet]="styles.buttonText">Pick a date: {{pickedDate}}</Text>
     </View>
-    <View [styleSheet]="styles.button" nativeFeedback (tap)="pickTime()">
+    <View [styleSheet]="styles.button" rippleFeedback (tap)="pickTime()">
       <Text [styleSheet]="styles.buttonText">Pick a time: {{pickedTime}}</Text>
     </View>
   </View>
