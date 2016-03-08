@@ -1,8 +1,8 @@
 import {Component, ElementRef, ViewChild} from 'angular2/core';
 import {NgFor} from 'angular2/common';
-import {Router, RouteConfig, RouterOutlet, LocationStrategy} from 'angular2/router';
+import {Router, RouteConfig, LocationStrategy} from 'angular2/router';
 import {StyleSheet, BackAndroid, Alert, NativeModules, processColor} from 'react-native';
-import {DrawerLayout, Toolbar, RouterLink, RippleFeedback} from "react-native-renderer/react-native-renderer";
+import {DrawerLayout, Toolbar, RippleFeedback, ROUTER_DIRECTIVES} from "react-native-renderer/react-native-renderer";
 
 import {HelloApp} from "./hello";
 import {TodoMVC} from "./todomvc";
@@ -16,7 +16,7 @@ import {AnimationApp} from './animation';
 @Component({
   selector: 'kitchensink-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NgFor, RippleFeedback, RouterOutlet, RouterLink],
+  directives: [NgFor, RippleFeedback, ROUTER_DIRECTIVES],
   template: `
 <DrawerLayout drawerWidth="240" drawerPosition="left" [style]="{flex: 1}">
   <DrawerLayoutSide>

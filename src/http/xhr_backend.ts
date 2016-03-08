@@ -4,7 +4,7 @@ import {Http, Connection, ConnectionBackend, ReadyState, Headers, BrowserXhr,
 import {Injectable, provide, NgZone} from 'angular2/core';
 import {Observable} from 'rxjs/Observable';
 
-export class ReactNativeXHRConnection implements Connection {
+class ReactNativeXHRConnection implements Connection {
   request: Request;
   response: Observable<Response>;
   readyState: ReadyState;
@@ -73,14 +73,4 @@ function getResponseURL(xhr: any): string {
   return;
 }
 
-export const HTTP_PROVIDERS: any[] = [
-  provide(Http,
-    {
-      useFactory: (xhrBackend: ReactNativeXHRBackend, requestOptions: RequestOptions) => new Http(xhrBackend, requestOptions),
-      deps: [ReactNativeXHRBackend, RequestOptions]
-    }),
-  BrowserXhr,
-  provide(RequestOptions, {useClass: BaseRequestOptions}),
-  provide(ResponseOptions, {useClass: BaseResponseOptions}),
-  ReactNativeXHRBackend
-];
+

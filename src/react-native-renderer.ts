@@ -18,7 +18,8 @@ export * from './components/android/toolbar';
 export * from './directives/opacity_feedback';
 export * from './directives/android/ripple_feedback';
 
-export * from './router/router_link';
-export * from './router/location_strategy';
+export * from './http/http';
+
+export * from './router/router';
 
 
