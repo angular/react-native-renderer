@@ -3,6 +3,23 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../compone
 import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
 import {ReactNativeWrapper} from "../../wrapper/wrapper";
 
+/**
+ * A component for displaying a toolbar.
+ *
+ * ```
+@Component({
+  selector: 'sample',
+  template: `<Toolbar [styleSheet]="styles.toolbar" [navIcon]="hamburgerIcon" [overflowIcon]="moreIcon"
+    title="Kitchen Sink" titleColor="#FFFFFF" (select)="handleToolbar($event)"></Toolbar>`
+})
+export class Sample {
+  hamburgerIcon: any = require('../../assets/icon_hamburger.png');
+  moreIcon: any = require('../../assets/icon_more.png');
+ }
+ * ```
+ * @style https://facebook.github.io/react-native/docs/view.html#style
+ * @platform android
+ */
 @Component({
   selector: 'Toolbar',
   inputs: [
@@ -18,6 +35,9 @@ export class Toolbar extends HighLevelComponent {
   }
 
   //Events
+  /**
+   * To be documented
+   */
   @Output() select: EventEmitter<any> = new EventEmitter();
 
   //Properties
@@ -32,6 +52,9 @@ export class Toolbar extends HighLevelComponent {
   private _subtitleColor: number;
   private _title: string;
   private _titleColor: number;
+  /**
+   * To be documented
+   */
   set actions(value: Array<any>) {this._actions = value.map((action) => {
     var result: any = {};
     if (typeof action.title != 'undefined') {
@@ -46,16 +69,47 @@ export class Toolbar extends HighLevelComponent {
     }
     return result;
   });}
+  /**
+   * To be documented
+   */
   set contentInsetStart(value: any) {this._contentInsetStart = this.processNumber(value);}
+  /**
+   * To be documented
+   */
   set contentInsetEnd(value: any) {this._contentInsetEnd = this.processNumber(value);}
+  /**
+   * To be documented
+   */
   set logo(value: any) {this._logo = this.resolveAssetSource(value);}
+  /**
+   * To be documented
+   */
   set navIcon(value: any) {this._navIcon = this.resolveAssetSource(value);}
+  /**
+   * To be documented
+   */
   set overflowIcon(value: any) {this._overflowIcon = this.resolveAssetSource(value);}
+  /**
+   * To be documented
+   */
   set rtl(value: string) {this._rtl = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
   set subtitle(value: string) {this._subtitle = value;}
+  /**
+   * To be documented
+   */
   set subtitleColor(value: any) {this._subtitleColor = this.processColor(value);}
+  /**
+   * To be documented
+   */
   set title(value: string) {this._title = value;}
+  /**
+   * To be documented
+   */
   set titleColor(value: any) {this._titleColor = this.processColor(value);}
+
 
   _handleSelect(event: any) {
     // Event examples: {position: -1}

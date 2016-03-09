@@ -8,6 +8,18 @@ var IOS_INPUTS: Array<string> = ['allowFontScaling', 'suppressHighlighting'];
 var ANDROID_BINDINGS: string = ``;
 var IOS_BINDINGS: string = `[allowFontScaling]="_allowFontScaling" [suppressHighlighting]="_suppressHighlighting"`;
 
+/**
+ * A component for displaying a text.
+ *
+ * ```
+@Component({
+  selector: 'sample',
+  template: `<Text [style]="{margin: 10}">Horizontal</Text>`
+})
+export class Sample {}
+ * ```
+ * @style https://facebook.github.io/react-native/docs/text.html#style
+ */
 @Component({
   selector: 'Text',
   inputs: [
@@ -18,11 +30,22 @@ var IOS_BINDINGS: string = `[allowFontScaling]="_allowFontScaling" [suppressHigh
 })
 export class Text extends HighLevelComponent{
   //Properties
-  private _numberOfLines: string;
-  set numberOfLines(value: string) {this._numberOfLines = value;}
+  private _numberOfLines: number;
+  /**
+   * To be documented
+   */
+  set numberOfLines(value: any) {this._numberOfLines = this.processNumber(value);}
 
   private _allowFontScaling: boolean;
   private _suppressHighlighting: boolean;
+  /**
+   * To be documented
+   * @platform ios
+   */
   set allowFontScaling(value: any) {this._allowFontScaling = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set suppressHighlighting(value: any) { this._suppressHighlighting = this.processBoolean(value); }
 }

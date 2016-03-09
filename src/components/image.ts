@@ -3,15 +3,28 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component"
 import {REACT_NATIVE_WRAPPER} from './../renderer/renderer';
 import {ReactNativeWrapper, isAndroid} from "../wrapper/wrapper";
 
-var ANDROID_INPUTS: Array<string> = ['fadeDuration', 'loadingIndicatorSrc', 'overlayColor', 'progressiveRenderingEnabled', 'shouldNotifyLoadEvents'];
+var ANDROID_INPUTS: Array<string> = ['fadeDuration', 'loadingIndicatorSrc', 'progressiveRenderingEnabled', 'shouldNotifyLoadEvents'];
 var IOS_INPUTS: Array<string> = ['capInsets', 'defaultSource'];
 
 var ANDROID_BINDINGS: string = `[fadeDuration]="_fadeDuration" [loadingIndicatorSrc]="_loadingIndicatorSrc ? _loadingIndicatorSrc.uri : null"
-  [overlayColor]="_overlayColor" [progressiveRenderingEnabled]="_progressiveRenderingEnabled" [shouldNotifyLoadEvents]="_shouldNotifyLoadEvents" [src]="_source ? _source.uri: null"`;
+  [progressiveRenderingEnabled]="_progressiveRenderingEnabled" [shouldNotifyLoadEvents]="_shouldNotifyLoadEvents" [src]="_source ? _source.uri: null"`;
 var IOS_BINDINGS: string = `[capInsets]="_capInsets" [defaultSource]="_defaultSource" [source]="_source"`;
 
 //TODO: add iOS specific events (onError, on Progress) and specific cases (tintColor, resizeMode)
-
+/**
+ * A component for displaying local or remote images.
+ *
+ * ```
+@Component({
+  selector: 'sample',
+  template: `<Image [source]="angularLogo"></Image>`
+})
+export class Sample {
+  angularLogo: any = require('./assets/angular.png');
+}
+ * ```
+ * @style https://facebook.github.io/react-native/docs/image.html#style
+ */
 @Component({
   selector: 'Image',
   inputs: [
@@ -27,31 +40,69 @@ export class Image extends HighLevelComponent {
   }
 
   //Events
+  /**
+   * To be documented
+   */
   @Output() load: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() loadStart: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() loadEnd: EventEmitter<any> = new EventEmitter();
 
   //Properties
   private _resizeMode: string;
   private _source: any;
+  /**
+   * To be documented
+   */
   set resizeMode(value: string) {this._resizeMode = this.processEnum(value, ['cover', 'contain', 'stretch']);}
+
+  /**
+   * To be documented
+   */
   set source(value: string) {this._source = this.resolveAssetSource(value);}
 
   private _fadeDuration: number;
   private _loadingIndicatorSrc: any;
-  private _overlayColor: number;
   private _progressiveRenderingEnabled: boolean;
   private _shouldNotifyLoadEvents: boolean;
+  /**
+   * To be documented
+   * @platform android
+   */
   set fadeDuration(value: any) {this._fadeDuration = this.processNumber(value);}
+  /**
+   * To be documented
+   * @platform android
+   */
   set loadingIndicatorSrc(value: any) {this._loadingIndicatorSrc = this.resolveAssetSource(value);}
-  set overlayColor(value: string) {this._overlayColor = this.processColor(value);}
+  /**
+   * To be documented
+   * @platform android
+   */
   set progressiveRenderingEnabled(value: any) {this._progressiveRenderingEnabled = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform android
+   */
   set shouldNotifyLoadEvents(value: any) {this._shouldNotifyLoadEvents = this.processBoolean(value);}
 
   private _capInsets: any;
   private _defaultSource: string;
+  /**
+   * To be documented
+   * @platform ios
+   */
   set capInsets(value: string) {this._capInsets = value;}
-  set defaultSource(value: string) {this._source = this.resolveAssetSource(value);}
+  /**
+   * To be documented
+   * @platform ios
+   */
+  set defaultSource(value: string) {this._defaultSource = this.resolveAssetSource(value);}
 
   //Event handlers
   _handleLoad() {
@@ -62,7 +113,7 @@ export class Image extends HighLevelComponent {
     this.loadStart.emit(null);
   }
 
-  _handleLoadEnd() {
+  _handleLoadEnd(x: number, y: boolean) {
     this.loadEnd.emit(null);
   }
 }

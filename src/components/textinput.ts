@@ -13,6 +13,20 @@ var IOS_BINDINGS: string = `[blurOnSubmit]="_blurOnSubmit" [clearButtonMode]="_c
   [enablesReturnKeyAutomatically]="_enablesReturnKeyAutomatically"
   [keyboardAppearance]="_keyboardAppearance" [returnKeyType]="_returnKeyType" [selectTextOnFocus]="_selectTextOnFocus"`;
 
+/**
+ * A component for displaying a textinput.
+ *
+ * ```
+@Component({
+  selector: 'sample',
+  template: `<TextInput placeholder="Type in" (submit)="typed=$event"></TextInput>`
+})
+export class Sample {
+  typed: string = "";
+}
+ * ```
+ * @style https://facebook.github.io/react-native/docs/view.html#style
+ */
 @Component({
   selector: 'TextInput',
   inputs: [
@@ -35,11 +49,29 @@ export class TextInput extends HighLevelComponent implements OnInit {
   }
 
   //Events
+  /**
+   * To be documented
+   */
   @Output() focus: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() change: EventEmitter<string> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() input: EventEmitter<string> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() submit: EventEmitter<string> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() blur: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() endEditing: EventEmitter<string> = new EventEmitter();
 
 
@@ -47,6 +79,9 @@ export class TextInput extends HighLevelComponent implements OnInit {
   @Input() defaultValue: string;
   @Input() value: string = null;
   private _autoFocus: boolean = false;
+  /**
+   * To be documented
+   */
   set autoFocus(value: any) { this._autoFocus = this.processBoolean(value);}
 
   private _autoCapitalize : string;
@@ -59,20 +94,58 @@ export class TextInput extends HighLevelComponent implements OnInit {
   private _placeholder: string;
   private _placeholderTextColor: number;
   private _selectionColor: number;
+  /**
+   * To be documented
+   */
   set autoCapitalize(value: string) {this._autoCapitalize = this.processEnum(value, ['none', 'sentences', 'words', 'characters']);}
+  /**
+   * To be documented
+   */
   set autoCorrect(value: any) { this._autoCorrect = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
   set editable(value: any) {this._editable = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
   set keyboardType(value: string) {this._autoCapitalize = this.processEnum(value, ['default', 'email-address', 'numeric', 'phone-pad', 'ascii-capable', 'numbers-and-punctuation', 'url', 'number-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search']);}
+  /**
+   * To be documented
+   */
   set maxLength(value: any) {this._maxLength = this.processNumber(value);}
+  /**
+   * To be documented
+   */
   set multiline(value: any) {this._multiline = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
   set password(value: any) {this._password = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
   set placeholder(value: string) {this._placeholder = value;}
+  /**
+   * To be documented
+   */
   set placeholderTextColor(value: string) {this._placeholderTextColor = this.processColor(value);}
+  /**
+   * To be documented
+   */
   set selectionColor(value: string) {this._selectionColor = this.processColor(value);}
 
   private _numberOfLines: number;
   private _underlineColorAndroid: number;
+  /**
+   * To be documented
+   * @platform android
+   */
   set numberOfLines(value: any) {this._numberOfLines = this.processNumber(value);}
+  /**
+   * To be documented
+   * @platform android
+   */
   set underlineColorAndroid(value: string) {this._underlineColorAndroid = this.processColor(value);}
 
   private _blurOnSubmit: boolean;
@@ -82,12 +155,40 @@ export class TextInput extends HighLevelComponent implements OnInit {
   private _keyboardAppearance: string;
   private _returnKeyType: string;
   private _selectTextOnFocus: boolean;
+  /**
+   * To be documented
+   * @platform ios
+   */
   set blurOnSubmit(value: any) {this._blurOnSubmit = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set clearButtonMode(value: any) {this._clearButtonMode = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set clearTextOnFocus(value: any) {this._clearTextOnFocus = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set enablesReturnKeyAutomatically(value: any) {this._enablesReturnKeyAutomatically = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set keyboardAppearance(value: string) {this._keyboardAppearance = this.processEnum(value, ['default', 'light', 'dark']);}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set returnKeyType(value: string) {this._returnKeyType = this.processEnum(value, ['default', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency-call']);}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set selectTextOnFocus(value: any) {this._selectTextOnFocus = this.processBoolean(value);}
 
   //Event handlers
@@ -119,10 +220,16 @@ export class TextInput extends HighLevelComponent implements OnInit {
   }
 
   //Commands
+  /**
+   * To be documented
+   */
   blurTextInput() {
     this._nativeElement.children[0].dispatchCommand('blurTextInput');
   }
 
+  /**
+   * To be documented
+   */
   focusTextInput() {
     this._nativeElement.children[0].dispatchCommand('focusTextInput');
   }

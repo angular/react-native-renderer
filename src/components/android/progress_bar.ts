@@ -3,6 +3,19 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../compone
 import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
 import {ReactNativeWrapper} from "../../wrapper/wrapper";
 
+/**
+ * A component for displaying a progress bar.
+ *
+ * ```
+@Component({
+  selector: 'sample',
+  template: `<ProgressBar styleAttr="Large"></ProgressBar>`
+})
+export class Sample {}
+ * ```
+ * @style https://facebook.github.io/react-native/docs/view.html#style
+ * @platform android
+ */
 @Component({
   selector: 'ProgressBar',
   inputs: [
@@ -21,8 +34,20 @@ export class ProgressBar extends HighLevelComponent {
   private _indeterminate: boolean;
   private _progress: number;
   private _styleAttr: string;
+  /**
+   * To be documented
+   */
   set color(value: string) {this._color = this.processColor(value);}
+  /**
+   * To be documented
+   */
   set indeterminate(value: any) {this._indeterminate = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
   set progress(value: any) {this._progress = this.processNumber(value);}
+  /**
+   * To be documented
+   */
   set styleAttr(value: string) {this._styleAttr = this.processEnum(value, ['Normal', 'Horizontal', 'Small', 'Large', 'Inverse', 'SmallInverse', 'LargeInverse']);}
 }

@@ -1,0 +1,87 @@
+doctype html public
+html(lang=en)
+    head
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible" content="IE=edge")
+        title poc-angular-react-native
+        link(rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
+        style(type='text/css').
+            body {
+                padding-top: 50px;
+                color: #445A64;
+            }
+            .navbar-inverse {
+                background-color: #0273D4;
+                border-color: #0273D4;
+            }
+            .navbar-inverse .navbar-brand,  .navbar-inverse .navbar-nav>li>a {
+                color: #ffffff;
+            }
+            .navbar-inverse .navbar-brand:hover,  .navbar-inverse .navbar-nav>li>a:hover {
+                background-color: rgba(158,158,158,0.2);
+            }
+            .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+                background-color: #345d75;
+            }
+            .side-menu {
+                margin: 0 20px;
+                padding-top: 20px;
+                float: left;
+                width: 150px;
+            }
+            .side-menu a {
+                display: block;
+            }
+            .content {
+                padding: 10px 10px;
+                float: left;
+                width: 800px;
+            }
+            .bg-info {
+                padding: 5px;
+                border-radius: 5px;
+                margin-right: 10px;
+            }
+            h4.cpt {
+                margin-top: 25px;
+                margin-bottom: 5px;
+            }
+body
+        .navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+            .container-fluid
+                .navbar-header
+                    a.navbar-brand(href='./index.html') poc-angular-react-native
+                    a.navbar-brand(href='./getting_started.html') Documentation
+                .collapse.navbar-collapse
+                    ul.nav.navbar-nav.navbar-right
+                        li
+                            a(href='https://github.com/mlaval/poc-angular-react-native') Github
+        div
+            .side-menu
+                a(href='./getting_started.html') Getting started
+                h4 Features
+                a(href='./bootstrap.html') bootstrap
+                a(href='./apis.html') APIs
+                a(href='./gestures.html') Gestures
+                a(href='./http.html') Http
+                a(href='./router.html') Router
+                a(href='./style.html') Style
+
+                h4 Components
+                each cpt in components
+                    if !cpt.description.flags.platform
+                        a(href='./' + cpt.description.name.toLowerCase() + '.html')= cpt.description.name
+                h5 Android
+                each cpt in components
+                    if cpt.description.flags.platform == 'android'
+                        a(href='./' + cpt.description.name.toLowerCase() + '.html')= cpt.description.name
+                h5 iOS
+                each cpt in components
+                    if cpt.description.flags.platform == 'ios'
+                        a(href='./' + cpt.description.name.toLowerCase() + '.html')= cpt.description.name
+
+                h4 Directives
+                a(href='./opacity_feedback.html') Opacity feedback
+                a(href='./ripple_feedback.html') Ripple feedback
+            .content
+                block content

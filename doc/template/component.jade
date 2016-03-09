@@ -1,0 +1,42 @@
+extends ../pages/_layout
+
+block content
+    h1
+        if component.description.flags.platform
+            span.bg-info= component.description.flags.platform
+        = component.description.name
+    != component.description.doc
+    if component.description.flags.style
+        h4.cpt Available styles
+        a(href=component.description.flags.style)= component.description.flags.style
+
+    h2 Inputs
+    if component.description.name != 'HighLevelComponent'
+        h4.cpt
+            span Inherits all inputs from
+            a(href="./highlevelcomponent.html")  high level component
+    if component.inputs.length > 0
+        each input in component.inputs
+            h4.cpt
+                if input.flags.platform
+                    span.bg-info= input.flags.platform
+                =input.name + ': ' + input.type
+            != input.doc
+
+    if component.outputs.length > 0
+        h2 Outputs
+        each output in component.outputs
+            h4.cpt
+                if output.flags.platform
+                    span.bg-info= output.flags.platform
+                = output.name + ': ' + output.type
+            != output.doc
+
+    if component.commands.length > 0
+        h2 Commands
+        each command in component.commands
+            h4.cpt
+                if command.flags.platform
+                    span.bg-info= command.flags.platform
+                = command.name + '(' + command.params + ')'
+            != command.doc

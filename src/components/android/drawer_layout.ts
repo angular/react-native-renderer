@@ -16,6 +16,27 @@ export class DrawerLayoutSide {}
 })
 export class DrawerLayoutContent {}
 
+/**
+ * A component for displaying a drawer layout.
+ *
+ * ```
+ @Component({
+  selector: 'sample',
+  template: `
+<DrawerLayout drawerWidth="240" drawerPosition="left">
+  <DrawerLayoutSide>
+    <View></View>
+  </DrawerLayoutSide>
+  <DrawerLayoutContent>
+    <View></View>
+  </DrawerLayoutContent>
+</DrawerLayout>`
+})
+ export class Sample {}
+ * ```
+ * @style https://facebook.github.io/react-native/docs/view.html#style
+ * @platform android
+ */
 @Component({
   selector: 'DrawerLayout',
   inputs: [
@@ -44,21 +65,42 @@ export class DrawerLayout extends HighLevelComponent {
   }
 
   //Events
+  /**
+   * To be documented
+   */
   @Output() drawerClosed: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() drawerOpened: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() drawerSlide: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() drawerStateChanged: EventEmitter<any> = new EventEmitter();
 
   //Properties
   private _keyboardDismissMode: string;
   private _drawerPosition: number;
   private _drawerWidth: number;
+  /**
+   * To be documented
+   */
   set keyboardDismissMode(value: string) {this._keyboardDismissMode = this.processEnum(value, ['none', 'on-drag']);}
+  /**
+   * To be documented
+   */
   set drawerPosition(value: any) {
     this._drawerPosition = value === 'right' ?
       this.getUIManager().AndroidDrawerLayout.Constants.DrawerPosition.Right :
       this.getUIManager().AndroidDrawerLayout.Constants.DrawerPosition.Left;
   }
+  /**
+   * To be documented
+   */
   set drawerWidth(value: any) {this._drawerWidth = this.processNumber(value);}
 
   //Event handlers
@@ -86,10 +128,16 @@ export class DrawerLayout extends HighLevelComponent {
   }
 
   //Commands
+  /**
+   * To be documented
+   */
   openDrawer() {
     this._nativeElement.children[0].dispatchCommand('openDrawer');
   }
 
+  /**
+   * To be documented
+   */
   closeDrawer() {
     this._nativeElement.children[0].dispatchCommand('closeDrawer');
   }

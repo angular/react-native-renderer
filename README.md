@@ -30,3 +30,6 @@ iOS:
 Tests:
 * `gulp test.node` to run tests in Node
 * `gulp test.browser` to run tests in Chrome
+
+Doc:
+`gulp doc` to generate the documentation in `./dist/doc`

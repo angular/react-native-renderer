@@ -10,6 +10,23 @@ var IOS_INPUTS: Array<string> = ['itemStyle'];
 var ANDROID_BINDINGS: string = `[enabled]="_enabled" [mode]="_mode" [prompt]="_prompt"`;
 var IOS_BINDINGS: string = `[itemStyle]="_itemStyle"`;
 
+/**
+ * A component for displaying a picker.
+ *
+ * ```
+@Component({
+  selector: 'sample',
+  template: `<Picker [selectedValue]="selected" prompt="Please select an item" [items]="items"
+    [style]="{width: 80}" (select)="selected=$event"></Picker>`
+})
+export class Sample {
+  selected: number = 0;
+  items: Array<any> = [{label: 'aaa', value: 'a'}, {label: 'bbb', value: 'b'}, {label: 'ccc', value: 'c'},
+    {label: 'ddd', value: 'd'}, {label: 'eee', value: 'e'}];
+}
+ * ```
+ * @style https://facebook.github.io/react-native/docs/view.html#style
+ */
 @Component({
   selector: 'Picker',
   directives: [NgIf],
@@ -29,12 +46,21 @@ export class Picker extends HighLevelComponent {
   }
 
   //Events
-  @Output() select: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
+  @Output() select: EventEmitter<number> = new EventEmitter();
 
   //Properties
   private _items: Array<any> = [];
   private _selectedValue: any;
+  /**
+   * To be documented
+   */
   set selectedValue(value: string) {this._selectedValue = value;}
+  /**
+   * To be documented
+   */
   set items(value: Array<any>) {
     this._items = value.map((item) => {
       var res = {label: item.label, value: item.value};
@@ -48,11 +74,27 @@ export class Picker extends HighLevelComponent {
   private _enabled: boolean;
   private _mode: string = 'dialog';
   private _prompt: string;
+  /**
+   * To be documented
+   * @platform android
+   */
   set enabled(value: any) { this._enabled = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform android
+   */
   set mode(value: string) {this._mode = this.processEnum(value, ['dialog', 'dropdown'])}
+  /**
+   * To be documented
+   * @platform android
+   */
   set prompt(value: string) {this._prompt = value;}
 
   private _itemStyle: any = false;
+  /**
+   * To be documented
+   * @platform ios
+   */
   set itemStyle(value: string) {this._itemStyle = value;}
 
   _handleSelect(event: any) {

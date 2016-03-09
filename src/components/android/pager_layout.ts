@@ -4,6 +4,23 @@ import {Node} from '../../renderer/node';
 import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
 import {ReactNativeWrapper} from "../../wrapper/wrapper";
 
+/**
+ * A component for displaying a pager layout.
+ *
+ * ```
+@Component({
+  selector: 'sample',
+  template: `
+<PagerLayout initialPage="0">
+  <View></View>
+  <View></View>
+</PagerLayout>`
+})
+export class Sample {}
+ * ```
+ * @style https://facebook.github.io/react-native/docs/view.html#style
+ * @platform android
+ */
 @Component({
   selector: 'PagerLayout',
   inputs: [
@@ -22,14 +39,29 @@ export class PagerLayout extends HighLevelComponent implements OnInit {
   }
 
   //Events
+  /**
+   * To be documented
+   */
   @Output() pageScroll: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() pageScrollStateChanged: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() pageSelected: EventEmitter<any> = new EventEmitter();
 
   //Properties
   private _initialPage: number;
   private _keyboardDismissMode: string;
+  /**
+   * To be documented
+   */
   set initialPage(value: any) { this._initialPage = this.processNumber(value);}
+  /**
+   * To be documented
+   */
   set keyboardDismissMode(value: string) {this._keyboardDismissMode = this.processEnum(value, ['none', 'on-drag']);}
 
   //Event handlers
@@ -52,10 +84,16 @@ export class PagerLayout extends HighLevelComponent implements OnInit {
   }
 
   //Commands
+  /**
+   * To be documented
+   */
   setPage(index: number) {
     this._nativeElement.children[0].dispatchCommand('setPage', [index]);
   }
 
+  /**
+   * To be documented
+   */
   setPageWithoutAnimation(index: number) {
     this._nativeElement.children[0].dispatchCommand('setPageWithoutAnimation', [index]);
   }

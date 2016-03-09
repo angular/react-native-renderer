@@ -18,6 +18,9 @@ export var GENERIC_BINDINGS: string = `[accessible]="_accessible" [accessibility
   [pointerEvents]="_pointerEvents" [removeClippedSubviews]="_removeClippedSubviews" [onLayout]="_onLayout" [styleSheet]="_styleSheet"
   [style]="_style" ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}`;
 
+/**
+ * An abstract component which defines inputs available in all components.
+ */
 export abstract class HighLevelComponent {
 
   private _wrapper: ReactNativeWrapper;
@@ -26,6 +29,19 @@ export abstract class HighLevelComponent {
     this._wrapper = _wrapper;
   }
 
+  //Style
+  private _defaultStyle: {[s: string]: any } = {};
+  private _styleSheet: Array<number | boolean | {[s: string]: any }>;
+  private _style: {[s: string]: any };
+  /**
+   * To be documented
+   */
+  set styleSheet(value: Array<number | boolean> | number | boolean) {this._styleSheet = [this._defaultStyle].concat(Array.isArray(value) ? value : [value]);}
+  /**
+   * To be documented
+   */
+  set style(value: {[s: string]: any }) {this._style = value;}
+
   //Both platforms
   private _accessible: boolean;
   private _accessibilityLabel: string;
@@ -33,19 +49,30 @@ export abstract class HighLevelComponent {
   private _pointerEvents: string;
   private _removeClippedSubviews: boolean;
   private _onLayout: boolean;
+  /**
+   * To be documented
+   */
   set accessible(value: any) { this._accessible = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
   set accessibilityLabel(value: string) {this._accessibilityLabel = value;}
+  /**
+   * To be documented
+   */
   set testID(value: string) {this._testID = value;}
+  /**
+   * To be documented
+   */
   set pointerEvents(value: string) {this._pointerEvents = this.processEnum(value, ['auto', 'box-none', 'none', 'box-only']);}
+  /**
+   * To be documented
+   */
   set removeClippedSubviews(value: any) { this._removeClippedSubviews = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
   set onLayout(value: any) { this._onLayout = this.processBoolean(value);}
-
-  //Style
-  private _defaultStyle: {[s: string]: any } = {};
-  private _styleSheet: Array<number | boolean | {[s: string]: any }>;
-  private _style: {[s: string]: any };
-  set styleSheet(value: Array<number | boolean> | number | boolean) {this._styleSheet = [this._defaultStyle].concat(Array.isArray(value) ? value : [value]);}
-  set style(value: {[s: string]: any }) {this._style = value;}
 
   //Android specific
   private _collapsable: boolean;
@@ -55,18 +82,54 @@ export abstract class HighLevelComponent {
   private _needsOffscreenAlphaCompositing: boolean;
   private _renderToHardwareTextureAndroid: boolean;
   private _nativeBackgroundAndroid: any;
+  /**
+   * To be documented
+   * @platform android
+   */
   set collapsable(value: any) { this._collapsable = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform android
+   */
   set accessibilityLiveRegion(value: string) {this._accessibilityLiveRegion = value;}
+  /**
+   * To be documented
+   * @platform android
+   */
   set accessibilityComponentType(value: string) {this._accessibilityComponentType = value;}
+  /**
+   * To be documented
+   * @platform android
+   */
   set importantForAccessibility(value: string) {this._importantForAccessibility = value;}
+  /**
+   * To be documented
+   * @platform android
+   */
   set needsOffscreenAlphaCompositing(value: any) { this._needsOffscreenAlphaCompositing = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform android
+   */
   set renderToHardwareTextureAndroid(value: any) { this._renderToHardwareTextureAndroid = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform android
+   */
   set nativeBackgroundAndroid(value: any) {this._nativeBackgroundAndroid = value;}
 
   //iOS specific
   private _accessibilityTraits: any;
   private _shouldRasterizeIOS: boolean;
+  /**
+   * To be documented
+   * @platform ios
+   */
   set accessibilityTraits(value: any) {this._accessibilityTraits = value;}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set shouldRasterizeIOS(value: any) { this._shouldRasterizeIOS = this.processBoolean(value);}
 
   setDefaultStyle(defaultStyle: {[s: string]: any }): void {

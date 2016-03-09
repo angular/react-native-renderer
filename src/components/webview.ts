@@ -13,6 +13,19 @@ var IOS_BINDINGS: string = `[allowsInlineMediaPlayback]="_allowsInlineMediaPlayb
 
 //TODO: onNavigationStateChange, renderError, renderLoading, startInLoadingState, processDecelerationRate(iOS)
 
+/**
+ * A component for displaying a webview
+ *
+ * ```
+@Component({
+  selector: 'sample',
+  template: `<WebView [source]="{uri: 'https://www.angular.io'}" javaScriptEnabled="true" domStorageEnabled="true">
+    </WebView>`
+})
+export class Sample {}
+ * ```
+ * @style https://facebook.github.io/react-native/docs/view.html#style
+ */
 @Component({
   selector: 'WebView',
   inputs: [
@@ -31,8 +44,17 @@ export class WebView extends HighLevelComponent{
   }
 
   //Events
+  /**
+   * To be documented
+   */
   @Output() loadingStart: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() loadingFinish: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
   @Output() loadingError: EventEmitter<any> = new EventEmitter();
 
   //Properties
@@ -40,14 +62,34 @@ export class WebView extends HighLevelComponent{
   private _contentInset: any;
   private _injectedJavaScript: string;
   private _source: any;
+  /**
+   * To be documented
+   */
   set automaticallyAdjustContentInsets(value: any) {this._automaticallyAdjustContentInsets = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
   set contentInset(value: any) {this._contentInset = value;}
+  /**
+   * To be documented
+   */
   set injectedJavaScript(value: any) {this._injectedJavaScript = value;}
+  /**
+   * To be documented
+   */
   set source(value: any) {this._source = this.resolveAssetSource(value);}
 
   private _domStorageEnabled: boolean;
   private _javaScriptEnabled: boolean;
+  /**
+   * To be documented
+   * @platform android
+   */
   set domStorageEnabled(value: any) {this._domStorageEnabled = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform android
+   */
   set javaScriptEnabled(value: any) { this._javaScriptEnabled = this.processBoolean(value); }
 
   private _allowsInlineMediaPlayback: boolean;
@@ -55,10 +97,30 @@ export class WebView extends HighLevelComponent{
   private _decelerationRate: number;
   private _scalesPageToFit: boolean;
   private _bounces: boolean;
+  /**
+   * To be documented
+   * @platform ios
+   */
   set allowsInlineMediaPlayback(value: any) {this._allowsInlineMediaPlayback = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set bounces(value: any) {this._bounces = this.processBoolean(value); }
+  /**
+   * To be documented
+   * @platform ios
+   */
   set decelerationRate(value: any) {this._decelerationRate = this.processNumber(value);}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set scalesPageToFit(value: any) {this._scalesPageToFit = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform ios
+   */
   set scrollEnabled(value: any) {this._scrollEnabled = this.processBoolean(value); }
 
   //Event handlers
@@ -75,14 +137,23 @@ export class WebView extends HighLevelComponent{
   }
 
   //Commands
+  /**
+   * To be documented
+   */
   goForward() {
     this._nativeElement.children[0].dispatchCommand('goForward');
   }
 
+  /**
+   * To be documented
+   */
   reload() {
     this._nativeElement.children[0].dispatchCommand('reload');
   }
 
+  /**
+   * To be documented
+   */
   goBack() {
     this._nativeElement.children[0].dispatchCommand('goBack');
   }
