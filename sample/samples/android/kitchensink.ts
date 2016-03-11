@@ -113,9 +113,9 @@ export class KitchenSinkApp {
   _afterNavigate(url: string) {
     this.drawerLayout.closeDrawer();
     var currentPath = this.locationStrategy.path();
-    if (currentPath != '/todomvc' && url == '/todomvc') {
+    if (currentPath != 'todomvc' && url == 'todomvc') {
       this._addMoreInToolbar();
-    } else if (currentPath == '/todomvc' && url != '/todomvc') {
+    } else if (currentPath == 'todomvc' && url != 'todomvc') {
       this._removeMoreInToolbar();
     }
   }
