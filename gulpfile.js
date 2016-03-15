@@ -54,6 +54,7 @@ gulp.task('init', ['!postcreate'], function() {
   var filterJS = filter('angular2/**/*.js', {restore: true});
   //TODO: remove hack once Babbel is somehow fixed
   var tmpHack = filter('rxjs/util/SymbolShim.js', {restore: true});
+  var tmpHack2 = filter('reflect-metadata/Reflect.js', {restore: true});
   return gulp.src(PATHS.modules, { base: './node_modules/' })
   .pipe(filterJS)
   .pipe(strip())
@@ -61,6 +62,9 @@ gulp.task('init', ['!postcreate'], function() {
   .pipe(tmpHack)
   .pipe(transformSymbolShim())
   .pipe(tmpHack.restore)
+  .pipe(tmpHack2)
+  .pipe(transformReflect())
+  .pipe(tmpHack2.restore)
   .pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules'));
 });
 
@@ -79,7 +83,9 @@ gulp.task('!launch.ios', ['!compile'], function(done) {
   executeInAppDir('react-native run-ios', done);
 });
 gulp.task('!start.android', ['!launch.android'], function(neverDone) {
-  executeInAppDir('react-native start');
+  if (/^win/.test(process.platform)) {
+    executeInAppDir('react-native start');
+  }
 });
 gulp.task('watch', function(neverDone) {
   watch([PATHS.sources.src, PATHS.sources.sample], function() {
@@ -92,11 +98,11 @@ gulp.task('start.ios', ['!launch.ios', 'watch'], function (neverDone) {
 });
 
 function executeInAppDir(command, done, inParentFolder) {
-  var cmd = 'mkdir dist' + path.sep + 'app';
+  var cmd = 'mkdir -p dist' + path.sep + 'app';
   exec(cmd, function(e, stdout) {
     var dir = './dist/app';
     if (!inParentFolder) dir += '/' + APP_NAME;
-    exec(command, {cwd: dir}, function(e, stdout) {
+    exec(command, {cwd: dir, maxBuffer: 5000 * 1024}, function(e, stdout) {
       if (e) console.log(e);
       if (done) done();
     }).stdout.on('data', function(data) {
@@ -266,6 +272,15 @@ function transformCommonJSTests() {
 function transformSymbolShim() {
   return through2.obj(function (file, encoding, done) {
     file.contents = new Buffer(fixedSymbolShim);
+    this.push(file);
+    done();
+  });
+}
+
+function transformReflect() {
+  return through2.obj(function (file, encoding, done) {
+    var content = String(file.contents).replace('&& require("crypto")', '');
+    file.contents = new Buffer(content);
     this.push(file);
     done();
   });
