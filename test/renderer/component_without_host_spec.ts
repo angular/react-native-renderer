@@ -193,6 +193,18 @@ describe('Component without host', () => {
       });
   }));
 
+  it('should not attach twice components with ngIf in their templates', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+    var rootRenderer = _rootRenderer;
+    return tcb.overrideTemplate(TestComponent, `<View><View></View><Picker></Picker><View></View></View>`)
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+        fixture.detectChanges();
+        rootRenderer.executeCommands();
+        expect(mock.commandLogs.toString()).toEqual(
+          'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},CREATE+5+native-view+{},CREATE+6+native-dialogpicker+{"items":[],"mode":"dialog","height":50},' +
+          'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+2,ATTACH+3+6+1');
+      });
+  }));
+
 });
 
 @Component({

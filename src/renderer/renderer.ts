@@ -154,8 +154,9 @@ export class ReactNativeRenderer implements Renderer {
         var node = nodes[i];
         node.attachTo(parentElement);
         if (node.getAncestorWithNativeCreated()) {
-          this._createNativeRecursively(node);
-          this._rootRenderer.addAttachCommand(node, false);
+          if (this._createNativeRecursively(node)) {
+            this._rootRenderer.addAttachCommand(node, false);
+          }
         }
       }
     }
@@ -168,26 +169,30 @@ export class ReactNativeRenderer implements Renderer {
         var viewRootNode = viewRootNodes[i];
         viewRootNode.attachToAt(node.parent, index + i + 1);
         if (viewRootNode.getAncestorWithNativeCreated()) {
-          this._createNativeRecursively(viewRootNode);
-          this._rootRenderer.addAttachAfterCommand(viewRootNode, node);
+          if (this._createNativeRecursively(viewRootNode)) {
+            this._rootRenderer.addAttachAfterCommand(viewRootNode, node);
+          }
         }
       }
     }
   }
 
-  _createNativeRecursively(node: Node, isRoot: boolean = true) {
+  _createNativeRecursively(node: Node, isRoot: boolean = true): boolean {
+    var didCreate: boolean = false;
     if (!node.isCreated) {
       if (!node.isVirtual) {
         node instanceof TextNode ? this._createTextCommand(node) : this._createElementCommand(node);
+        didCreate = !(node instanceof TextNode) || isRoot;
       }
       for (var i = 0; i < node.children.length; i++) {
         var child = node.children[i];
-        this._createNativeRecursively(child, false);
+        didCreate = this._createNativeRecursively(child, false) || didCreate;
         if (!child.isVirtual && !(isRoot && node.isVirtual)) {
           this._rootRenderer.addAttachCommand(child, false);
         }
       }
     }
+    return didCreate;
   }
 
   detachView(viewRootNodes: Node[]): void {
