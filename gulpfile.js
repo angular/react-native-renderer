@@ -114,10 +114,17 @@ function executeInAppDir(command, done, inParentFolder) {
 /**********************************************************************************/
 /*******************************    NODE     **************************************/
 /**********************************************************************************/
-gulp.task('ts2commonjs', ['clean.code'], function () {
-  ts2js(PATHS.sources.sample, PATHS.destination + '/sample');
-  ts2js(PATHS.sources.test, PATHS.destination + '/test', false);
+gulp.task('ts2commonjs.sample', function () {
+  return ts2js(PATHS.sources.sample, PATHS.destination + '/sample');
+});
+gulp.task('ts2commonjs.test', function () {
+  return ts2js(PATHS.sources.test, PATHS.destination + '/test');
+});
+gulp.task('ts2commonjs.src', function () {
   return ts2js(PATHS.sources.src, PATHS.destination + '/src');
+});
+gulp.task('ts2commonjs', function (done) {
+  runSequence('clean.code', ['ts2commonjs.sample', 'ts2commonjs.test', 'ts2commonjs.src'], done);
 });
 
 gulp.task('transformTests', ['ts2commonjs'], function() {
@@ -146,10 +153,17 @@ gulp.task('test.node', function(neverDone) {
 /**********************************************************************************/
 /*******************************   BROWSER   **************************************/
 /**********************************************************************************/
-gulp.task('ts2system', ['clean.code'], function () {
-  ts2js(PATHS.sources.sample, PATHS.destination + '/sample', true);
-  ts2js(PATHS.sources.test, PATHS.destination + '/test', true);
+gulp.task('ts2system.sample', function () {
+  return ts2js(PATHS.sources.sample, PATHS.destination + '/sample', true);
+});
+gulp.task('ts2system.test', function () {
+  return ts2js(PATHS.sources.test, PATHS.destination + '/test', true);
+});
+gulp.task('ts2system.src', function () {
   return ts2js(PATHS.sources.src, PATHS.destination + '/src', true);
+});
+gulp.task('ts2system', function (done) {
+  runSequence('clean.code', ['ts2system.sample', 'ts2system.test', 'ts2system.src'], done);
 });
 
 gulp.task('karma-launch', function() {
