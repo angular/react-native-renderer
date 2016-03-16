@@ -163,6 +163,14 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
     return this._platform == 'android';
   }
 
+  blur(tag: number): void {
+    this.commandLogs.push(new Command('COMMAND', tag, 'blur'));
+  }
+
+  focus(tag: number): void {
+    this.commandLogs.push(new Command('COMMAND', tag, 'focus'));
+  }
+
   setPlatform(platform: string): void {
     this._platform = platform;
     overridePlatform(platform);

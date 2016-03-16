@@ -17,7 +17,8 @@ var IOS_BINDINGS: string = `[alwaysBounceHorizontal]="_alwaysBounceHorizontal" [
   [contentOffset]="_contentOffset" [decelerationRate]="_decelerationRate" [directionalLockEnabled]="_directionalLockEnabled"
   [indicatorStyle]="_indicatorStyle" [maximumZoomScale]="_maximumZoomScale" [minimumZoomScale]="_minimumZoomScale" [pagingEnabled]="_pagingEnabled"
   [scrollEventThrottle]="_scrollEventThrottle" [scrollIndicatorInsets]="_scrollIndicatorInsets" [scrollsToTop]="_scrollsToTop"
-  [snapToAlignment]="_snapToAlignment" [snapToInterval]="_snapToInterval" [stickyHeaderIndices]="_stickyHeaderIndices" [zoomScale]="_zoomScale"`;
+  [snapToAlignment]="_snapToAlignment" [snapToInterval]="_snapToInterval" [stickyHeaderIndices]="_stickyHeaderIndices" [zoomScale]="_zoomScale"
+  (topMomentumScrollBegin)="_handleMomentumScrollBegin($event)" (topMomentumScrollEnd)="_handleMomentumScrollEnd($event)"`;
 
 //TODO: refreshControl, onContentSizeChange, onScrollAnimationEnd
 /**
@@ -33,6 +34,9 @@ var IOS_BINDINGS: string = `[alwaysBounceHorizontal]="_alwaysBounceHorizontal" [
 })
 export class Sample {}
  * ```
+ *
+ * TODO: document usage of RefreshControl on Android and iOS
+ *
  * @style https://facebook.github.io/react-native/docs/view.html#style
  */
 @Component({
@@ -45,6 +49,7 @@ export class Sample {}
   [scrollEnabled]="_scrollEnabled" [showsHorizontalScrollIndicator]="_showsHorizontalScrollIndicator" [showsVerticalScrollIndicator]="_showsVerticalScrollIndicator"
   (topScroll)="_handleScroll($event)" (topScrollBeginDrag)="_handleScrollBeginDrag($event)" (topScrollEndDrag)="_handleScrollEndDrag($event)"
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}>
+  ${!isAndroid() ? '<ng-content select="RefreshControl"></ng-content>' : ''}
   <native-view [removeClippedSubviews]="_removeClippedSubviews" [style]="_contentContainerStyle" collapsable="false"
     [alignSelf]="_horizontal ? 'flex-start' : null" [flexDirection]="_horizontal ? 'row' : null">
   <ng-content></ng-content></native-view>
@@ -70,6 +75,16 @@ export class ScrollView extends HighLevelComponent{
    * To be documented
    */
   @Output() scrollEndDrag: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   * @platform ios
+   */
+  @Output() momentumScrollBegin: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   * @platform ios
+   */
+  @Output() momentumScrollEnd: EventEmitter<any> = new EventEmitter();
 
   //Properties
   private _contentContainerStyle: any;
@@ -278,6 +293,16 @@ export class ScrollView extends HighLevelComponent{
   _handleScrollEndDrag(event: any) {
     //Event example: see above
     this.scrollEndDrag.emit(event);
+  }
+
+  _handleMomentumScrollBegin(event: any) {
+    //Event example: see above
+    this.momentumScrollBegin.emit(event);
+  }
+
+  _handleMomentumScrollEnd(event: any) {
+    //Event example: see above
+    this.momentumScrollEnd.emit(event);
   }
 
   //Commands

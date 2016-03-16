@@ -7,8 +7,8 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component"
 var ANDROID_INPUTS: Array<string> = ['enabled', 'mode', 'prompt'];
 var IOS_INPUTS: Array<string> = ['itemStyle'];
 
-var ANDROID_BINDINGS: string = `[enabled]="_enabled" [mode]="_mode" [prompt]="_prompt"`;
-var IOS_BINDINGS: string = `[itemStyle]="_itemStyle"`;
+var ANDROID_BINDINGS: string = `[enabled]="_enabled" [mode]="_mode" [prompt]="_prompt" (topSelect)="_handleSelect($event)"`;
+var IOS_BINDINGS: string = `[itemStyle]="_itemStyle" onChange="true" (topChange)="_handleSelect($event)"`;
 
 /**
  * A component for displaying a picker.
@@ -35,14 +35,14 @@ export class Sample {
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `
   <native-dialogpicker *ngIf="_mode == 'dialog'" [items]="_items" [selected]="_selectedValue"
-  (topSelect)="_handleSelect($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-dialogpicker>
+  ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-dialogpicker>
   <native-dropdownpicker *ngIf="_mode == 'dropdown'" [items]="_items" [selected]="_selectedValue"
-  (topSelect)="_handleSelect($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-dropdownpicker>`
+  ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-dropdownpicker>`
 })
 export class Picker extends HighLevelComponent {
   constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
     super(wrapper);
-    this.setDefaultStyle({height: 50});
+    this.setDefaultStyle({height: wrapper.isAndroid() ? 50 : 216});
   }
 
   //Events
@@ -99,7 +99,7 @@ export class Picker extends HighLevelComponent {
 
   _handleSelect(event: any) {
     //Event example: {position: 3}
-    this._selectedValue = event.position;
+    this._selectedValue = this._wrapper.isAndroid() ? event.position : event.newIndex;
     this.select.emit(this._selectedValue);
   }
 }

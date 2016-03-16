@@ -13,7 +13,7 @@ var ReactNativeViewAttributes = require('react-native/Libraries/Components/View/
 
 overridePlatform(ReactNative.Platform.OS);
 
-const RCT_VIEW_NAMES: { [s: string]: string } = {
+const RCT_VIEW_NAMES: { [s: string]: string } = ReactNative.Platform.OS == 'android' ? {
   'native-view': 'RCTView',
   'native-text': 'RCTText',
   'native-rawtext': 'RCTRawText',
@@ -32,7 +32,45 @@ const RCT_VIEW_NAMES: { [s: string]: string } = {
   'native-horizontalscrollview' : 'AndroidHorizontalScrollView',
   'native-dropdownpicker': 'AndroidDropdownPicker',
   'native-dialogpicker': 'AndroidDialogPicker'
+} : {
+  'native-view': 'RCTView',
+  'native-text': 'RCTText',
+  'native-rawtext': 'RCTRawText',
+  'native-virtualtext': 'RCTText',
+  'native-switch': 'RCTSwitch',
+  'native-textinput' : 'RCTTextField',
+  'native-textarea' : 'RCTTextView',
+  'native-webview': 'RCTWebView',
+  'native-refreshcontrol': 'RCTRefreshControl',
+  'native-image': 'RCTImageView',
+  'native-inlineimage': 'RCTTextInlineImage',
+  'native-scrollview': 'RCTScrollView',
+  'native-dialogpicker': 'RCTPicker'
 }
+
+var RCT_VIEW_COMMANDS: {[s: string]: number} = ReactNative.Platform.OS == 'android' ? {
+  'blurTextInput': UIManager.AndroidTextInput.Commands.blurTextInput,
+  'focusTextInput': UIManager.AndroidTextInput.Commands.focusTextInput,
+  'openDrawer': UIManager.AndroidDrawerLayout.Commands.openDrawer,
+  'closeDrawer': UIManager.AndroidDrawerLayout.Commands.closeDrawer,
+  'hotspotUpdate': UIManager.RCTView.Commands.hotspotUpdate,
+  'setPressed': UIManager.RCTView.Commands.setPressed,
+  'setPage': UIManager.AndroidViewPager.Commands.setPage,
+  'setPageWithoutAnimation': UIManager.AndroidViewPager.Commands.setPageWithoutAnimation,
+  'goForward': UIManager.RCTWebView.Commands.goForward,
+  'reload': UIManager.RCTWebView.Commands.reload,
+  'goBack': UIManager.RCTWebView.Commands.goBack,
+  'scrollTo': UIManager.RCTScrollView.Commands.scrollTo,
+  'scrollWithoutAnimationTo': UIManager.RCTScrollView.Commands.scrollWithoutAnimationTo
+} : {
+  'blurTextInput': UIManager.RCTTextView.Commands.blurTextInput,
+  'focusTextInput': UIManager.RCTTextView.Commands.focusTextInput,
+  'goForward': UIManager.RCTWebView.Commands.goForward,
+  'reload': UIManager.RCTWebView.Commands.reload,
+  'goBack': UIManager.RCTWebView.Commands.goBack,
+  'scrollTo': UIManager.RCTScrollView.Commands.scrollTo,
+  'scrollWithoutAnimationTo': UIManager.RCTScrollView.Commands.scrollWithoutAnimationTo
+};
 
 export class ReactNativeWrapperImpl extends ReactNativeWrapper {
   static registerApp(name: string, callback: Function) {
@@ -79,23 +117,8 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
   }
 
   dispatchCommand(tag: number, command: string, params: any = null) {
-    var commands: {[s: string]: number} = {
-      'blurTextInput': UIManager.AndroidTextInput.Commands.blurTextInput,
-      'focusTextInput': UIManager.AndroidTextInput.Commands.focusTextInput,
-      'openDrawer': UIManager.AndroidDrawerLayout.Commands.openDrawer,
-      'closeDrawer': UIManager.AndroidDrawerLayout.Commands.closeDrawer,
-      'hotspotUpdate': UIManager.RCTView.Commands.hotspotUpdate,
-      'setPressed': UIManager.RCTView.Commands.setPressed,
-      'setPage': UIManager.AndroidViewPager.Commands.setPage,
-      'setPageWithoutAnimation': UIManager.AndroidViewPager.Commands.setPageWithoutAnimation,
-      'goForward': UIManager.RCTWebView.Commands.goForward,
-      'reload': UIManager.RCTWebView.Commands.reload,
-      'goBack': UIManager.RCTWebView.Commands.goBack,
-      'scrollTo': UIManager.RCTScrollView.Commands.scrollTo,
-      'scrollWithoutAnimationTo': UIManager.RCTScrollView.Commands.scrollWithoutAnimationTo
-    };
     this.$log(`Dispatching command to ${tag}: ${command} with ${params}`);
-    UIManager.dispatchViewManagerCommand(tag, commands[command], params);
+    UIManager.dispatchViewManagerCommand(tag, RCT_VIEW_COMMANDS[command], params);
   }
 
   patchReactUpdates(zone: any): void {
@@ -160,6 +183,14 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
 
   isAndroid(): boolean {
     return ReactNative.Platform.OS == 'android';
+  }
+
+  blur(tag: number): void {
+    UIManager.blur(tag);
+  }
+
+  focus(tag: number): void {
+    UIManager.focus(tag);
   }
   
   $log(...args: any[]) {

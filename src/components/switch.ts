@@ -7,7 +7,7 @@ var ANDROID_INPUTS: Array<string> = [];
 var IOS_INPUTS: Array<string> = ['onTintColor', 'thumbTintColor', 'tintColor'];
 
 var ANDROID_BINDINGS: string = ``;
-var IOS_BINDINGS: string = `[onTintColor]="_onTintColor" [thumbTintColor]="_thumbTintColor" [tintColor]="_tintColor"`;
+var IOS_BINDINGS: string = `[onTintColor]="_onTintColor" [thumbTintColor]="_thumbTintColor" [tintColor]="_tintColor" onChange="true"`;
 
 /**
  * A component for displaying a switch.

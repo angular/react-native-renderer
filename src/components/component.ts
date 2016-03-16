@@ -23,7 +23,7 @@ export var GENERIC_BINDINGS: string = `[accessible]="_accessible" [accessibility
  */
 export abstract class HighLevelComponent {
 
-  private _wrapper: ReactNativeWrapper;
+  _wrapper: ReactNativeWrapper;
 
   constructor(_wrapper: ReactNativeWrapper) {
     this._wrapper = _wrapper;

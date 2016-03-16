@@ -8,10 +8,10 @@ var ANDROID_INPUTS: Array<string> = ['numberOfLines', 'underlineColorAndroid'];
 var IOS_INPUTS: Array<string> = ['blurOnSubmit', 'clearButtonMode', 'clearTextOnFocus', 'enablesReturnKeyAutomatically',
   'keyboardAppearance', 'returnKeyType',  'selectTextOnFocus'];
 
-var ANDROID_BINDINGS: string = `[numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid"`;
+var ANDROID_BINDINGS: string = `[numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid" (topTextInput)="_handleKeyPress($event)"`;
 var IOS_BINDINGS: string = `[blurOnSubmit]="_blurOnSubmit" [clearButtonMode]="_clearButtonMode" [clearTextOnFocus]="_clearTextOnFocus"
-  [enablesReturnKeyAutomatically]="_enablesReturnKeyAutomatically"
-  [keyboardAppearance]="_keyboardAppearance" [returnKeyType]="_returnKeyType" [selectTextOnFocus]="_selectTextOnFocus"`;
+  [enablesReturnKeyAutomatically]="_enablesReturnKeyAutomatically" [keyboardAppearance]="_keyboardAppearance"
+  [returnKeyType]="_returnKeyType" [selectTextOnFocus]="_selectTextOnFocus" (topKeyPress)="_handleKeyPress($event)"`;
 
 /**
  * A component for displaying a textinput.
@@ -38,7 +38,7 @@ export class Sample {
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `<native-textinput [text]="_getText()" [autoCapitalize]="_autoCapitalize" [autoCorrect]="_autoCorrect" [editable]="_editable" [keyboardType]="_keyboardType"
   [maxLength]="_maxLength" [multiline]="_multiline" [password]="_password" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor" [selectionColor]="_selectionColor"
-  (tap)="focusTextInput()" (topFocus)="_handleFocus()" (topChange)="_handleChange($event)" (topTextInput)="_handleTextInput($event)" (topSubmitEditing)="_handleSubmitEditing($event)"
+  (tap)="focusTextInput()" (topFocus)="_handleFocus()" (topChange)="_handleChange($event)" (topSubmitEditing)="_handleSubmitEditing($event)"
   (topBlur)="_handleBlur()" (topEndEditing)="_handleEndEditing($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-textinput>`
 })
 export class TextInput extends HighLevelComponent implements OnInit {
@@ -46,6 +46,9 @@ export class TextInput extends HighLevelComponent implements OnInit {
   constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper, el: ElementRef) {
     super(wrapper);
     this._nativeElement = el.nativeElement;
+    if (!wrapper.isAndroid()) {
+      this.setDefaultStyle({height: 40});
+    }
   }
 
   //Events
@@ -60,7 +63,7 @@ export class TextInput extends HighLevelComponent implements OnInit {
   /**
    * To be documented
    */
-  @Output() input: EventEmitter<string> = new EventEmitter();
+  @Output() keyPress: EventEmitter<string> = new EventEmitter();
   /**
    * To be documented
    */
@@ -203,8 +206,8 @@ export class TextInput extends HighLevelComponent implements OnInit {
     }
   }
 
-  _handleTextInput(event: any) {
-    this.input.emit(event.text);
+  _handleKeyPress(event: any) {
+    this.keyPress.emit(event.text);
   }
 
   _handleSubmitEditing(event: any) {
@@ -224,14 +227,14 @@ export class TextInput extends HighLevelComponent implements OnInit {
    * To be documented
    */
   blurTextInput() {
-    this._nativeElement.children[0].dispatchCommand('blurTextInput');
+    this._nativeElement.children[0].blur();
   }
 
   /**
    * To be documented
    */
   focusTextInput() {
-    this._nativeElement.children[0].dispatchCommand('focusTextInput');
+    this._nativeElement.children[0].focus();
   }
 
   //Lifecycle

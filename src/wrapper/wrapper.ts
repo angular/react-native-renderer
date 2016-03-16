@@ -21,5 +21,7 @@ export class ReactNativeWrapper {
   patchReactUpdates(zone: any): void {}
   patchReactNativeEventEmitter(nodeMap: Map<number, any>): void {}
   isAndroid(): boolean {return true;}
+  blur(tag: number): void {}
+  focus(tag: number): void {}
   $log(...args: any[]): void {};
 }

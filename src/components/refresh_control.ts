@@ -7,7 +7,7 @@ var ANDROID_INPUTS: Array<string> = ['colors', 'enabled', 'progressBackgroundCol
 var IOS_INPUTS: Array<string> = ['tintColor', 'title'];
 
 var ANDROID_BINDINGS: string = `[colors]="_colors" [enabled]="_enabled" [progressBackgroundColor]="_progressBackgroundColor" [size]="_size"`;
-var IOS_BINDINGS: string = `[tintColor]="_tintColor" [title]="_title"`;
+var IOS_BINDINGS: string = `[tintColor]="_tintColor" [title]="_title" onRefresh="true"`;
 
 /**
  * A component for displaying a refresh control.

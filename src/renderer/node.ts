@@ -114,6 +114,8 @@ export abstract class Node {
       tagName = 'native-inlineimage';
     } else if (tagName == 'native-scrollview' && this.properties['horizontal'] && this.rnWrapper.isAndroid()) {
       tagName = 'native-horizontalscrollview';
+    } else if (tagName == 'native-textinput' && this.properties['multiline'] && !this.rnWrapper.isAndroid()) {
+      tagName = 'native-textarea';
     }
     return tagName;
   }
@@ -192,10 +194,19 @@ export abstract class Node {
 
   //TODO: generalize this TextInput specific code
   focus() {
-    this.rnWrapper.dispatchCommand(this.nativeTag, 'focusTextInput', null);
+    if (this.rnWrapper.isAndroid()) {
+      this.rnWrapper.dispatchCommand(this.nativeTag, 'focusTextInput', null);
+    } else {
+      this.rnWrapper.focus(this.nativeTag);
+    }
+
   }
   blur() {
-    this.rnWrapper.dispatchCommand(this.nativeTag, 'blurTextInput', null);
+    if (this.rnWrapper.isAndroid()) {
+      this.rnWrapper.dispatchCommand(this.nativeTag, 'blurTextInput', null);
+    } else {
+      this.rnWrapper.blur(this.nativeTag);
+    }
   }
 
   dispatchCommand(command: string, params: any = null) {
