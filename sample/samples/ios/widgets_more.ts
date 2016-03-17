@@ -16,12 +16,15 @@ import {StyleSheet} from 'react-native';
   <ProgressView progress="0.6" progressTintColor="#ce0058" [style]="{width: 200}"></ProgressView>
   <Text [styleSheet]="styles.title">Segmented control ({{selected}})</Text>
   <SegmentedControl [values]="['One', 'Two','Three']" selectedIndex="0" tintColor="#ce0058" [style]="{width: 200}" (change)="selected=$event.selectedIndex"></SegmentedControl>
+  <Text [styleSheet]="styles.title">Slider ({{sliderValue}})</Text>
+  <Slider value="0.6" [style]="{width: 200}" (valueChange)="sliderValue=$event"></Slider>
 </View>
 `
 })
 export class WidgetsList {
   styles: any;
   selected: number = 0;
+  sliderValue: number = 0.6;
   constructor() {
     this.styles = StyleSheet.create({
       odd: {

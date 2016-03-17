@@ -48,7 +48,8 @@ const RCT_VIEW_NAMES: { [s: string]: string } = ReactNative.Platform.OS == 'andr
   'native-dialogpicker': 'RCTPicker',
   'native-activityindicator': 'RCTActivityIndicatorView',
   'native-progressview': 'RCTProgressView',
-  'native-segmentedcontrol': 'RCTSegmentedControl'
+  'native-segmentedcontrol': 'RCTSegmentedControl',
+  'native-slider': 'RCTSlider'
 }
 
 var RCT_VIEW_COMMANDS: {[s: string]: number} = ReactNative.Platform.OS == 'android' ? {
