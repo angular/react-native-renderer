@@ -10,11 +10,12 @@ import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../../src/wrapper/wrapper_mock";
 import {CustomTestComponentBuilder} from "../../../src/testing/test_component_builder";
-import {ProgressView} from "../../../src/components/ios/progress_view";
+import {SegmentedControl} from "../../../src/components/ios/segmented_control";
+import {fireFunctionalEvent} from "../../utils";
 
 var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
 
-describe('ProgressView component (iOS)', () => {
+describe('SegmentedControl component (iOS)', () => {
 
   beforeEach(() => {
     mock.reset();
@@ -32,34 +33,56 @@ describe('ProgressView component (iOS)', () => {
 
   it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<ProgressView></ProgressView>`)
+    return tcb.overrideTemplate(TestComponent, `<SegmentedControl></SegmentedControl>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-progressview+{"height":2},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-segmentedcontrol+{"onChange":true,"height":28},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
   it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<ProgressView [accessible]="true" testID="foo" progress="0.6"></ProgressView>`)
+    return tcb.overrideTemplate(TestComponent, `<SegmentedControl [accessible]="true" testID="foo" [values]="['a','b']"></SegmentedControl>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-progressview+{"progress":0.6,"accessible":true,"testID":"foo","height":2},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-segmentedcontrol+{"onChange":true,"values":["a","b"],"accessible":true,"testID":"foo","height":28},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
   it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<ProgressView [styleSheet]="20" [style]="{margin: 42}"></ProgressView>`)
+    return tcb.overrideTemplate(TestComponent, `<SegmentedControl [styleSheet]="20" [style]="{margin: 42}"></SegmentedControl>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-progressview+{"height":2,"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-segmentedcontrol+{"onChange":true,"height":28,"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
+      });
+  }));
+
+  it('should fire change event', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+    var rootRenderer = _rootRenderer;
+    return tcb.overrideTemplate(TestComponent, `<SegmentedControl (change)="handleChange($event)"></SegmentedControl>`)
+      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+        fixture.detectChanges();
+        rootRenderer.executeCommands();
+        mock.clearLogs();
+
+        var target = fixture.elementRef.nativeElement.children[0].children[0];
+        fireFunctionalEvent('topChange', target, {selectedSegmentIndex: 0, value: 'a'});
+        fixture.detectChanges();
+
+        return new Promise((resolve: any) => {
+          setTimeout(() => {
+            expect(fixture.componentInstance.log.join(',')).toEqual('0');
+            resolve();
+          }, 30);
+        });
+
       });
   }));
 
@@ -68,8 +91,13 @@ describe('ProgressView component (iOS)', () => {
 @Component({
   selector: 'test-cmp',
   template: `to be overriden`,
-  directives: [ProgressView]
+  directives: [SegmentedControl]
 })
 class TestComponent {
-  @ViewChild(ProgressView) progressView: ProgressView
+  @ViewChild(SegmentedControl) segmentedControl: SegmentedControl;
+  log: Array<boolean> = [];
+
+  handleChange(event: any) {
+    this.log.push(event.selectedIndex);
+  }
 }

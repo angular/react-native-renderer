@@ -14,15 +14,14 @@ import {StyleSheet} from 'react-native';
   </View>
   <Text [styleSheet]="styles.title">Progress view</Text>
   <ProgressView progress="0.6" progressTintColor="#ce0058" [style]="{width: 200}"></ProgressView>
+  <Text [styleSheet]="styles.title">Segmented control ({{selected}})</Text>
+  <SegmentedControl [values]="['One', 'Two','Three']" selectedIndex="0" tintColor="#ce0058" [style]="{width: 200}" (change)="selected=$event.selectedIndex"></SegmentedControl>
 </View>
 `
 })
 export class WidgetsList {
   styles: any;
-  typed: string = "";
-  switched: boolean = false;
   selected: number = 0;
-  items: Array<any> = [{label: 'aaa', value: 'a'}, {label: 'bbb', value: 'b'}, {label: 'ccc', value: 'c'}, {label: 'ddd', value: 'd'}, {label: 'eee', value: 'e'}];
   constructor() {
     this.styles = StyleSheet.create({
       odd: {
