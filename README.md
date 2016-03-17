@@ -59,25 +59,27 @@ This codebase is a hack that attempts to take the "React" part of React Native a
 
 React Native projects usually `require('react-native')` and then `React.AppRegistry.registerComponent`. To create an app without React, just `require('AppRegistry')` directly, and `AppRegistry.registerRunnable` instead. React Native also exposes `NativeModules` which provides access to native views through `NativeModules.UIManager`. Combine these to create a simple a "Hello World" application:
 
-	//index.ios.js
-	var AppRegistry = require('AppRegistry');
-	var NativeModules = require('NativeModules');
-	var UIManager = NativeModules.UIManager;
+```js
+//index.ios.js
+var AppRegistry = require('AppRegistry');
+var NativeModules = require('NativeModules');
+var UIManager = NativeModules.UIManager;
 
-	AppRegistry.registerRunnable('ProjectName', function() {
-		// create views
-		UIManager.createView(2, "RCTView", null, {});
-		UIManager.createView(3, "RCTText", null, {});
-		UIManager.createView(4, "RCTRawText", null, {
-			"text": "Hello World!"
-		});
-
-		// attach views
-		// Note: the "root" native view is tag # 1
-		UIManager.manageChildren(1, null, null, [2], [0], null);
-		UIManager.manageChildren(2, null, null, [3], [0], null);
-		UIManager.manageChildren(3, null, null, [4], [0], null);
+AppRegistry.registerRunnable('ProjectName', function() {
+	// create views
+	UIManager.createView(2, "RCTView", null, {});
+	UIManager.createView(3, "RCTText", null, {});
+	UIManager.createView(4, "RCTRawText", null, {
+		"text": "Hello World!"
 	});
+
+	// attach views
+	// Note: the "root" native view is tag # 1
+	UIManager.manageChildren(1, null, null, [2], [0], null);
+	UIManager.manageChildren(2, null, null, [3], [0], null);
+	UIManager.manageChildren(3, null, null, [4], [0], null);
+});
+```
 	
 **The `AppRegistry` *always* has to be required first**, as it `requires` certain modules in the right order, and sets up polyfills for functions like `setTimeout`. After requiring it, any other module provided by React Native can be included without issue. `registerRunnable` allows React Native to start your application when the native side is ready.
 
@@ -90,28 +92,33 @@ To run in JavaScriptCore, Angular 2 needs traceur-runtime, a DOM implementation 
 ### traceur-runtime
 
 Easy.
-
-	require('traceur/bin/traceur-runtime.js');
+```js
+require('traceur/bin/traceur-runtime.js');
+```
 	
 ### parse5
 
 JavaScriptCore has no DOM. This is fixed with a couple lines of code:
 
-	import { Parse5DomAdapter } from 'angular2/src/dom/parse5_adapter';
-	
-	Parse5DomAdapter.makeCurrent();
+```js
+import { Parse5DomAdapter } from 'angular2/src/dom/parse5_adapter';
+
+Parse5DomAdapter.makeCurrent();
+```
 	
 This is almost sufficient, but in this renderer, templates don't use elements like `<div>` and `<span>`. They React Native elements like `<Text>` and `<View>`. The parse5 adapter is fine with custom tag names (just like HTML5 is), but it will still verify element properties. Ideally, the definitions of each element would be defined, the parse5 adapter could tell which properties are on which elements. Instead, this project just checks to make sure that a property is ANY valid React Native element property by replacing the parse5 adapter's `hasProperty`:
 
-	class CustomParse5DomAdapter extends Parse5DomAdapter {
-		static makeCurrent() { setRootDomAdapter(new CustomParse5DomAdapter()); }
-		hasProperty(element, name: string): boolean {
-			console.log(name);
-			return RCT_PROPERTY_NAMES[name] !== undefined;
-		}
+```js
+class CustomParse5DomAdapter extends Parse5DomAdapter {
+	static makeCurrent() { setRootDomAdapter(new CustomParse5DomAdapter()); }
+	hasProperty(element, name: string): boolean {
+		console.log(name);
+		return RCT_PROPERTY_NAMES[name] !== undefined;
 	}
-	
-	CustomParse5DomAdapter.makeCurrent();
+}
+
+CustomParse5DomAdapter.makeCurrent();
+```
 	
 The parse5 adapter also uses the Node APIs `url` and `css`, which need to be patched before including the parse5 adapter.
 
@@ -120,12 +127,12 @@ Angular2's parse5 adapter uses parse5, but angular2 does not have it listed in i
 ### zonejs
 
 zonejs needs a custom patch for React Native. This could be done through patching the polyfilled `setTimeout`-like functions and Promises. An easier (and faster) way to do it is to just patch the source of all async calls, which seems to be `ReactUpdates.batchedUpdates`. This needs to be patched on Angular's zone:
-
-	bootstrap( ... ).then(function(appRef) {
-		var zone = appRef._injector.get(NgZone)._innerZone;
-		require('ReactUpdates').batchedUpdates = zone.bind(require('ReactUpdates').batchedUpdates);
-	});
-
+```js
+bootstrap( ... ).then(function(appRef) {
+	var zone = appRef._injector.get(NgZone)._innerZone;
+	require('ReactUpdates').batchedUpdates = zone.bind(require('ReactUpdates').batchedUpdates);
+});
+```
 Any time the native side calls into JS, the application code will run, then zonejs will run detectChanges, and the results will then be returned to the native side.
 
 # Evaluation
