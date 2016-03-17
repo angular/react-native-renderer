@@ -16,6 +16,7 @@ export * from './components/android/progress_bar';
 export * from './components/android/toolbar';
 
 export * from './components/ios/activity_indicator';
+export * from './components/ios/progress_view';
 
 export * from './directives/opacity_feedback';
 export * from './directives/android/ripple_feedback';

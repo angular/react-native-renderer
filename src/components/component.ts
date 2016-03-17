@@ -142,7 +142,7 @@ export abstract class HighLevelComponent {
   }
 
   processNumber(value: any): number {
-    return (!isNaN(parseInt(value))) ? parseInt(value) : value;
+    return (!isNaN(parseFloat(value))) ? parseFloat(value) : value;
   }
 
   processColor(color: string): number {

@@ -12,6 +12,8 @@ import {StyleSheet} from 'react-native';
     <ActivityIndicator color="#ce0058"></ActivityIndicator>
     <ActivityIndicator color="#ce0058" size="large"></ActivityIndicator>
   </View>
+  <Text [styleSheet]="styles.title">Progress view</Text>
+  <ProgressView progress="0.6" progressTintColor="#ce0058" [style]="{width: 200}"></ProgressView>
 </View>
 `
 })
