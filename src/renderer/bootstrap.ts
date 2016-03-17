@@ -41,13 +41,14 @@ import {Toolbar} from "../components/android/toolbar";
 import {Image} from '../components/image';
 import {ScrollView} from "../components/scrollview";
 import {Picker} from "../components/picker";
+import {ActivityIndicator} from '../components/ios/activity_indicator';
 
 export function bootstrapReactNative(appName:string, cpt: any, customProviders?: Array<any> = []) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
       provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView, Image, ProgressBar, PagerLayout, ScrollView,
-        DrawerLayout, DrawerLayoutSide, DrawerLayoutContent, RefreshControl, Toolbar, Picker], multi:true}),
+        DrawerLayout, DrawerLayoutSide, DrawerLayoutContent, RefreshControl, Toolbar, Picker, ActivityIndicator], multi:true}),
       [ReactNativeWrapperImpl],
       provide(REACT_NATIVE_WRAPPER, {useExisting: ReactNativeWrapperImpl}),
       [ReactNativeElementSchemaRegistry],

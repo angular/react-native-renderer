@@ -219,7 +219,7 @@ export class ElementNode extends Node {
     super(wrapper, zone);
     //TODO: generalize the mechanism (list? regexp? meta data?)
     if (['View', 'Text', 'Switch', 'TextInput', 'WebView', 'Image', 'ProgressBar', 'PagerLayout', 'Picker', 'ScrollView',
-        'DrawerLayout', 'DrawerLayoutSide', 'DrawerLayoutContent', 'RefreshControl', 'Toolbar'].indexOf(tagName) > -1) {
+        'DrawerLayout', 'DrawerLayoutSide', 'DrawerLayoutContent', 'RefreshControl', 'Toolbar', 'ActivityIndicator'].indexOf(tagName) > -1) {
       this.isVirtual = true;
     }
   }
