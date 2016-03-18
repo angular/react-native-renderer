@@ -45,6 +45,7 @@ import {ActivityIndicator} from '../components/ios/activity_indicator';
 import {ProgressView} from "../components/ios/progress_view";
 import {SegmentedControl} from "../components/ios/segmented_control";
 import {Slider} from "../components/ios/slider";
+import {DatePicker} from "../components/ios/date_picker";
 
 export function bootstrapReactNative(appName:string, cpt: any, customProviders?: Array<any> = []) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
@@ -52,7 +53,7 @@ export function bootstrapReactNative(appName:string, cpt: any, customProviders?:
     bootstrap(cpt, [
       provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView, Image, ProgressBar, PagerLayout, ScrollView,
         DrawerLayout, DrawerLayoutSide, DrawerLayoutContent, RefreshControl, Toolbar, Picker,
-        ActivityIndicator, ProgressView, SegmentedControl, Slider], multi:true}),
+        ActivityIndicator, DatePicker, ProgressView, SegmentedControl, Slider], multi:true}),
       [ReactNativeWrapperImpl],
       provide(REACT_NATIVE_WRAPPER, {useExisting: ReactNativeWrapperImpl}),
       [ReactNativeElementSchemaRegistry],

@@ -124,7 +124,7 @@ gulp.task('ts2commonjs.src', function () {
   return ts2js(PATHS.sources.src, PATHS.destination + '/src');
 });
 gulp.task('ts2commonjs', function (done) {
-  runSequence('clean.code', ['ts2commonjs.sample', 'ts2commonjs.test', 'ts2commonjs.src'], done);
+  runSequence('clean.code', 'ts2commonjs.sample', 'ts2commonjs.test', 'ts2commonjs.src', done);
 });
 
 gulp.task('transformTests', ['ts2commonjs'], function() {
@@ -163,7 +163,7 @@ gulp.task('ts2system.src', function () {
   return ts2js(PATHS.sources.src, PATHS.destination + '/src', true);
 });
 gulp.task('ts2system', function (done) {
-  runSequence('clean.code', ['ts2system.sample', 'ts2system.test', 'ts2system.src'], done);
+  runSequence('clean.code', 'ts2system.sample', 'ts2system.test', 'ts2system.src', done);
 });
 
 gulp.task('karma-launch', function() {

@@ -153,6 +153,10 @@ export abstract class HighLevelComponent {
     return list.indexOf(value) > -1 ? value : list[0];
   }
 
+  processDate(value: any): number {
+    return (new Date(value)).getTime();
+  }
+
   resolveAssetSource(source: any): any {
     return this._wrapper.resolveAssetSource(source);
   }

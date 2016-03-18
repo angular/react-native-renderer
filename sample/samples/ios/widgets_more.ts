@@ -18,6 +18,8 @@ import {StyleSheet} from 'react-native';
   <SegmentedControl [values]="['One', 'Two','Three']" selectedIndex="0" tintColor="#ce0058" [style]="{width: 200}" (change)="selected=$event.selectedIndex"></SegmentedControl>
   <Text [styleSheet]="styles.title">Slider ({{sliderValue}})</Text>
   <Slider value="0.6" [style]="{width: 200}" (valueChange)="sliderValue=$event"></Slider>
+  <Text [styleSheet]="styles.title">Date picker ({{selectedDate}})</Text>
+  <DatePicker date="2016-03-18" (change)="selectedDate=$event"></DatePicker>
 </View>
 `
 })
@@ -25,6 +27,7 @@ export class WidgetsList {
   styles: any;
   selected: number = 0;
   sliderValue: number = 0.6;
+  selectedDate: Date = new Date('2016-03-18');
   constructor() {
     this.styles = StyleSheet.create({
       odd: {
