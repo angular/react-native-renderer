@@ -72,9 +72,14 @@ gulp.task('init', ['!postcreate'], function() {
 gulp.task('!assets', function () {
   return gulp.src(PATHS.sources.sampleAssets).pipe(gulp.dest(PATHS.app + '/' + APP_NAME));
 });
-gulp.task('!compile', ['!assets'], function () {
-  ts2js(PATHS.sources.sample, PATHS.app + '/' + APP_NAME);
+gulp.task('!compile.sample', function () {
+  return ts2js(PATHS.sources.sample, PATHS.app + '/' + APP_NAME);
+});
+gulp.task('!compile.src', function () {
   return ts2js(PATHS.sources.src, PATHS.app + '/' + APP_NAME + '/node_modules/react-native-renderer');
+});
+gulp.task('!compile', function (done) {
+  runSequence('!assets', '!compile.sample', '!compile.src', done);
 });
 gulp.task('!launch.android', ['!compile'], function(done) {
   executeInAppDir('react-native run-android', done);
