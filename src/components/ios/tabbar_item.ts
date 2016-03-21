@@ -65,8 +65,7 @@ export class TabBarItem extends HighLevelComponent {
    * To be documented
    */
   set systemIcon(value: string) {
-    this._systemIcon = this.processEnum(value, ['bookmarks', 'contacts', 'downloads', 'favorites', 'featured', 'history',
-      'more', 'most-recent', 'most-viewed', 'recents', 'search', 'top-rated']);
+    this._systemIcon = this.processEnum(value, ['bookmarks', 'contacts', 'downloads', 'favorites', 'featured', 'history', 'more', 'most-recent', 'most-viewed', 'recents', 'search', 'top-rated']);
   }
   /**
    * To be documented

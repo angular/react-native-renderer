@@ -24,6 +24,7 @@ var PATHS = {
   destination: 'dist/code',
   app: 'dist/app',
   doc: 'dist/doc',
+  tmp: 'dist/tmp',
   modules: [
     'node_modules/angular2/**/*',
     'node_modules/es6-shim/**/*',
@@ -72,15 +73,16 @@ gulp.task('init', ['!postcreate'], function() {
 gulp.task('!assets', function () {
   return gulp.src(PATHS.sources.sampleAssets).pipe(gulp.dest(PATHS.app + '/' + APP_NAME));
 });
-gulp.task('!compile.sample', function () {
-  return ts2js(PATHS.sources.sample, PATHS.app + '/' + APP_NAME);
+gulp.task('!transpile', ['!assets'], function () {
+  return ts2js([PATHS.sources.sample, PATHS.sources.src], PATHS.tmp);
 });
-gulp.task('!compile.src', function () {
-  return ts2js(PATHS.sources.src, PATHS.app + '/' + APP_NAME + '/node_modules/react-native-renderer');
+gulp.task('!copyToNodeModules', ['!transpile'], function () {
+  return gulp.src(PATHS.tmp + '/src/**/*').pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules/react-native-renderer'));
 });
-gulp.task('!compile', function (done) {
-  runSequence('!assets', '!compile.sample', '!compile.src', done);
+gulp.task('!compile', ['!copyToNodeModules'], function () {
+  return gulp.src(PATHS.tmp + '/sample/**/*').pipe(gulp.dest(PATHS.app + '/' + APP_NAME));
 });
+
 gulp.task('!launch.android', ['!compile'], function(done) {
   executeInAppDir('react-native run-android', done);
 });
@@ -119,17 +121,8 @@ function executeInAppDir(command, done, inParentFolder) {
 /**********************************************************************************/
 /*******************************    NODE     **************************************/
 /**********************************************************************************/
-gulp.task('ts2commonjs.sample', function () {
-  return ts2js(PATHS.sources.sample, PATHS.destination + '/sample');
-});
-gulp.task('ts2commonjs.test', function () {
-  return ts2js(PATHS.sources.test, PATHS.destination + '/test');
-});
-gulp.task('ts2commonjs.src', function () {
-  return ts2js(PATHS.sources.src, PATHS.destination + '/src');
-});
-gulp.task('ts2commonjs', function (done) {
-  runSequence('clean.code', 'ts2commonjs.sample', 'ts2commonjs.test', 'ts2commonjs.src', done);
+gulp.task('ts2commonjs', ['clean.code'], function () {
+  return ts2js([PATHS.sources.src, PATHS.sources.test], PATHS.destination);
 });
 
 gulp.task('transformTests', ['ts2commonjs'], function() {
@@ -158,17 +151,8 @@ gulp.task('test.node', function(neverDone) {
 /**********************************************************************************/
 /*******************************   BROWSER   **************************************/
 /**********************************************************************************/
-gulp.task('ts2system.sample', function () {
-  return ts2js(PATHS.sources.sample, PATHS.destination + '/sample', true);
-});
-gulp.task('ts2system.test', function () {
-  return ts2js(PATHS.sources.test, PATHS.destination + '/test', true);
-});
-gulp.task('ts2system.src', function () {
-  return ts2js(PATHS.sources.src, PATHS.destination + '/src', true);
-});
-gulp.task('ts2system', function (done) {
-  runSequence('clean.code', 'ts2system.sample', 'ts2system.test', 'ts2system.src', done);
+gulp.task('ts2system', ['clean.code'], function () {
+  return ts2js([PATHS.sources.src, PATHS.sources.test], PATHS.destination, true);
 });
 
 gulp.task('karma-launch', function() {
@@ -237,7 +221,7 @@ gulp.task('clean.code', function (done) {
 });
 
 function ts2js(path, dest, toSystem) {
-  var tsResult = gulp.src([path].concat(['typings/main.d.ts', 'src/react-native-renderer.d.ts']))
+  var tsResult = gulp.src(path.concat(['typings/main.d.ts', 'src/react-native-renderer.d.ts']), {base: './'})
     .pipe(typescript({
       noImplicitAny: true,
       module: toSystem ? 'system' : 'commonjs',

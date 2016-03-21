@@ -54,9 +54,33 @@ export function bootstrapReactNative(appName:string, cpt: any, customProviders?:
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
-      provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView, Image, ProgressBar, PagerLayout, ScrollView,
-        DrawerLayout, DrawerLayoutSide, DrawerLayoutContent, RefreshControl, Toolbar, Picker,
-        ActivityIndicator, DatePicker, MapView, ProgressView, SegmentedControl, Slider, TabBar, TabBarItem], multi:true}),
+      //Common components
+      provide(PLATFORM_DIRECTIVES, {useValue: [Image], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [Picker], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [RefreshControl], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [ScrollView], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [Switch], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [Text], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [TextInput], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [View], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [WebView], multi:true}),
+      //Android components
+      provide(PLATFORM_DIRECTIVES, {useValue: [DrawerLayout], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [DrawerLayoutSide], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [DrawerLayoutContent], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [PagerLayout], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [ProgressBar], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [Toolbar], multi:true}),
+      //iOS components
+      provide(PLATFORM_DIRECTIVES, {useValue: [ActivityIndicator], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [DatePicker], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [MapView], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [ProgressView], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [SegmentedControl], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [Slider], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [TabBar], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [TabBarItem], multi:true}),
+      //Others
       [ReactNativeWrapperImpl],
       provide(REACT_NATIVE_WRAPPER, {useExisting: ReactNativeWrapperImpl}),
       [ReactNativeElementSchemaRegistry],
