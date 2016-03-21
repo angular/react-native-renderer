@@ -47,6 +47,8 @@ import {SegmentedControl} from "../components/ios/segmented_control";
 import {Slider} from "../components/ios/slider";
 import {DatePicker} from "../components/ios/date_picker";
 import {MapView} from "../components/ios/map_view";
+import {TabBar} from "../components/ios/tabbar";
+import {TabBarItem} from "../components/ios/tabbar_item";
 
 export function bootstrapReactNative(appName:string, cpt: any, customProviders?: Array<any> = []) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
@@ -54,7 +56,7 @@ export function bootstrapReactNative(appName:string, cpt: any, customProviders?:
     bootstrap(cpt, [
       provide(PLATFORM_DIRECTIVES, {useValue: [View, Text, Switch, TextInput, WebView, Image, ProgressBar, PagerLayout, ScrollView,
         DrawerLayout, DrawerLayoutSide, DrawerLayoutContent, RefreshControl, Toolbar, Picker,
-        ActivityIndicator, DatePicker, MapView, ProgressView, SegmentedControl, Slider], multi:true}),
+        ActivityIndicator, DatePicker, MapView, ProgressView, SegmentedControl, Slider, TabBar, TabBarItem], multi:true}),
       [ReactNativeWrapperImpl],
       provide(REACT_NATIVE_WRAPPER, {useExisting: ReactNativeWrapperImpl}),
       [ReactNativeElementSchemaRegistry],

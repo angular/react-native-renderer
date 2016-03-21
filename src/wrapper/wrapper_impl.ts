@@ -51,7 +51,9 @@ const RCT_VIEW_NAMES: { [s: string]: string } = ReactNative.Platform.OS == 'andr
   'native-mapview': 'RCTMap',
   'native-progressview': 'RCTProgressView',
   'native-segmentedcontrol': 'RCTSegmentedControl',
-  'native-slider': 'RCTSlider'
+  'native-slider': 'RCTSlider',
+  'native-tabbar': 'RCTTabBar',
+  'native-tabbaritem': 'RCTTabBarItem'
 }
 
 var RCT_VIEW_COMMANDS: {[s: string]: number} = ReactNative.Platform.OS == 'android' ? {
