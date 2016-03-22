@@ -13,6 +13,7 @@ export class ReactNativeWrapper {
   processColor(color: string): number {return -1}
   resolveAssetSource(source: any): any {return null};
   dismissKeyboard(): void {};
+  requestNavigatorLock(tag: number, callback: (b: boolean) => any): void {}
   getUIManager(): any {return null;};
   createView(tagName: string, root: number, properties: Object): number {return 0;}
   updateView(tag: number, tagName: string, properties: Object): void {}

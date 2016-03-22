@@ -1,7 +1,6 @@
 import {Directive, ElementRef, OnDestroy, OnInit, Input, Inject} from 'angular2/core';
 import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
 import {ReactNativeWrapper} from './../../wrapper/wrapper';
-import {ReactNativeWrapper} from "../../wrapper/wrapper";
 
 @Directive({
   selector: '[rippleFeedback]'

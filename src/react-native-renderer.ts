@@ -18,6 +18,7 @@ export * from './components/android/toolbar';
 export * from './components/ios/activity_indicator';
 export * from './components/ios/date_picker';
 export * from './components/ios/map_view';
+export * from './components/ios/navigator';
 export * from './components/ios/progress_view';
 export * from './components/ios/segmented_control';
 export * from './components/ios/slider';

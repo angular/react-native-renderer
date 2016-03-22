@@ -141,6 +141,11 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
     this.commandLogs.push(new Command('DISMISS_KEYBOARD', -1, ''));
   }
 
+  requestNavigatorLock(tag: number, callback: (b: boolean) => any): void {
+    this.commandLogs.push(new Command('REQUEST_NAVIGATOR_LOCK', tag, ''));
+    callback(true);
+  }
+
   getUIManager(): any {
     return {
       AndroidDrawerLayout: {

@@ -42,6 +42,7 @@ import {Image} from '../components/image';
 import {ScrollView} from "../components/scrollview";
 import {Picker} from "../components/picker";
 import {ActivityIndicator} from '../components/ios/activity_indicator';
+import {Navigator} from '../components/ios/navigator';
 import {ProgressView} from "../components/ios/progress_view";
 import {SegmentedControl} from "../components/ios/segmented_control";
 import {Slider} from "../components/ios/slider";
@@ -75,6 +76,7 @@ export function bootstrapReactNative(appName:string, cpt: any, customProviders?:
       provide(PLATFORM_DIRECTIVES, {useValue: [ActivityIndicator], multi:true}),
       provide(PLATFORM_DIRECTIVES, {useValue: [DatePicker], multi:true}),
       provide(PLATFORM_DIRECTIVES, {useValue: [MapView], multi:true}),
+      provide(PLATFORM_DIRECTIVES, {useValue: [Navigator], multi:true}),
       provide(PLATFORM_DIRECTIVES, {useValue: [ProgressView], multi:true}),
       provide(PLATFORM_DIRECTIVES, {useValue: [SegmentedControl], multi:true}),
       provide(PLATFORM_DIRECTIVES, {useValue: [Slider], multi:true}),

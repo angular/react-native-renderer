@@ -1,6 +1,4 @@
-import {bootstrapReactNative} from 'react-native-renderer/react-native-renderer';
-import {HelloApp} from "./samples/ios/hello";
-import {WidgetsList} from "./samples/ios/widgets_more";
-import {TabBarApp} from "./samples/ios/tabbar";
+import {bootstrapReactNative, ROUTER_PROVIDERS} from 'react-native-renderer/react-native-renderer';
+import {KitchenSinkApp} from "./samples/ios/kitchensink";
 
-bootstrapReactNative('ngReactNative', TabBarApp);
+bootstrapReactNative('ngReactNative', KitchenSinkApp, [ROUTER_PROVIDERS]);
