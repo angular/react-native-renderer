@@ -1,11 +1,12 @@
 import {Directive, ElementRef, OnDestroy, OnInit, Input, Inject} from 'angular2/core';
 import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
 import {ReactNativeWrapper} from './../../wrapper/wrapper';
+import {OpacityFeedback} from "../opacity_feedback";
 
 @Directive({
   selector: '[rippleFeedback]'
 })
-export class RippleFeedback implements OnInit, OnDestroy {
+export class RippleFeedback extends OpacityFeedback implements OnInit, OnDestroy {
   private _el: any;
   private _wrapper: ReactNativeWrapper;
   @Input() rippleFeedback: string;
@@ -26,18 +27,26 @@ export class RippleFeedback implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._el.children[0].addEventListener('tapstart', this._start.bind(this));
-    this._el.children[0].addEventListener('tapcancel', this._stop.bind(this));
-    this._el.children[0].addEventListener('tap', this._stop.bind(this));
-    setTimeout(() => {
-      this._el.children[0].setProperty('nativeBackgroundAndroid',
-        {type: 'RippleAndroid', color: this._wrapper.processColor(this.rippleFeedback) || -1, borderless: false});
-    }, 0);
+    if (this._wrapper.isAndroid()) {
+      this._el.children[0].addEventListener('tapstart', this._start.bind(this));
+      this._el.children[0].addEventListener('tapcancel', this._stop.bind(this));
+      this._el.children[0].addEventListener('tap', this._stop.bind(this));
+      setTimeout(() => {
+        this._el.children[0].setProperty('nativeBackgroundAndroid',
+          {type: 'RippleAndroid', color: this._wrapper.processColor(this.rippleFeedback) || -1, borderless: false});
+      }, 0);
+    } else {
+      super.ngOnInit();
+    }
   }
 
   ngOnDestroy() {
-    this._el.children[0].removeEventListener('tapstart', this._start.bind(this));
-    this._el.children[0].removeEventListener('tapcancel', this._stop.bind(this));
-    this._el.children[0].removeEventListener('tap', this._stop.bind(this));
+    if (this._wrapper.isAndroid()) {
+      this._el.children[0].removeEventListener('tapstart', this._start.bind(this));
+      this._el.children[0].removeEventListener('tapcancel', this._stop.bind(this));
+      this._el.children[0].removeEventListener('tap', this._stop.bind(this));
+    } else {
+      super.ngOnDestroy();
+    }
   }
 }

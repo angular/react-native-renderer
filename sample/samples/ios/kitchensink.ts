@@ -1,37 +1,55 @@
-import {Component} from 'angular2/core';
+import {Component, ViewChild, NgZone} from 'angular2/core';
 import {Router, RouteConfig, ComponentInstruction} from 'angular2/router';
-import {StyleSheet} from 'react-native';
-import {ROUTER_DIRECTIVES} from "react-native-renderer/react-native-renderer";
-
-@Component({
-  selector: 'foo',
-  template: `<View [routerLink]="['/Bar']"><Text>Foo from here</Text></View>`,
-  directives: [ROUTER_DIRECTIVES]
-})
-class Foo {}
-
-@Component({
-  selector: 'bar',
-  template: `<View><Text>Bar from here</Text></View>`
-})
-class Bar {}
-
-var moreLogo = require('../../assets/icon_more.png');
+import {StyleSheet, ActionSheetIOS} from 'react-native';
+import {ROUTER_DIRECTIVES, Navigator} from "react-native-renderer/react-native-renderer";
+import {HelloApp} from './hello';
+import {WidgetsList} from "./widgets";
+import {APIsApp} from './apis';
+import {WebViewApp} from "../common/webview";
+import {TodoMVC} from "../common/todomvc";
+import {GesturesApp} from "../common/gestures";
+import {HttpApp} from "../common/http";
+import {AnimationApp} from "../common/animation";
 
 @RouteConfig([
-  { path: '/', component: Foo, as: 'Foo', data: {title: 'foo!', rightButtonIcon: moreLogo, backButtonTitle: 'back'}},
-  { path: '/bar', component: Bar, as: 'Bar', data: {title: 'bar!'} }
+  { path: '/', component: HelloApp, as: 'HelloApp', data: {title: 'Kitchen Sink', backButtonTitle: 'Home'}},
+  { path: '/widgets', component: WidgetsList, as: 'WidgetsList', data: {title: 'Widgets'}},
+  { path: '/webview', component: WebViewApp, as: 'WebViewApp', data: {title: 'WebView'}},
+  { path: '/apis', component: APIsApp, as: 'APIsApp', data: {title: 'APIs'}},
+  { path: '/todomvc', component: TodoMVC, as: 'TodoMVC', data: {title: 'TodoMVC', rightButtonTitle: 'More'}},
+  { path: '/gestures', component: GesturesApp, as: 'GesturesApp', data: {title: 'Gestures'} },
+  { path: '/http', component: HttpApp, as: 'HttpApp', data: {title: 'Http'} },
+  { path: '/animation', component: AnimationApp, as: 'AnimationApp', data: {title: 'Animation'} }
 ])
 @Component({
   selector: 'kitchensink-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  template: `<Navigator (rightButtonPress)="_navigate($event)"></Navigator>`
+  template: `<Navigator barTintColor="#005eb8" tintColor="#00a9e0" titleTextColor="#FFFFFF" (rightButtonPress)="_actions($event)"></Navigator>`
 })
 export class KitchenSinkApp {
-  constructor(private router: Router) {
-  }
+  @ViewChild(Navigator) navigator: Navigator;
 
-  _navigate(event: ComponentInstruction) {
-    this.router.navigateByUrl('/bar');
+  constructor(private zone: NgZone) {}
+
+  _actions(event) {
+    var todoMVC: TodoMVC = this.navigator.activeComponent;
+    ActionSheetIOS.showActionSheetWithOptions({
+        title: 'Actions',
+        options: ['Reset list', 'Empty list', 'Fill list with 100 items', 'Save', 'Load', 'Cancel'],
+        cancelButtonIndex: 5},
+      (actionIndex) => this.zone.run(() => {
+        if (actionIndex == 0 && todoMVC) {
+          todoMVC.reset();
+        } else if (actionIndex == 1 && todoMVC) {
+          todoMVC.empty();
+        } else if (actionIndex == 2 && todoMVC) {
+          todoMVC.full();
+        } else if (actionIndex == 3 && todoMVC) {
+          todoMVC.save();
+        } else if (actionIndex == 4 && todoMVC) {
+          todoMVC.load();
+        }
+      })
+    )
   }
 }

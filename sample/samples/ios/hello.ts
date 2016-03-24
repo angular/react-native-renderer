@@ -1,17 +1,37 @@
 import {Component} from 'angular2/core';
+import {ROUTER_DIRECTIVES, OpacityFeedback} from "react-native-renderer/react-native-renderer";
 import {StyleSheet} from 'react-native';
 
 @Component({
   selector: 'hello-app',
-  host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
+  host: {flex: '1'},
+  directives: [ROUTER_DIRECTIVES, OpacityFeedback],
   template: `
 <View [styleSheet]="styles.container">
   <Text [styleSheet]="styles.welcome">
     Welcome to ngReactNative!
   </Text>
   <Text [styleSheet]="styles.instructions">
-    Shake or press cmd + ctrl + Z for dev menu
+      To get started, use the buttons below
+    </Text>
+  <Text [styleSheet]="styles.instructions">
+    Shake or press cmd + D for dev menu
   </Text>
+  <View [style]="{flexDirection: 'row', marginTop: 20}">
+    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/WidgetsList']">Widgets</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/WebViewApp']">Webview</Text>
+  </View>
+  <View [style]="{flexDirection: 'row', marginTop: 10}">
+    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/APIsApp']">APIs</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/TodoMVC']">TodoMVC</Text>
+  </View>
+  <View [style]="{flexDirection: 'row', marginTop: 10}">
+    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/GesturesApp']">Gestures</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/HttpApp']">Http</Text>
+  </View>
+  <View [style]="{flexDirection: 'row', marginTop: 10}">
+    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/AnimationApp']">Animation</Text>
+  </View>
 </View>
 <Image [styleSheet]="styles.image" [style]="{left: 0}" [source]="angularLogo"></Image>
 <Image [styleSheet]="styles.image" [style]="{right: 0}" [source]="reactLogo" ></Image>
@@ -24,12 +44,8 @@ export class HelloApp {
   constructor() {
     this.styles = StyleSheet.create({
       container: {
-        position: 'absolute',
-        left: 0,
-        right:0,
-        top: 0,
-        bottom: 0,
-        justifyContent: 'center',
+        flex: 1,
+        paddingTop: 120,
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
       },
@@ -48,7 +64,18 @@ export class HelloApp {
         width: 100,
         overflow: 'hidden',
         position: 'absolute',
-        bottom: 0
+        top: 0
+      },
+      button: {
+        borderColor: '#005eb8',
+        borderWidth: 3,
+        color: '#005eb8',
+        width: 150,
+        padding: 10,
+        margin: 10,
+        textAlign: 'center',
+        fontSize: 20,
+        borderRadius: 10
       }
     });
   }

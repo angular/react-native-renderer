@@ -1,4 +1,4 @@
-import {Component, Inject, Input, Output, EventEmitter, NgZone, DynamicComponentLoader, ElementRef} from 'angular2/core';
+import {Component, Inject, Input, Output, EventEmitter, NgZone, DynamicComponentLoader, ElementRef, ComponentRef} from 'angular2/core';
 import {NgFor, NgIf} from 'angular2/common';
 import {Router, ComponentInstruction, LocationStrategy} from 'angular2/router';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../component";
@@ -10,8 +10,8 @@ import {Node} from "../../renderer/node";
   selector: 'NavigatorItem',
   inputs: ['instruction'],
   template: `<native-navitem [title]="_title" [backButtonTitle]="_backButtonTitle" [leftButtonTitle]="_leftButtonTitle" [rightButtonTitle]="_rightButtonTitle"
-  [navigationBarHidden]="_navigationBarHidden" [shadowHidden]="_shadowHidden" [translucent]="_translucent"
-  [barTintColor]="_barTintColor" [tintColor]="_tintColor" [titleTextColor]="_titleTextColor"
+  [navigationBarHidden]="navigationBarHidden" [shadowHidden]="shadowHidden" [translucent]="translucent"
+  [barTintColor]="barTintColor" [tintColor]="tintColor" [titleTextColor]="titleTextColor"
   [backButtonIcon]="_backButtonIcon" [leftButtonIcon]="_leftButtonIcon" [rightButtonIcon]="_rightButtonIcon"
   [style]="[_defaultStyle, itemWrapperStyle, _wrapperStyle]" onLeftButtonPress="true" onRightButtonPress="true"
   (topLeftButtonPress)="_handleLeftButtonPress()" (topRightButtonPress)="_handleRightButtonPress()">
@@ -20,17 +20,17 @@ import {Node} from "../../renderer/node";
 })
 class NavigatorItem extends HighLevelComponent {
   @Input() itemWrapperStyle: any;
+  @Input() navigationBarHidden: boolean;
+  @Input() shadowHidden: boolean;
+  @Input() translucent: boolean;
+  @Input() barTintColor: number;
+  @Input() tintColor: number;
+  @Input() titleTextColor: number;
   private _instruction: ComponentInstruction;
   private _title: string;
   private _backButtonTitle: string;
   private _leftButtonTitle: string;
   private _rightButtonTitle: string;
-  private _navigationBarHidden: boolean;
-  private _shadowHidden: boolean;
-  private _translucent: boolean;
-  private _barTintColor: number;
-  private _tintColor: number;
-  private _titleTextColor: number;
   private _backButtonIcon: any;
   private _leftButtonIcon: any;
   private _rightButtonIcon: any;
@@ -39,6 +39,7 @@ class NavigatorItem extends HighLevelComponent {
   //Events
   @Output() leftButtonPress: EventEmitter<ComponentInstruction> = new EventEmitter();
   @Output() rightButtonPress: EventEmitter<ComponentInstruction> = new EventEmitter();
+  @Output() componentLoad: EventEmitter<any> = new EventEmitter();
 
   constructor(private loader: DynamicComponentLoader, private elementRef: ElementRef, @Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
     super(wrapper);
@@ -49,7 +50,7 @@ class NavigatorItem extends HighLevelComponent {
       top: 0,
       left: 0,
       right: 0,
-      bottom: 0,
+      bottom: 64,
     });
   }
 
@@ -60,18 +61,20 @@ class NavigatorItem extends HighLevelComponent {
     if (data['backButtonTitle']) {this._backButtonTitle = data['backButtonTitle'];}
     if (data['leftButtonTitle']) {this._leftButtonTitle = data['leftButtonTitle'];}
     if (data['rightButtonTitle']) {this._rightButtonTitle = data['rightButtonTitle'];}
-    if (data['navigationBarHidden']) {this._navigationBarHidden = this.processBoolean(data['navigationBarHidden']);}
-    if (data['shadowHidden']) {this._shadowHidden = this.processBoolean(data['shadowHidden']);}
-    if (data['translucent']) {this._translucent = this.processBoolean(data['translucent']);}
-    if (data['barTintColor']) {this._barTintColor = this.processColor(data['barTintColor']);}
-    if (data['tintColor']) {this._tintColor = this.processColor(data['tintColor']);}
-    if (data['titleTextColor']) {this._titleTextColor = this.processColor(data['titleTextColor']);}
+    if (data['navigationBarHidden']) {this.navigationBarHidden = this.processBoolean(data['navigationBarHidden']);}
+    if (data['shadowHidden']) {this.shadowHidden = this.processBoolean(data['shadowHidden']);}
+    if (data['translucent']) {this.translucent = this.processBoolean(data['translucent']);}
+    if (data['barTintColor']) {this.barTintColor = this.processColor(data['barTintColor']);}
+    if (data['tintColor']) {this.tintColor = this.processColor(data['tintColor']);}
+    if (data['titleTextColor']) {this.titleTextColor = this.processColor(data['titleTextColor']);}
     if (data['backButtonIcon']) {this._backButtonIcon = this.resolveAssetSource(data['backButtonIcon']);}
     if (data['leftButtonIcon']) {this._leftButtonIcon = this.resolveAssetSource(data['leftButtonIcon']);}
     if (data['rightButtonIcon']) {this._rightButtonIcon = this.resolveAssetSource(data['rightButtonIcon']);}
     if (data['wrapperStyle']) {this._wrapperStyle = data['wrapperStyle'];}
 
-    this.loader.loadIntoLocation(value.componentType, this.elementRef, 'target');
+    this.loader.loadIntoLocation(value.componentType, this.elementRef, 'target').then((componentRef: ComponentRef) => {
+      this.componentLoad.emit(componentRef.instance);
+    });
   }
 
   _handleLeftButtonPress() {
@@ -135,17 +138,20 @@ export class Sample {
   inputs: [
     'barTintColor', 'itemWrapperStyle', 'navigationBarHidden', 'shadowHidden', 'tintColor', 'titleTextColor', 'translucent'
   ].concat(GENERIC_INPUTS),
-  template: `<native-navigator *ngIf="_stack.length > 0" [barTintColor]="_barTintColor" [navigationBarHidden]="_navigationBarHidden"
-  [shadowHidden]="_shadowHidden" [tintColor]="_tintColor" [titleTextColor]="_titleTextColor" [translucent]="_translucent"
-  [requestedTopOfStack]="_requestedTopOfStack" onNavigationComplete="true" (topNavigationComplete)="_handleNavigationComplete($event)"
+  template: `<native-navigator *ngIf="_stack.length > 0" [requestedTopOfStack]="_requestedTopOfStack"
+  onNavigationComplete="true" (topNavigationComplete)="_handleNavigationComplete($event)"
   ${GENERIC_BINDINGS}>
-    <NavigatorItem *ngFor="#instruction of _stack" [instruction]="instruction" [itemWrapperStyle]="_itemWrapperStyle"
-    (leftButtonPress)="_handleLeftButtonPress($event)" (rightButtonPress)="_handleRightButtonPress($event)"></NavigatorItem>
+    <NavigatorItem *ngFor="#instruction of _stack" [itemWrapperStyle]="_itemWrapperStyle"
+    [barTintColor]="_barTintColor" [navigationBarHidden]="_navigationBarHidden"
+    [shadowHidden]="_shadowHidden" [tintColor]="_tintColor" [titleTextColor]="_titleTextColor" [translucent]="_translucent"
+    [instruction]="instruction"
+    (leftButtonPress)="_handleLeftButtonPress($event)" (rightButtonPress)="_handleRightButtonPress($event)" (componentLoad)="_handleComponentLoad($event)"></NavigatorItem>
   </native-navigator>`
 })
 export class Navigator extends HighLevelComponent {
   private _requestedTopOfStack: number ;
   private _stack: Array<ComponentInstruction> = [];
+  private _loadedComponents: Array<any> = [];
   constructor(private router: Router, private zone: NgZone, private locationStrategy: LocationStrategy, private elementRef: ElementRef,
               @Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
     super(wrapper);
@@ -174,6 +180,17 @@ export class Navigator extends HighLevelComponent {
         navigator.setProperty('requestedTopOfStack', this._stack.length - 1, true);
       }
     });
+  }
+
+  _handleComponentLoad(cpt: any) {
+    this._loadedComponents.push(cpt);
+  }
+
+  /**
+   * To be documented
+   */
+  get activeComponent(): any {
+    return this._loadedComponents[this._loadedComponents.length -1];
   }
 
   //Events
@@ -234,6 +251,7 @@ export class Navigator extends HighLevelComponent {
   _handleNavigationComplete(event: any) {
     if (this._stack.length > event.stackLength) {
       //Back button case
+      this._loadedComponents.pop();
       this.locationStrategy.back();
     }
   }

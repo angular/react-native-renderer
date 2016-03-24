@@ -5,13 +5,13 @@ import {StyleSheet, BackAndroid, Alert, NativeModules, processColor} from 'react
 import {DrawerLayout, Toolbar, RippleFeedback, ROUTER_DIRECTIVES} from "react-native-renderer/react-native-renderer";
 
 import {HelloApp} from "./hello";
-import {TodoMVC} from "./todomvc";
-import {GesturesApp} from "./gestures";
+import {TodoMVC} from "./../common/todomvc";
+import {GesturesApp} from "./../common/gestures";
 import {WidgetsList} from "./widgets";
-import {WebViewApp} from './webview';
+import {WebViewApp} from './../common/webview';
 import {APIsList} from "./apis";
-import {HttpApp} from "./http";
-import {AnimationApp} from './animation';
+import {HttpApp} from "./../common/http";
+import {AnimationApp} from './../common/animation';
 
 @Component({
   selector: 'kitchensink-app',

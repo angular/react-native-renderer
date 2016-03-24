@@ -125,7 +125,7 @@ export class TodoItem {
   </template>
 </ScrollView>
 <View [styleSheet]="styles.footer">
-  <View [style]="{width: 60}">
+  <View [style]="{width: 65}">
     <Text [styleSheet]="styles.counter" fontSize="20">{{leftCount}}</Text>
     <Text [styleSheet]="styles.counter">item{{leftCount == 1 ? '' : 's'}} left</Text>
   </View>
