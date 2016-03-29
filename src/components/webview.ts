@@ -5,11 +5,11 @@ import {ReactNativeWrapper, isAndroid} from './../wrapper/wrapper';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
 var ANDROID_INPUTS: Array<string> = ['domStorageEnabled', 'javaScriptEnabled'];
-var IOS_INPUTS: Array<string> = ['allowsInlineMediaPlayback', 'bounces', 'decelerationRate', 'scalesPageToFit', 'scrollEnabled'];
+var IOS_INPUTS: Array<string> = ['allowsInlineMediaPlayback', 'bounces', 'decelerationRate', 'scrollEnabled'];
 
 var ANDROID_BINDINGS: string = `[domStorageEnabled]="_domStorageEnabled" [javaScriptEnabled]="_javaScriptEnabled"`;
 var IOS_BINDINGS: string = `[allowsInlineMediaPlayback]="_allowsInlineMediaPlayback" [bounces]="_bounces" [decelerationRate]="_decelerationRate"
-  [scalesPageToFit]="_scalesPageToFit" [scrollEnabled]="_scrollEnabled"`;
+  [scrollEnabled]="_scrollEnabled"`;
 
 //TODO: onNavigationStateChange, renderError, renderLoading, startInLoadingState, processDecelerationRate(iOS)
 
@@ -29,10 +29,10 @@ export class Sample {}
 @Component({
   selector: 'WebView',
   inputs: [
-    'automaticallyAdjustContentInsets', 'contentInset', 'injectedJavaScript', 'source'
+    'automaticallyAdjustContentInsets', 'contentInset', 'injectedJavaScript', 'scalesPageToFit', 'source'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `<native-webview [automaticallyAdjustContentInsets]="_automaticallyAdjustContentInsets" [contentInset]="_contentInset"
-  [injectedJavaScript]="_injectedJavaScript" [source]="_source"
+  [injectedJavaScript]="_injectedJavaScript" [scalesPageToFit]="_scalesPageToFit" [source]="_source"
   (topLoadingStart)="_handleLoadingStart($event)" (topLoadingFinish)="_handleLoadingFinish($event)" (topLoadingError)="_handleLoadingError($event)"
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-webview>`
 })
@@ -61,6 +61,7 @@ export class WebView extends HighLevelComponent{
   private _automaticallyAdjustContentInsets: boolean;
   private _contentInset: any;
   private _injectedJavaScript: string;
+  private _scalesPageToFit: boolean;
   private _source: any;
   /**
    * To be documented
@@ -74,6 +75,10 @@ export class WebView extends HighLevelComponent{
    * To be documented
    */
   set injectedJavaScript(value: any) {this._injectedJavaScript = value;}
+  /**
+   * To be documented
+   */
+  set scalesPageToFit(value: any) {this._scalesPageToFit = this.processBoolean(value);}
   /**
    * To be documented
    */
@@ -95,7 +100,6 @@ export class WebView extends HighLevelComponent{
   private _allowsInlineMediaPlayback: boolean;
   private _scrollEnabled: boolean;
   private _decelerationRate: number;
-  private _scalesPageToFit: boolean;
   private _bounces: boolean;
   /**
    * To be documented
@@ -112,11 +116,6 @@ export class WebView extends HighLevelComponent{
    * @platform ios
    */
   set decelerationRate(value: any) {this._decelerationRate = this.processNumber(value);}
-  /**
-   * To be documented
-   * @platform ios
-   */
-  set scalesPageToFit(value: any) {this._scalesPageToFit = this.processBoolean(value);}
   /**
    * To be documented
    * @platform ios

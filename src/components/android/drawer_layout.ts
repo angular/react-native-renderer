@@ -43,9 +43,9 @@ export class DrawerLayoutContent {}
     //Non-native
     'keyboardDismissMode',
     //Native
-    'drawerPosition', 'drawerWidth',
+    'drawerLockMode', 'drawerPosition', 'drawerWidth',
   ].concat(GENERIC_INPUTS),
-  template: `<native-drawerlayout [drawerPosition]="_drawerPosition" [drawerWidth]="_drawerWidth"
+  template: `<native-drawerlayout [drawerLockMode]="_drawerLockMode" [drawerPosition]="_drawerPosition" [drawerWidth]="_drawerWidth"
   (topDrawerClosed)="_handleDrawerClosed($event)" (topDrawerOpened)="_handleDrawerOpened($event)"
   (topDrawerSlide)="_handleDrawerSlide($event)" (topDrawerStateChanged)="_handleDrawerStateChanged($event)"
   ${GENERIC_BINDINGS}>
@@ -84,12 +84,17 @@ export class DrawerLayout extends HighLevelComponent {
 
   //Properties
   private _keyboardDismissMode: string;
+  private _drawerLockMode: string;
   private _drawerPosition: number;
   private _drawerWidth: number;
   /**
    * To be documented
    */
   set keyboardDismissMode(value: string) {this._keyboardDismissMode = this.processEnum(value, ['none', 'on-drag']);}
+  /**
+   * To be documented
+   */
+  set drawerLockMode(value: string) {this._drawerLockMode = this.processEnum(value, ['unlocked', 'locked-closed', 'locked-open']);}
   /**
    * To be documented
    */

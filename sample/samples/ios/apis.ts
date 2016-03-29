@@ -91,7 +91,7 @@ export class APIsApp {
       cancelButtonIndex: 4,
       destructiveButtonIndex: 3,
       tintColor: 'black'},
-      (actionIndex) => {console.log(actionIndex)}
+      (actionIndex: number) => {console.log(actionIndex)}
     )
   }
 
@@ -101,8 +101,8 @@ export class APIsApp {
       message: 'message to go with the shared url',
       subject: 'a subject to go in the email heading',
     },
-    (error) => console.log(error),
-    (success, method) => {
+    (error: any) => console.log(error),
+    (success: boolean, method: string) => {
       if (success) {
         console.log(`Shared via ${method}`);
       } else {

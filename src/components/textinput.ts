@@ -5,11 +5,11 @@ import {ReactNativeWrapper, isAndroid} from './../wrapper/wrapper';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
 var ANDROID_INPUTS: Array<string> = ['numberOfLines', 'underlineColorAndroid'];
-var IOS_INPUTS: Array<string> = ['blurOnSubmit', 'clearButtonMode', 'clearTextOnFocus', 'enablesReturnKeyAutomatically',
+var IOS_INPUTS: Array<string> = ['clearButtonMode', 'clearTextOnFocus', 'enablesReturnKeyAutomatically',
   'keyboardAppearance', 'returnKeyType',  'selectTextOnFocus'];
 
 var ANDROID_BINDINGS: string = `[numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid" (topTextInput)="_handleKeyPress($event)"`;
-var IOS_BINDINGS: string = `[blurOnSubmit]="_blurOnSubmit" [clearButtonMode]="_clearButtonMode" [clearTextOnFocus]="_clearTextOnFocus"
+var IOS_BINDINGS: string = `[clearButtonMode]="_clearButtonMode" [clearTextOnFocus]="_clearTextOnFocus"
   [enablesReturnKeyAutomatically]="_enablesReturnKeyAutomatically" [keyboardAppearance]="_keyboardAppearance"
   [returnKeyType]="_returnKeyType" [selectTextOnFocus]="_selectTextOnFocus" (topKeyPress)="_handleKeyPress($event)"`;
 
@@ -33,10 +33,10 @@ export class Sample {
     //Non-native
     'autoFocus',
     //Native
-    'autoCapitalize', 'autoCorrect', 'editable', 'keyboardType', 'maxLength', 'multiline',
+    'autoCapitalize', 'autoCorrect', 'blurOnSubmit', 'editable', 'keyboardType', 'maxLength', 'multiline',
     'password', 'placeholder', 'placeholderTextColor', 'selectionColor'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
-  template: `<native-textinput [text]="_getText()" [autoCapitalize]="_autoCapitalize" [autoCorrect]="_autoCorrect" [editable]="_editable" [keyboardType]="_keyboardType"
+  template: `<native-textinput [text]="_getText()" [autoCapitalize]="_autoCapitalize" [autoCorrect]="_autoCorrect" [blurOnSubmit]="_blurOnSubmit" [editable]="_editable" [keyboardType]="_keyboardType"
   [maxLength]="_maxLength" [multiline]="_multiline" [password]="_password" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor" [selectionColor]="_selectionColor"
   (tap)="focusTextInput()" (topFocus)="_handleFocus()" (topChange)="_handleChange($event)" (topSubmitEditing)="_handleSubmitEditing($event)"
   (topBlur)="_handleBlur()" (topEndEditing)="_handleEndEditing($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-textinput>`
@@ -89,6 +89,7 @@ export class TextInput extends HighLevelComponent implements OnInit {
 
   private _autoCapitalize : string;
   private _autoCorrect: boolean;
+  private _blurOnSubmit: boolean;
   private _editable: boolean;
   private _keyboardType: string;
   private _maxLength: number;
@@ -105,6 +106,10 @@ export class TextInput extends HighLevelComponent implements OnInit {
    * To be documented
    */
   set autoCorrect(value: any) { this._autoCorrect = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
+  set blurOnSubmit(value: any) {this._blurOnSubmit = this.processBoolean(value);}
   /**
    * To be documented
    */
@@ -151,18 +156,12 @@ export class TextInput extends HighLevelComponent implements OnInit {
    */
   set underlineColorAndroid(value: string) {this._underlineColorAndroid = this.processColor(value);}
 
-  private _blurOnSubmit: boolean;
   private _clearButtonMode: boolean;
   private _clearTextOnFocus: boolean;
   private _enablesReturnKeyAutomatically: boolean;
   private _keyboardAppearance: string;
   private _returnKeyType: string;
   private _selectTextOnFocus: boolean;
-  /**
-   * To be documented
-   * @platform ios
-   */
-  set blurOnSubmit(value: any) {this._blurOnSubmit = this.processBoolean(value);}
   /**
    * To be documented
    * @platform ios

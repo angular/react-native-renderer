@@ -31,7 +31,7 @@ export class KitchenSinkApp {
 
   constructor(private zone: NgZone) {}
 
-  _actions(event) {
+  _actions(event: any) {
     var todoMVC: TodoMVC = this.navigator.activeComponent;
     ActionSheetIOS.showActionSheetWithOptions({
         title: 'Actions',
