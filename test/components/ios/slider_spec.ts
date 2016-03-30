@@ -80,7 +80,7 @@ describe('Slider component (iOS)', () => {
           setTimeout(() => {
             expect(fixture.componentInstance.log.join(',')).toEqual('0.55');
             resolve();
-          }, 30);
+          }, 50);
         });
 
       });

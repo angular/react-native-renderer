@@ -1,26 +1,21 @@
 //React Native wrapper
-import {ReactNativeWrapper} from "./../wrapper/wrapper";
 import {ReactNativeWrapperImpl} from './../wrapper/wrapper_impl';
 
 //Dependencies
-import 'reflect-metadata';
-  // Zone.js
-import {Zone} from 'zone.js/build/lib/core';
-global.Zone = Zone;
-global.zone = new Zone();
-import {patchSetClearFunction} from 'zone.js/build/lib/patch/functions';
-import {apply} from 'zone.js/build/lib/patch/promise';
-patchSetClearFunction(global, global.Zone,
-  [['setTimeout', 'clearTimeout', false, false],
-  ['setInterval', 'clearInterval', true, false],
-  ['setImmediate', 'clearImmediate', false, false]]);
+import 'reflect-metadata'
 
-//Needed for Android or iOS, but to be imported after zone.js, and
-var originalIsExtensible = Object.isExtensible;
-import 'es6-shim';
-Object.isExtensible = originalIsExtensible;
-//Patch promises after es6-shim overrides them
-apply();
+//Zone.js, patching RN's polyfill of XMLHttpRequest is needed to make it compatible with Zone.js
+var onreadystatechangeGetter = function() {return this._onreadystatechange;};
+var onreadystatechangeSetter = function(v: any) {this._onreadystatechange = v;};
+Object.defineProperty(XMLHttpRequest.prototype, 'onreadystatechange', {
+  get: onreadystatechangeGetter,
+  set: onreadystatechangeSetter,
+  configurable: true
+});
+import 'zone.js/dist/zone.js';
+Object.defineProperty(XMLHttpRequest.prototype, 'onreadystatechange', {
+  get: onreadystatechangeGetter,
+});
 
 // Finally, define the bootstrap
 import {RootRenderer, Renderer, provide, NgZone, Provider, enableProdMode, PLATFORM_DIRECTIVES} from 'angular2/core';
@@ -51,7 +46,7 @@ import {MapView} from "../components/ios/map_view";
 import {TabBar} from "../components/ios/tabbar";
 import {TabBarItem} from "../components/ios/tabbar_item";
 
-export function bootstrapReactNative(appName:string, cpt: any, customProviders?: Array<any> = []) {
+export function bootstrapReactNative(appName:string, cpt: any, customProviders?: Array<any>) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     bootstrap(cpt, [
@@ -89,11 +84,11 @@ export function bootstrapReactNative(appName:string, cpt: any, customProviders?:
       provide(ElementSchemaRegistry, {useExisting: ReactNativeElementSchemaRegistry}),
       provide(ReactNativeRootRenderer, {useClass: ReactNativeRootRenderer_}),
       provide(RootRenderer, {useExisting: ReactNativeRootRenderer})
-    ].concat(customProviders)).then(function(appRef) {
+    ].concat(customProviders || [])).then(function(appRef) {
       var zone = appRef.injector.get(NgZone);
       var rootRenderer = appRef.injector.get(RootRenderer);
-      zone.onTurnDone.subscribe(() => { rootRenderer.executeCommands(); });
-      appRef.injector.get(ReactNativeWrapperImpl).patchReactUpdates(zone._innerZone);
+      zone.onStable.subscribe(() => { rootRenderer.executeCommands(); });
+      appRef.injector.get(ReactNativeWrapperImpl).patchReactUpdates(zone);
     });
   });
 }

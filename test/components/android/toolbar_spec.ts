@@ -81,7 +81,7 @@ describe('Toolbar component (Android)', () => {
             rootRenderer.executeCommands();
             expect(fixture.componentInstance.log.join(',')).toEqual('1');
             resolve();
-          }, 30);
+          }, 100);
         });
 
       });

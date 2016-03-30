@@ -141,7 +141,7 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
   }
 
   patchReactUpdates(zone: any): void {
-    ReactNative.addons.batchedUpdates = zone.bind(ReactNative.addons.batchedUpdates);
+    //ReactNative.addons.batchedUpdates = zone.bind(ReactNative.addons.batchedUpdates);
   }
 
   patchReactNativeEventEmitter(nodeMap: Map<number, any>): void {
