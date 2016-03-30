@@ -11,6 +11,8 @@ var ReactNativeTagHandles = require('react-native/Libraries/ReactNative/ReactNat
 var ReactNativeAttributePayload = require('react-native/Libraries/ReactNative/ReactNativeAttributePayload');
 var ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
 
+import {NgZone} from 'angular2/core';
+
 overridePlatform(ReactNative.Platform.OS);
 
 const RCT_VIEW_NAMES: { [s: string]: string } = ReactNative.Platform.OS == 'android' ? {
@@ -140,8 +142,85 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
     UIManager.dispatchViewManagerCommand(tag, RCT_VIEW_COMMANDS[command], params);
   }
 
-  patchReactUpdates(zone: any): void {
-    //ReactNative.addons.batchedUpdates = zone.bind(ReactNative.addons.batchedUpdates);
+  patchReactNativeWithZone(zone: NgZone): void {
+    if (ReactNative.ActionSheetIOS) {
+      this._patchCallback(zone, ReactNative.ActionSheetIOS, 'showActionSheetWithOptions', [1]);
+      this._patchCallback(zone, ReactNative.ActionSheetIOS, 'showShareActionSheetWithOptions', [1, 2]);
+    }
+    if (ReactNative.Alert) {
+      this._patchCallback(zone, ReactNative.Alert, 'alert', [2]);
+    }
+    if (ReactNative.AlertIOS) {
+      this._patchCallback(zone, ReactNative.AlertIOS, 'alert', [2]);
+      this._patchCallback(zone, ReactNative.AlertIOS, 'prompt', [2]);
+    }
+    if (ReactNative.AppState) {
+      this._patchCallback(zone, ReactNative.AppState, 'addEventListener', [1]);
+      this._patchCallback(zone, ReactNative.AppState, 'removeEventListener', [1]);
+    }
+    if (ReactNative.AppStateIOS) {
+      this._patchCallback(zone, ReactNative.AppStateIOS, 'addEventListener', [1]);
+      this._patchCallback(zone, ReactNative.AppStateIOS, 'removeEventListener', [1]);
+    }
+    if (ReactNative.AsyncStorage) {
+      this._patchCallback(zone, ReactNative.AsyncStorage, 'getItem', [1]);
+      this._patchCallback(zone, ReactNative.AsyncStorage, 'setItem', [2]);
+      this._patchCallback(zone, ReactNative.AsyncStorage, 'removeItem', [1]);
+      this._patchCallback(zone, ReactNative.AsyncStorage, 'mergeItem', [2]);
+      this._patchCallback(zone, ReactNative.AsyncStorage, 'clear', [0]);
+      this._patchCallback(zone, ReactNative.AsyncStorage, 'getAllKeys', [0]);
+      this._patchCallback(zone, ReactNative.AsyncStorage, 'multiGet', [1]);
+      this._patchCallback(zone, ReactNative.AsyncStorage, 'multiSet', [1]);
+      this._patchCallback(zone, ReactNative.AsyncStorage, 'multiRemove', [1]);
+      this._patchCallback(zone, ReactNative.AsyncStorage, 'multiMerge', [1]);
+    }
+    if (ReactNative.BackAndroid) {
+      this._patchCallback(zone, ReactNative.BackAndroid, 'addEventListener', [1]);
+      this._patchCallback(zone, ReactNative.BackAndroid, 'removeEventListener', [1]);
+    }
+    if (ReactNative.Linking) {
+      this._patchCallback(zone, ReactNative.Linking, 'addEventListener', [1]);
+      this._patchCallback(zone, ReactNative.Linking, 'removeEventListener', [1]);
+    }
+    if (ReactNative.LinkingIOS) {
+      this._patchCallback(zone, ReactNative.LinkingIOS, 'addEventListener', [1]);
+      this._patchCallback(zone, ReactNative.LinkingIOS, 'removeEventListener', [1]);
+    }
+    if (ReactNative.NativeMethodsMixin) {
+      this._patchCallback(zone, ReactNative.NativeMethodsMixin, 'measure', [0]);
+      this._patchCallback(zone, ReactNative.NativeMethodsMixin, 'measureInWindow', [0]);
+      this._patchCallback(zone, ReactNative.NativeMethodsMixin, 'measureLayout', [1, 2]);
+    }
+    if (ReactNative.NetInfo) {
+      this._patchCallback(zone, ReactNative.NetInfo, 'addEventListener', [1]);
+      this._patchCallback(zone, ReactNative.NetInfo, 'removeEventListener', [1]);
+    }
+    if (ReactNative.PushNotificationIOS) {
+      this._patchCallback(zone, ReactNative.PushNotificationIOS, 'addEventListener', [1]);
+      this._patchCallback(zone, ReactNative.PushNotificationIOS, 'removeEventListener', [1]);
+      this._patchCallback(zone, ReactNative.PushNotificationIOS, 'getApplicationIconBadgeNumber', [0]);
+      this._patchCallback(zone, ReactNative.PushNotificationIOS, 'checkPermissions', [0]);
+    }
+  }
+
+  _patchCallback(zone: NgZone, target: any, name: string, positions: Array<number>) {
+    var original = target[name];
+    target[name] = (...args: Array<any>) => {
+      positions.forEach((position) => {
+        var cb = args[position];
+        if (cb) {
+          if (!Array.isArray(cb)) {
+            args[position] = (...cbArgs: Array<any>) => {zone.run(() => cb.apply(target, cbArgs));}
+          } else {
+            cb.forEach((element) => {
+              var deepCB = element['onPress'];
+              element['onPress'] = (...cbArgs: Array<any>) => {zone.run(() => deepCB.apply(target, cbArgs));}
+            })
+          }
+        }
+      });
+      original.apply(target, args);
+    }
   }
 
   patchReactNativeEventEmitter(nodeMap: Map<number, any>): void {

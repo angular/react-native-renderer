@@ -1,4 +1,4 @@
-import {Component, Input, Output, ElementRef, NgZone, EventEmitter, ViewChildren, QueryList} from 'angular2/core';
+import {Component, Input, Output, ElementRef, EventEmitter, ViewChildren, QueryList} from 'angular2/core';
 import {NgFor, NgIf} from 'angular2/common';
 import {StyleSheet} from 'react-native';
 import {TodoMVC} from "./todomvc";
@@ -103,7 +103,7 @@ export class AnimationApp {
   private isMoveOngoing: boolean = false;
   private withTodoMVC: boolean = false;
 
-  constructor(private zone: NgZone){
+  constructor(){
     for (var i = 0; i < 20; i++) {
       var colors = ['#ce0058', '#00a9e0', '#333333', '#ffb549', '#309712']
       this.balls.push({
@@ -128,9 +128,9 @@ export class AnimationApp {
   startMove() {
     if (!this.isMoveOngoing) {
       this.isMoveOngoing = true;
-      requestAnimationFrame((currentTime) => this.zone.run(() => {
+      requestAnimationFrame((currentTime) => {
         this.doMove();
-      }));
+      });
     }
   }
 
@@ -141,9 +141,9 @@ export class AnimationApp {
       goOn = goOn || more;
     }
     if (goOn) {
-      requestAnimationFrame((currentTime) => this.zone.run(() => {
+      requestAnimationFrame((currentTime) => {
         this.doMove();
-      }));
+      });
     } else {
       this.isMoveOngoing = false;
     }

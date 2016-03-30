@@ -1,7 +1,7 @@
-import {Component, ViewChild, NgZone} from 'angular2/core';
-import {Router, RouteConfig, ComponentInstruction} from 'angular2/router';
-import {StyleSheet, ActionSheetIOS} from 'react-native';
-import {ROUTER_DIRECTIVES, Navigator} from "react-native-renderer/react-native-renderer";
+import {Component, ViewChild} from 'angular2/core';
+import {RouteConfig} from 'angular2/router';
+import {ActionSheetIOS} from 'react-native';
+import {Navigator} from "react-native-renderer/react-native-renderer";
 import {HelloApp} from './hello';
 import {WidgetsList} from "./widgets";
 import {APIsApp} from './apis';
@@ -29,7 +29,7 @@ import {AnimationApp} from "../common/animation";
 export class KitchenSinkApp {
   @ViewChild(Navigator) navigator: Navigator;
 
-  constructor(private zone: NgZone) {}
+  constructor() {}
 
   _actions(event: any) {
     var todoMVC: TodoMVC = this.navigator.activeComponent;
@@ -37,7 +37,7 @@ export class KitchenSinkApp {
         title: 'Actions',
         options: ['Reset list', 'Empty list', 'Fill list with 100 items', 'Save', 'Load', 'Cancel'],
         cancelButtonIndex: 5},
-      (actionIndex) => this.zone.run(() => {
+      (actionIndex) => {
         if (actionIndex == 0 && todoMVC) {
           todoMVC.reset();
         } else if (actionIndex == 1 && todoMVC) {
@@ -49,7 +49,7 @@ export class KitchenSinkApp {
         } else if (actionIndex == 4 && todoMVC) {
           todoMVC.load();
         }
-      })
-    )
+      }
+    );
   }
 }

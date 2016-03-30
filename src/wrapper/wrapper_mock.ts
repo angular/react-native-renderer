@@ -122,7 +122,7 @@ export class MockReactNativeWrapper extends ReactNativeWrapper {
     return res;
   }
 
-  patchReactUpdates(zone: any): void {
+  patchReactNativeWithZone(zone: any): void {
     //Not needed in Mock
   }
   patchReactNativeEventEmitter(nodeMap: Map<number, any>): void {

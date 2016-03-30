@@ -1,6 +1,6 @@
-import {Component, NgZone} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {OpacityFeedback} from "react-native-renderer/react-native-renderer";
-import {StyleSheet, ActionSheetIOS, AlertIOS, AppStateIOS, Clipboard, Linking, NetInfo, PixelRatio, Platform} from 'react-native';
+import {StyleSheet, ActionSheetIOS, Alert, AlertIOS, AppState, Clipboard, Linking, NetInfo, PixelRatio, Platform} from 'react-native';
 
 @Component({
   selector: 'apis-app',
@@ -17,6 +17,7 @@ import {StyleSheet, ActionSheetIOS, AlertIOS, AppStateIOS, Clipboard, Linking, N
       <Text [styleSheet]="styles.button" opacityFeedback (tap)="_alert()">Alert</Text>
       <Text [styleSheet]="styles.button" opacityFeedback (tap)="_prompt()">Prompt</Text>
     </View>
+    <Text>{{feedback}}</Text>
     <View [style]="{marginTop: 20}">
       <Text [styleSheet]="styles.button" opacityFeedback (tap)="_setClipboard()">Clipboard</Text>
       <Text>Current clipboard value: {{clipBoardContent}}</Text>
@@ -44,7 +45,7 @@ import {StyleSheet, ActionSheetIOS, AlertIOS, AppStateIOS, Clipboard, Linking, N
 export class APIsApp {
   selectedTab: string = 'one';
   styles: any;
-  appState: string = AppStateIOS.currentState;
+  appState: string = AppState.currentState;
   clipBoardContent: string = '';
   platform: string = '';
   ratio: number = 0;
@@ -52,12 +53,13 @@ export class APIsApp {
   connectionType: string = 'Unknown';
   isConnectionExpensive: boolean = false;
   isConnected: boolean = false;
-  constructor(private zone: NgZone) {
+  feedback: string = '';
+  constructor() {
     Clipboard.getString().then((content: string) => this.clipBoardContent = content);
     this.platform = `OS: ${Platform.OS}, version: ${Platform.Version}`;
     this.ratio = PixelRatio.get();
     navigator.geolocation.getCurrentPosition(
-      (position) => this.zone.run(() => this.location = JSON.stringify(position)),
+      (position) => this.location = JSON.stringify(position),
       (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
@@ -91,7 +93,7 @@ export class APIsApp {
       cancelButtonIndex: 4,
       destructiveButtonIndex: 3,
       tintColor: 'black'},
-      (actionIndex: number) => {console.log(actionIndex)}
+      (actionIndex: number) => {this.feedback = 'Action selected: ' + actionIndex}
     )
   }
 
@@ -101,18 +103,18 @@ export class APIsApp {
       message: 'message to go with the shared url',
       subject: 'a subject to go in the email heading',
     },
-    (error: any) => console.log(error),
+    (error: any) => {this.feedback = error;},
     (success: boolean, method: string) => {
       if (success) {
-        console.log(`Shared via ${method}`);
+        this.feedback = `Shared via ${method}`;
       } else {
-        console.log(`You didn't share`);
+        this.feedback = `You didn't share`;
       }
     });
   }
 
   _alert() {
-    AlertIOS.alert(
+    Alert.alert(
       'Sync Complete',
       'All your data are belong to us.'
     );
@@ -123,8 +125,8 @@ export class APIsApp {
       'Enter password',
       'Enter your password to claim your $1.5B in lottery winnings',
       [
-        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'OK', onPress: password => console.log('OK Pressed, password: ' + password)},
+        {text: 'Cancel', onPress: () => {this.feedback = 'Cancel Pressed';}, style: 'cancel'},
+        {text: 'OK', onPress: password => {this.feedback = 'OK Pressed, password: ' + password;}}
       ],
       'secure-text'
     );

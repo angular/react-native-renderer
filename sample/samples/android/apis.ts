@@ -1,4 +1,4 @@
-import {Component, ElementRef, NgZone} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {StyleSheet, Alert, Linking, ToastAndroid, Clipboard, Platform, PixelRatio, NetInfo, AppState, DatePickerAndroid, TimePickerAndroid} from 'react-native';
 import {RippleFeedback} from "react-native-renderer/react-native-renderer";
 
@@ -61,13 +61,13 @@ export class APIsList {
   isConnectionExpensive: boolean = false;
   isConnected: boolean = false;
   appState: string = AppState.currentState;
-  constructor(private zone: NgZone) {
+  constructor() {
     this.styles = this._getStyles();
     this.platform = `OS: ${Platform.OS}, version: ${Platform.Version}`;
     this.ratio = PixelRatio.get();
     Clipboard.getString().then((content: string) => this.clipBoardContent = content);
     navigator.geolocation.getCurrentPosition(
-      (position) => this.zone.run(() => this.location = JSON.stringify(position)),
+      (position) => this.location = JSON.stringify(position),
       (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );

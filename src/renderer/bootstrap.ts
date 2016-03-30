@@ -85,10 +85,10 @@ export function bootstrapReactNative(appName:string, cpt: any, customProviders?:
       provide(ReactNativeRootRenderer, {useClass: ReactNativeRootRenderer_}),
       provide(RootRenderer, {useExisting: ReactNativeRootRenderer})
     ].concat(customProviders || [])).then(function(appRef) {
-      var zone = appRef.injector.get(NgZone);
+      var zone: NgZone = appRef.injector.get(NgZone);
       var rootRenderer = appRef.injector.get(RootRenderer);
       zone.onStable.subscribe(() => { rootRenderer.executeCommands(); });
-      appRef.injector.get(ReactNativeWrapperImpl).patchReactUpdates(zone);
+      appRef.injector.get(ReactNativeWrapperImpl).patchReactNativeWithZone(zone);
     });
   });
 }
