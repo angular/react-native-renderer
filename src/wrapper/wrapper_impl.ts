@@ -219,7 +219,7 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
           }
         }
       });
-      original.apply(target, args);
+      return original.apply(target, args);
     }
   }
 

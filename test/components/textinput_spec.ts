@@ -15,7 +15,7 @@ import {fireFunctionalEvent} from './../utils';
 
 var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
 
-describe('Input component', () => {
+describe('TextInput component', () => {
 
   beforeEach(() => {
     mock.reset();
