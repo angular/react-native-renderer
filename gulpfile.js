@@ -16,6 +16,7 @@ var APP_NAME = 'ngReactNative';
 var PATHS = {
   sources: {
     doc: 'doc/pages/*.jade',
+    docAssets: 'doc/assets/**/*.*',
     src: 'src/**/*.ts',
     sample: 'sample/**/*.ts',
     sampleAssets: 'sample/**/*.png',
@@ -185,8 +186,12 @@ gulp.task('test.browser/ci', ['ts2system'], function(done) {
 /**********************************************************************************/
 /*********************************   DOC    ***************************************/
 /**********************************************************************************/
+gulp.task('!doc.assets', function () {
+  return gulp.src(PATHS.sources.docAssets, { base: './doc/' }).pipe(gulp.dest(PATHS.doc));
+});
+
 var parser = require('./doc/parser');
-gulp.task('!doc', function() {
+gulp.task('!doc', ['!doc.assets'], function() {
   var components = parser.parseComponents();
   gulp.src(PATHS.sources.doc)
     .pipe(jade({
