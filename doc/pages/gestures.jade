@@ -1,5 +1,41 @@
 extends _layout
 
 block content
-    h1 Gestures
-    span To be written
+    :marked
+        # Gestures
+
+        ## Raw touch events
+        React Native fires raw touch events on all native elements, very similar to the touch events of mobile browsers.
+        They support multi-touch by providing a list of `touches`.
+        - `topTouchStart`: fired as soon a finger touches the element.
+        - `topTouchMove`: fired regularly while the finger moves on the element.
+        - `topTouchEnd`: fired when all fingers leave the screen.
+        - `topTouchCancel`: fired when the touch gesture is cancelled, e.g. when a scroll is triggered.
+
+        In a template, it can be used as follows:
+        ```
+        <View (topTouchStart)="_handleStart($event)">...</View>
+        ```
+
+        ## Gestures with Hammer.js
+        Since the raw touch events are very to the ones of a mobile browser, we can use [Hammer.js](http://hammerjs.github.io/) to recognize gestures.
+        On all elements, all default gestures are supported:
+        - [Pan](http://hammerjs.github.io/recognizer-pan/)
+        - [Pinch](http://hammerjs.github.io/recognizer-pinch/)
+        - [Press](http://hammerjs.github.io/recognizer-press/)
+        - [Rotate](http://hammerjs.github.io/recognizer-rotate/)
+        - [Swipe](http://hammerjs.github.io/recognizer-swipe/)
+        - [Tap](http://hammerjs.github.io/recognizer-tap/), including `doubletap`
+
+        The event object returned is the one documented in the [API of Hammer.js](http://hammerjs.github.io/api/#hammer.input-event)
+
+        Each gesture recognizer fires all the events associated, e.g. `Swipe` recognizer fires `swipe`, `swipeleft`, `swipeup`, etc events.
+        The `Tap` one is customized to fire additional events: `tapstart` and `tapcancel`.
+
+        In a template, it can be used as follows:
+        ```
+        <View (tapstart)="_highlight($event)" (tapcancel)="_unhighlight($event)
+            (tap)="_unhighlightAndAction($event)>...</View>
+
+        <View (swipeleft)="_handleLeft($event)" (swiperight)="_handleRight($event)">...</View>
+        ```

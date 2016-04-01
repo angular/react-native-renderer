@@ -1,5 +1,51 @@
 extends _layout
 
 block content
-    h1 Style
-    span To be written
+    :marked
+        # Style
+        React Native provides a styling mechanism which relies on JavaScript.
+        Read more about it in the [documentation about Style](https://facebook.github.io/react-native/docs/style.html).
+
+        In all the Angular 2 components, there are 2 properties related to style:
+        - `styleSheet`: it takes one or more `StyleSheet` created with the React Native's API.
+        - `style`: it takes a set of styling properties as a JSON object. ***It overrides what has been defined in `styleSheet`***
+
+        Both support conditional styling.
+
+        For example:
+        ```
+        import {Component} from 'angular2/core';
+        import {StyleSheet} from 'react-native';
+
+        @Component({
+          selector: 'example',
+          template: `
+        <Text [styleSheet]="[styles.tick, isActive && styles.tickOn]" (tap)="isActive=!isActive">
+          {{isActive ? "[  ]" : "[x]"}}
+        </Text>
+        <Text [styleSheet]="[styles.default]" [style]="{color: '#00a9e0',fontSize: 20}">Foo</Text>
+        `
+        })
+        export class Example {
+          isActive: boolean = true;
+          styles: any;
+
+          constructor() {
+            this.styles = StyleSheet.create({
+              default: {
+                fontSize: 10
+              },
+              tick: {
+                width: 25,
+                textAlign: 'center',
+                fontSize: 20,
+                color: '#333333'
+              },
+              tickOn: {
+                color: '#309712'
+              }
+            });
+          }
+
+        }
+        ```

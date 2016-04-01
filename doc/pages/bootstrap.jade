@@ -1,5 +1,23 @@
 extends _layout
 
 block content
-    h1 bootstrap
-    span To be written
+    :marked
+        # bootstrap
+        To bootstrap an application, you must the special method `bootstrapReactNative`.
+
+        ```
+        import {bootstrapReactNative}
+            from 'react-native-renderer/react-native-renderer';
+        import {Example} from "./example";
+
+        bootstrapReactNative('example', Example, [/* extra providers */]);
+        ```
+
+        In order to use the [Http](./http.html) and [Router](./router.html) modules, extra providers are needed. They can be passed during the bootstrap:
+        ```
+        import {bootstrapReactNative, HTTP_PROVIDERS, ROUTER_PROVIDERS}
+            from 'react-native-renderer/react-native-renderer';
+        import {Example} from "./example";
+
+        bootstrapReactNative('example', Example, [HTTP_PROVIDERS, ROUTER_PROVIDERS]);
+        ```

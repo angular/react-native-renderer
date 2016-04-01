@@ -1,5 +1,50 @@
 extends _layout
 
 block content
-    h1 APIs
-    span To be written
+    :marked
+        # APIs and polyfills
+
+        React Native provides a set of APIs and polyfills which applications to access native features form JavaScript.
+        All of them can be directly used within an Angular 2 application.
+
+        When needed, they are patched so that callbacks are executed in the Angular [Zone](https://github.com/angular/zone.js).
+
+    h2 APIs
+    ul
+        each val in ['ActionSheetIOS', 'Alert', 'AlertIOS', 'AppState', 'AppStateIOS', 'AsyncStorage', 'BackAndroid', 'CameraRoll', 'Clipboard', 'DatePickerAndroid', 'Dimensions', 'Linking', 'NativeMethodsMixin', 'NetInfo', 'PixelRatio', 'PushNotificationIOS', 'StatusBar', 'StatusBarIOS', 'TimePickerAndroid', 'ToastAndroid', 'Vibrate', 'VibrateIOS']
+            li
+                a(href='https://facebook.github.io/react-native/docs/' + val.toLowerCase() + '.html')= val
+
+    h2 Polyfills
+    ul
+        each val in ['Geolocation', 'Network', 'Timers']
+            li
+                a(href='https://facebook.github.io/react-native/docs/' + val.toLowerCase() + '.html')= val
+
+    :marked
+        ## Example
+        ```
+        import {Component} from 'angular2/core';
+        import {Alert} from 'react-native';
+
+        @Component({
+          selector: 'example',
+          template: `
+        <Text (tap)="_showAlert()">Show alert</Text>
+        `
+        })
+        export class Example {
+          _showAlert() {
+            Alert.alert(
+              'Alert Title',
+              'My Alert Msg',
+              [
+                {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]
+            );
+          }
+        }
+        ```
+
