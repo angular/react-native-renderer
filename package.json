@@ -1,6 +1,6 @@
 {
   "name": "angular2-react-native",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "description": "A React Native renderer for Angular 2",
   "scripts": {
     "test": "gulp test.node/ci && gulp test.browser/ci",
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/mlaval/poc-angular-react-native.git"
   },
-  "keywords": ["Angular", "renderer", "react-native"],
+  "keywords": ["Angular2", "renderer", "react-native"],
   "author": "Marc Laval <mlaval>",
   "license": "Apache License Version 2.0",
   "bugs": {
@@ -32,6 +32,7 @@
     "karma": "^0.13.21",
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.6",
+    "merge2": "1.0.2",
     "marked": "^0.3.5",
     "parse5": "1.5.0",
     "run-sequence": "~1.1.2",

@@ -12,8 +12,8 @@ import {StyleSheet} from 'react-native';
     Welcome to ngReactNative!
   </Text>
   <Text [styleSheet]="styles.instructions">
-      To get started, use the buttons below
-    </Text>
+    To get started, use the buttons below
+  </Text>
   <Text [styleSheet]="styles.instructions">
     Shake or press cmd + D for dev menu
   </Text>
