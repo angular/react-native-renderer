@@ -1,4 +1,4 @@
-# angular-react-native-renderer
+# angular2-react-native
 
 A **proof of concept** of building native applications with Angular 2 and React Native.
 Based on https://github.com/angular/react-native-renderer

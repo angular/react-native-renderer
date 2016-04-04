@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
 import {NgFor} from 'angular2/common';
-import {RippleFeedback} from "react-native-renderer/react-native-renderer";
+import {RippleFeedback} from 'angular2-react-native';
 import {StyleSheet} from 'react-native';
 
 @Component({

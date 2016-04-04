@@ -1,11 +1,11 @@
 import {Component} from 'angular2/core';
-import {OpacityFeedback} from "react-native-renderer/react-native-renderer";
+import {OpacityFeedback, ROUTER_DIRECTIVES} from 'angular2-react-native';
 import {StyleSheet} from 'react-native';
 
 @Component({
   selector: 'hello-app',
   host: {flex: '1'},
-  directives: [OpacityFeedback],
+  directives: [OpacityFeedback, ROUTER_DIRECTIVES],
   template: `
 <View [styleSheet]="styles.container">
   <Text [styleSheet]="styles.welcome">

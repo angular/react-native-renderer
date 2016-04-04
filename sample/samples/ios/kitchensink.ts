@@ -1,7 +1,7 @@
 import {Component, ViewChild} from 'angular2/core';
 import {RouteConfig} from 'angular2/router';
 import {ActionSheetIOS} from 'react-native';
-import {Navigator} from "react-native-renderer/react-native-renderer";
+import {Navigator} from 'angular2-react-native';
 import {HelloApp} from './hello';
 import {WidgetsList} from "./widgets";
 import {APIsApp} from './apis';

@@ -1,7 +1,7 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from 'angular2/core';
 import {NgIf, NgFor} from 'angular2/common';
 import {StyleSheet, AsyncStorage} from 'react-native';
-import {TextInput, OpacityFeedback} from "react-native-renderer/react-native-renderer";
+import {TextInput, OpacityFeedback} from 'angular2-react-native';
 
 class Palette {
   static background: string = '#005eb8';

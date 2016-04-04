@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, LocationStrategy} from 'angular2/router';
-import {ROUTER_DIRECTIVES} from "react-native-renderer/react-native-renderer";
+import {ROUTER_DIRECTIVES} from 'angular2-react-native';
 
 @Component({
   selector: 'comp-a',

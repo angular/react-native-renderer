@@ -77,7 +77,7 @@ gulp.task('!transpile', ['!assets'], function () {
   return ts2js([PATHS.sources.sample, PATHS.sources.src], PATHS.tmp);
 });
 gulp.task('!copyToNodeModules', ['!transpile'], function () {
-  return gulp.src(PATHS.tmp + '/src/**/*').pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules/react-native-renderer'));
+  return gulp.src(PATHS.tmp + '/src/**/*').pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules/angular2-react-native'));
 });
 gulp.task('!compile', ['!copyToNodeModules'], function () {
   return gulp.src(PATHS.tmp + '/sample/**/*').pipe(gulp.dest(PATHS.app + '/' + APP_NAME));
@@ -225,7 +225,7 @@ gulp.task('clean.code', function (done) {
 });
 
 function ts2js(path, dest, toSystem) {
-  var tsResult = gulp.src(path.concat(['typings/main.d.ts', 'src/react-native-renderer.d.ts']), {base: './'})
+  var tsResult = gulp.src(path.concat(['typings/main.d.ts', 'src/angular2-react-native.d.ts']), {base: './'})
     .pipe(typescript({
       noImplicitAny: true,
       module: toSystem ? 'system' : 'commonjs',
@@ -310,8 +310,8 @@ function customReporter() {
   return {
     error: (error) => {
       if (error.relativeFilename && error.message.indexOf(`Module '"react-native"' has no exported member`) == -1 &&
-        error.message.indexOf(`Module '"react-native-renderer/react-native-renderer"' has no exported member`) == -1 &&
-        error.message.indexOf(`src\\react-native-renderer.d.ts`) == -1 &&
+        error.message.indexOf(`Module '"angular2-react-native"' has no exported member`) == -1 &&
+        error.message.indexOf(`src\\angular2-react-native.d.ts`) == -1 &&
         error.message.indexOf(`does not exist on type 'Global'.`) == -1) {
         console.error(error.message);
       }

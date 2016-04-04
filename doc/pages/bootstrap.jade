@@ -7,7 +7,7 @@ block content
 
         ```
         import {bootstrapReactNative}
-            from 'react-native-renderer/react-native-renderer';
+            from 'angular2-react-native';
         import {Example} from "./example";
 
         bootstrapReactNative('example', Example, [/* extra providers */]);
@@ -16,7 +16,7 @@ block content
         In order to use the [Http](./http.html) and [Router](./router.html) modules, extra providers are needed. They can be passed during the bootstrap:
         ```
         import {bootstrapReactNative, HTTP_PROVIDERS, ROUTER_PROVIDERS}
-            from 'react-native-renderer/react-native-renderer';
+            from 'react-angular2-react-native';
         import {Example} from "./example";
 
         bootstrapReactNative('example', Example, [HTTP_PROVIDERS, ROUTER_PROVIDERS]);

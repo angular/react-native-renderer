@@ -2,7 +2,7 @@ import {Component, ElementRef, ViewChild} from 'angular2/core';
 import {NgFor} from 'angular2/common';
 import {Router, RouteConfig, LocationStrategy} from 'angular2/router';
 import {StyleSheet, BackAndroid, Alert, NativeModules, processColor} from 'react-native';
-import {DrawerLayout, Toolbar, RippleFeedback, ROUTER_DIRECTIVES} from "react-native-renderer/react-native-renderer";
+import {DrawerLayout, Toolbar, RippleFeedback, ROUTER_DIRECTIVES} from 'angular2-react-native';
 
 import {HelloApp} from "./hello";
 import {TodoMVC} from "./../common/todomvc";

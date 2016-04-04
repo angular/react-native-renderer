@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
 import {StyleSheet, Alert, Linking, ToastAndroid, Clipboard, Platform, PixelRatio, NetInfo, AppState, DatePickerAndroid, TimePickerAndroid} from 'react-native';
-import {RippleFeedback} from "react-native-renderer/react-native-renderer";
+import {RippleFeedback} from 'angular2-react-native';
 
 @Component({
   selector: 'apis-list',

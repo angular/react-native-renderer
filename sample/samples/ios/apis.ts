@@ -1,5 +1,5 @@
 import {Component} from 'angular2/core';
-import {OpacityFeedback} from "react-native-renderer/react-native-renderer";
+import {OpacityFeedback} from 'angular2-react-native';
 import {StyleSheet, ActionSheetIOS, Alert, AlertIOS, AppState, Clipboard, Linking, NetInfo, PixelRatio, Platform} from 'react-native';
 
 @Component({

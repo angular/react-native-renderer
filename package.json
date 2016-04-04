@@ -1,22 +1,22 @@
 {
-  "name": "angular-react-native-renderer",
-  "version": "0.0.1",
-  "description": "A React-native renderer for Angular 2",
+  "name": "angular2-react-native",
+  "version": "0.0.1-alpha.0",
+  "description": "A React Native renderer for Angular 2",
   "scripts": {
     "test": "gulp test.node/ci && gulp test.browser/ci",
     "postinstall": "typings install"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mlaval/angular-react-native-renderer.git"
+    "url": "git+https://github.com/mlaval/poc-angular-react-native.git"
   },
   "keywords": ["Angular", "renderer", "react-native"],
   "author": "Marc Laval <mlaval>",
   "license": "Apache License Version 2.0",
   "bugs": {
-    "url": "https://github.com/mlaval/angular-react-native-renderer/issues"
+    "url": "https://github.com/mlaval/poc-angular-react-native/issues"
   },
-  "homepage": "https://github.com/mlaval/angular-react-native-renderer#readme",
+  "homepage": "https://github.com/mlaval/poc-angular-react-native#readme",
   "devDependencies": {
     "del": "^1.2.0",
     "glob": "^4.0.6",

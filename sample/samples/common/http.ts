@@ -3,7 +3,7 @@ import {NgFor} from 'angular2/common';
 import {Http} from 'angular2/http';
 import 'rxjs/add/operator/map';
 
-import {TextInput} from 'react-native-renderer/react-native-renderer';
+import {TextInput} from 'angular2-react-native';
 
 @Component({
   selector: 'http-app',
