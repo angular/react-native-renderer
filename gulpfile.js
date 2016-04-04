@@ -26,6 +26,7 @@ var PATHS = {
   app: 'dist/app',
   doc: 'dist/doc',
   tmp: 'dist/tmp',
+  publish: 'dist/publish',
   modules: [
     'node_modules/angular2/**/*',
     'node_modules/hammerjs/**/*',
@@ -210,11 +211,33 @@ gulp.task('!doc', ['!doc.assets'], function() {
 });
 
 gulp.task('doc', ['!doc'], function (neverDone) {
-      watch(['./doc/**/*', PATHS.sources.src], function() {
-        runSequence('!doc');
-      });
+  watch(['./doc/**/*', PATHS.sources.src], function() {
+    runSequence('!doc');
+  });
 });
 
+/**********************************************************************************/
+/*******************************   PUBLISH    *************************************/
+/**********************************************************************************/
+gulp.task('!publish.clean', function (done) {
+  var del = require('del');
+  del([PATHS.publish], done);
+});
+gulp.task('!publish.assets', ['!publish.clean'], function () {
+  return gulp.src([
+    'LICENSE',
+    'package.json',
+    'README.md',
+    'src/angular2-react-native.d.ts'
+  ])
+    .pipe(gulp.dest(PATHS.publish));
+});
+gulp.task('!publish.transpile', ['!publish.assets'], function () {
+  return ts2js([PATHS.sources.src], PATHS.tmp);
+});
+gulp.task('publish', ['!publish.transpile'], function () {
+  return gulp.src(PATHS.tmp + '/src/**/*').pipe(gulp.dest(PATHS.publish));
+});
 
 /**********************************************************************************/
 /*******************************    UTIL     **************************************/

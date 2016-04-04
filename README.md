@@ -1,8 +1,9 @@
 # angular2-react-native
 
-A **proof of concept** of building native applications with Angular 2 and React Native.
-Based on https://github.com/angular/react-native-renderer
-**Only tested on Windows targeting Android**
+Use Angular 2 and React Native to build applications for Android and iOS.
+
+## Documentation
+http://mlaval.github.io/poc-angular-react-native/
 
 ## Development
 
