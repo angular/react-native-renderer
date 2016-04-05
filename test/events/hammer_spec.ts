@@ -5,30 +5,15 @@ import {
   describe, ddescribe, xdescribe,
   expect
 } from 'angular2/testing';
-import {Component, RootRenderer, provide} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {NgIf, NgFor} from 'angular2/common';
-import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
-import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
-import {fireEvent} from './../utils';
-import {CustomTestComponentBuilder} from "../../src/testing/test_component_builder";
-
-var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
+import {fireEvent, getTestingProviders} from '../../src/test_helpers/utils';
 
 describe('Hammer', () => {
-
-  beforeEach(() => {
-    mock.reset();
-  });
-  beforeEachProviders(() => [
-    provide(REACT_NATIVE_WRAPPER, {useValue: mock}),
-    ReactNativeElementSchemaRegistry,
-    provide(ElementSchemaRegistry, {useExisting: ReactNativeElementSchemaRegistry}),
-    provide(ReactNativeRootRenderer, {useClass: ReactNativeRootRenderer_}),
-    provide(RootRenderer, {useExisting: ReactNativeRootRenderer}),
-    CustomTestComponentBuilder,
-    provide(TestComponentBuilder, {useExisting: CustomTestComponentBuilder})
-  ]);
+  var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
+  beforeEach(() => mock.reset());
+  beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
   it('should support tap', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
     return tcb.overrideTemplate(TestComponent, `<native-text (tap)="handleEvent($event)" (tapstart)="handleEvent($event)" (tapcancel)="handleEvent($event)">foo</native-text>`)
@@ -102,7 +87,7 @@ describe('Hammer', () => {
     return tcb.overrideTemplate(TestComponent, `<native-text (press)="handleEvent($event)" (pressup)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
-      var target = fixture.debugElement.children[0];
+      var target = fixture.elementRef.nativeElement.children[0];
       fireEvent('topTouchStart', target, 0);
       fixture.detectChanges();
 

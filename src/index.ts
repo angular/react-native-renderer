@@ -1,4 +1,5 @@
 export * from './renderer/bootstrap';
+export * from './renderer/node';
 
 export * from './components/image';
 export * from './components/picker';

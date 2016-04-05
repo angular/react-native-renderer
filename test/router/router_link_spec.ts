@@ -3,39 +3,21 @@ import {
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
-  expect, MockApplicationRef
+  expect
 } from 'angular2/testing';
-import {Component, RootRenderer, provide, Injector, ViewChild, ApplicationRef} from 'angular2/core';
-import {Router, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, ROUTER_PRIMARY_COMPONENT, RouteConfig, LocationStrategy, RouterOutlet} from 'angular2/router';
-import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
-import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
+import {Component} from 'angular2/core';
+import {Router, RouteConfig, LocationStrategy, RouterOutlet} from 'angular2/router';
+import {ReactNativeRootRenderer} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
-import {CustomTestComponentBuilder} from "../../src/testing/test_component_builder";
 import {View} from "./../../src/components/view";
 import {Text} from './../../src/components/text';
-import {ReactNativeLocationStrategy} from "../../src/router/location_strategy";
 import {RouterLink} from "../../src/router/router_link";
-import {fireEvent} from './../utils';
-
-var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
+import {fireGesture, getTestingProviders} from '../../src/test_helpers/utils';
 
 describe('Router Link', () => {
-  beforeEach(() => {
-    mock.reset();
-  });
-  beforeEachProviders(() => [
-    provide(ApplicationRef, {useClass: MockApplicationRef}),
-    ROUTER_PROVIDERS,
-    provide(LocationStrategy, { useClass: ReactNativeLocationStrategy }),
-    provide(ROUTER_PRIMARY_COMPONENT, {useValue: TestComponent}),
-    provide(REACT_NATIVE_WRAPPER, {useValue: mock}),
-    ReactNativeElementSchemaRegistry,
-    provide(ElementSchemaRegistry, {useExisting: ReactNativeElementSchemaRegistry}),
-    provide(ReactNativeRootRenderer, {useClass: ReactNativeRootRenderer_}),
-    provide(RootRenderer, {useExisting: ReactNativeRootRenderer}),
-    CustomTestComponentBuilder,
-    provide(TestComponentBuilder, {useExisting: CustomTestComponentBuilder})
-  ]);
+  var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
+  beforeEach(() => mock.reset());
+  beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
 
   it('should navigate', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
@@ -54,11 +36,7 @@ describe('Router Link', () => {
             mock.clearLogs();
 
             var target = fixture.elementRef.nativeElement.children[0];
-            fireEvent('topTouchStart', target, 0, [[0, 0]]);
-            fireEvent('topTouchMove', target, 10, [[25, 0]]);
-            fireEvent('topTouchMove', target, 20, [[50, 0]]);
-            fireEvent('topTouchMove', target, 30, [[75, 0]]);
-            fireEvent('topTouchEnd', target, 40, [[100, 0]]);
+            fireGesture('swipe', target);
             fixture.detectChanges();
 
             setTimeout(() => {

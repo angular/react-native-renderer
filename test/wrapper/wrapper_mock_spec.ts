@@ -1,5 +1,5 @@
 import {
-  inject, TestComponentBuilder,
+  inject,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -42,7 +42,7 @@ describe('MockReactNativeWrapper', () => {
   it('should attach a native element', () => {
     var mock = new MockReactNativeWrapper();
     mock.createView('RCTView', 1, {});
-    mock.createView('RCTView', 1, {});
+    mock.createView('RCTView', 1, {testID: 'abc'});
     mock.clearLogs();
     mock.manageChildren(1, null, null, [2,3], [0,1], null);
     expect(mock.commandLogs.length).toEqual(2);
@@ -52,6 +52,10 @@ describe('MockReactNativeWrapper', () => {
     expect(element1.parent).toEqual(mock.root);
     expect(element2.parent).toEqual(mock.root);
     expect(mock.root.children).toEqual([element1, element2]);
+
+    expect(mock.root.toString()).toEqual(`root:{}
+  RCTView:{}
+  RCTView:{"testID":"abc"}`);
   });
 
   it('should throw when attaching to impossible position', () => {

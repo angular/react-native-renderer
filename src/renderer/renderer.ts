@@ -18,11 +18,11 @@ export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
 export class ReactNativeRootRenderer implements RootRenderer {
   private _registeredComponents: Map<string, ReactNativeRenderer> = new Map<string, ReactNativeRenderer>();
 
-  private _createCommands: Map <Node, NativeCommandCreate> = new Map<Node, NativeCommandCreate>();
-  private _updateCommands: Map <Node, NativeCommandUpdate> = new Map<Node, NativeCommandUpdate>();
-  private _attachCommands: Map <Node, NativeCommandAttach> = new Map<Node, NativeCommandAttach>();
-  private _attachAfterCommands: Map <Node, NativeCommandAttachAfter> = new Map<Node, NativeCommandAttachAfter>();
-  private _detachCommands: Map <Node, NativeCommandDetach> = new Map<Node, NativeCommandDetach>();
+  private _createCommands: Map<Node, NativeCommandCreate> = new Map<Node, NativeCommandCreate>();
+  private _updateCommands: Map<Node, NativeCommandUpdate> = new Map<Node, NativeCommandUpdate>();
+  private _attachCommands: Map<Node, NativeCommandAttach> = new Map<Node, NativeCommandAttach>();
+  private _attachAfterCommands: Map<Node, NativeCommandAttachAfter> = new Map<Node, NativeCommandAttachAfter>();
+  private _detachCommands: Map<Node, NativeCommandDetach> = new Map<Node, NativeCommandDetach>();
 
   constructor(public wrapper: ReactNativeWrapper, public zone: NgZone) {
     wrapper.patchReactNativeEventEmitter(nodeMap);

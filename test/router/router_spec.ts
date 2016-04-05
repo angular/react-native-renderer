@@ -3,37 +3,21 @@ import {
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
-  expect, MockApplicationRef
+  expect
 } from 'angular2/testing';
-import {Component, RootRenderer, provide, Injector, ViewChild, ApplicationRef} from 'angular2/core';
-import {Router, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, ROUTER_PRIMARY_COMPONENT, RouteConfig, LocationStrategy} from 'angular2/router';
-import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
-import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
+import {Component} from 'angular2/core';
+import {Router, ROUTER_DIRECTIVES, RouteConfig, LocationStrategy} from 'angular2/router';
+import {ReactNativeRootRenderer} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
-import {CustomTestComponentBuilder} from "../../src/testing/test_component_builder";
 import {View} from "./../../src/components/view";
 import {Text} from './../../src/components/text';
-import {ReactNativeLocationStrategy} from "../../src/router/location_strategy";
+import {getTestingProviders} from "../../src/test_helpers/utils";
 
-var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
 
 describe('Router', () => {
-  beforeEach(() => {
-    mock.reset();
-  });
-  beforeEachProviders(() => [
-    provide(ApplicationRef, {useClass: MockApplicationRef}),
-    ROUTER_PROVIDERS,
-    provide(LocationStrategy, { useClass: ReactNativeLocationStrategy }),
-    provide(ROUTER_PRIMARY_COMPONENT, {useValue: TestComponent}),
-    provide(REACT_NATIVE_WRAPPER, {useValue: mock}),
-    ReactNativeElementSchemaRegistry,
-    provide(ElementSchemaRegistry, {useExisting: ReactNativeElementSchemaRegistry}),
-    provide(ReactNativeRootRenderer, {useClass: ReactNativeRootRenderer_}),
-    provide(RootRenderer, {useExisting: ReactNativeRootRenderer}),
-    CustomTestComponentBuilder,
-    provide(TestComponentBuilder, {useExisting: CustomTestComponentBuilder})
-  ]);
+  var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
+  beforeEach(() => mock.reset());
+  beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
 
   it('should render default route', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {

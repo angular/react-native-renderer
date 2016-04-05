@@ -1,6 +1,6 @@
 import {ReactNativeWrapper, overridePlatform} from "./wrapper";
 
-class Command {
+export class Command {
   constructor(public name: string, public target: number, public details: string) { }
   toString(): string {
     return `${this.name}+${this.target}+${this.details}`;
@@ -199,5 +199,19 @@ export class NativeElement {
     this.properties = properties;
     this.parent = null;
     this.children = [];
+  }
+
+  toString(shift: number = 0): string {
+    var res = '';
+    for (var i = 0; i < shift; i++) res += ' ';
+    res += this.name + ':' + JSON.stringify(this.properties) + '\n';
+    this.children.forEach((child) => {
+      res += child.toString(shift + 2);
+    });
+    if (shift) {
+      return res;
+    } else {
+      return res.trim();
+    }
   }
 }

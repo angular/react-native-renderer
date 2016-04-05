@@ -212,7 +212,7 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
           if (!Array.isArray(cb)) {
             args[position] = (...cbArgs: Array<any>) => {zone.run(() => cb.apply(target, cbArgs));}
           } else {
-            cb.forEach((element) => {
+            cb.forEach((element: any) => {
               var deepCB = element['onPress'];
               element['onPress'] = (...cbArgs: Array<any>) => {zone.run(() => deepCB.apply(target, cbArgs));}
             })
