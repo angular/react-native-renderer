@@ -4,13 +4,13 @@ block content
     :marked
         # Getting started
 
-        An application with Angular 2 and React Native means that you're going to create an actual React Native project, in which an Angular 2 application runs.
+        Creating an application with Angular 2 and React Native means creating an actual React Native project, in which an Angular 2 application runs.
 
         As a consequence, all the Angular 2 features are available to you: http, router, directives, dependency injection, etc.
-        And, at the same time, all the React Native tools and features can also be used.
+        And, at the same time, all the React Native tools and features are also available.
 
         The only exception are the high-level React components (View, Picker, Text, Image, etc),
-        but they all exist as ambient Angular2 components that can be used in.
+        but they all exist as ambient Angular2 components that can be used in applications.
 
         ## Setup
         Please check the React Native documentation for:
@@ -22,6 +22,18 @@ block content
         ## First application
         For a quick start, clone the [seed application](https://github.com/mlaval/angular2-react-native-seed) and follow the instructions in the README.
 
+        The steps are:
+        ```
+        git clone https://github.com/mlaval/angular2-react-native-seed.git
+        cd angular2-react-native-seed
+        npm install -g gulp react-native-cli typings
+        npm install
+        gulp init
+            gulp start.ios
+            (OR)
+            gulp start.android
+        ```
+
         ## Going further
         Most guides from the [React Native documentation](https://facebook.github.io/react-native/docs/) are applicable.
-        They are a valuable source of information, expecially when it comes to performance, debugging, .
+        They are a valuable source of information, expecially when it comes to performance, debugging, etc.
