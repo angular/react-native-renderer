@@ -69,7 +69,7 @@ describe('TextInput component', () => {
             expect(fixture.componentInstance.log.join(',')).toEqual('foo');
             expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-textinput+{"text":"bar"}');
             resolve();
-          }, 50);
+          }, 80);
         });
 
       });

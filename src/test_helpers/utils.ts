@@ -1,13 +1,13 @@
-import {Node} from "../renderer/node";
-
 import {TestComponentBuilder, MockApplicationRef} from 'angular2/testing';
 import {RootRenderer, provide, ApplicationRef} from 'angular2/core';
 import {ROUTER_PROVIDERS, ROUTER_PRIMARY_COMPONENT, LocationStrategy} from 'angular2/router';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
-import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../../src/renderer/renderer';
+import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../renderer/renderer';
 import {CustomTestComponentBuilder} from "./test_component_builder";
-import {ReactNativeLocationStrategy} from "../../src/router/location_strategy";
+import {ReactNativeLocationStrategy} from "../router/location_strategy";
 import {ReactNativeWrapper} from "../wrapper/wrapper";
+import {getAmbientComponents} from "../renderer/utils";
+import {Node} from "../renderer/node";
 
 export function getTestingProviders(mock: ReactNativeWrapper, testCpt: any): Array<any> {
   return [
@@ -22,9 +22,8 @@ export function getTestingProviders(mock: ReactNativeWrapper, testCpt: any): Arr
     provide(RootRenderer, {useExisting: ReactNativeRootRenderer}),
     CustomTestComponentBuilder,
     provide(TestComponentBuilder, {useExisting: CustomTestComponentBuilder})
-  ];
+  ].concat(getAmbientComponents());
 }
-
 
 export function fireEvent(name: string, target: Node, timeStamp: number = 0, touches: Array<Array<number>> = [[0,0]], changedIndices: Array<Number> = [0]) {
   var t: any[] = [];

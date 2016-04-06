@@ -3,6 +3,8 @@ var jade = require('gulp-jade');
 var rename = require("gulp-rename");
 var typescript = require('gulp-typescript');
 var watch = require('gulp-watch');
+
+var Builder = require('systemjs-builder');
 var exec = require('child_process').exec;
 var fork = require('child_process').fork;
 var karma = require('karma').Server;
@@ -205,6 +207,24 @@ gulp.task('doc', ['!doc'], function (neverDone) {
 /**********************************************************************************/
 /*******************************   PUBLISH    *************************************/
 /**********************************************************************************/
+var systemBuilder = new Builder(PATHS.destination);
+systemBuilder.config({
+  meta: {
+    'angular2/*': { build: false },
+    'rxjs/*': { build: false },
+    'reflect-metadata': {build: false},
+    'zone.js/dist/zone.js': {build: false}
+  },
+  defaultJSExtensions: true
+});
+gulp.task('!pre-bundle', ['ts2system'], function () {
+  return gulp.src(PATHS.destination + '/src/**/*').pipe(gulp.dest(PATHS.destination + '/angular2-react-native'));
+});
+gulp.task('bundle', ['!pre-bundle'], function(done) {
+  return systemBuilder.bundle('angular2-react-native/testing', path.join(PATHS.publish, 'bundles/testing.dev.js'),
+    {}).catch(function (e) { console.log(e); });
+});
+
 gulp.task('!publish.clean', function (done) {
   var del = require('del');
   del([PATHS.publish], done);
@@ -218,10 +238,10 @@ gulp.task('!publish.assets', ['!publish.clean'], function () {
   ], {base: './'})
     .pipe(gulp.dest(PATHS.publish));
 });
-gulp.task('!publish.transpile', ['!publish.assets'], function () {
+gulp.task('!publish.transpile', ['!publish.assets', 'clean.code'], function () {
   return ts2js([PATHS.sources.src], PATHS.tmp, false, true);
 });
-gulp.task('publish', ['!publish.transpile'], function () {
+gulp.task('publish', ['!publish.transpile', 'bundle'], function () {
   return gulp.src(PATHS.tmp + '/src/**/*').pipe(gulp.dest(PATHS.publish));
 });
 
