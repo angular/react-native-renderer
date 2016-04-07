@@ -4,11 +4,11 @@ import {REACT_NATIVE_WRAPPER} from './../renderer/renderer';
 import {ReactNativeWrapper, isAndroid} from "../wrapper/wrapper";
 
 var ANDROID_INPUTS: Array<string> = ['fadeDuration', 'loadingIndicatorSrc', 'progressiveRenderingEnabled', 'shouldNotifyLoadEvents'];
-var IOS_INPUTS: Array<string> = ['capInsets', 'defaultSource'];
+var IOS_INPUTS: Array<string> = ['blurRadius', 'capInsets', 'defaultSource'];
 
 var ANDROID_BINDINGS: string = `[fadeDuration]="_fadeDuration" [loadingIndicatorSrc]="_loadingIndicatorSrc ? _loadingIndicatorSrc.uri : null"
   [progressiveRenderingEnabled]="_progressiveRenderingEnabled" [shouldNotifyLoadEvents]="_shouldNotifyLoadEvents" [src]="_source ? _source.uri: null"`;
-var IOS_BINDINGS: string = `[capInsets]="_capInsets" [defaultSource]="_defaultSource" [source]="_source"`;
+var IOS_BINDINGS: string = `[blurRadius]="_blurRadius" [capInsets]="_capInsets" [defaultSource]="_defaultSource" [source]="_source"`;
 
 //TODO: add iOS specific events (onError, on Progress) and specific cases (tintColor, resizeMode)
 /**
@@ -91,8 +91,14 @@ export class Image extends HighLevelComponent {
    */
   set shouldNotifyLoadEvents(value: any) {this._shouldNotifyLoadEvents = this.processBoolean(value);}
 
+  private _blurRadius: number;
   private _capInsets: any;
   private _defaultSource: string;
+  /**
+   * To be documented
+   * @platform ios
+   */
+  set blurRadius(value: string) {this._blurRadius = this.processNumber(value);}
   /**
    * To be documented
    * @platform ios

@@ -3,10 +3,10 @@ import {isAndroid} from './../wrapper/wrapper';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
 var ANDROID_INPUTS: Array<string> = [];
-var IOS_INPUTS: Array<string> = ['allowFontScaling', 'suppressHighlighting'];
+var IOS_INPUTS: Array<string> = ['allowFontScaling', 'lineBreakMode', 'suppressHighlighting'];
 
 var ANDROID_BINDINGS: string = ``;
-var IOS_BINDINGS: string = `[allowFontScaling]="_allowFontScaling" [suppressHighlighting]="_suppressHighlighting"`;
+var IOS_BINDINGS: string = `[allowFontScaling]="_allowFontScaling" [lineBreakMode]="_lineBreakMode" [suppressHighlighting]="_suppressHighlighting"`;
 
 /**
  * A component for displaying a text.
@@ -37,6 +37,7 @@ export class Text extends HighLevelComponent{
   set numberOfLines(value: any) {this._numberOfLines = this.processNumber(value);}
 
   private _allowFontScaling: boolean;
+  private _lineBreakMode: string;
   private _suppressHighlighting: boolean;
   /**
    * To be documented
@@ -47,5 +48,11 @@ export class Text extends HighLevelComponent{
    * To be documented
    * @platform ios
    */
+  set lineBreakMode(value: any) { this._lineBreakMode = this.processEnum(value, ['clipping', 'word-wrapping', 'char-wrapping', 'truncating-head', 'truncating-middle', 'truncating-tail']); }
+  /**
+   * To be documented
+   * @platform ios
+   */
   set suppressHighlighting(value: any) { this._suppressHighlighting = this.processBoolean(value); }
+
 }
