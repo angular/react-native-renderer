@@ -46,8 +46,7 @@ export class HelloApp {
       container: {
         flex: 1,
         paddingTop: 120,
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        alignItems: 'center'
       },
       welcome: {
         fontSize: 20,

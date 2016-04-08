@@ -24,7 +24,7 @@ import {AnimationApp} from "../common/animation";
 @Component({
   selector: 'kitchensink-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  template: `<Navigator barTintColor="#005eb8" tintColor="#00a9e0" titleTextColor="#FFFFFF" (rightButtonPress)="_actions($event)"></Navigator>`
+  template: `<Navigator barTintColor="#005eb8" tintColor="#00a9e0" titleTextColor="#FFFFFF" [itemWrapperStyle]="{backgroundColor: '#F5FCFF'}" (rightButtonPress)="_actions($event)"></Navigator>`
 })
 export class KitchenSinkApp {
   @ViewChild(Navigator) navigator: Navigator;
