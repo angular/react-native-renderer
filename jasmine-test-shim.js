@@ -4,7 +4,7 @@ var glob = require('glob');
 var JasmineRunner = require('jasmine');
 var path = require('path');
 
-require('zone.js/dist/zone.js');
+require('zone.js/dist/zone-node.js');
 require('reflect-metadata/Reflect');
 
 global.angularDevMode = true;
