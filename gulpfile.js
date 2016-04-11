@@ -79,7 +79,7 @@ gulp.task('!launch.ios', ['!compile'], function(done) {
   executeInAppDir('react-native run-ios', done);
 });
 gulp.task('!start.android', ['!launch.android'], function(neverDone) {
-  if (/^win/.test(process.platform)) {
+  if (!/^darwin/.test(process.platform)) {
     executeInAppDir('react-native start');
   }
 });

@@ -1,6 +1,6 @@
 {
   "name": "angular2-react-native",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1-alpha.4",
   "description": "A React Native renderer for Angular 2",
   "scripts": {
     "test": "gulp test.node/ci && gulp test.browser/ci",

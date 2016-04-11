@@ -56,7 +56,7 @@ class ReactNativeXHRConnection implements Connection {
 @Injectable()
 export class ReactNativeXHRBackend implements ConnectionBackend {
   constructor(private _browserXHR: BrowserXhr, private _baseResponseOptions: ResponseOptions, private _zone: NgZone) {}
-  createConnection(request: Request): ReactNativeXHRConnection {
+  createConnection(request: Request): any {
     return new ReactNativeXHRConnection(request, this._browserXHR, this._baseResponseOptions, this._zone);
   }
 }
