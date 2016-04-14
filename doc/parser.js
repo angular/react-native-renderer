@@ -47,10 +47,14 @@ function visit(sourceFile) {
           content = marked(content.replace(FLAGS_REGEX, '').trim());
           switch (node.kind) {
             case ts.SyntaxKind.ClassDeclaration:
+              var lowerCaseName = node.name.text.toLowerCase();
               data.description = {
                 name: node.name.text,
                 doc: content,
-                flags: flags
+                flags: flags,
+                gif: fs.existsSync('./doc/assets/components/' + lowerCaseName + '.gif'),
+                gifAndroid: fs.existsSync('./doc/assets/components/' + lowerCaseName + '_android.gif'),
+                gifIOS: fs.existsSync('./doc/assets/components/' + lowerCaseName + '_ios.gif')
               }
               break;
             case ts.SyntaxKind.ExportKeyword:

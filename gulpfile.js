@@ -192,7 +192,7 @@ gulp.task('!doc', ['!doc.assets'], function() {
     gulp.src('doc/template/component.jade')
       .pipe(rename(name + '.html'))
       .pipe(jade({
-        locals: {components: components, component: components[key]}
+        locals: {components: components, component: components[key], path: key}
       }))
       .pipe(gulp.dest(PATHS.doc));
   }

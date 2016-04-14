@@ -1,6 +1,8 @@
 extends ../pages/_layout
 
 block content
+    div(style="float: right;")
+        a(href='https://github.com/mlaval/poc-angular-react-native/tree/master/' + path) Edit this page on Github
     h1
         if component.description.flags.platform
             span.bg-info= component.description.flags.platform
@@ -9,6 +11,18 @@ block content
     if component.description.flags.style
         h4.cpt Available styles
         a(href=component.description.flags.style)= component.description.flags.style
+
+    div(style="float: right;")
+        if component.description.gif
+            img.animatedgif(src='./assets/components/' + component.description.name.toLowerCase() + '.gif')
+        if component.description.gifAndroid
+            img.animatedgif(src='./assets/components/' + component.description.name.toLowerCase() + '_android.gif')
+            if component.description.gifIOS
+                i Android flavour
+        if component.description.gifIOS
+            img.animatedgif(src='./assets/components/' + component.description.name.toLowerCase() + '_ios.gif')
+            if component.description.gifAndroid
+                i iOS flavour
 
     h2 Inputs
     if component.description.name != 'HighLevelComponent'
