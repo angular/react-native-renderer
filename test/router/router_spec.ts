@@ -99,7 +99,7 @@ describe('Router', () => {
               expect(mock.commandLogs.toString()).toEqual(
                 'CREATE+11+cmp-a+{},CREATE+12+native-text+{},CREATE+13+native-rawtext+{"text":"a"},DETACH+3+1,ATTACH+3+11+1,ATTACH+12+13+0,ATTACH+11+12+0');
               resolve();
-            }, 10);
+            }, 30);
           });
 
         }, 0);

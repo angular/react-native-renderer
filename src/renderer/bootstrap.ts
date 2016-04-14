@@ -20,7 +20,7 @@ XMLHttpRequest.prototype.addEventListener = () => {};
 
 // Finally, define the bootstrap
 import {RootRenderer, provide, NgZone, enableProdMode} from 'angular2/core';
-import {bootstrap} from 'angular2/bootstrap';
+import {bootstrap} from 'angular2/platform/browser';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from './renderer';
 import {getAmbientComponents} from "./utils";
