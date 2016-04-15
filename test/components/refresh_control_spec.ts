@@ -67,7 +67,7 @@ describe('RefreshControl component', () => {
             expect(fixture.componentInstance.log.join(',')).toEqual('foo');
             expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-refreshcontrol+{"refreshing":false}');
             resolve();
-          }, 30);
+          }, 150);
         });
 
       });

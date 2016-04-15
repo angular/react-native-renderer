@@ -73,7 +73,7 @@ describe('DrawerLayout component (Android)', () => {
             rootRenderer.executeCommands();
             expect(fixture.componentInstance.log.join(',')).toEqual('1');
             resolve();
-          }, 30);
+          }, 150);
         });
 
       });
@@ -96,7 +96,7 @@ describe('DrawerLayout component (Android)', () => {
             rootRenderer.executeCommands();
             expect(mock.commandLogs.toString()).toEqual('DISMISS_KEYBOARD+-1+');
             resolve();
-          }, 30);
+          }, 150);
         });
 
       });

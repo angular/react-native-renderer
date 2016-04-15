@@ -67,7 +67,7 @@ describe('Image component', () => {
             rootRenderer.executeCommands();
             expect(fixture.componentInstance.log.join(',')).toEqual('foo');
             resolve();
-          }, 30);
+          }, 150);
         });
 
       });

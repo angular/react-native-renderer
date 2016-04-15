@@ -22,6 +22,13 @@ module.exports = function(config) {
       {pattern: 'dist/code/test/**/*.js', included: false, watched: true}
     ],
 
+    customLaunchers: {
+      'ChromeNoSandbox': {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
+
     reporters: ['dots'],
     port: 9876,
     colors: true,

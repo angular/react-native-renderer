@@ -68,7 +68,7 @@ describe('Switch component', () => {
             rootRenderer.executeCommands();
             expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-switch+{"on":true}');
             resolve();
-          }, 30);
+          }, 150);
         });
 
       });

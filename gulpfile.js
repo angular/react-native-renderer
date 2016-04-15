@@ -168,7 +168,8 @@ gulp.task('test.browser', ['ts2system'], function (neverDone) {
 gulp.task('test.browser/ci', ['ts2system'], function(done) {
   new karma({
     configFile: path.join(__dirname, 'karma.conf.js'),
-    singleRun: true
+    singleRun: true,
+    browsers: [process.env.TRAVIS ? 'ChromeNoSandbox' : 'Chrome']
   }, done).start();
 });
 
