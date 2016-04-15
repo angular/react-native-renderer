@@ -3,6 +3,7 @@ html(lang=en)
     head
         meta(charset="utf-8")
         meta(http-equiv="X-UA-Compatible" content="IE=edge")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
         title react-native-renderer
         link(rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
         style(type='text/css').
@@ -24,18 +25,14 @@ html(lang=en)
                 background-color: #345d75;
             }
             .side-menu {
-                margin: 0 20px;
                 padding-top: 20px;
-                width: 150px;
-                float: left;
+                padding-left: 35px;
             }
             .side-menu a {
                 display: block;
             }
             .content {
-                float:left;
-                padding: 10px 10px;
-                width: 1000px;
+                padding: 20px 35px;
             }
             .content img.animatedgif {
                 display: block;
@@ -83,8 +80,8 @@ body
                             a(href='https://github.com/angular/react-native-renderer') Github
                         li
                             a(href='https://gitter.im/angular/react-native-renderer') Gitter
-        div
-            .side-menu
+        div.row
+            .side-menu.col-sm-2.hidden-xs
                 a(href='./getting_started.html') Getting started
                 h4 Features
                 a(href='./bootstrap.html') bootstrap
@@ -110,5 +107,5 @@ body
                 h4 Directives
                 a(href='./opacity_feedback.html') Opacity feedback
                 a(href='./ripple_feedback.html') Ripple feedback
-            .content
+            .content.col-sm-10
                 block content
