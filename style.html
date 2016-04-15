@@ -1,0 +1,109 @@
+<!DOCTYPE html public><html><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>react-native-renderer</title><link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/><style type="text/css">body {
+    padding-top: 50px;
+    color: #445A64;
+}
+.navbar-inverse {
+    background-color: #0273D4;
+    border-color: #0273D4;
+}
+.navbar-inverse .navbar-brand,  .navbar-inverse .navbar-nav>li>a {
+    color: #ffffff;
+}
+.navbar-inverse .navbar-brand:hover,  .navbar-inverse .navbar-nav>li>a:hover {
+    background-color: rgba(158,158,158,0.2);
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #345d75;
+}
+.side-menu {
+    margin: 0 20px;
+    padding-top: 20px;
+    width: 150px;
+    float: left;
+}
+.side-menu a {
+    display: block;
+}
+.content {
+    float:left;
+    padding: 10px 10px;
+    width: 1000px;
+}
+.content img.animatedgif {
+    display: block;
+    margin-bottom: 10px;
+    border: 1px solid #0273D4;
+}
+.content i {
+    text-align: center;
+    display: block;
+    margin-bottom: 40px;
+}
+.bg-info {
+    padding: 5px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+h4.cpt {
+    margin-top: 25px;
+    margin-bottom: 5px;
+}
+.title img {
+    float: left;
+    top: 28px;
+    position: relative;
+}
+
+.title h1 {
+    float: left;
+    width: 100px;
+    text-align: center;
+    position: relative;
+    top: 65px;
+    font-size: 80px;
+}
+</style></head></html><body><div role="navigation" class="navbar navbar-inverse navbar-fixed-top"><div class="container-fluid"><div class="navbar-header"><a href="./index.html" class="navbar-brand">react-native-renderer</a><a href="./getting_started.html" class="navbar-brand">Documentation</a></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="https://github.com/angular/react-native-renderer">Github</a></li><li><a href="https://gitter.im/angular/react-native-renderer">Gitter</a></li></ul></div></div></div><div><div class="side-menu"><a href="./getting_started.html">Getting started</a><h4>Features</h4><a href="./bootstrap.html">bootstrap</a><a href="./apis.html">APIs</a><a href="./gestures.html">Gestures</a><a href="./http.html">Http</a><a href="./router.html">Router</a><a href="./style.html">Style</a><h4>Components</h4><a href="./highlevelcomponent.html">HighLevelComponent</a><a href="./image.html">Image</a><a href="./picker.html">Picker</a><a href="./refreshcontrol.html">RefreshControl</a><a href="./scrollview.html">ScrollView</a><a href="./switch.html">Switch</a><a href="./text.html">Text</a><a href="./textinput.html">TextInput</a><a href="./view.html">View</a><a href="./webview.html">WebView</a><h5>Android</h5><a href="./drawerlayout.html">DrawerLayout</a><a href="./pagerlayout.html">PagerLayout</a><a href="./progressbar.html">ProgressBar</a><a href="./toolbar.html">Toolbar</a><h5>iOS</h5><a href="./activityindicator.html">ActivityIndicator</a><a href="./datepicker.html">DatePicker</a><a href="./mapview.html">MapView</a><a href="./navigator.html">Navigator</a><a href="./progressview.html">ProgressView</a><a href="./segmentedcontrol.html">SegmentedControl</a><a href="./slider.html">Slider</a><a href="./tabbar.html">TabBar</a><a href="./tabbaritem.html">TabBarItem</a><h4>Directives</h4><a href="./opacity_feedback.html">Opacity feedback</a><a href="./ripple_feedback.html">Ripple feedback</a></div><div class="content"><div style="float: right;"><a href="https://github.com/angular/react-native-renderer/blob/master/doc/pages/style.jade">Edit this page on Github</a></div><h1 id="style">Style</h1>
+<p>React Native provides a styling mechanism which relies on JavaScript.
+Read more about it in the <a href="https://facebook.github.io/react-native/docs/style.html">documentation about Style</a>.</p>
+<p>In all the Angular 2 components, there are 2 properties related to style:</p>
+<ul>
+<li><code>styleSheet</code>: it takes one or more <code>StyleSheet</code> created with the React Native&#39;s API.</li>
+<li><code>style</code>: it takes a set of styling properties as a JSON object. <strong><em>It overrides what has been defined in <code>styleSheet</code></em></strong></li>
+</ul>
+<p>Both support conditional styling.</p>
+<p>For example:</p>
+<pre><code>import {Component} from &#39;angular2/core&#39;;
+import {StyleSheet} from &#39;react-native&#39;;
+
+@Component({
+  selector: &#39;example&#39;,
+  template: `
+&lt;Text [styleSheet]=&quot;[styles.tick, isActive &amp;&amp; styles.tickOn]&quot; (tap)=&quot;isActive=!isActive&quot;&gt;
+  {{isActive ? &quot;[  ]&quot; : &quot;[x]&quot;}}
+&lt;/Text&gt;
+&lt;Text [styleSheet]=&quot;[styles.default]&quot; [style]=&quot;{color: &#39;#00a9e0&#39;,fontSize: 20}&quot;&gt;Foo&lt;/Text&gt;
+`
+})
+export class Example {
+  isActive: boolean = true;
+  styles: any;
+
+  constructor() {
+    this.styles = StyleSheet.create({
+      default: {
+        fontSize: 10
+      },
+      tick: {
+        width: 25,
+        textAlign: &#39;center&#39;,
+        fontSize: 20,
+        color: &#39;#333333&#39;
+      },
+      tickOn: {
+        color: &#39;#309712&#39;
+      }
+    });
+  }
+
+}
+</code></pre></div></div></body>

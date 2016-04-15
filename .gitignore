@@ -1,0 +1,6 @@
+src/angular2
+node_modules
+dist
+*.swp
+.DS_Store
+crypto/

@@ -1,0 +1,84 @@
+<!DOCTYPE html public><html><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>react-native-renderer</title><link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/><style type="text/css">body {
+    padding-top: 50px;
+    color: #445A64;
+}
+.navbar-inverse {
+    background-color: #0273D4;
+    border-color: #0273D4;
+}
+.navbar-inverse .navbar-brand,  .navbar-inverse .navbar-nav>li>a {
+    color: #ffffff;
+}
+.navbar-inverse .navbar-brand:hover,  .navbar-inverse .navbar-nav>li>a:hover {
+    background-color: rgba(158,158,158,0.2);
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #345d75;
+}
+.side-menu {
+    margin: 0 20px;
+    padding-top: 20px;
+    width: 150px;
+    float: left;
+}
+.side-menu a {
+    display: block;
+}
+.content {
+    float:left;
+    padding: 10px 10px;
+    width: 1000px;
+}
+.content img.animatedgif {
+    display: block;
+    margin-bottom: 10px;
+    border: 1px solid #0273D4;
+}
+.content i {
+    text-align: center;
+    display: block;
+    margin-bottom: 40px;
+}
+.bg-info {
+    padding: 5px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+h4.cpt {
+    margin-top: 25px;
+    margin-bottom: 5px;
+}
+.title img {
+    float: left;
+    top: 28px;
+    position: relative;
+}
+
+.title h1 {
+    float: left;
+    width: 100px;
+    text-align: center;
+    position: relative;
+    top: 65px;
+    font-size: 80px;
+}
+</style></head></html><body><div role="navigation" class="navbar navbar-inverse navbar-fixed-top"><div class="container-fluid"><div class="navbar-header"><a href="./index.html" class="navbar-brand">react-native-renderer</a><a href="./getting_started.html" class="navbar-brand">Documentation</a></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="https://github.com/angular/react-native-renderer">Github</a></li><li><a href="https://gitter.im/angular/react-native-renderer">Gitter</a></li></ul></div></div></div><div><div class="side-menu"><a href="./getting_started.html">Getting started</a><h4>Features</h4><a href="./bootstrap.html">bootstrap</a><a href="./apis.html">APIs</a><a href="./gestures.html">Gestures</a><a href="./http.html">Http</a><a href="./router.html">Router</a><a href="./style.html">Style</a><h4>Components</h4><a href="./highlevelcomponent.html">HighLevelComponent</a><a href="./image.html">Image</a><a href="./picker.html">Picker</a><a href="./refreshcontrol.html">RefreshControl</a><a href="./scrollview.html">ScrollView</a><a href="./switch.html">Switch</a><a href="./text.html">Text</a><a href="./textinput.html">TextInput</a><a href="./view.html">View</a><a href="./webview.html">WebView</a><h5>Android</h5><a href="./drawerlayout.html">DrawerLayout</a><a href="./pagerlayout.html">PagerLayout</a><a href="./progressbar.html">ProgressBar</a><a href="./toolbar.html">Toolbar</a><h5>iOS</h5><a href="./activityindicator.html">ActivityIndicator</a><a href="./datepicker.html">DatePicker</a><a href="./mapview.html">MapView</a><a href="./navigator.html">Navigator</a><a href="./progressview.html">ProgressView</a><a href="./segmentedcontrol.html">SegmentedControl</a><a href="./slider.html">Slider</a><a href="./tabbar.html">TabBar</a><a href="./tabbaritem.html">TabBarItem</a><h4>Directives</h4><a href="./opacity_feedback.html">Opacity feedback</a><a href="./ripple_feedback.html">Ripple feedback</a></div><div class="content"><div style="float: right;"><a href="https://github.com/angular/react-native-renderer/tree/master/./src/components/ios/slider.ts">Edit this page on Github</a></div><h1><span class="bg-info">ios</span>Slider</h1><p>A component for displaying a slider.</p>
+<pre><code> @Component({
+  selector: &#39;sample&#39;,
+  template: `&lt;Slider value=&quot;0.6&quot;&gt;&lt;/Slider&gt;`
+})
+ export class Sample {}
+</code></pre><h4 class="cpt">Available styles</h4><a href="https://facebook.github.io/react-native/docs/view.html#style">https://facebook.github.io/react-native/docs/view.html#style</a><div style="float: right;"><img src="./assets/components/slider.gif" class="animatedgif"/></div><h2>Inputs</h2><h4 class="cpt"><span>Inherits all inputs from</span><a href="./highlevelcomponent.html"> high level component</a></h4><h4 class="cpt">disabled: boolean</h4><p>To be documented</p>
+<h4 class="cpt">maximumTrackImage: any</h4><p>To be documented</p>
+<h4 class="cpt">maximumTrackTintColor: color</h4><p>To be documented</p>
+<h4 class="cpt">maximumValue: number</h4><p>To be documented</p>
+<h4 class="cpt">minimumTrackImage: any</h4><p>To be documented</p>
+<h4 class="cpt">minimumTrackTintColor: color</h4><p>To be documented</p>
+<h4 class="cpt">minimumValue: number</h4><p>To be documented</p>
+<h4 class="cpt">step: number</h4><p>To be documented</p>
+<h4 class="cpt">thumbImage: any</h4><p>To be documented</p>
+<h4 class="cpt">trackImage: any</h4><p>To be documented</p>
+<h4 class="cpt">value: number</h4><p>To be documented</p>
+<h2>Outputs</h2><h4 class="cpt">valueChange: EventEmitter&lt;number&gt;</h4><p>To be documented</p>
+<h4 class="cpt">slidingComplete: EventEmitter&lt;number&gt;</h4><p>To be documented</p>
+</div></div></body>
