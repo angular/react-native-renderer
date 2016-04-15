@@ -69,7 +69,7 @@ describe('DatePicker component (iOS)', () => {
           setTimeout(() => {
             expect(fixture.componentInstance.log.join(',')).toEqual('click');
             resolve();
-          }, 100);
+          }, 150);
         });
 
       });

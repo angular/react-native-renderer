@@ -45,7 +45,7 @@ describe('Navigator component (iOS)', () => {
                 'CREATE+5+cmp-a+{},CREATE+6+native-text+{},CREATE+7+native-rawtext+{"text":"a"},ATTACH+6+7+0,ATTACH+5+6+0,ATTACH+4+5+0');
               resolve();
             }, 0);
-          }, 30);
+          }, 150);
         });
       });
   }));

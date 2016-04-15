@@ -67,7 +67,7 @@ describe('PagerLayout component (Android)', () => {
             rootRenderer.executeCommands();
             expect(fixture.componentInstance.log.join(',')).toEqual('1');
             resolve();
-          }, 30);
+          }, 150);
         });
 
       });
@@ -90,7 +90,7 @@ describe('PagerLayout component (Android)', () => {
             rootRenderer.executeCommands();
             expect(mock.commandLogs.toString()).toEqual('DISMISS_KEYBOARD+-1+');
             resolve();
-          }, 30);
+          }, 150);
         });
 
       });
@@ -122,7 +122,7 @@ describe('PagerLayout component (Android)', () => {
             fixture.detectChanges();
             expect(mock.commandLogs.toString()).toEqual('COMMAND+3+setPageWithoutAnimation+1');
             resolve();
-          }, 50);
+          }, 150);
         });
       });
   }));

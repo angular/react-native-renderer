@@ -65,7 +65,7 @@ describe('SegmentedControl component (iOS)', () => {
           setTimeout(() => {
             expect(fixture.componentInstance.log.join(',')).toEqual('0');
             resolve();
-          }, 30);
+          }, 150);
         });
 
       });

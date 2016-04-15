@@ -79,7 +79,7 @@ describe('Picker component', () => {
             rootRenderer.executeCommands();
             expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-dialogpicker+{"selected":0}');
             resolve();
-          }, 30);
+          }, 150);
         });
 
       });
