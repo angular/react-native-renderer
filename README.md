@@ -6,6 +6,8 @@ This project is an Angular 2 renderer that renders to iOS. It replaces the usual
 
 # Getting Started
 
+[![Join the chat at https://gitter.im/angular/react-native-renderer](https://badges.gitter.im/angular/react-native-renderer.svg)](https://gitter.im/angular/react-native-renderer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 If you're looking to install this through npm, see the [readme on the npm package sources](src/README.md).
 
 You need a Mac with XCode and node. After cloning the repo, run:
