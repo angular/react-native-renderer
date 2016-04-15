@@ -8,15 +8,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mlaval/poc-angular-react-native.git"
+    "url": "git+https://github.com/angular/react-native-renderer.git"
   },
   "keywords": ["Angular2", "renderer", "react-native"],
-  "author": "Marc Laval <mlaval>",
-  "license": "Apache License Version 2.0",
+  "contributors": [
+    "Scott Little <uber5001@gmail.com>",
+    "Marc Laval <mlaval@amadeus.com>"
+  ],
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mlaval/poc-angular-react-native/issues"
+    "url": "https://github.com/angular/react-native-renderer/issues"
   },
-  "homepage": "https://github.com/mlaval/poc-angular-react-native#readme",
+  "homepage": "https://github.com/angular/react-native-renderer/",
   "devDependencies": {
     "del": "^1.2.0",
     "glob": "^4.0.6",

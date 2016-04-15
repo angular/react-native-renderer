@@ -3,7 +3,7 @@
 Use Angular 2 and React Native to build applications for Android and iOS.
 
 ## Documentation
-http://mlaval.github.io/poc-angular-react-native/
+http://angular.github.io/react-native-renderer/
 
 ## Development
 
