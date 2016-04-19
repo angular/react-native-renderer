@@ -6,12 +6,12 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component"
 
 var ANDROID_INPUTS: Array<string> = ['numberOfLines', 'underlineColorAndroid'];
 var IOS_INPUTS: Array<string> = ['clearButtonMode', 'clearTextOnFocus', 'enablesReturnKeyAutomatically',
-  'keyboardAppearance', 'returnKeyType',  'selectTextOnFocus'];
+  'keyboardAppearance', 'returnKeyType'];
 
 var ANDROID_BINDINGS: string = `[numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid" (topTextInput)="_handleKeyPress($event)"`;
 var IOS_BINDINGS: string = `[clearButtonMode]="_clearButtonMode" [clearTextOnFocus]="_clearTextOnFocus"
   [enablesReturnKeyAutomatically]="_enablesReturnKeyAutomatically" [keyboardAppearance]="_keyboardAppearance"
-  [returnKeyType]="_returnKeyType" [selectTextOnFocus]="_selectTextOnFocus" (topKeyPress)="_handleKeyPress($event)"`;
+  [returnKeyType]="_returnKeyType" (topKeyPress)="_handleKeyPress($event)"`;
 
 /**
  * A component for displaying a textinput.
@@ -34,10 +34,11 @@ export class Sample {
     'autoFocus',
     //Native
     'autoCapitalize', 'autoCorrect', 'blurOnSubmit', 'editable', 'keyboardType', 'maxLength', 'multiline',
-    'password', 'placeholder', 'placeholderTextColor', 'selectionColor'
+    'password', 'placeholder', 'placeholderTextColor', 'selectionColor', 'selectTextOnFocus'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `<native-textinput [text]="_getText()" [autoCapitalize]="_autoCapitalize" [autoCorrect]="_autoCorrect" [blurOnSubmit]="_blurOnSubmit" [editable]="_editable" [keyboardType]="_keyboardType"
-  [maxLength]="_maxLength" [multiline]="_multiline" [password]="_password" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor" [selectionColor]="_selectionColor"
+  [maxLength]="_maxLength" [multiline]="_multiline" [password]="_password" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor"
+  [selectionColor]="_selectionColor" [selectTextOnFocus]="_selectTextOnFocus"
   (tap)="focusTextInput()" (topFocus)="_handleFocus()" (topChange)="_handleChange($event)" (topSubmitEditing)="_handleSubmitEditing($event)"
   (topBlur)="_handleBlur()" (topEndEditing)="_handleEndEditing($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-textinput>`
 })
@@ -98,6 +99,7 @@ export class TextInput extends HighLevelComponent implements OnInit {
   private _placeholder: string;
   private _placeholderTextColor: number;
   private _selectionColor: number;
+  private _selectTextOnFocus: boolean;
   /**
    * To be documented
    */
@@ -142,6 +144,10 @@ export class TextInput extends HighLevelComponent implements OnInit {
    * To be documented
    */
   set selectionColor(value: string) {this._selectionColor = this.processColor(value);}
+  /**
+   * To be documented
+   */
+  set selectTextOnFocus(value: any) {this._selectTextOnFocus = this.processBoolean(value);}
 
   private _numberOfLines: number;
   private _underlineColorAndroid: number;
@@ -161,7 +167,6 @@ export class TextInput extends HighLevelComponent implements OnInit {
   private _enablesReturnKeyAutomatically: boolean;
   private _keyboardAppearance: string;
   private _returnKeyType: string;
-  private _selectTextOnFocus: boolean;
   /**
    * To be documented
    * @platform ios
@@ -187,11 +192,6 @@ export class TextInput extends HighLevelComponent implements OnInit {
    * @platform ios
    */
   set returnKeyType(value: string) {this._returnKeyType = this.processEnum(value, ['default', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency-call']);}
-  /**
-   * To be documented
-   * @platform ios
-   */
-  set selectTextOnFocus(value: any) {this._selectTextOnFocus = this.processBoolean(value);}
 
   //Event handlers
   _handleFocus() {

@@ -33,7 +33,8 @@ const RCT_VIEW_NAMES: { [s: string]: string } = ReactNative.Platform.OS == 'andr
   'native-scrollview': 'RCTScrollView',
   'native-horizontalscrollview' : 'AndroidHorizontalScrollView',
   'native-dropdownpicker': 'AndroidDropdownPicker',
-  'native-dialogpicker': 'AndroidDialogPicker'
+  'native-dialogpicker': 'AndroidDialogPicker',
+  'native-slider': 'RCTSlider'
 } : {
   'native-view': 'RCTView',
   'native-text': 'RCTText',

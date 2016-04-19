@@ -6,12 +6,12 @@ import {
   expect
 } from 'angular2/testing';
 import {Component, ViewChild} from 'angular2/core';
-import {ReactNativeRootRenderer} from '../../../src/renderer/renderer';
-import {MockReactNativeWrapper} from "./../../../src/wrapper/wrapper_mock";
-import {fireFunctionalEvent, getTestingProviders} from "../../../src/test_helpers/utils";
-import {Slider} from "../../../src/components/ios/slider";
+import {ReactNativeRootRenderer} from '../../src/renderer/renderer';
+import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
+import {fireFunctionalEvent, getTestingProviders} from "../../src/test_helpers/utils";
+import {Slider} from "../../src/components/slider";
 
-describe('Slider component (iOS)', () => {
+describe('Slider component', () => {
   var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
@@ -23,7 +23,7 @@ describe('Slider component (iOS)', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-slider+{"onSlidingComplete":true,"onValueChange":true,"height":40},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-slider+{"onSlidingComplete":true,"onValueChange":true,"disabled":false,"maximumValue":1,"minimumValue":0,"step":0},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
@@ -34,7 +34,7 @@ describe('Slider component (iOS)', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-slider+{"onSlidingComplete":true,"onValueChange":true,"value":0.6,"accessible":true,"testID":"foo","height":40},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-slider+{"onSlidingComplete":true,"onValueChange":true,"disabled":false,"maximumValue":1,"minimumValue":0,"step":0,"value":0.6,"accessible":true,"testID":"foo"},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
@@ -45,7 +45,7 @@ describe('Slider component (iOS)', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-slider+{"onSlidingComplete":true,"onValueChange":true,"height":40,"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-slider+{"onSlidingComplete":true,"onValueChange":true,"disabled":false,"maximumValue":1,"minimumValue":0,"step":0,"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
@@ -58,7 +58,7 @@ describe('Slider component (iOS)', () => {
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
-        fireFunctionalEvent('topValueChange', target, {value: 0.55});
+        fireFunctionalEvent('topChange', target, {value: 0.55, fromUser: true});
         fixture.detectChanges();
 
         return new Promise((resolve: any) => {
