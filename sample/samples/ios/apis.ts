@@ -60,7 +60,7 @@ export class APIsApp {
     this.ratio = PixelRatio.get();
     navigator.geolocation.getCurrentPosition(
       (position) => this.location = JSON.stringify(position),
-      (error) => alert(error.message),
+      (error) => console.log(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     NetInfo.fetch().then((reach: string) => { this.connectionType = reach });

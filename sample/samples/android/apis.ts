@@ -65,10 +65,9 @@ export class APIsList {
     this.styles = this._getStyles();
     this.platform = `OS: ${Platform.OS}, version: ${Platform.Version}`;
     this.ratio = PixelRatio.get();
-    Clipboard.getString().then((content: string) => this.clipBoardContent = content);
     navigator.geolocation.getCurrentPosition(
       (position) => this.location = JSON.stringify(position),
-      (error) => alert(error.message),
+      (error) => console.log(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     NetInfo.fetch().then((reach: string) => { this.connectionType = reach });
