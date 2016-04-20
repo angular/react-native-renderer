@@ -34,6 +34,9 @@ html(lang=en)
             .content {
                 padding: 20px 35px;
             }
+            .content > div {
+                max-width: 1000px;
+            }
             .content img.animatedgif {
                 display: block;
                 margin-bottom: 10px;
@@ -81,7 +84,11 @@ body
                         li
                             a(href='https://gitter.im/angular/react-native-renderer') Gitter
         div.row
-            .side-menu.col-sm-2.hidden-xs
+            .content.col-sm-10.col-sm-push-2
+                div
+                    block content
+            .side-menu.col-sm-2.col-sm-pull-10
+                hr.visible-xs
                 a(href='./getting_started.html') Getting started
                 h4 Features
                 a(href='./bootstrap.html') bootstrap
@@ -107,5 +114,4 @@ body
                 h4 Directives
                 a(href='./opacity_feedback.html') Opacity feedback
                 a(href='./ripple_feedback.html') Ripple feedback
-            .content.col-sm-10
-                block content
+
