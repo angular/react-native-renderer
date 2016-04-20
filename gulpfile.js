@@ -331,7 +331,7 @@ function customReporter() {
   return {
     error: (error) => {
       if (error.relativeFilename && error.message.indexOf(`Module '"react-native"' has no exported member`) == -1 &&
-        error.message.indexOf(`Module '"angular2-react-native"' has no exported member`) == -1 &&
+        error.message.indexOf(`Module ''angular2-react-native'' has no exported member`) == -1 &&
         error.message.indexOf(`src\\angular2-react-native.d.ts`) == -1 &&
         error.message.indexOf(`does not exist on type 'Global'.`) == -1) {
         console.error(error.message);

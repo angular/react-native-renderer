@@ -4,21 +4,20 @@ import {Node} from '../renderer/node';
 import {ReactNativeWrapper, isAndroid} from './../wrapper/wrapper';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
-var ANDROID_INPUTS: Array<string> = ['sendMomentumEvents'];
+var ANDROID_INPUTS: Array<string> = ['endFillColor'];
 var IOS_INPUTS: Array<string> = ['alwaysBounceHorizontal', 'alwaysBounceVertical', 'automaticallyAdjustContentInsets', 'bounces', 'bouncesZoom',
   'canCancelContentTouches', 'centerContent', 'contentInset', 'contentOffset', 'decelerationRate', 'directionalLockEnabled',
   'indicatorStyle', 'maximumZoomScale', 'minimumZoomScale', 'pagingEnabled', 'scrollEventThrottle', 'scrollIndicatorInsets',
   'scrollsToTop', 'snapToAlignment', 'snapToInterval', 'stickyHeaderIndices', 'zoomScale'];
 
-var ANDROID_BINDINGS: string = `[sendMomentumEvents]="_sendMomentumEvents"`;
+var ANDROID_BINDINGS: string = `[endFillColor]="_endFillColor"`;
 var IOS_BINDINGS: string = `[alwaysBounceHorizontal]="_alwaysBounceHorizontal" [alwaysBounceVertical]="_alwaysBounceVertical"
   [automaticallyAdjustContentInsets]="_automaticallyAdjustContentInsets" [bounces]="_bounces" [bouncesZoom]="_bouncesZoom"
   [canCancelContentTouches]="_canCancelContentTouches" [centerContent]="_centerContent" [contentInset]="_contentInset"
   [contentOffset]="_contentOffset" [decelerationRate]="_decelerationRate" [directionalLockEnabled]="_directionalLockEnabled"
   [indicatorStyle]="_indicatorStyle" [maximumZoomScale]="_maximumZoomScale" [minimumZoomScale]="_minimumZoomScale" [pagingEnabled]="_pagingEnabled"
   [scrollEventThrottle]="_scrollEventThrottle" [scrollIndicatorInsets]="_scrollIndicatorInsets" [scrollsToTop]="_scrollsToTop"
-  [snapToAlignment]="_snapToAlignment" [snapToInterval]="_snapToInterval" [stickyHeaderIndices]="_stickyHeaderIndices" [zoomScale]="_zoomScale"
-  (topMomentumScrollBegin)="_handleMomentumScrollBegin($event)" (topMomentumScrollEnd)="_handleMomentumScrollEnd($event)"`;
+  [snapToAlignment]="_snapToAlignment" [snapToInterval]="_snapToInterval" [stickyHeaderIndices]="_stickyHeaderIndices" [zoomScale]="_zoomScale"`;
 
 //TODO: refreshControl, onContentSizeChange, onScrollAnimationEnd
 /**
@@ -42,12 +41,15 @@ export class Sample {}
 @Component({
   selector: 'ScrollView',
   inputs: [
-    'contentContainerStyle', 'horizontal', 'keyboardDismissMode', 'keyboardShouldPersistTaps', 'removeClippedSubviews', 'scrollEnabled', 'showsHorizontalScrollIndicator', 'showsVerticalScrollIndicator'
+    'contentContainerStyle', 'horizontal', 'keyboardDismissMode', 'keyboardShouldPersistTaps', 'removeClippedSubviews', 'scrollEnabled',
+    'sendMomentumEvents', 'showsHorizontalScrollIndicator', 'showsVerticalScrollIndicator'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `
   <native-scrollview [horizontal]="_horizontal" [keyboardDismissMode]="_keyboardDismissMode" [keyboardShouldPersistTaps]="_keyboardShouldPersistTaps"
-  [scrollEnabled]="_scrollEnabled" [showsHorizontalScrollIndicator]="_showsHorizontalScrollIndicator" [showsVerticalScrollIndicator]="_showsVerticalScrollIndicator"
+  [scrollEnabled]="_scrollEnabled" [sendMomentumEvents]="_sendMomentumEvents" [showsHorizontalScrollIndicator]="_showsHorizontalScrollIndicator"
+  [showsVerticalScrollIndicator]="_showsVerticalScrollIndicator"
   (topScroll)="_handleScroll($event)" (topScrollBeginDrag)="_handleScrollBeginDrag($event)" (topScrollEndDrag)="_handleScrollEndDrag($event)"
+  (topMomentumScrollBegin)="_handleMomentumScrollBegin($event)" (topMomentumScrollEnd)="_handleMomentumScrollEnd($event)"
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}>
   ${!isAndroid() ? '<ng-content select="RefreshControl"></ng-content>' : ''}
   <native-view [removeClippedSubviews]="_removeClippedSubviews" [style]="_contentContainerStyle" collapsable="false"
@@ -77,12 +79,10 @@ export class ScrollView extends HighLevelComponent{
   @Output() scrollEndDrag: EventEmitter<any> = new EventEmitter();
   /**
    * To be documented
-   * @platform ios
    */
   @Output() momentumScrollBegin: EventEmitter<any> = new EventEmitter();
   /**
    * To be documented
-   * @platform ios
    */
   @Output() momentumScrollEnd: EventEmitter<any> = new EventEmitter();
 
@@ -93,6 +93,7 @@ export class ScrollView extends HighLevelComponent{
   private _keyboardShouldPersistTaps: boolean;
   private _removeClippedSubviews: boolean;
   private _scrollEnabled: boolean;
+  private _sendMomentumEvents: boolean;
   private _showsHorizontalScrollIndicator: boolean;
   private _showsVerticalScrollIndicator: boolean;
   /**
@@ -122,19 +123,23 @@ export class ScrollView extends HighLevelComponent{
   /**
    * To be documented
    */
+  set sendMomentumEvents(value: any) {this._sendMomentumEvents = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
   set showsHorizontalScrollIndicator(value: any) {this._showsHorizontalScrollIndicator = this.processBoolean(value);}
   /**
    * To be documented
    */
   set showsVerticalScrollIndicator(value: any) {this._showsVerticalScrollIndicator = this.processBoolean(value);}
 
-
-  private _sendMomentumEvents: boolean;
+  private _endFillColor: number;
   /**
    * To be documented
    * @platform android
    */
-  set sendMomentumEvents(value: any) {this._sendMomentumEvents = this.processBoolean(value);}
+  set endFillColor(value: string){this._endFillColor = this.processColor(value);}
+
 
   private _alwaysBounceHorizontal: boolean;
   private _alwaysBounceVertical: boolean;

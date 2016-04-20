@@ -43,9 +43,10 @@ export class DrawerLayoutContent {}
     //Non-native
     'keyboardDismissMode',
     //Native
-    'drawerLockMode', 'drawerPosition', 'drawerWidth',
+    'drawerLockMode', 'drawerPosition', 'drawerWidth', 'statusBarBackgroundColor'
   ].concat(GENERIC_INPUTS),
   template: `<native-drawerlayout [drawerLockMode]="_drawerLockMode" [drawerPosition]="_drawerPosition" [drawerWidth]="_drawerWidth"
+  [statusBarBackgroundColor]="_statusBarBackgroundColor"
   (topDrawerClosed)="_handleDrawerClosed($event)" (topDrawerOpened)="_handleDrawerOpened($event)"
   (topDrawerSlide)="_handleDrawerSlide($event)" (topDrawerStateChanged)="_handleDrawerStateChanged($event)"
   ${GENERIC_BINDINGS}>
@@ -87,6 +88,7 @@ export class DrawerLayout extends HighLevelComponent {
   private _drawerLockMode: string;
   private _drawerPosition: number;
   private _drawerWidth: number;
+  private _statusBarBackgroundColor: number;
   /**
    * To be documented
    */
@@ -107,6 +109,10 @@ export class DrawerLayout extends HighLevelComponent {
    * To be documented
    */
   set drawerWidth(value: any) {this._drawerWidth = this.processNumber(value);}
+  /**
+   * To be documented
+   */
+  set statusBarBackgroundColor(value: string){this._statusBarBackgroundColor = this.processColor(value);}
 
   //Event handlers
   _handleDrawerClosed(event: any) {

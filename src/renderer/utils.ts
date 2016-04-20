@@ -17,7 +17,7 @@ import {ActivityIndicator} from '../components/ios/activity_indicator';
 import {Navigator} from '../components/ios/navigator';
 import {ProgressView} from "../components/ios/progress_view";
 import {SegmentedControl} from "../components/ios/segmented_control";
-import {Slider} from "../components/ios/slider";
+import {Slider} from "../components/slider";
 import {DatePicker} from "../components/ios/date_picker";
 import {MapView} from "../components/ios/map_view";
 import {TabBar} from "../components/ios/tabbar";
