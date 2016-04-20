@@ -22,7 +22,7 @@ Creating the sample project:
 * `gulp init` to create the react-native project
 
 Android:
-* `gulp start.android` to launch the sample on the connected device or emulator, and watch sources for auto update (if enabled in F2/shake dev menu)  
+* `gulp start.android` to launch the sample on the connected device or emulator, and watch sources for auto update (if enabled in F2/shake dev menu)
 *use the `Reload JS` button after the initial red screen*
 
 iOS:

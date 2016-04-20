@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var jade = require('gulp-jade');
-var rename = require("gulp-rename");
+var rename = require('gulp-rename');
 var typescript = require('gulp-typescript');
 var watch = require('gulp-watch');
 
