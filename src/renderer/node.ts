@@ -1,6 +1,7 @@
 import {ReactNativeWrapper} from './../wrapper/wrapper';
 import {NgZone, Injector} from 'angular2/core';
 import {Hammer} from './../events/hammer';
+import {SelectorMatcher, CssSelector} from 'angular2/src/compiler/selector';
 
 export var nodeMap: Map<number, Node> = new Map<number, Node>();
 
@@ -211,6 +212,61 @@ export abstract class Node {
 
   dispatchCommand(command: string, params: any = null) {
     this.rnWrapper.dispatchCommand(this.nativeTag, command, params);
+  }
+
+  getElementByTestId(testId: string): Node {
+    return this.querySelector('#' + testId);
+  }
+
+  querySelectorAll(selector: string): Array<Node> {
+    var res: Array<Node> = [];
+    var _recursive = (result: Array<Node>, node: Node, selector: string, matcher: SelectorMatcher) => {
+      var cNodes = node.children;
+      if (cNodes && cNodes.length > 0) {
+        for (var i = 0; i < cNodes.length; i++) {
+          var childNode = cNodes[i];
+          if (childNode.isVirtual && this._elementMatches(childNode, selector, matcher)) {
+            result.push(childNode);
+          }
+          _recursive(result, childNode, selector, matcher);
+        }
+      }
+    };
+    var matcher = new SelectorMatcher();
+    matcher.addSelectables(CssSelector.parse(selector));
+    _recursive(res, this, selector, matcher);
+    return res;
+  }
+
+  querySelector(selector: string): Node {
+    return this.querySelectorAll(selector)[0];
+  }
+
+  _elementMatches(node: Node, selector: string, matcher: SelectorMatcher = null): boolean {
+    if (selector === '*') {
+      return true;
+    }
+    var result = false;
+    if (selector && selector.charAt(0) == "#") {
+      result = node.properties['testID'] == selector.substring(1);
+    } else if (selector) {
+      var result = false;
+      if (matcher == null) {
+        matcher = new SelectorMatcher();
+        matcher.addSelectables(CssSelector.parse(selector));
+      }
+
+      var cssSelector = new CssSelector();
+      cssSelector.setElement(node.tagName);
+      if (node.properties) {
+        for (var propName in node.properties) {
+          cssSelector.addAttribute(propName, node.properties[propName]);
+        }
+      }
+
+      matcher.match(cssSelector, function(selector: CssSelector, cb: any) { result = true; });
+    }
+    return result;
   }
 }
 
