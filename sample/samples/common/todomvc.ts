@@ -27,7 +27,7 @@ class Todo {
 <View [styleSheet]="styles.row">
 <Text [styleSheet]="[styles.tick, item.active ? styles.tickOff : styles.tickOn]" opacityFeedback (tap)="toggle($event)">{{item.active ? "[  ]" : "[x]"}}</Text>
 <Text *ngIf="!item.edited" [styleSheet]="[styles.main, item.active ? styles.mainOff : styles.mainOn]" (doubletap)="startEdit()">{{item.value}}</Text>
-<TextInput *ngIf="item.edited" [styleSheet]="styles.editor" [text]="item.value" (submit)="stopEdit($event)"></TextInput>
+<TextInput *ngIf="item.edited" [styleSheet]="styles.editor" [value]="item.value" (submit)="stopEdit($event)" autoFocus="true"></TextInput>
 <Text [styleSheet]="styles.cross" opacityFeedback (tap)="delete()">X</Text>
 </View>
 `
@@ -58,10 +58,13 @@ export class TodoItem {
 
   stopEdit(text: string) {
     this.textInput.blurTextInput();
-    this.item.edited = false;
     if (text && text.length > 0) {
       this.item.value = text;
     }
+    //Workaround to be removed once EventEmitter is synchronous
+    setTimeout(() => {
+      this.item.edited = false;
+    }, 0);
   }
 
   _getStyles() {
@@ -165,6 +168,7 @@ export class TodoMVC {
       this.leftCount++;
     }
     this.filterTodos();
+    this.textInput.value = '';
     this.textInput.blurTextInput();
   }
 
