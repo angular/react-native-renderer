@@ -8,7 +8,8 @@ var ANDROID_INPUTS: Array<string> = ['numberOfLines', 'underlineColorAndroid'];
 var IOS_INPUTS: Array<string> = ['clearButtonMode', 'clearTextOnFocus', 'enablesReturnKeyAutomatically',
   'keyboardAppearance', 'returnKeyType'];
 
-var ANDROID_BINDINGS: string = `[numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid" (topTextInput)="_handleKeyPress($event)"`;
+var ANDROID_BINDINGS: string = `[numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid" (topTextInput)="_handleKeyPress($event)"
+  mostRecentEventCount="0"`;
 var IOS_BINDINGS: string = `[clearButtonMode]="_clearButtonMode" [clearTextOnFocus]="_clearTextOnFocus"
   [enablesReturnKeyAutomatically]="_enablesReturnKeyAutomatically" [keyboardAppearance]="_keyboardAppearance"
   [returnKeyType]="_returnKeyType" (topKeyPress)="_handleKeyPress($event)"`;
@@ -31,12 +32,12 @@ export class Sample {
   selector: 'TextInput',
   inputs: [
     //Non-native
-    'autoFocus',
+    'autoFocus', 'value',
     //Native
     'autoCapitalize', 'autoCorrect', 'blurOnSubmit', 'editable', 'keyboardType', 'maxLength', 'multiline',
     'password', 'placeholder', 'placeholderTextColor', 'selectionColor', 'selectTextOnFocus'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
-  template: `<native-textinput [text]="_getText()" [autoCapitalize]="_autoCapitalize" [autoCorrect]="_autoCorrect" [blurOnSubmit]="_blurOnSubmit" [editable]="_editable" [keyboardType]="_keyboardType"
+  template: `<native-textinput [text]="_nativeValue" [autoCapitalize]="_autoCapitalize" [autoCorrect]="_autoCorrect" [blurOnSubmit]="_blurOnSubmit" [editable]="_editable" [keyboardType]="_keyboardType"
   [maxLength]="_maxLength" [multiline]="_multiline" [password]="_password" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor"
   [selectionColor]="_selectionColor" [selectTextOnFocus]="_selectTextOnFocus"
   (tap)="focusTextInput()" (topFocus)="_handleFocus()" (topChange)="_handleChange($event)" (topSubmitEditing)="_handleSubmitEditing($event)"
@@ -81,12 +82,20 @@ export class TextInput extends HighLevelComponent implements OnInit {
 
   //Properties
   @Input() defaultValue: string;
-  @Input() value: string = null;
   private _autoFocus: boolean = false;
+  private _value: string = null;
+  private _nativeValue: string = null;
   /**
    * To be documented
    */
   set autoFocus(value: any) { this._autoFocus = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
+  set value(value: string) {
+    this._value = value;
+    this._nativeValue = value;
+  }
 
   private _autoCapitalize : string;
   private _autoCorrect: boolean;
@@ -199,9 +208,11 @@ export class TextInput extends HighLevelComponent implements OnInit {
   }
 
   _handleChange(event: any) {
+    this._nativeElement.children[0].setProperty('mostRecentEventCount', event.eventCount);
+
     this.change.emit(event.text);
-    if (this.value && this.value != event.text) {
-      this._nativeElement.children[0].setProperty('text', this.value);
+    if (event.text != this._nativeValue) {
+      this._nativeValue = event.text;
     }
   }
 
@@ -243,9 +254,10 @@ export class TextInput extends HighLevelComponent implements OnInit {
         this.focusTextInput();
       }, 0);
     }
+    this._nativeValue = this._getText();
   }
 
   _getText(): string {
-    return (this.value && this.value.length > 0) ? this.value : this.defaultValue;
+    return (this._value && this._value.length > 0) ? this._value : this.defaultValue;
   }
 }

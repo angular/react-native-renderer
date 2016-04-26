@@ -23,7 +23,7 @@ describe('TextInput component', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{"mostRecentEventCount":0},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
@@ -35,8 +35,8 @@ describe('TextInput component', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{"text":"bar","accessible":true,"testID":"foo"},' +
-          'CREATE+4+native-textinput+{"text":"baz","accessible":true,"testID":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+2+4+1');
+          'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{"mostRecentEventCount":0,"text":"bar","accessible":true,"testID":"foo"},' +
+          'CREATE+4+native-textinput+{"mostRecentEventCount":0,"text":"baz","accessible":true,"testID":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+2+4+1');
       });
   }));
 
@@ -47,7 +47,7 @@ describe('TextInput component', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{"flex":1,"collapse":true,"width":100},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{"mostRecentEventCount":0,"flex":1,"collapse":true,"width":100},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   }));
 
@@ -60,14 +60,14 @@ describe('TextInput component', () => {
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
-        fireFunctionalEvent('topChange', target, {text: "foo"});
+        fireFunctionalEvent('topChange', target, {text: "foo", eventCount: 1});
         fixture.detectChanges();
 
         return new Promise((resolve: any) => {
           setTimeout(() => {
             rootRenderer.executeCommands();
             expect(fixture.componentInstance.log.join(',')).toEqual('foo');
-            expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-textinput+{"text":"bar"}');
+            expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-textinput+{"mostRecentEventCount":1},UPDATE+3+native-textinput+{"text":"foo"}');
             resolve();
           }, 150);
         });
