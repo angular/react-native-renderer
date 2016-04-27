@@ -7,8 +7,8 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component"
 var ANDROID_INPUTS: Array<string> = ['enabled', 'mode', 'prompt'];
 var IOS_INPUTS: Array<string> = ['itemStyle'];
 
-var ANDROID_BINDINGS: string = `[enabled]="_enabled" [mode]="_mode" [prompt]="_prompt" (topSelect)="_handleSelect($event)"`;
-var IOS_BINDINGS: string = `[itemStyle]="_itemStyle" onChange="true" (topChange)="_handleSelect($event)"`;
+var ANDROID_BINDINGS: string = `[enabled]="_enabled" [mode]="_mode" [prompt]="_prompt" (topSelect)="_handleSelect($event)" [selected]="_selectedValue"`;
+var IOS_BINDINGS: string = `[itemStyle]="_itemStyle" onChange="true" (topChange)="_handleSelect($event)" [selectedIndex]="_selectedValue"`;
 
 /**
  * A component for displaying a picker.
@@ -34,9 +34,9 @@ export class Sample {
     'items', 'selectedValue',
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `
-  <native-dialogpicker *ngIf="_mode == 'dialog'" [items]="_items" [selected]="_selectedValue"
+  <native-dialogpicker *ngIf="_mode == 'dialog'" [items]="_items"
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-dialogpicker>
-  <native-dropdownpicker *ngIf="_mode == 'dropdown'" [items]="_items" [selected]="_selectedValue"
+  <native-dropdownpicker *ngIf="_mode == 'dropdown'" [items]="_items"
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-dropdownpicker>`
 })
 export class Picker extends HighLevelComponent {
