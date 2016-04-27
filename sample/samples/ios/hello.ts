@@ -18,7 +18,7 @@ import {StyleSheet} from 'react-native';
     Shake or press cmd + D for dev menu
   </Text>
   <View [style]="{flexDirection: 'row', marginTop: 20}">
-    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/WidgetsList']">Widgets</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/WidgetsList']">Components</Text>
     <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/WebViewApp']">Webview</Text>
   </View>
   <View [style]="{flexDirection: 'row', marginTop: 10}">
