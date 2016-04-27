@@ -110,7 +110,7 @@ describe('DrawerLayout component (Android)', () => {
         rootRenderer.executeCommands();
         mock.clearLogs();
 
-        fixture.debugElement.componentInstance.drawerLayout.closeDrawer();
+        fixture.componentInstance.drawerLayout.closeDrawer();
         expect(mock.commandLogs.toString()).toEqual(
           'COMMAND+3+closeDrawer');
       });

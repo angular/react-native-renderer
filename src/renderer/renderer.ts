@@ -117,7 +117,7 @@ export class ReactNativeRenderer implements Renderer {
     return node;
   }
 
-  _createElementCommand(node: Node): void {
+  private _createElementCommand(node: Node): void {
     this._rootRenderer.addCreateCommand(node);
     node.isCreated = true;
   }
@@ -142,7 +142,7 @@ export class ReactNativeRenderer implements Renderer {
     return node;
   }
 
-  _createTextCommand(node: TextNode): void {
+  private _createTextCommand(node: TextNode): void {
     this._rootRenderer.addCreateCommand(node, {text: node.properties['text']});
     var cmd = new NativeCommandCreate(node);
     node.isCreated = true;
@@ -177,7 +177,7 @@ export class ReactNativeRenderer implements Renderer {
     }
   }
 
-  _createNativeRecursively(node: Node, isRoot: boolean = true): boolean {
+  private _createNativeRecursively(node: Node, isRoot: boolean = true): boolean {
     var didCreate: boolean = false;
     if (!node.isCreated) {
       if (!node.isVirtual) {
@@ -243,10 +243,6 @@ export class ReactNativeRenderer implements Renderer {
 
   setBindingDebugInfo(renderElement: Node, propertyName: string, propertyValue: string): void {
     this.setElementProperty(renderElement, propertyName, propertyValue);
-  }
-
-  setElementDebugInfo(renderElement: Node, info: any) {
-    renderElement.setDebugInfo(info);
   }
 
   setElementClass(renderElement:any, className:string, isAdd:boolean):any {

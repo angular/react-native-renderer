@@ -6,7 +6,8 @@ import {
   expect
 } from 'angular2/testing';
 import {Component} from 'angular2/core';
-import {Router, RouteConfig, LocationStrategy, RouterOutlet} from 'angular2/router';
+import {Router, RouteConfig, RouterOutlet} from 'angular2/router';
+import {LocationStrategy} from 'angular2/platform/common';
 import {ReactNativeRootRenderer} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {View} from "./../../src/components/view";

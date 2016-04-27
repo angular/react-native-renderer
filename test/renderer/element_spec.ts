@@ -146,13 +146,13 @@ describe('Element', () => {
         'CREATE+2+test-cmp+{},CREATE+3+native-text+{},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+3+4+0,ATTACH+2+3+0');
 
       mock.clearLogs();
-      fixture.debugElement.componentInstance.b = false;
+      fixture.componentInstance.b = false;
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual('DETACH+2+0');
 
       mock.clearLogs();
-      fixture.debugElement.componentInstance.b = true;
+      fixture.componentInstance.b = true;
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual('CREATE+5+native-text+{},CREATE+6+native-rawtext+{"text":"foo"},ATTACH+5+6+0,ATTACH+2+5+0');
@@ -168,23 +168,23 @@ describe('Element', () => {
       expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1,2,3');
 
       mock.clearLogs();
-      fixture.debugElement.componentInstance.a.splice(1, 1);
+      fixture.componentInstance.a.splice(1, 1);
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual('DETACH+2+1'); //MOVE+2+1+1 is removed for optimization
       expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1,3');
 
-      fixture.debugElement.componentInstance.a.pop();
+      fixture.componentInstance.a.pop();
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1');
 
-      fixture.debugElement.componentInstance.a = [];
+      fixture.componentInstance.a = [];
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('');
 
-      fixture.debugElement.componentInstance.a.push(8);
+      fixture.componentInstance.a.push(8);
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('8');

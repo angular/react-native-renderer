@@ -1,6 +1,7 @@
-import {Component, Inject, Input, Output, EventEmitter, NgZone, DynamicComponentLoader, ElementRef, ComponentRef} from 'angular2/core';
+import {Component, Inject, Input, Output, EventEmitter, NgZone, DynamicComponentLoader, ElementRef, ComponentRef, ViewChild, ViewContainerRef, AfterViewInit} from 'angular2/core';
 import {NgFor, NgIf} from 'angular2/common';
-import {Router, ComponentInstruction, LocationStrategy} from 'angular2/router';
+import {Router, ComponentInstruction} from 'angular2/router';
+import {LocationStrategy} from 'angular2/platform/common';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../component";
 import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
 import {ReactNativeWrapper} from "../../wrapper/wrapper";
@@ -18,7 +19,9 @@ import {Node} from "../../renderer/node";
     <dummy-anchor-for-dynamic-loader #target></dummy-anchor-for-dynamic-loader>
   </native-navitem>`
 })
-class NavigatorItem extends HighLevelComponent {
+class NavigatorItem extends HighLevelComponent implements AfterViewInit {
+  @ViewChild('target', {read: ViewContainerRef}) target: ViewContainerRef;
+
   @Input() itemWrapperStyle: any;
   @Input() navigationBarHidden: boolean;
   @Input() shadowHidden: boolean;
@@ -40,6 +43,8 @@ class NavigatorItem extends HighLevelComponent {
   @Output() leftButtonPress: EventEmitter<ComponentInstruction> = new EventEmitter();
   @Output() rightButtonPress: EventEmitter<ComponentInstruction> = new EventEmitter();
   @Output() componentLoad: EventEmitter<any> = new EventEmitter();
+
+  private _toBeLoaded: any = null;
 
   constructor(private loader: DynamicComponentLoader, private elementRef: ElementRef, @Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
     super(wrapper);
@@ -72,9 +77,7 @@ class NavigatorItem extends HighLevelComponent {
     if (data['rightButtonIcon']) {this._rightButtonIcon = this.resolveAssetSource(data['rightButtonIcon']);}
     if (data['wrapperStyle']) {this._wrapperStyle = data['wrapperStyle'];}
 
-    this.loader.loadIntoLocation(value.componentType, this.elementRef, 'target').then((componentRef: ComponentRef) => {
-      this.componentLoad.emit(componentRef.instance);
-    });
+    this._toBeLoaded = value.componentType;
   }
 
   _handleLeftButtonPress() {
@@ -83,6 +86,12 @@ class NavigatorItem extends HighLevelComponent {
 
   _handleRightButtonPress() {
    this.rightButtonPress.emit(this._instruction);
+  }
+
+  ngAfterViewInit() {
+    this.loader.loadNextToLocation(this._toBeLoaded, this.target).then((componentRef: ComponentRef) => {
+      this.componentLoad.emit(componentRef.instance);
+    });
   }
 }
 

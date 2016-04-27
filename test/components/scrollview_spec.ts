@@ -111,7 +111,7 @@ describe('ScrollView component', () => {
         rootRenderer.executeCommands();
         mock.clearLogs();
 
-        fixture.debugElement.componentInstance.scrollView.scrollTo(42);
+        fixture.componentInstance.scrollView.scrollTo(42);
         expect(mock.commandLogs.toString()).toEqual(
           'COMMAND+3+scrollTo+42');
       });

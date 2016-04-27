@@ -60,7 +60,7 @@ describe('View component', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0');
 
         mock.clearLogs();
-        fixture.debugElement.componentInstance.view.setPressed(true);
+        fixture.componentInstance.view.setPressed(true);
         expect(mock.commandLogs.toString()).toEqual(
           'COMMAND+3+setPressed+true');
       });

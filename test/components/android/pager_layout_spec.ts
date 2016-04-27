@@ -104,7 +104,7 @@ describe('PagerLayout component (Android)', () => {
         rootRenderer.executeCommands();
         mock.clearLogs();
 
-        fixture.debugElement.componentInstance.pagerLayout.setPage(1);
+        fixture.componentInstance.pagerLayout.setPage(1);
         expect(mock.commandLogs.toString()).toEqual('COMMAND+3+setPage+1');
       });
   }));

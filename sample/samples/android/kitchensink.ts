@@ -1,6 +1,7 @@
 import {Component, ElementRef, ViewChild} from 'angular2/core';
 import {NgFor} from 'angular2/common';
-import {Router, RouteConfig, LocationStrategy} from 'angular2/router';
+import {Router, RouteConfig} from 'angular2/router';
+import {LocationStrategy} from 'angular2/platform/common';
 import {StyleSheet, BackAndroid, Alert, NativeModules, processColor} from 'react-native';
 import {DrawerLayout, Toolbar, RippleFeedback, ROUTER_DIRECTIVES} from 'angular2-react-native';
 

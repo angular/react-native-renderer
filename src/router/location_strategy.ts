@@ -1,5 +1,5 @@
 import {Injectable, EventEmitter, NgZone} from 'angular2/core';
-import {LocationStrategy} from 'angular2/router';
+import {LocationStrategy} from 'angular2/platform/common';
 
 @Injectable()
 export class ReactNativeLocationStrategy extends LocationStrategy {

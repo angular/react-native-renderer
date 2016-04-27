@@ -80,7 +80,7 @@ describe('WebView component', () => {
         rootRenderer.executeCommands();
         mock.clearLogs();
 
-        fixture.debugElement.componentInstance.webView.goBack();
+        fixture.componentInstance.webView.goBack();
         expect(mock.commandLogs.toString()).toEqual(
           'COMMAND+3+goBack');
       });
