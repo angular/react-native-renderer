@@ -13,7 +13,7 @@ import {AnimationApp} from "../common/animation";
 
 @RouteConfig([
   { path: '/', component: HelloApp, as: 'HelloApp', data: {title: 'Kitchen Sink', backButtonTitle: 'Home'}},
-  { path: '/widgets', component: WidgetsList, as: 'WidgetsList', data: {title: 'Widgets'}},
+  { path: '/widgets', component: WidgetsList, as: 'WidgetsList', data: {title: 'Components'}},
   { path: '/webview', component: WebViewApp, as: 'WebViewApp', data: {title: 'WebView'}},
   { path: '/apis', component: APIsApp, as: 'APIsApp', data: {title: 'APIs'}},
   { path: '/todomvc', component: TodoMVC, as: 'TodoMVC', data: {title: 'TodoMVC', rightButtonTitle: 'More'}},

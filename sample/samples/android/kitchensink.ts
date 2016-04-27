@@ -52,7 +52,7 @@ export class KitchenSinkApp {
   @ViewChild(Toolbar) toolbar: Toolbar;
   hamburgerIcon: any = require('../../assets/icon_hamburger.png');
   moreIcon: any = require('../../assets/icon_more.png');
-  menuItems: Array<any> = [{name: 'Hello world', as: 'HelloApp'}, {name: 'Widgets', as: 'WidgetsList'}, {name: 'WebView', as: 'WebViewApp'}, {name: 'APIs', as: 'APIsList'},
+  menuItems: Array<any> = [{name: 'Hello world', as: 'HelloApp'}, {name: 'Components', as: 'WidgetsList'}, {name: 'WebView', as: 'WebViewApp'}, {name: 'APIs', as: 'APIsList'},
     {name: 'TodoMVC', as: 'TodoMVC'}, {name: 'Gestures', as: 'GesturesApp'}, {name: 'Http', as: 'HttpApp'}, {name: 'Animation', as: 'AnimationApp'}]
   styles: any;
   _el : any = null;
