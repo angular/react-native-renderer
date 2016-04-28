@@ -226,7 +226,11 @@ gulp.task('bundle', ['!pre-bundle'], function(done) {
     {}).catch(function (e) { console.log(e); });
 });
 
-gulp.task('!publish.clean', function (done) {
+gulp.task('!tmp.clean', function (done) {
+  var del = require('del');
+  del([PATHS.tmp], done);
+});
+gulp.task('!publish.clean', ['!tmp.clean'], function (done) {
   var del = require('del');
   del([PATHS.publish], done);
 });
