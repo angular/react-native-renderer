@@ -83,7 +83,7 @@ describe('TextInput component', () => {
         rootRenderer.executeCommands();
         mock.clearLogs();
 
-        fixture.debugElement.componentInstance.textInput.focusTextInput();
+        fixture.componentInstance.textInput.focusTextInput();
         expect(mock.commandLogs.toString()).toEqual(
           'COMMAND+3+focusTextInput');
       });

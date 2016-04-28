@@ -197,7 +197,9 @@ export class NativeCommandDetach extends NativeCommand {
     if (toDetach) {
       if (toDetach.toBeDestroyed) {
         var nativeIndex = parent.nativeChildren.indexOf(toDetach.nativeTag);
-        NativeCommand.addToMergers(parent, null, null, toDetach.nativeTag);
+        if (toDetach.getAncestorDestroyed() == null) {
+          NativeCommand.addToMergers(parent, null, null, toDetach.nativeTag);
+        }
         parent.nativeChildren.splice(nativeIndex, 1);
         toDetach.destroyNative();
       }

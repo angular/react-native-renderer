@@ -24,7 +24,7 @@ describe('Node', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
 
-        var root:Node = <Node>fixture.debugElement;
+        var root:Node = <Node>fixture.nativeElement;
         var res = root.getElementByTestId('bar');
         expect(res.tagName).toEqual('Text');
         expect(res.properties['testID']).toEqual('bar');
@@ -38,7 +38,7 @@ describe('Node', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
 
-        var root:Node = <Node>fixture.debugElement;
+        var root:Node = <Node>fixture.nativeElement;
         var res = root.querySelector('Text');
         expect(res.tagName).toEqual('Text');
         expect(res.properties['testID']).toEqual('foo');
@@ -52,7 +52,7 @@ describe('Node', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
 
-        var root:Node = <Node>fixture.debugElement;
+        var root:Node = <Node>fixture.nativeElement;
         var res = root.querySelectorAll('Text');
         expect(res.length).toEqual(2);
         expect(res[0].tagName).toEqual('Text');
@@ -69,7 +69,7 @@ describe('Node', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
 
-        var root:Node = <Node>fixture.debugElement;
+        var root:Node = <Node>fixture.nativeElement;
         var res = root.querySelectorAll('[testID=foo]');
         expect(res.length).toEqual(1);
         expect(res[0].tagName).toEqual('Text');

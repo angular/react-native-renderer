@@ -77,13 +77,13 @@ describe('Component without host', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0');
 
         mock.clearLogs();
-        fixture.debugElement.componentInstance.b = false;
+        fixture.componentInstance.b = false;
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('DETACH+2+0');
 
         mock.clearLogs();
-        fixture.debugElement.componentInstance.b = true;
+        fixture.componentInstance.b = true;
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('CREATE+4+native-view+{},ATTACH+2+4+0');
@@ -100,13 +100,13 @@ describe('Component without host', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
 
         mock.clearLogs();
-        fixture.debugElement.componentInstance.b = false;
+        fixture.componentInstance.b = false;
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('DETACH+3+0');
 
         mock.clearLogs();
-        fixture.debugElement.componentInstance.b = true;
+        fixture.componentInstance.b = true;
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('CREATE+5+native-view+{},ATTACH+3+5+0');
@@ -123,7 +123,7 @@ describe('Component without host', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+2+4+1');
 
         mock.clearLogs();
-        fixture.debugElement.componentInstance.a.pop();
+        fixture.componentInstance.a.pop();
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('DETACH+2+1');
@@ -140,7 +140,7 @@ describe('Component without host', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},CREATE+5+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+2+4+1,ATTACH+2+5+2');
 
         mock.clearLogs();
-        fixture.debugElement.componentInstance.a.pop();
+        fixture.componentInstance.a.pop();
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('DETACH+2+2');

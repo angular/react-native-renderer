@@ -13,6 +13,7 @@ export abstract class Node {
   public isVirtual: boolean = false;
   public toBeDestroyed: boolean = false;
   public toBeMoved: boolean = false;
+  public isDestroyed: boolean = false;
 
   public nativeTag: number = -1;
   public isCreated: boolean = false;
@@ -21,20 +22,7 @@ export abstract class Node {
   public eventListeners: Map<string, Array<Function>> = new Map<string, Array<Function>>();
   public _hammer: any = null;
 
-  //Debug info
-  providerTokens: any[];
-  locals: Map<string, any>;
-  injector: Injector;
-  componentInstance: any;
-
   constructor(public rnWrapper: ReactNativeWrapper, public zone: NgZone) {}
-
-  setDebugInfo(info: any) {
-    this.injector = info.injector;
-    this.providerTokens = info.providerTokens;
-    this.locals = info.locals;
-    this.componentInstance = info.component;
-  }
 
   attachTo(parent: Node): void {
     if (parent) {
@@ -87,6 +75,14 @@ export abstract class Node {
     return next;
   }
 
+  getAncestorDestroyed(): Node {
+    var next = this.parent;
+    while (next && !next.isDestroyed) {
+      next = next.parent
+    }
+    return next;
+  }
+
   getFirstCreatedChild() : Node {
     var result: Node = null
     for (var i = 0; i < this.children.length; i++) {
@@ -122,6 +118,7 @@ export abstract class Node {
   }
 
   destroyNative() {
+    this.isDestroyed = true;
     this.isCreated = false;
     nodeMap.delete(this.nativeTag);
     this.nativeTag = -1;
@@ -242,7 +239,7 @@ export abstract class Node {
     return this.querySelectorAll(selector)[0];
   }
 
-  _elementMatches(node: Node, selector: string, matcher: SelectorMatcher = null): boolean {
+  private _elementMatches(node: Node, selector: string, matcher: SelectorMatcher = null): boolean {
     if (selector === '*') {
       return true;
     }

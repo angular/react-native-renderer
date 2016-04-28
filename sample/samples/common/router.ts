@@ -1,5 +1,6 @@
 import {Component} from 'angular2/core';
-import {RouteConfig, LocationStrategy} from 'angular2/router';
+import {RouteConfig} from 'angular2/router';
+import {LocationStrategy} from 'angular2/platform/common';
 import {ROUTER_DIRECTIVES} from 'angular2-react-native';
 
 @Component({

@@ -1,9 +1,9 @@
 import {TestComponentBuilder, MockApplicationRef} from 'angular2/testing';
 import {RootRenderer, provide, ApplicationRef} from 'angular2/core';
-import {ROUTER_PROVIDERS, ROUTER_PRIMARY_COMPONENT, LocationStrategy} from 'angular2/router';
+import {ROUTER_PROVIDERS, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
+import {LocationStrategy} from 'angular2/platform/common';
 import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../renderer/renderer';
-import {CustomTestComponentBuilder} from "./test_component_builder";
 import {ReactNativeLocationStrategy} from "../router/location_strategy";
 import {ReactNativeWrapper} from "../wrapper/wrapper";
 import {getAmbientComponents} from "../renderer/utils";
@@ -19,9 +19,7 @@ export function getTestingProviders(mock: ReactNativeWrapper, testCpt: any): Arr
     ReactNativeElementSchemaRegistry,
     provide(ElementSchemaRegistry, {useExisting: ReactNativeElementSchemaRegistry}),
     provide(ReactNativeRootRenderer, {useClass: ReactNativeRootRenderer_}),
-    provide(RootRenderer, {useExisting: ReactNativeRootRenderer}),
-    CustomTestComponentBuilder,
-    provide(TestComponentBuilder, {useExisting: CustomTestComponentBuilder})
+    provide(RootRenderer, {useExisting: ReactNativeRootRenderer})
   ].concat(getAmbientComponents());
 }
 

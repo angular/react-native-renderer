@@ -90,7 +90,7 @@ describe('TabBar component (iOS)', () => {
           setTimeout(() => {
             fixture.detectChanges();
             rootRenderer.executeCommands();
-            expect(fixture.debugElement.componentInstance.s).toEqual(2);
+            expect(fixture.componentInstance.s).toEqual(2);
             expect(mock.commandLogs.toString()).toEqual(
               'CREATE+7+native-view+{"margin":2},UPDATE+4+native-tabbaritem+{"selected":false},UPDATE+5+native-tabbaritem+{"selected":true},ATTACH+5+7+0');
             resolve();
