@@ -115,7 +115,7 @@ describe('Component without host', () => {
 
   it('should support ngFor', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View *ngFor="#item of a"></View>`)
+    return tcb.overrideTemplate(TestComponent, `<View *ngFor="let item of a"></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -132,7 +132,7 @@ describe('Component without host', () => {
 
   it('should support ngFor on an element next to a component', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View></View><native-view *ngFor="#item of a"></native-view>`)
+    return tcb.overrideTemplate(TestComponent, `<View></View><native-view *ngFor="let item of a"></native-view>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();

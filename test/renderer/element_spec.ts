@@ -161,7 +161,7 @@ describe('Element', () => {
 
   it('should support NgFor', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<native-text *ngFor="#item of a">{{item}}</native-text>`)
+    return tcb.overrideTemplate(TestComponent, `<native-text *ngFor="let item of a">{{item}}</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
@@ -195,7 +195,7 @@ describe('Element', () => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `
 <native-view>
-  <template ngFor #item [ngForOf]="a">
+  <template ngFor let-item [ngForOf]="a">
     <native-text>{{item}}</native-text>
   </template>
 </native-view>`)
@@ -208,7 +208,7 @@ describe('Element', () => {
 
   it('should support NgFor with several children and right order', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<template ngFor #item [ngForOf]="d"><native-text>{{item.a}}</native-text><native-text>{{item.b}}</native-text></template>`)
+    return tcb.overrideTemplate(TestComponent, `<template ngFor let-item [ngForOf]="d"><native-text>{{item.a}}</native-text><native-text>{{item.b}}</native-text></template>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();

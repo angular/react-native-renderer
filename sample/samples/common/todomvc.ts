@@ -123,7 +123,7 @@ export class TodoItem {
   <TextInput [styleSheet]="styles.input" text="" placeholder="What needs to be done?" (submit)="createTodo($event)"></TextInput>
 </View>
 <ScrollView [styleSheet]="styles.scroll">
-  <template ngFor #todo [ngForOf]="filteredTodos">
+  <template ngFor let-todo [ngForOf]="filteredTodos">
     <todo-item [item]="todo" (toggled)="updateCount($event)" (deleted)="deleteTodo($event)"></todo-item>
   </template>
 </ScrollView>

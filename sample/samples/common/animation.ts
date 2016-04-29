@@ -94,7 +94,7 @@ export class Ball {
   directives: [NgFor, Ball],
   template: `
 <Switch (change)="withTodoMVC=$event"></Switch>
-<ball *ngFor="#ball of balls" x="{{ball.x}}" y="{{ball.y}}" color="{{ball.color}}" radius="{{ball.radius}}" [withTodoMVC]="withTodoMVC" (tap)="moveAll()" (startMove)="startMove()"></ball>
+<ball *ngFor="let ball of balls" x="{{ball.x}}" y="{{ball.y}}" color="{{ball.color}}" radius="{{ball.radius}}" [withTodoMVC]="withTodoMVC" (tap)="moveAll()" (startMove)="startMove()"></ball>
 `
 })
 export class AnimationApp {
