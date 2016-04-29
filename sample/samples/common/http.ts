@@ -11,7 +11,7 @@ import {TextInput} from 'angular2-react-native';
   directives: [NgFor],
   template: `
 <TextInput placeholder="Search Wikipedia" (submit)="sendXHR($event)"></TextInput>
-<Text *ngFor="#page of pages">{{page}}</Text>
+<Text *ngFor="let page of pages">{{page}}</Text>
 `
 })
 export class HttpApp {

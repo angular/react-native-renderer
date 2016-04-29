@@ -150,7 +150,7 @@ export class Sample {
   template: `<native-navigator *ngIf="_stack.length > 0" [requestedTopOfStack]="_requestedTopOfStack"
   onNavigationComplete="true" (topNavigationComplete)="_handleNavigationComplete($event)"
   ${GENERIC_BINDINGS}>
-    <NavigatorItem *ngFor="#instruction of _stack" [itemWrapperStyle]="_itemWrapperStyle"
+    <NavigatorItem *ngFor="let instruction of _stack" [itemWrapperStyle]="_itemWrapperStyle"
     [barTintColor]="_barTintColor" [navigationBarHidden]="_navigationBarHidden"
     [shadowHidden]="_shadowHidden" [tintColor]="_tintColor" [titleTextColor]="_titleTextColor" [translucent]="_translucent"
     [instruction]="instruction"

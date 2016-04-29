@@ -29,7 +29,7 @@ import {AnimationApp} from './../common/animation';
   </DrawerLayoutSide>
   <DrawerLayoutContent>
     <View [styleSheet]="styles.drawer">
-      <View *ngFor="#item of menuItems" [styleSheet]="styles.menuItem" [routerLink]="['/' + item.as]" rippleFeedback="#00a9e0">
+      <View *ngFor="let item of menuItems" [styleSheet]="styles.menuItem" [routerLink]="['/' + item.as]" rippleFeedback="#00a9e0">
         <Text [styleSheet]="styles.menuText">{{item.name}}</Text>
       </View>
     </View>

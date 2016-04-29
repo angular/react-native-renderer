@@ -48,7 +48,7 @@ import {StyleSheet} from 'react-native';
 </View>
 <ScrollView [style]="{flex: 12}">
   <View [styleSheet]="styles.logs">
-    <Text *ngFor="#log of logs">{{log}}</Text>
+    <Text *ngFor="let log of logs">{{log}}</Text>
   </View>
 </ScrollView>
 `
