@@ -83,7 +83,7 @@ import {TextInput} from &#39;angular2-react-native&#39;;
   directives: [NgFor],
   template: `
 &lt;TextInput placeholder=&quot;Search Wikipedia&quot; (submit)=&quot;sendXHR($event)&quot;&gt;&lt;/TextInput&gt;
-&lt;Text *ngFor=&quot;#page of pages&quot;&gt;{{page}}&lt;/Text&gt;
+&lt;Text *ngFor=&quot;let page of pages&quot;&gt;{{page}}&lt;/Text&gt;
 `
 })
 export class Example {
