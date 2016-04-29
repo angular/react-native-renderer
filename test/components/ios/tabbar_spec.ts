@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -20,42 +20,42 @@ describe('TabBar component (iOS)', () => {
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
-  it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<TabBar></TabBar>`)
+    tcb.overrideTemplate(TestComponent, `<TabBar></TabBar>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-tabbar+{"flex":1},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<TabBar [accessible]="true" testID="foo" translucent="true"></TabBar>`)
+    tcb.overrideTemplate(TestComponent, `<TabBar [accessible]="true" testID="foo" translucent="true"></TabBar>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-tabbar+{"translucent":true,"accessible":true,"testID":"foo","flex":1},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<TabBar [styleSheet]="20" [style]="{margin: 42}"></TabBar>`)
+    tcb.overrideTemplate(TestComponent, `<TabBar [styleSheet]="20" [style]="{margin: 42}"></TabBar>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-tabbar+{"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with items', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with items', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `
+    tcb.overrideTemplate(TestComponent, `
     <TabBar>
       <TabBarItem selected="true"><View [style]="{margin: 1}"></View></TabBarItem>
       <TabBarItem><View [style]="{margin: 2}"></View></TabBarItem>
@@ -68,11 +68,11 @@ describe('TabBar component (iOS)', () => {
           'CREATE+5+native-tabbaritem+{"onPress":true,"position":"absolute","top":0,"right":0,"bottom":0,"left":0},CREATE+6+native-view+{"margin":1},' +
           'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1,ATTACH+4+6+0');
       });
-  }));
+  })));
 
-  it('should fire select event and switch tab', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should fire select event and switch tab', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `
+    tcb.overrideTemplate(TestComponent, `
     <TabBar>
       <TabBarItem [selected]="s == 1" (select)="s = 1"><View [style]="{margin: 1}"></View></TabBarItem>
       <TabBarItem [selected]="s == 2" (select)="s = 2"><View [style]="{margin: 2}"></View></TabBarItem>
@@ -98,7 +98,7 @@ describe('TabBar component (iOS)', () => {
         });
 
       });
-  }));
+  })));
 
 });
 

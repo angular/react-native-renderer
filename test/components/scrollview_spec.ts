@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -16,20 +16,20 @@ describe('ScrollView component', () => {
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
-  it('should render vertically', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render vertically', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<ScrollView></ScrollView>`)
+    tcb.overrideTemplate(TestComponent, `<ScrollView></ScrollView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{},CREATE+4+native-view+{"collapsable":false,"alignSelf":null,"flexDirection":null},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
-  }));
+  })));
 
-  it('should render horizontally', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render horizontally', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<ScrollView horizontal="true"></ScrollView>`)
+    tcb.overrideTemplate(TestComponent, `<ScrollView horizontal="true"></ScrollView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -37,11 +37,11 @@ describe('ScrollView component', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-horizontalscrollview+{"horizontal":true},CREATE+4+native-view+{"collapsable":false,"alignSelf":"flex-start","flexDirection":"row"},' +
           'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
-  }));
+  })));
 
-  it('should switch direction', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should switch direction', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<ScrollView [horizontal]="isHorizontal"></ScrollView>`)
+    tcb.overrideTemplate(TestComponent, `<ScrollView [horizontal]="isHorizontal"></ScrollView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -54,11 +54,11 @@ describe('ScrollView component', () => {
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-horizontalscrollview+{"horizontal":true},UPDATE+4+native-view+{"alignSelf":"flex-start","flexDirection":"row"}');
       });
-  }));
+  })));
 
-  it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<ScrollView scrollEnabled="{{false}}" removeClippedSubviews="true"></ScrollView>`)
+    tcb.overrideTemplate(TestComponent, `<ScrollView scrollEnabled="{{false}}" removeClippedSubviews="true"></ScrollView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -66,11 +66,11 @@ describe('ScrollView component', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{"scrollEnabled":false,"removeClippedSubviews":true},' +
           'CREATE+4+native-view+{"collapsable":false,"removeClippedSubviews":true,"alignSelf":null,"flexDirection":null},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
-  }));
+  })));
 
-  it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<ScrollView [styleSheet]="20" [style]="{fontSize: 42}" [contentContainerStyle]="20"></ScrollView>`)
+    tcb.overrideTemplate(TestComponent, `<ScrollView [styleSheet]="20" [style]="{fontSize: 42}" [contentContainerStyle]="20"></ScrollView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -78,11 +78,11 @@ describe('ScrollView component', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{"flex":1,"collapse":true,"fontSize":42},' +
           'CREATE+4+native-view+{"collapsable":false,"alignSelf":null,"flexDirection":null,"flex":1,"collapse":true},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
-  }));
+  })));
 
-  it('should fire scroll events', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should fire scroll events', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<ScrollView (scroll)="handleChange($event)"></ScrollView>`)
+    tcb.overrideTemplate(TestComponent, `<ScrollView (scroll)="handleChange($event)"></ScrollView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -101,11 +101,11 @@ describe('ScrollView component', () => {
         });
 
       });
-  }));
+  })));
 
-  it('should dispatch commands', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should dispatch commands', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<ScrollView></ScrollView>`)
+    tcb.overrideTemplate(TestComponent, `<ScrollView></ScrollView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -115,7 +115,7 @@ describe('ScrollView component', () => {
         expect(mock.commandLogs.toString()).toEqual(
           'COMMAND+3+scrollTo+42');
       });
-  }));
+  })));
 
 });
 

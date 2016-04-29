@@ -1,6 +1,4 @@
 import {
-  inject,
-  beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
   expect

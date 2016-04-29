@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -17,9 +17,9 @@ describe('Node', () => {
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
 
-  it('should getElementByTestId', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
+  it('should getElementByTestId', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
+    tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
       .createAsync(TestComponent).then((fixture:ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -29,11 +29,11 @@ describe('Node', () => {
         expect(res.tagName).toEqual('Text');
         expect(res.properties['testID']).toEqual('bar');
       });
-  }));
+  })));
 
-  it('should querySelector', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
+  it('should querySelector', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
+    tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
       .createAsync(TestComponent).then((fixture:ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -43,11 +43,11 @@ describe('Node', () => {
         expect(res.tagName).toEqual('Text');
         expect(res.properties['testID']).toEqual('foo');
       });
-  }));
+  })));
 
-  it('should querySelectorAll', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
+  it('should querySelectorAll', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
+    tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
       .createAsync(TestComponent).then((fixture:ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -60,11 +60,11 @@ describe('Node', () => {
         expect(res[1].tagName).toEqual('Text');
         expect(res[1].properties['testID']).toEqual('bar');
       });
-  }));
+  })));
 
-  it('should querySelectorAll', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
+  it('should querySelectorAll', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
+    tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
       .createAsync(TestComponent).then((fixture:ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -75,7 +75,7 @@ describe('Node', () => {
         expect(res[0].tagName).toEqual('Text');
         expect(res[0].properties['testID']).toEqual('foo');
       });
-  }));
+  })));
 });
 
 @Component({
