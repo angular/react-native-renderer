@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -19,9 +19,9 @@ describe('Navigator component (iOS)', () => {
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
-  it('should render with default route', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with default route', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Navigator></Navigator>`)
+    tcb.overrideTemplate(TestComponent, `<Navigator></Navigator>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -48,12 +48,12 @@ describe('Navigator component (iOS)', () => {
           }, 150);
         });
       });
-  }));
+  })));
 
-  it('should navigate to another route', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should navigate to another route', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     var router: Router;
-    return tcb.overrideTemplate(TestComponent, `<Navigator></Navigator>`)
+    tcb.overrideTemplate(TestComponent, `<Navigator></Navigator>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         router = fixture.componentInstance.router;
         fixture.detectChanges();
@@ -97,12 +97,12 @@ describe('Navigator component (iOS)', () => {
           }, 100);
         });
       });
-  }));
+  })));
 
-  it('should navigate back', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should navigate back', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     var router: Router;
-    return tcb.overrideTemplate(TestComponent, `<Navigator></Navigator>`)
+    tcb.overrideTemplate(TestComponent, `<Navigator></Navigator>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         router = fixture.componentInstance.router;
         fixture.detectChanges();
@@ -154,11 +154,11 @@ describe('Navigator component (iOS)', () => {
           }, 100);
         });
       });
-  }));
+  })));
 
-  it('should render with default route and custom styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with default route and custom styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Navigator [itemWrapperStyle]="{margin: 42}"></Navigator>`)
+    tcb.overrideTemplate(TestComponent, `<Navigator [itemWrapperStyle]="{margin: 42}"></Navigator>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -185,11 +185,11 @@ describe('Navigator component (iOS)', () => {
           }, 150);
         });
       });
-  }));
+  })));
 
-  it('should fire button press events', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should fire button press events', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Navigator (leftButtonPress)="_handleEvent($event)"></Navigator>`)
+    tcb.overrideTemplate(TestComponent, `<Navigator (leftButtonPress)="_handleEvent($event)"></Navigator>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -217,7 +217,7 @@ describe('Navigator component (iOS)', () => {
           }, 150);
         });
       });
-  }));
+  })));
 
 
 });

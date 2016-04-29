@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -16,53 +16,53 @@ describe('Picker component', () => {
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
-  it('should render in dialog mode', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render in dialog mode', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Picker></Picker>`)
+    tcb.overrideTemplate(TestComponent, `<Picker></Picker>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-dialogpicker+{"items":[],"mode":"dialog","height":50},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render in dropdown mode', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render in dropdown mode', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Picker mode="dropdown"></Picker>`)
+    tcb.overrideTemplate(TestComponent, `<Picker mode="dropdown"></Picker>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-dropdownpicker+{"items":[],"mode":"dropdown","height":50},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Picker [items]="[{label:'a',value:0},{label:'b',value:1}]"></Picker>`)
+    tcb.overrideTemplate(TestComponent, `<Picker [items]="[{label:'a',value:0},{label:'b',value:1}]"></Picker>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-dialogpicker+{"items":[{"label":"a","value":0},{"label":"b","value":1}],"mode":"dialog","height":50},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Picker [styleSheet]="20" [style]="{height: 100}"></Picker>`)
+    tcb.overrideTemplate(TestComponent, `<Picker [styleSheet]="20" [style]="{height: 100}"></Picker>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-dialogpicker+{"items":[],"mode":"dialog","height":100,"flex":1,"collapse":true},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should fire select event', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should fire select event', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<Picker (select)="handleChange($event)"></Picker>`)
+    tcb.overrideTemplate(TestComponent, `<Picker (select)="handleChange($event)"></Picker>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -83,7 +83,7 @@ describe('Picker component', () => {
         });
 
       });
-  }));
+  })));
 });
 
 @Component({

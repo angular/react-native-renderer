@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -16,42 +16,42 @@ describe('RefreshControl component', () => {
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
-  it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<RefreshControl></RefreshControl>`)
+    tcb.overrideTemplate(TestComponent, `<RefreshControl></RefreshControl>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-refreshcontrol+{},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<RefreshControl refreshing="{{true}}"></RefreshControl>`)
+    tcb.overrideTemplate(TestComponent, `<RefreshControl refreshing="{{true}}"></RefreshControl>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-refreshcontrol+{"refreshing":true},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<RefreshControl [styleSheet]="20" [style]="{fontSize: 42}"></RefreshControl>`)
+    tcb.overrideTemplate(TestComponent, `<RefreshControl [styleSheet]="20" [style]="{fontSize: 42}"></RefreshControl>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-refreshcontrol+{"flex":1,"collapse":true,"fontSize":42},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should fire events', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should fire events', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<RefreshControl (refresh)="handleChange($event)"></RefreshControl>`)
+    tcb.overrideTemplate(TestComponent, `<RefreshControl (refresh)="handleChange($event)"></RefreshControl>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -71,7 +71,7 @@ describe('RefreshControl component', () => {
         });
 
       });
-  }));
+  })));
 
 });
 

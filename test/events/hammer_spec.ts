@@ -1,5 +1,5 @@
 import {
-  inject, injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -15,8 +15,8 @@ describe('Hammer', () => {
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
-  it('should support tap', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text (tap)="handleEvent($event)" (tapstart)="handleEvent($event)" (tapcancel)="handleEvent($event)">foo</native-text>`)
+  it('should support tap', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text (tap)="handleEvent($event)" (tapstart)="handleEvent($event)" (tapcancel)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0];
@@ -31,10 +31,10 @@ describe('Hammer', () => {
       fixture.detectChanges();
       expect(fixture.componentInstance.log.join(',')).toEqual('tapstart,tapcancel');
     });
-  }));
+  })));
 
-  it('should support doubletap', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text (tap)="handleEvent($event)" (doubletap)="handleEvent($event)">foo</native-text>`)
+  it('should support doubletap', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text (tap)="handleEvent($event)" (doubletap)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0];
@@ -46,10 +46,10 @@ describe('Hammer', () => {
 
       expect(fixture.componentInstance.log.join(',')).toEqual('tap,tap,doubletap');
     });
-  }));
+  })));
 
-  it('should support pan', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text (pan)="handleEvent($event)" (panstart)="handleEvent($event)" (panmove)="handleEvent($event)"
+  it('should support pan', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text (pan)="handleEvent($event)" (panstart)="handleEvent($event)" (panmove)="handleEvent($event)"
      (panend)="handleEvent($event)" (pancancel)="handleEvent($event)" (panleft)="handleEvent($event)"
      (panright)="handleEvent($event)" (panup)="handleEvent($event)" (pandown)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
@@ -64,10 +64,10 @@ describe('Hammer', () => {
 
       expect(fixture.componentInstance.log.join(',')).toEqual('panstart,pan,panright,panmove,pan,panmove,pan,pan,panend');
     });
-  }));
+  })));
 
-  it('should support swipe', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text (swipe)="handleEvent($event)" (swipeleft)="handleEvent($event)"
+  it('should support swipe', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text (swipe)="handleEvent($event)" (swipeleft)="handleEvent($event)"
     (swiperight)="handleEvent($event)" (swipeup)="handleEvent($event)" (swipedown)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
@@ -81,10 +81,10 @@ describe('Hammer', () => {
 
       expect(fixture.componentInstance.log.join(',')).toEqual('swiperight,swipe');
     });
-  }));
+  })));
 
-  it('should support press', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text (press)="handleEvent($event)" (pressup)="handleEvent($event)">foo</native-text>`)
+  it('should support press', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text (press)="handleEvent($event)" (pressup)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0];
@@ -94,16 +94,15 @@ describe('Hammer', () => {
       return new Promise((resolve: any) => {
         setTimeout(() => {
           fireEvent('topTouchEnd', target, 300);
-          //fixture.detectChanges();
           expect(fixture.componentInstance.log.join(',')).toEqual('press,pressup');
           resolve();
         }, 300);
       });
     });
-  }));
+  })));
 
-  it('should support pinch', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text (pinch)="handleEvent($event)" (pinchstart)="handleEvent($event)"
+  it('should support pinch', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text (pinch)="handleEvent($event)" (pinchstart)="handleEvent($event)"
     (pinchmove)="handleEvent($event)" (pinchend)="handleEvent($event)" (pinchcancel)="handleEvent($event)"
     (pinchin)="handleEvent($event)" (pinchout)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
@@ -117,10 +116,10 @@ describe('Hammer', () => {
 
       expect(fixture.componentInstance.log.join(',')).toEqual('pinchstart,pinch,pinchin,pinchmove,pinch,pinchin,pinch,pinchin,pinchend');
     });
-  }));
+  })));
 
-  it('should support rotate', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text (rotate)="handleEvent($event)" (rotatestart)="handleEvent($event)"
+  it('should support rotate', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text (rotate)="handleEvent($event)" (rotatestart)="handleEvent($event)"
     (rotatemove)="handleEvent($event)" (rotateend)="handleEvent($event)" (rotatecancel)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
@@ -133,10 +132,10 @@ describe('Hammer', () => {
 
       expect(fixture.componentInstance.log.join(',')).toEqual('rotatestart,rotate,rotatemove,rotate,rotatemove,rotate,rotate,rotateend');
     });
-  }));
+  })));
 
-  it('should support multiple gestures', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text (tap)="handleEvent($event)" (swipe)="handleEvent($event)">foo</native-text>`)
+  it('should support multiple gestures', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text (tap)="handleEvent($event)" (swipe)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0];
@@ -149,10 +148,10 @@ describe('Hammer', () => {
 
       expect(fixture.componentInstance.log.join(',')).toEqual('swipe');
     });
-  }));
+  })));
 
-  it('should support multiple gestures', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text (tap)="handleEvent($event)" (swipe)="handleEvent($event)">foo</native-text>`)
+  it('should support multiple gestures', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text (tap)="handleEvent($event)" (swipe)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0];
@@ -165,10 +164,10 @@ describe('Hammer', () => {
 
       expect(fixture.componentInstance.log.join(',')).toEqual('swipe');
     });
-  }));
+  })));
 
-  it('should always emit tap events', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text (pan)="handleEvent($event)" (tapstart)="handleEvent($event)" (tapcancel)="handleEvent($event)">foo</native-text>`)
+  it('should always emit tap events', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text (pan)="handleEvent($event)" (tapstart)="handleEvent($event)" (tapcancel)="handleEvent($event)">foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0];
@@ -179,10 +178,10 @@ describe('Hammer', () => {
 
       expect(fixture.componentInstance.log.join(',')).toEqual('tapstart,pan,tapcancel,pan');
     });
-  }));
+  })));
 
-  it('should add and remove event listeners', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-text>foo</native-text>`)
+  it('should add and remove event listeners', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-text>foo</native-text>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0];
@@ -202,10 +201,10 @@ describe('Hammer', () => {
       target.removeEventListener('swipe', handler);
       expect(target._hammer).toEqual(null);
     });
-  }));
+  })));
 
-  it('should propagates event', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-view (tap)="handleEvent($event)"><native-text (tap)="handleEvent($event)">foo</native-text></native-view>`)
+  it('should propagates event', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-view (tap)="handleEvent($event)"><native-text (tap)="handleEvent($event)">foo</native-text></native-view>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0].children[0];
@@ -214,10 +213,10 @@ describe('Hammer', () => {
       fixture.detectChanges();
       expect(fixture.componentInstance.log.join(',')).toEqual('tap,tap');
     });
-  }));
+  })));
 
-  it('should not propagate events after stopPropagation() call', injectAsync([TestComponentBuilder], (tcb:TestComponentBuilder) => {
-    return tcb.overrideTemplate(TestComponent, `<native-view (tap)="handleEvent($event)"><native-text (tap)="handleEventWithStop($event)">foo</native-text></native-view>`)
+  it('should not propagate events after stopPropagation() call', async(inject([TestComponentBuilder], (tcb:TestComponentBuilder) => {
+    tcb.overrideTemplate(TestComponent, `<native-view (tap)="handleEvent($event)"><native-text (tap)="handleEventWithStop($event)">foo</native-text></native-view>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
 
       var target = fixture.elementRef.nativeElement.children[0].children[0];
@@ -226,7 +225,7 @@ describe('Hammer', () => {
       fixture.detectChanges();
       expect(fixture.componentInstance.log.join(',')).toEqual('tapWithStop');
     });
-  }));
+  })));
 
 });
 

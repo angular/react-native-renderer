@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -17,9 +17,9 @@ describe('Ripple feedback', () => {
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
-  it('should send commands during a tap', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should send commands during a tap', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View rippleFeedback></View>`)
+    tcb.overrideTemplate(TestComponent, `<View rippleFeedback></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -39,7 +39,7 @@ describe('Ripple feedback', () => {
         expect(mock.commandLogs.toString()).toEqual(
           'COMMAND+3+hotspotUpdate+100,0,COMMAND+3+setPressed+false');
       });
-  }));
+  })));
 
 });
 

@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -21,9 +21,9 @@ describe('Router', () => {
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
 
-  it('should render default route', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render default route', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.createAsync(TestComponent).then((fixture: ComponentFixture) => {
+    tcb.createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+router-outlet+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
@@ -38,12 +38,12 @@ describe('Router', () => {
           }, 0);
         });
       });
-  }));
+  })));
 
-  it('should navigate to another route', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should navigate to another route', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     var router: Router;
-    return tcb.createAsync(TestComponent).then((fixture: ComponentFixture) => {
+    tcb.createAsync(TestComponent).then((fixture: ComponentFixture) => {
       router = fixture.componentInstance.router;
       fixture.detectChanges();
       rootRenderer.executeCommands();
@@ -66,13 +66,13 @@ describe('Router', () => {
         }, 0);
       });
     });
-  }));
+  })));
 
-  it('should navigate back', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should navigate back', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     var router: Router;
     var location: LocationStrategy;
-    return tcb.createAsync(TestComponent).then((fixture: ComponentFixture) => {
+    tcb.createAsync(TestComponent).then((fixture: ComponentFixture) => {
       router = fixture.componentInstance.router;
       location = fixture.componentInstance.location;
       fixture.detectChanges();
@@ -106,7 +106,7 @@ describe('Router', () => {
         }, 0);
       });
     });
-  }));
+  })));
 });
 
 @Component({

@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -17,42 +17,42 @@ describe('View component', () => {
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
 
-  it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View></View>`)
+    tcb.overrideTemplate(TestComponent, `<View></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View [accessible]="true" testID="foo" pointerEvents="{{'foo'}}" collapsable="true" shouldRasterizeIOS="true"></View>`)
+    tcb.overrideTemplate(TestComponent, `<View [accessible]="true" testID="foo" pointerEvents="{{'foo'}}" collapsable="true" shouldRasterizeIOS="true"></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{"accessible":true,"testID":"foo","pointerEvents":"auto","collapsable":true},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View [styleSheet]="20" [style]="{margin: 42}"></View>`)
+    tcb.overrideTemplate(TestComponent, `<View [styleSheet]="20" [style]="{margin: 42}"></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should dispatch commands', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should dispatch commands', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View></View>`)
+    tcb.overrideTemplate(TestComponent, `<View></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -64,7 +64,7 @@ describe('View component', () => {
         expect(mock.commandLogs.toString()).toEqual(
           'COMMAND+3+setPressed+true');
       });
-  }));
+  })));
 
 });
 

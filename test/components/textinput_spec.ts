@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -16,20 +16,20 @@ describe('TextInput component', () => {
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
-  it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<TextInput></TextInput>`)
+    tcb.overrideTemplate(TestComponent, `<TextInput></TextInput>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{"mostRecentEventCount":0},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<TextInput [accessible]="true" testID="foo" defaultValue="bar"></TextInput>
+    tcb.overrideTemplate(TestComponent, `<TextInput [accessible]="true" testID="foo" defaultValue="bar"></TextInput>
     <TextInput [accessible]="true" testID="foo" defaultValue="bar" value="{{'baz'}}"></TextInput>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
@@ -38,22 +38,22 @@ describe('TextInput component', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{"mostRecentEventCount":0,"text":"bar","accessible":true,"testID":"foo"},' +
           'CREATE+4+native-textinput+{"mostRecentEventCount":0,"text":"baz","accessible":true,"testID":"foo"},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+2+4+1');
       });
-  }));
+  })));
 
-  it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<TextInput [styleSheet]="20" [style]="{width: 100}"></TextInput>`)
+    tcb.overrideTemplate(TestComponent, `<TextInput [styleSheet]="20" [style]="{width: 100}"></TextInput>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-textinput+{"mostRecentEventCount":0,"flex":1,"collapse":true,"width":100},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should fire change event', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should fire change event', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<TextInput value="bar" (change)="handleChange($event)"></TextInput>`)
+    tcb.overrideTemplate(TestComponent, `<TextInput value="bar" (change)="handleChange($event)"></TextInput>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -73,11 +73,11 @@ describe('TextInput component', () => {
         });
 
       });
-  }));
+  })));
 
-  it('should dispatch commands', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should dispatch commands', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<TextInput></TextInput>`)
+    tcb.overrideTemplate(TestComponent, `<TextInput></TextInput>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -87,11 +87,11 @@ describe('TextInput component', () => {
         expect(mock.commandLogs.toString()).toEqual(
           'COMMAND+3+focusTextInput');
       });
-  }));
+  })));
 
-  it('should autofocus', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should autofocus', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<TextInput [autoFocus]="true"></TextInput>`)
+    tcb.overrideTemplate(TestComponent, `<TextInput [autoFocus]="true"></TextInput>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -105,7 +105,7 @@ describe('TextInput component', () => {
           }, 150);
         });
       });
-  }));
+  })));
 
 });
 

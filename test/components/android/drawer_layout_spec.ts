@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -17,9 +17,9 @@ describe('DrawerLayout component (Android)', () => {
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
-  it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<DrawerLayout drawerWidth="250"><DrawerLayoutSide><View></View></DrawerLayoutSide><DrawerLayoutContent><View></View></DrawerLayoutContent></DrawerLayout>`)
+    tcb.overrideTemplate(TestComponent, `<DrawerLayout drawerWidth="250"><DrawerLayoutSide><View></View></DrawerLayoutSide><DrawerLayoutContent><View></View></DrawerLayoutContent></DrawerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -28,11 +28,11 @@ describe('DrawerLayout component (Android)', () => {
           'CREATE+5+native-view+{},CREATE+6+native-view+{"bottom":0,"collapsable":false,"position":"absolute","top":0,"width":250},CREATE+7+native-view+{},' +
           'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+6+1,ATTACH+4+5+0,ATTACH+6+7+0');
       });
-  }));
+  })));
 
-  it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<DrawerLayout [accessible]="true" testID="foo" drawerPosition="left"></DrawerLayout>`)
+    tcb.overrideTemplate(TestComponent, `<DrawerLayout [accessible]="true" testID="foo" drawerPosition="left"></DrawerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -41,11 +41,11 @@ describe('DrawerLayout component (Android)', () => {
           'CREATE+4+native-view+{"bottom":0,"collapsable":false,"left":0,"position":"absolute","right":0,"top":0},' +
           'CREATE+5+native-view+{"bottom":0,"collapsable":false,"position":"absolute","top":0},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1');
       });
-  }));
+  })));
 
-  it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<DrawerLayout [styleSheet]="20" [style]="{margin: 42}"></DrawerLayout>`)
+    tcb.overrideTemplate(TestComponent, `<DrawerLayout [styleSheet]="20" [style]="{margin: 42}"></DrawerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -54,11 +54,11 @@ describe('DrawerLayout component (Android)', () => {
           'CREATE+4+native-view+{"bottom":0,"collapsable":false,"left":0,"position":"absolute","right":0,"top":0},' +
           'CREATE+5+native-view+{"bottom":0,"collapsable":false,"position":"absolute","top":0},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1');
       });
-  }));
+  })));
 
-  it('should fire drawerSlide event', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should fire drawerSlide event', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<DrawerLayout (drawerSlide)="handleChange($event)"></DrawerLayout>`)
+    tcb.overrideTemplate(TestComponent, `<DrawerLayout (drawerSlide)="handleChange($event)"></DrawerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -77,11 +77,11 @@ describe('DrawerLayout component (Android)', () => {
         });
 
       });
-  }));
+  })));
 
-  it('should dismiss keyboard on drawerSlide event', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should dismiss keyboard on drawerSlide event', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<DrawerLayout keyboardDismissMode="on-drag"></DrawerLayout>`)
+    tcb.overrideTemplate(TestComponent, `<DrawerLayout keyboardDismissMode="on-drag"></DrawerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -100,11 +100,11 @@ describe('DrawerLayout component (Android)', () => {
         });
 
       });
-  }));
+  })));
 
-  it('should dispatch commands', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should dispatch commands', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<DrawerLayout></DrawerLayout>`)
+    tcb.overrideTemplate(TestComponent, `<DrawerLayout></DrawerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -114,7 +114,7 @@ describe('DrawerLayout component (Android)', () => {
         expect(mock.commandLogs.toString()).toEqual(
           'COMMAND+3+closeDrawer');
       });
-  }));
+  })));
 
 });
 

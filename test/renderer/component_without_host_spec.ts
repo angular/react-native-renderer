@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -21,31 +21,31 @@ describe('Component without host', () => {
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
 
-  it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View></View>`)
+    tcb.overrideTemplate(TestComponent, `<View></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
       fixture.detectChanges();
       rootRenderer.executeCommands();
       expect(mock.commandLogs.toString()).toEqual(
         'CREATE+2+test-cmp+{},CREATE+3+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0');
     });
-  }));
+  })));
 
-  it('should support nesting', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should support nesting', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><View></View></View>`)
+    tcb.overrideTemplate(TestComponent, `<View><View></View></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
-  }));
+  })));
 
-  it('should support heavy nesting', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should support heavy nesting', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><View><View><View><View></View></View></View></View></View>`)
+    tcb.overrideTemplate(TestComponent, `<View><View><View><View><View></View></View></View></View></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -54,22 +54,22 @@ describe('Component without host', () => {
           'CREATE+5+native-view+{},CREATE+6+native-view+{},CREATE+7+native-view+{},' +
           'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+6+7+0,ATTACH+5+6+0,ATTACH+4+5+0,ATTACH+3+4+0');
       });
-  }));
+  })));
 
-  it('should support sub-components', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should support sub-components', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><sub></sub></View>`)
+    tcb.overrideTemplate(TestComponent, `<View><sub></sub></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+sub+{},CREATE+5+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+4+5+0,ATTACH+3+4+0');
       });
-  }));
+  })));
 
-  it('should support ngIf', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should support ngIf', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View *ngIf="b"></View>`)
+    tcb.overrideTemplate(TestComponent, `<View *ngIf="b"></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -88,11 +88,11 @@ describe('Component without host', () => {
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('CREATE+4+native-view+{},ATTACH+2+4+0');
       });
-  }));
+  })));
 
-  it('should support nested ngIf', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should support nested ngIf', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View> <View *ngIf="b"> </View> </View>`)
+    tcb.overrideTemplate(TestComponent, `<View> <View *ngIf="b"> </View> </View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -111,11 +111,11 @@ describe('Component without host', () => {
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('CREATE+5+native-view+{},ATTACH+3+5+0');
       });
-  }));
+  })));
 
-  it('should support ngFor', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should support ngFor', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View *ngFor="let item of a"></View>`)
+    tcb.overrideTemplate(TestComponent, `<View *ngFor="let item of a"></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -128,11 +128,11 @@ describe('Component without host', () => {
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('DETACH+2+1');
       });
-  }));
+  })));
 
-  it('should support ngFor on an element next to a component', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should support ngFor on an element next to a component', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View></View><native-view *ngFor="let item of a"></native-view>`)
+    tcb.overrideTemplate(TestComponent, `<View></View><native-view *ngFor="let item of a"></native-view>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -145,33 +145,33 @@ describe('Component without host', () => {
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('DETACH+2+2');
       });
-  }));
+  })));
 
-  it('should support projection', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should support projection', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<proj><sub></sub><Text></Text></proj>`)
+    tcb.overrideTemplate(TestComponent, `<proj><sub></sub><Text></Text></proj>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+proj+{},CREATE+4+native-text+{},CREATE+5+sub+{},CREATE+6+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1,ATTACH+5+6+0');
       });
-  }));
+  })));
 
-  it('should support components with ngIf in their templates', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should support components with ngIf in their templates', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View></View><Picker></Picker>`)
+    tcb.overrideTemplate(TestComponent, `<View></View><Picker></Picker>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-dialogpicker+{"items":[],"mode":"dialog","height":50},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+2+4+1');
       });
-  }));
+  })));
 
-  it('should support sub-components with ngIf in their templates', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should support sub-components with ngIf in their templates', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<sub-with-if></sub-with-if>`)
+    tcb.overrideTemplate(TestComponent, `<sub-with-if></sub-with-if>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -179,11 +179,11 @@ describe('Component without host', () => {
           'CREATE+2+test-cmp+{},CREATE+3+sub-with-if+{},CREATE+4+native-view+{},CREATE+5+native-view+{},CREATE+6+native-text+{},' +
           'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+2,ATTACH+3+6+1');
       });
-  }));
+  })));
 
-  it('should not attach twice components with ngIf in their templates', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should not attach twice components with ngIf in their templates', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<View><View></View><Picker></Picker><View></View></View>`)
+    tcb.overrideTemplate(TestComponent, `<View><View></View><Picker></Picker><View></View></View>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -191,7 +191,7 @@ describe('Component without host', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},CREATE+5+native-view+{},CREATE+6+native-dialogpicker+{"items":[],"mode":"dialog","height":50},' +
           'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+2,ATTACH+3+6+1');
       });
-  }));
+  })));
 
 });
 

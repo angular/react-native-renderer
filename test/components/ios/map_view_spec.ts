@@ -1,5 +1,5 @@
 import {
-  injectAsync, TestComponentBuilder, ComponentFixture,
+  async, inject, TestComponentBuilder, ComponentFixture,
   beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
@@ -16,7 +16,7 @@ describe('DatePicker component (iOS)', () => {
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
 
-  it('should render', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     return tcb.overrideTemplate(TestComponent, `<MapView></MapView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
@@ -26,11 +26,11 @@ describe('DatePicker component (iOS)', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-mapview+{"onChange":true,"onPress":false,"onAnnotationDragStateChange":false,"onAnnotationFocus":false,"onAnnotationBlur":false},' +
           'ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with properties', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<MapView [accessible]="true" testID="foo" [annotations]="[{longitude:1, latitude: 2, tintColor: '#123456'}]"></MapView>`)
+    tcb.overrideTemplate(TestComponent, `<MapView [accessible]="true" testID="foo" [annotations]="[{longitude:1, latitude: 2, tintColor: '#123456'}]"></MapView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -39,11 +39,11 @@ describe('DatePicker component (iOS)', () => {
           '"annotations":[{"longitude":1,"latitude":2,"tintColor":42,"id":"%7B%22longitude%22%3A1%2C%22latitude%22%3A2%2C%22tintColor%22%3A%22%23123456%22%7D"}],' +
           '"onPress":true,"onAnnotationDragStateChange":true,"onAnnotationFocus":true,"onAnnotationBlur":true,"accessible":true,"testID":"foo"},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should render with styles', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<MapView [styleSheet]="20" [style]="{margin: 42}"></MapView>`)
+    tcb.overrideTemplate(TestComponent, `<MapView [styleSheet]="20" [style]="{margin: 42}"></MapView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -51,11 +51,11 @@ describe('DatePicker component (iOS)', () => {
           'CREATE+2+test-cmp+{},CREATE+3+native-mapview+{"onChange":true,"onPress":false,"onAnnotationDragStateChange":false,' +
           '"onAnnotationFocus":false,"onAnnotationBlur":false,"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
       });
-  }));
+  })));
 
-  it('should fire change event', injectAsync([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
+  it('should fire change event', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    return tcb.overrideTemplate(TestComponent, `<MapView (change)="handleChange($event)"></MapView>`)
+    tcb.overrideTemplate(TestComponent, `<MapView (change)="handleChange($event)"></MapView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
@@ -73,7 +73,7 @@ describe('DatePicker component (iOS)', () => {
         });
 
       });
-  }));
+  })));
 
 });
 
