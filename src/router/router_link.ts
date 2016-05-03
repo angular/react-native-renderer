@@ -1,5 +1,5 @@
-import {Directive, OnInit, OnDestroy, ElementRef} from 'angular2/core';
-import {Router, Instruction} from 'angular2/router';
+import {Directive, OnInit, OnDestroy, ElementRef} from '@angular/core';
+import {Router, Instruction} from '@angular/router-deprecated';
 
 @Directive({
   selector: '[routerLink]',

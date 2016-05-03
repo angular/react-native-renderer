@@ -11,7 +11,7 @@ var ReactNativeTagHandles = require('react-native/Libraries/ReactNative/ReactNat
 var ReactNativeAttributePayload = require('react-native/Libraries/ReactNative/ReactNativeAttributePayload');
 var ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
 
-import {NgZone} from 'angular2/core';
+import {NgZone} from '@angular/core';
 
 overridePlatform(ReactNative.Platform.OS);
 

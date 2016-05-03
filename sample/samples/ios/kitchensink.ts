@@ -1,5 +1,5 @@
-import {Component, ViewChild} from 'angular2/core';
-import {RouteConfig} from 'angular2/router';
+import {Component, ViewChild} from '@angular/core';
+import {RouteConfig} from '@angular/router-deprecated';
 import {ActionSheetIOS} from 'react-native';
 import {Navigator} from 'angular2-react-native';
 import {HelloApp} from './hello';

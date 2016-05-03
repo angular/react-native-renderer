@@ -1,4 +1,4 @@
-import {Component, Inject, ElementRef, Input, Output, EventEmitter, OnInit} from 'angular2/core';
+import {Component, Inject, ElementRef, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {REACT_NATIVE_WRAPPER} from './../renderer/renderer';
 import {Node} from '../renderer/node';
 import {ReactNativeWrapper, isAndroid} from './../wrapper/wrapper';

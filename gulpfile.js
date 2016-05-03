@@ -29,7 +29,7 @@ var PATHS = {
   tmp: 'dist/tmp',
   publish: 'dist/publish',
   modules: [
-    'node_modules/angular2/**/*',
+    'node_modules/@angular/**/*',
     'node_modules/hammerjs/**/*',
     'node_modules/reflect-metadata/**/*',
     'node_modules/rxjs/**/*',
@@ -211,7 +211,7 @@ gulp.task('doc', ['!doc'], function (neverDone) {
 var systemBuilder = new Builder(PATHS.destination);
 systemBuilder.config({
   meta: {
-    'angular2/*': { build: false },
+    '@angular/*': { build: false },
     'rxjs/*': { build: false },
     'reflect-metadata': {build: false},
     'zone.js/dist/zone.js': {build: false}
@@ -310,7 +310,7 @@ function runJasmine(globs, done) {
 
 function transformCommonJSTests() {
   return through2.obj(function (file, encoding, done) {
-    var content = `var parse5Adapter = require('angular2/src/platform/server/parse5_adapter');\r\n` +
+    var content = `var parse5Adapter = require('@angular/platform-server/src/parse5_adapter');\r\n` +
       `parse5Adapter.Parse5DomAdapter.makeCurrent();\r\n` + String(file.contents);
     file.contents = new Buffer(content);
     this.push(file);

@@ -1,4 +1,4 @@
-import {provide, PLATFORM_DIRECTIVES} from 'angular2/core';
+import {provide, PLATFORM_DIRECTIVES} from '@angular/core';
 
 import {View} from "./../components/view";
 import {Text} from "../components/text";

@@ -1,7 +1,6 @@
-import {Component, Inject, Input, Output, EventEmitter, NgZone, DynamicComponentLoader, ElementRef, ComponentRef, ViewChild, ViewContainerRef, AfterViewInit} from 'angular2/core';
-import {NgFor, NgIf} from 'angular2/common';
-import {Router, ComponentInstruction} from 'angular2/router';
-import {LocationStrategy} from 'angular2/platform/common';
+import {Component, Inject, Input, Output, EventEmitter, NgZone, DynamicComponentLoader, ElementRef, ComponentRef, ViewChild, ViewContainerRef, AfterViewInit} from '@angular/core';
+import {NgFor, NgIf, LocationStrategy} from '@angular/common';
+import {Router, ComponentInstruction} from '@angular/router-deprecated';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../component";
 import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
 import {ReactNativeWrapper} from "../../wrapper/wrapper";

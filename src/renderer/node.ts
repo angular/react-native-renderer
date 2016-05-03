@@ -1,7 +1,7 @@
 import {ReactNativeWrapper} from './../wrapper/wrapper';
-import {NgZone, Injector} from 'angular2/core';
+import {NgZone} from '@angular/core';
 import {Hammer} from './../events/hammer';
-import {SelectorMatcher, CssSelector} from 'angular2/src/compiler/selector';
+import {SelectorMatcher, CssSelector} from '@angular/compiler/src/selector';
 
 export var nodeMap: Map<number, Node> = new Map<number, Node>();
 

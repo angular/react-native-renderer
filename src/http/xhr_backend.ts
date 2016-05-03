@@ -1,7 +1,7 @@
 import {Http, Connection, ConnectionBackend, ReadyState, Headers, BrowserXhr,
   Request, RequestMethod, RequestOptions, BaseRequestOptions,
-  Response, ResponseType,  ResponseOptions, BaseResponseOptions } from 'angular2/http';
-import {Injectable, provide, NgZone} from 'angular2/core';
+  Response, ResponseType,  ResponseOptions, BaseResponseOptions } from '@angular/http';
+import {Injectable, provide, NgZone} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
 class ReactNativeXHRConnection implements Connection {

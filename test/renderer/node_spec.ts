@@ -1,11 +1,11 @@
 import {
-  async, inject, TestComponentBuilder, ComponentFixture,
-  beforeEachProviders, beforeEach,
+  async, inject, beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
   expect
-} from 'angular2/testing';
-import {Component} from 'angular2/core';
+} from '@angular/core/testing';
+import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
+import {Component} from '@angular/core';
 import {Node} from '../../src/renderer/node';
 import {ReactNativeRootRenderer} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
@@ -20,7 +20,7 @@ describe('Node', () => {
   it('should getElementByTestId', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
-      .createAsync(TestComponent).then((fixture:ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
 
@@ -34,7 +34,7 @@ describe('Node', () => {
   it('should querySelector', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
-      .createAsync(TestComponent).then((fixture:ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
 
@@ -48,7 +48,7 @@ describe('Node', () => {
   it('should querySelectorAll', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
-      .createAsync(TestComponent).then((fixture:ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
 
@@ -65,7 +65,7 @@ describe('Node', () => {
   it('should querySelectorAll', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<View><Text testID="foo">Foo</Text><Text testID="bar">Bar</Text></View>`)
-      .createAsync(TestComponent).then((fixture:ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
 
