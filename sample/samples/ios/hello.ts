@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {OpacityFeedback, ROUTER_DIRECTIVES} from 'angular2-react-native';
 import {StyleSheet} from 'react-native';
 

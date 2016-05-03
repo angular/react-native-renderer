@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from 'angular2/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {StyleSheet} from 'react-native';
 import {WebView, RippleFeedback} from 'angular2-react-native';
 

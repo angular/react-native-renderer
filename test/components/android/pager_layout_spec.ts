@@ -1,11 +1,11 @@
 import {
-  async, inject, TestComponentBuilder, ComponentFixture,
-  beforeEachProviders, beforeEach,
+  async, inject, beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
   expect
-} from 'angular2/testing';
-import {Component, ViewChild} from 'angular2/core';
+} from '@angular/core/testing';
+import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
+import {Component, ViewChild} from '@angular/core';
 import {ReactNativeRootRenderer} from '../../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../../src/wrapper/wrapper_mock";
 import {PagerLayout} from "../../../src/components/android/pager_layout";
@@ -20,7 +20,7 @@ describe('PagerLayout component (Android)', () => {
   it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<PagerLayout><View></View></PagerLayout>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -31,7 +31,7 @@ describe('PagerLayout component (Android)', () => {
   it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<PagerLayout [accessible]="true" testID="foo"></PagerLayout>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -42,7 +42,7 @@ describe('PagerLayout component (Android)', () => {
   it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<PagerLayout [styleSheet]="20" [style]="{margin: 42}"></PagerLayout>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -53,7 +53,7 @@ describe('PagerLayout component (Android)', () => {
   it('should fire pageSelected event', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<PagerLayout (pageSelected)="handleChange($event)"></PagerLayout>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
@@ -76,7 +76,7 @@ describe('PagerLayout component (Android)', () => {
   it('should dismiss keyboard on pageScroll event', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<PagerLayout keyboardDismissMode="on-drag"></PagerLayout>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
@@ -99,7 +99,7 @@ describe('PagerLayout component (Android)', () => {
   it('should dispatch commands', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<PagerLayout></PagerLayout>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
@@ -112,7 +112,7 @@ describe('PagerLayout component (Android)', () => {
   it('should set initial page', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<PagerLayout [initialPage]="1"></PagerLayout>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();

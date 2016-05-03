@@ -1,5 +1,5 @@
-import {Component, Input, Output, EventEmitter, ViewChild} from 'angular2/core';
-import {NgIf, NgFor} from 'angular2/common';
+import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import {NgIf, NgFor} from '@angular/common';
 import {StyleSheet, AsyncStorage} from 'react-native';
 import {TextInput, OpacityFeedback} from 'angular2-react-native';
 

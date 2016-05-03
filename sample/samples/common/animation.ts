@@ -1,5 +1,5 @@
-import {Component, Input, Output, ElementRef, EventEmitter, ViewChildren, QueryList} from 'angular2/core';
-import {NgFor, NgIf} from 'angular2/common';
+import {Component, Input, Output, ElementRef, EventEmitter, ViewChildren, QueryList} from '@angular/core';
+import {NgFor, NgIf} from '@angular/common';
 import {StyleSheet} from 'react-native';
 import {TodoMVC} from "./todomvc";
 

@@ -1,5 +1,5 @@
-import {RootRenderer, Renderer, RenderComponentType, OpaqueToken, Inject, Injectable, NgZone} from 'angular2/core';
-import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
+import {RootRenderer, Renderer, RenderComponentType, OpaqueToken, Inject, Injectable, NgZone} from '@angular/core';
+import {ElementSchemaRegistry} from '@angular/compiler';
 import {Node, ElementNode, AnchorNode, TextNode, nodeMap} from './node';
 import {ReactNativeWrapper} from './../wrapper/wrapper';
 import {NativeCommand, NativeCommandCreate, NativeCommandUpdate, NativeCommandAttach, NativeCommandDetach, NativeCommandAttachAfter} from "./native_command";
@@ -12,6 +12,9 @@ export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
   }
   getMappedPropName(propName: string): string {
     return propName;
+  }
+  securityContext(tagName: string, propName: string): any {
+    return 0;
   }
 }
 

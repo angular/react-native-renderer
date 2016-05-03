@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {StyleSheet, Alert, Linking, ToastAndroid, Clipboard, Platform, PixelRatio, NetInfo, AppState, DatePickerAndroid, TimePickerAndroid} from 'react-native';
 import {RippleFeedback} from 'angular2-react-native';
 

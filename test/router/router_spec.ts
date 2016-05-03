@@ -1,13 +1,13 @@
 import {
-  async, inject, TestComponentBuilder, ComponentFixture,
-  beforeEachProviders, beforeEach,
+  async, inject, beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
   expect
-} from 'angular2/testing';
-import {Component} from 'angular2/core';
-import {Router, ROUTER_DIRECTIVES, RouteConfig} from 'angular2/router';
-import {LocationStrategy} from 'angular2/platform/common';
+} from '@angular/core/testing';
+import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
+import {Component} from '@angular/core';
+import {Router, ROUTER_DIRECTIVES, RouteConfig} from '@angular/router-deprecated';
+import {LocationStrategy} from '@angular/common';
 import {ReactNativeRootRenderer} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {View} from "./../../src/components/view";
@@ -23,7 +23,7 @@ describe('Router', () => {
 
   it('should render default route', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
-    tcb.createAsync(TestComponent).then((fixture: ComponentFixture) => {
+    tcb.createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+router-outlet+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
@@ -43,7 +43,7 @@ describe('Router', () => {
   it('should navigate to another route', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     var router: Router;
-    tcb.createAsync(TestComponent).then((fixture: ComponentFixture) => {
+    tcb.createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
       router = fixture.componentInstance.router;
       fixture.detectChanges();
       rootRenderer.executeCommands();
@@ -72,7 +72,7 @@ describe('Router', () => {
     var rootRenderer = _rootRenderer;
     var router: Router;
     var location: LocationStrategy;
-    tcb.createAsync(TestComponent).then((fixture: ComponentFixture) => {
+    tcb.createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
       router = fixture.componentInstance.router;
       location = fixture.componentInstance.location;
       fixture.detectChanges();

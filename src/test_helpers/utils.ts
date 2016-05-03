@@ -1,8 +1,8 @@
-import {TestComponentBuilder, MockApplicationRef} from 'angular2/testing';
-import {RootRenderer, provide, ApplicationRef} from 'angular2/core';
-import {ROUTER_PROVIDERS, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
-import {LocationStrategy} from 'angular2/platform/common';
-import {ElementSchemaRegistry} from 'angular2/src/compiler/schema/element_schema_registry';
+import {MockApplicationRef} from '@angular/core/testing';
+import {RootRenderer, provide, ApplicationRef} from '@angular/core';
+import {ROUTER_PROVIDERS, ROUTER_PRIMARY_COMPONENT} from '@angular/router-deprecated';
+import {LocationStrategy} from '@angular/common';
+import {ElementSchemaRegistry} from '@angular/compiler';
 import {ReactNativeRootRenderer, ReactNativeRootRenderer_, ReactNativeElementSchemaRegistry, REACT_NATIVE_WRAPPER} from '../renderer/renderer';
 import {ReactNativeLocationStrategy} from "../router/location_strategy";
 import {ReactNativeWrapper} from "../wrapper/wrapper";

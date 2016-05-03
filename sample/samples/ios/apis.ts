@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {OpacityFeedback} from 'angular2-react-native';
 import {StyleSheet, ActionSheetIOS, Alert, AlertIOS, AppState, Clipboard, Linking, NetInfo, PixelRatio, Platform} from 'react-native';
 

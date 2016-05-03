@@ -1,11 +1,11 @@
 import {
-  async, inject, TestComponentBuilder, ComponentFixture,
-  beforeEachProviders, beforeEach,
+  async, inject, beforeEachProviders, beforeEach,
   iit, it, xit,
   describe, ddescribe, xdescribe,
   expect
-} from 'angular2/testing';
-import {Component, ViewChild} from 'angular2/core';
+} from '@angular/core/testing';
+import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
+import {Component, ViewChild} from '@angular/core';
 import {ReactNativeRootRenderer} from '../../src/renderer/renderer';
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {Switch} from "./../../src/components/switch";
@@ -19,7 +19,7 @@ describe('Switch component', () => {
   it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<Switch></Switch>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -30,7 +30,7 @@ describe('Switch component', () => {
   it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<Switch [accessible]="true" testID="foo" thumbTintColor="#ABC123"></Switch>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -41,7 +41,7 @@ describe('Switch component', () => {
   it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<Switch [styleSheet]="20" [style]="{width: 100}"></Switch>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
@@ -52,7 +52,7 @@ describe('Switch component', () => {
   it('should fire change event', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<Switch (change)="handleChange($event)"></Switch>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture) => {
+      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();

@@ -1,5 +1,5 @@
-import {provide} from 'angular2/core';
-import {Http, RequestOptions, ResponseOptions, BaseRequestOptions, BaseResponseOptions, BrowserXhr} from 'angular2/http';
+import {provide} from '@angular/core';
+import {Http, RequestOptions, ResponseOptions, BaseRequestOptions, BaseResponseOptions, BrowserXhr} from '@angular/http';
 import {ReactNativeXHRBackend} from "./xhr_backend";
 
 export const HTTP_PROVIDERS: any[] = [

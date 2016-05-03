@@ -4,7 +4,7 @@ var strip = require('gulp-strip-comments');
 var through2 = require('through2');
 
 exports.doCopy = function(source, destination) {
-  var filterJS= filter('angular2/**/*.js', {restore: true});
+  var filterJS= filter('@angular/**/*.js', {restore: true});
   var tmpHack = filter('reflect-metadata/Reflect.js', {restore: true});
   return gulp.src(source, { base: './node_modules/' })
     .pipe(filterJS)

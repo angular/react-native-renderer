@@ -1,6 +1,6 @@
-import {provide} from 'angular2/core';
-import {ROUTER_PROVIDERS as RouterProviders, RouterOutlet} from 'angular2/router';
-import {LocationStrategy} from 'angular2/platform/common';
+import {provide} from '@angular/core';
+import {ROUTER_PROVIDERS as RouterProviders, RouterOutlet} from '@angular/router-deprecated';
+import {LocationStrategy} from '@angular/common';
 import {RouterLink} from './router_link';
 import {ReactNativeLocationStrategy} from './location_strategy';
 
