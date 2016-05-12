@@ -24,7 +24,7 @@ describe('Router Link', () => {
   it('should navigate', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual('CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+router-outlet+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
         mock.clearLogs();
@@ -38,15 +38,12 @@ describe('Router Link', () => {
 
             var target = fixture.elementRef.nativeElement.children[0];
             fireGesture('swipe', target);
-            fixture.detectChanges();
 
-            setTimeout(() => {
+            fixture.whenStable().then(() => {
               rootRenderer.executeCommands();
               expect(mock.commandLogs.toString()).toEqual(
                 'CREATE+8+cmp-b+{},CREATE+9+native-text+{},CREATE+10+native-rawtext+{"text":"b"},DETACH+3+1,ATTACH+3+8+1,ATTACH+9+10+0,ATTACH+8+9+0');
-              resolve();
-            }, 10);
-
+            });
           }, 0);
         });
       });

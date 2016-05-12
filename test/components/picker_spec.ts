@@ -64,22 +64,17 @@ describe('Picker component', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<Picker (select)="handleChange($event)"></Picker>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[2];
         fireFunctionalEvent('topSelect', target, {position: 0});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            expect(fixture.componentInstance.log.join(',')).toEqual('0');
-            fixture.detectChanges();
-            rootRenderer.executeCommands();
-            expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-dialogpicker+{"selected":0}');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          expect(fixture.componentInstance.log.join(',')).toEqual('0');
+          rootRenderer.executeCommands();
+          expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-dialogpicker+{"selected":0}');
         });
 
       });

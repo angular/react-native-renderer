@@ -84,20 +84,16 @@ describe('ScrollView component', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<ScrollView (scroll)="handleChange($event)"></ScrollView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[1];
         fireFunctionalEvent('topScroll', target, {title: 'foo'});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            rootRenderer.executeCommands();
-            expect(fixture.componentInstance.log.join(',')).toEqual('foo');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          rootRenderer.executeCommands();
+          expect(fixture.componentInstance.log.join(',')).toEqual('foo');
         });
 
       });

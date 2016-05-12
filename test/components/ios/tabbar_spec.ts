@@ -78,23 +78,18 @@ describe('TabBar component (iOS)', () => {
       <TabBarItem [selected]="s == 2" (select)="s = 2"><View [style]="{margin: 2}"></View></TabBarItem>
     </TabBar>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[1].children[0].children[3].children[0];
         fireFunctionalEvent('topPress', target, {});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            fixture.detectChanges();
-            rootRenderer.executeCommands();
-            expect(fixture.componentInstance.s).toEqual(2);
-            expect(mock.commandLogs.toString()).toEqual(
-              'CREATE+7+native-view+{"margin":2},UPDATE+4+native-tabbaritem+{"selected":false},UPDATE+5+native-tabbaritem+{"selected":true},ATTACH+5+7+0');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          rootRenderer.executeCommands();
+          expect(fixture.componentInstance.s).toEqual(2);
+          expect(mock.commandLogs.toString()).toEqual(
+            'CREATE+7+native-view+{"margin":2},UPDATE+4+native-tabbaritem+{"selected":false},UPDATE+5+native-tabbaritem+{"selected":true},ATTACH+5+7+0');
         });
 
       });

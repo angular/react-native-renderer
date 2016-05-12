@@ -57,19 +57,15 @@ describe('DatePicker component (iOS)', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<MapView (change)="handleChange($event)"></MapView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
         fireFunctionalEvent('topChange', target, {annotation: {}, action: 'click'});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            expect(fixture.componentInstance.log.join(',')).toEqual('click');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          expect(fixture.componentInstance.log.join(',')).toEqual('click');
         });
 
       });
