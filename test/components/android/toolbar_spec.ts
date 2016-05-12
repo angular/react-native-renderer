@@ -53,20 +53,16 @@ describe('Toolbar component (Android)', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<Toolbar (select)="handleChange($event)"></Toolbar>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
         fireFunctionalEvent('topSelect', target, {position: 1});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            rootRenderer.executeCommands();
-            expect(fixture.componentInstance.log.join(',')).toEqual('1');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          rootRenderer.executeCommands();
+          expect(fixture.componentInstance.log.join(',')).toEqual('1');
         });
 
       });

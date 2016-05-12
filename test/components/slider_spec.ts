@@ -53,19 +53,15 @@ describe('Slider component', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<Slider (valueChange)="handleChange($event)"></Slider>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
         fireFunctionalEvent('topChange', target, {value: 0.55, fromUser: true});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            expect(fixture.componentInstance.log.join(',')).toEqual('0.55');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          expect(fixture.componentInstance.log.join(',')).toEqual('0.55');
         });
 
       });

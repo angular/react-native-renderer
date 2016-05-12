@@ -54,20 +54,16 @@ describe('PagerLayout component (Android)', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<PagerLayout (pageSelected)="handleChange($event)"></PagerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
         fireFunctionalEvent('topPageSelected', target, {position: 1});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            rootRenderer.executeCommands();
-            expect(fixture.componentInstance.log.join(',')).toEqual('1');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          rootRenderer.executeCommands();
+          expect(fixture.componentInstance.log.join(',')).toEqual('1');
         });
 
       });
@@ -77,20 +73,16 @@ describe('PagerLayout component (Android)', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<PagerLayout keyboardDismissMode="on-drag"></PagerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
         fireFunctionalEvent('topPageScroll', target, {offset: 0.75, position: 0});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            rootRenderer.executeCommands();
-            expect(mock.commandLogs.toString()).toEqual('DISMISS_KEYBOARD+-1+');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          rootRenderer.executeCommands();
+          expect(mock.commandLogs.toString()).toEqual('DISMISS_KEYBOARD+-1+');
         });
 
       });
@@ -113,17 +105,14 @@ describe('PagerLayout component (Android)', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<PagerLayout [initialPage]="1"></PagerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            fixture.detectChanges();
-            expect(mock.commandLogs.toString()).toEqual('COMMAND+3+setPageWithoutAnimation+1');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          expect(mock.commandLogs.toString()).toEqual('COMMAND+3+setPageWithoutAnimation+1');
         });
+      
       });
   })));
 

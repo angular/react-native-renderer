@@ -55,21 +55,17 @@ describe('TextInput component', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<TextInput value="bar" (change)="handleChange($event)"></TextInput>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
         fireFunctionalEvent('topChange', target, {text: "foo", eventCount: 1});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            rootRenderer.executeCommands();
-            expect(fixture.componentInstance.log.join(',')).toEqual('foo');
-            expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-textinput+{"mostRecentEventCount":1},UPDATE+3+native-textinput+{"text":"foo"}');
-            resolve();
-          }, 0);
+        fixture.whenStable().then(() => {
+          rootRenderer.executeCommands();
+          expect(fixture.componentInstance.log.join(',')).toEqual('foo');
+          expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-textinput+{"mostRecentEventCount":1},UPDATE+3+native-textinput+{"text":"foo"}');
         });
 
       });
@@ -93,16 +89,12 @@ describe('TextInput component', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<TextInput [autoFocus]="true"></TextInput>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            fixture.detectChanges();
-            expect(mock.commandLogs.toString()).toEqual('COMMAND+3+focusTextInput');
-            resolve();
-          }, 0);
+        fixture.whenStable().then(() => {
+          expect(mock.commandLogs.toString()).toEqual('COMMAND+3+focusTextInput');
         });
       });
   })));

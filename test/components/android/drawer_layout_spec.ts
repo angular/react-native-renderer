@@ -60,20 +60,16 @@ describe('DrawerLayout component (Android)', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<DrawerLayout (drawerSlide)="handleChange($event)"></DrawerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
         fireFunctionalEvent('topDrawerSlide', target, {position: 1});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            rootRenderer.executeCommands();
-            expect(fixture.componentInstance.log.join(',')).toEqual('1');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          rootRenderer.executeCommands();
+          expect(fixture.componentInstance.log.join(',')).toEqual('1');
         });
 
       });
@@ -83,20 +79,16 @@ describe('DrawerLayout component (Android)', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<DrawerLayout keyboardDismissMode="on-drag"></DrawerLayout>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
         fireFunctionalEvent('topDrawerSlide', target, {offset: 0.75, position: 0});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            rootRenderer.executeCommands();
-            expect(mock.commandLogs.toString()).toEqual('DISMISS_KEYBOARD+-1+');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          rootRenderer.executeCommands();
+          expect(mock.commandLogs.toString()).toEqual('DISMISS_KEYBOARD+-1+');
         });
 
       });

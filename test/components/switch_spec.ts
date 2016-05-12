@@ -53,22 +53,16 @@ describe('Switch component', () => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<Switch (change)="handleChange($event)"></Switch>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+        fixture.autoDetectChanges();
         rootRenderer.executeCommands();
         mock.clearLogs();
 
         var target = fixture.elementRef.nativeElement.children[0].children[0];
         fireFunctionalEvent('topChange', target, {value: true});
-        fixture.detectChanges();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            expect(fixture.componentInstance.log.join(',')).toEqual('true');
-            fixture.detectChanges();
-            rootRenderer.executeCommands();
-            expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-switch+{"on":true}');
-            resolve();
-          }, 150);
+        fixture.whenStable().then(() => {
+          rootRenderer.executeCommands();
+          expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-switch+{"on":true}');
         });
 
       });
