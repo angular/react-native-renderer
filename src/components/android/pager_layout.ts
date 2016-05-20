@@ -26,8 +26,10 @@ export class Sample {}
   inputs: [
     //Non-native
     'initialPage', 'keyboardDismissMode',
+    //Native
+    'scrollEnabled'
   ].concat(GENERIC_INPUTS),
-  template: `<native-pagerlayout
+  template: `<native-pagerlayout [scrollEnabled]="_scrollEnabled"
   (topPageScroll)="_handlePageScroll($event)" (topPageScrollStateChanged)="_handlePageScrollStateChanged($event)" (topPageSelected)="_handlePageSelected($event)"
   ${GENERIC_BINDINGS}><ng-content></ng-content></native-pagerlayout>`
 })
@@ -55,6 +57,7 @@ export class PagerLayout extends HighLevelComponent implements OnInit {
   //Properties
   private _initialPage: number;
   private _keyboardDismissMode: string;
+  private _scrollEnabled: boolean;
   /**
    * To be documented
    */
@@ -63,6 +66,10 @@ export class PagerLayout extends HighLevelComponent implements OnInit {
    * To be documented
    */
   set keyboardDismissMode(value: string) {this._keyboardDismissMode = this.processEnum(value, ['none', 'on-drag']);}
+  /**
+   * To be documented
+   */
+  set scrollEnabled(value: any) { this._scrollEnabled = this.processBoolean(value);}
 
   //Event handlers
   _handlePageScroll(event: any) {
