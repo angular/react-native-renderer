@@ -259,7 +259,7 @@ gulp.task('clean.code', function (done) {
 });
 
 function ts2js(path, dest, toSystem, withDeclaration) {
-  var tsResult = gulp.src(path.concat(['typings/main.d.ts', 'src/angular2-react-native.d.ts']), {base: './'})
+  var tsResult = gulp.src(path.concat(['typings/index.d.ts', 'src/angular2-react-native.d.ts']), {base: './'})
     .pipe(typescript({
       noImplicitAny: true,
       module: toSystem ? 'system' : 'commonjs',
