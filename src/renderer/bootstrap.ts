@@ -16,7 +16,6 @@ import 'zone.js/dist/zone.js';
 Object.defineProperty(XMLHttpRequest.prototype, 'onreadystatechange', {
   get: onreadystatechangeGetter,
 });
-XMLHttpRequest.prototype.addEventListener = () => {};
 
 // Finally, define the bootstrap
 import {RootRenderer, provide, NgZone, enableProdMode} from '@angular/core';

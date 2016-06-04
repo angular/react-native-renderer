@@ -6,9 +6,9 @@ var UIManager = ReactNative.NativeModules.UIManager;
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 var dismissKeyboard = require('react-native/Libraries/Utilities/dismissKeyboard');
 
-var ReactNativeEventEmitter = require('react-native/Libraries/ReactNative/ReactNativeEventEmitter');
-var ReactNativeTagHandles = require('react-native/Libraries/ReactNative/ReactNativeTagHandles');
-var ReactNativeAttributePayload = require('react-native/Libraries/ReactNative/ReactNativeAttributePayload');
+var ReactNativeEventEmitter = require('react/lib/ReactNativeEventEmitter');
+var ReactNativeTagHandles = require('react/lib/ReactNativeTagHandles');
+var ReactNativeAttributePayload = require('react/lib/ReactNativeAttributePayload');
 var ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
 
 import {NgZone} from '@angular/core';
