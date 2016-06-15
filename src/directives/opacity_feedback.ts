@@ -4,7 +4,7 @@ import {Directive, ElementRef, OnDestroy, OnInit} from '@angular/core';
   selector: '[opacityFeedback]'
 })
 export class OpacityFeedback implements OnInit, OnDestroy {
-  private _el: any;
+  public _el: any;
 
   constructor(el: ElementRef) {
     this._el = el.nativeElement;

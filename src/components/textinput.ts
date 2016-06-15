@@ -4,15 +4,16 @@ import {Node} from '../renderer/node';
 import {ReactNativeWrapper, isAndroid} from './../wrapper/wrapper';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
-var ANDROID_INPUTS: Array<string> = ['numberOfLines', 'underlineColorAndroid'];
+var ANDROID_INPUTS: Array<string> = ['numberOfLines', 'returnKeyLabel', 'underlineColorAndroid'];
 var IOS_INPUTS: Array<string> = ['clearButtonMode', 'clearTextOnFocus', 'enablesReturnKeyAutomatically',
-  'keyboardAppearance', 'returnKeyType'];
+  'keyboardAppearance'];
 
-var ANDROID_BINDINGS: string = `[numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid" (topTextInput)="_handleKeyPress($event)"
+var ANDROID_BINDINGS: string = `[numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid"
+  [returnKeyLabel]="_returnKeyLabel" (topTextInput)="_handleKeyPress($event)"
   mostRecentEventCount="0"`;
 var IOS_BINDINGS: string = `[clearButtonMode]="_clearButtonMode" [clearTextOnFocus]="_clearTextOnFocus"
   [enablesReturnKeyAutomatically]="_enablesReturnKeyAutomatically" [keyboardAppearance]="_keyboardAppearance"
-  [returnKeyType]="_returnKeyType" (topKeyPress)="_handleKeyPress($event)"`;
+  (topKeyPress)="_handleKeyPress($event)"`;
 
 /**
  * A component for displaying a textinput.
@@ -35,11 +36,11 @@ export class Sample {
     'autoFocus', 'value',
     //Native
     'autoCapitalize', 'autoCorrect', 'blurOnSubmit', 'editable', 'keyboardType', 'maxLength', 'multiline',
-    'password', 'placeholder', 'placeholderTextColor', 'selectionColor', 'selectTextOnFocus'
+    'password', 'placeholder', 'placeholderTextColor', 'returnKeyType', 'selectionColor', 'selectTextOnFocus'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `<native-textinput [text]="_nativeValue" [autoCapitalize]="_autoCapitalize" [autoCorrect]="_autoCorrect" [blurOnSubmit]="_blurOnSubmit" [editable]="_editable" [keyboardType]="_keyboardType"
   [maxLength]="_maxLength" [multiline]="_multiline" [password]="_password" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor"
-  [selectionColor]="_selectionColor" [selectTextOnFocus]="_selectTextOnFocus"
+  [returnKeyType]="_returnKeyType" [selectionColor]="_selectionColor" [selectTextOnFocus]="_selectTextOnFocus"
   (tap)="focusTextInput()" (topFocus)="_handleFocus()" (topChange)="_handleChange($event)" (topSubmitEditing)="_handleSubmitEditing($event)"
   (topBlur)="_handleBlur()" (topEndEditing)="_handleEndEditing($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-textinput>`
 })
@@ -107,6 +108,7 @@ export class TextInput extends HighLevelComponent implements OnInit {
   private _password: boolean;
   private _placeholder: string;
   private _placeholderTextColor: number;
+  private _returnKeyType: string;
   private _selectionColor: number;
   private _selectTextOnFocus: boolean;
   /**
@@ -152,6 +154,17 @@ export class TextInput extends HighLevelComponent implements OnInit {
   /**
    * To be documented
    */
+  set returnKeyType(value: string) {this._returnKeyType = this.processEnum(value,
+    [// Cross-platform
+    'done', 'go', 'next', 'search', 'send',
+    // Android-only
+    'none', 'previous',
+    // iOS-only
+    'default', 'emergency-call', 'google', 'join', 'route', 'yahoo']
+  );}
+  /**
+   * To be documented
+   */
   set selectionColor(value: string) {this._selectionColor = this.processColor(value);}
   /**
    * To be documented
@@ -159,6 +172,7 @@ export class TextInput extends HighLevelComponent implements OnInit {
   set selectTextOnFocus(value: any) {this._selectTextOnFocus = this.processBoolean(value);}
 
   private _numberOfLines: number;
+  private _returnKeyLabel: string;
   private _underlineColorAndroid: number;
   /**
    * To be documented
@@ -169,13 +183,17 @@ export class TextInput extends HighLevelComponent implements OnInit {
    * To be documented
    * @platform android
    */
+  set returnKeyLabel(value: string) {this._returnKeyLabel = value;}
+  /**
+   * To be documented
+   * @platform android
+   */
   set underlineColorAndroid(value: string) {this._underlineColorAndroid = this.processColor(value);}
 
   private _clearButtonMode: boolean;
   private _clearTextOnFocus: boolean;
   private _enablesReturnKeyAutomatically: boolean;
   private _keyboardAppearance: string;
-  private _returnKeyType: string;
   /**
    * To be documented
    * @platform ios
@@ -196,11 +214,6 @@ export class TextInput extends HighLevelComponent implements OnInit {
    * @platform ios
    */
   set keyboardAppearance(value: string) {this._keyboardAppearance = this.processEnum(value, ['default', 'light', 'dark']);}
-  /**
-   * To be documented
-   * @platform ios
-   */
-  set returnKeyType(value: string) {this._returnKeyType = this.processEnum(value, ['default', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency-call']);}
 
   //Event handlers
   _handleFocus() {

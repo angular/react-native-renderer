@@ -7,7 +7,7 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component"
 var ANDROID_INPUTS: Array<string> = ['endFillColor'];
 var IOS_INPUTS: Array<string> = ['alwaysBounceHorizontal', 'alwaysBounceVertical', 'automaticallyAdjustContentInsets', 'bounces', 'bouncesZoom',
   'canCancelContentTouches', 'centerContent', 'contentInset', 'contentOffset', 'decelerationRate', 'directionalLockEnabled',
-  'indicatorStyle', 'maximumZoomScale', 'minimumZoomScale', 'pagingEnabled', 'scrollEventThrottle', 'scrollIndicatorInsets',
+  'indicatorStyle', 'maximumZoomScale', 'minimumZoomScale', 'scrollEventThrottle', 'scrollIndicatorInsets',
   'scrollsToTop', 'snapToAlignment', 'snapToInterval', 'stickyHeaderIndices', 'zoomScale'];
 
 var ANDROID_BINDINGS: string = `[endFillColor]="_endFillColor"`;
@@ -15,7 +15,7 @@ var IOS_BINDINGS: string = `[alwaysBounceHorizontal]="_alwaysBounceHorizontal" [
   [automaticallyAdjustContentInsets]="_automaticallyAdjustContentInsets" [bounces]="_bounces" [bouncesZoom]="_bouncesZoom"
   [canCancelContentTouches]="_canCancelContentTouches" [centerContent]="_centerContent" [contentInset]="_contentInset"
   [contentOffset]="_contentOffset" [decelerationRate]="_decelerationRate" [directionalLockEnabled]="_directionalLockEnabled"
-  [indicatorStyle]="_indicatorStyle" [maximumZoomScale]="_maximumZoomScale" [minimumZoomScale]="_minimumZoomScale" [pagingEnabled]="_pagingEnabled"
+  [indicatorStyle]="_indicatorStyle" [maximumZoomScale]="_maximumZoomScale" [minimumZoomScale]="_minimumZoomScale"
   [scrollEventThrottle]="_scrollEventThrottle" [scrollIndicatorInsets]="_scrollIndicatorInsets" [scrollsToTop]="_scrollsToTop"
   [snapToAlignment]="_snapToAlignment" [snapToInterval]="_snapToInterval" [stickyHeaderIndices]="_stickyHeaderIndices" [zoomScale]="_zoomScale"`;
 
@@ -41,13 +41,13 @@ export class Sample {}
 @Component({
   selector: 'ScrollView',
   inputs: [
-    'contentContainerStyle', 'horizontal', 'keyboardDismissMode', 'keyboardShouldPersistTaps', 'removeClippedSubviews', 'scrollEnabled',
+    'contentContainerStyle', 'horizontal', 'keyboardDismissMode', 'keyboardShouldPersistTaps', 'pagingEnabled', 'removeClippedSubviews', 'scrollEnabled',
     'sendMomentumEvents', 'showsHorizontalScrollIndicator', 'showsVerticalScrollIndicator'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `
   <native-scrollview [horizontal]="_horizontal" [keyboardDismissMode]="_keyboardDismissMode" [keyboardShouldPersistTaps]="_keyboardShouldPersistTaps"
-  [scrollEnabled]="_scrollEnabled" [sendMomentumEvents]="_sendMomentumEvents" [showsHorizontalScrollIndicator]="_showsHorizontalScrollIndicator"
-  [showsVerticalScrollIndicator]="_showsVerticalScrollIndicator"
+  [pagingEnabled]="_pagingEnabled" [scrollEnabled]="_scrollEnabled" [sendMomentumEvents]="_sendMomentumEvents"
+  [showsHorizontalScrollIndicator]="_showsHorizontalScrollIndicator" [showsVerticalScrollIndicator]="_showsVerticalScrollIndicator"
   (topScroll)="_handleScroll($event)" (topScrollBeginDrag)="_handleScrollBeginDrag($event)" (topScrollEndDrag)="_handleScrollEndDrag($event)"
   (topMomentumScrollBegin)="_handleMomentumScrollBegin($event)" (topMomentumScrollEnd)="_handleMomentumScrollEnd($event)"
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}>
@@ -91,6 +91,7 @@ export class ScrollView extends HighLevelComponent{
   private _horizontal: boolean;
   private _keyboardDismissMode: string;
   private _keyboardShouldPersistTaps: boolean;
+  private _pagingEnabled: boolean;
   private _removeClippedSubviews: boolean;
   private _scrollEnabled: boolean;
   private _sendMomentumEvents: boolean;
@@ -112,6 +113,10 @@ export class ScrollView extends HighLevelComponent{
    * To be documented
    */
   set keyboardShouldPersistTaps(value: any) {this._keyboardShouldPersistTaps = this.processBoolean(value);}
+  /**
+   * To be documented
+   */
+  set pagingEnabled(value: any) {this._pagingEnabled = this.processBoolean(value);}
   /**
    * To be documented
    */
@@ -155,7 +160,6 @@ export class ScrollView extends HighLevelComponent{
   private _indicatorStyle: string;
   private _maximumZoomScale: number;
   private _minimumZoomScale: number;
-  private _pagingEnabled: boolean;
   private _scrollEventThrottle: number;
   private _scrollIndicatorInsets: any; //{0, 0, 0, 0}
   private _scrollsToTop: boolean;
@@ -241,11 +245,6 @@ export class ScrollView extends HighLevelComponent{
    * @platform ios
    */
   set minimumZoomScale(value: any) {this._minimumZoomScale = this.processNumber(value);}
-  /**
-   * To be documented
-   * @platform ios
-   */
-  set pagingEnabled(value: any) {this._pagingEnabled = this.processBoolean(value);}
   /**
    * To be documented
    * @platform ios

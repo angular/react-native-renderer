@@ -88,7 +88,7 @@ class NavigatorItem extends HighLevelComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.loader.loadNextToLocation(this._toBeLoaded, this.target).then((componentRef: ComponentRef) => {
+    this.loader.loadNextToLocation(this._toBeLoaded, this.target).then((componentRef: ComponentRef<any>) => {
       this.componentLoad.emit(componentRef.instance);
     });
   }
@@ -144,9 +144,9 @@ export class Sample {
   selector: 'Navigator',
   directives: [NgFor, NgIf, NavigatorItem],
   inputs: [
-    'barTintColor', 'itemWrapperStyle', 'navigationBarHidden', 'shadowHidden', 'tintColor', 'titleTextColor', 'translucent'
+    'barTintColor', 'interactivePopGestureEnabled', 'itemWrapperStyle', 'navigationBarHidden', 'shadowHidden', 'tintColor', 'titleTextColor', 'translucent'
   ].concat(GENERIC_INPUTS),
-  template: `<native-navigator *ngIf="_stack.length > 0" [requestedTopOfStack]="_requestedTopOfStack"
+  template: `<native-navigator *ngIf="_stack.length > 0" [interactivePopGestureEnabled]="_interactivePopGestureEnabled" [requestedTopOfStack]="_requestedTopOfStack"
   onNavigationComplete="true" (topNavigationComplete)="_handleNavigationComplete($event)"
   ${GENERIC_BINDINGS}>
     <NavigatorItem *ngFor="let instruction of _stack" [itemWrapperStyle]="_itemWrapperStyle"
@@ -213,6 +213,7 @@ export class Navigator extends HighLevelComponent {
 
   //Properties
   private _barTintColor: number;
+  private _interactivePopGestureEnabled: boolean;
   private _itemWrapperStyle: any;
   private _navigationBarHidden: boolean;
   private _shadowHidden: boolean;
@@ -223,6 +224,10 @@ export class Navigator extends HighLevelComponent {
    * To be documented
    */
   set barTintColor(value: string) {this._barTintColor = this.processColor(value);}
+  /**
+   * To be documented
+   */
+  set interactivePopGestureEnabled(value: any) {this._interactivePopGestureEnabled = this.processBoolean(value);}
   /**
    * To be documented
    */
