@@ -153,15 +153,14 @@ export class TextInput extends HighLevelComponent implements OnInit {
   set placeholderTextColor(value: string) {this._placeholderTextColor = this.processColor(value);}
   /**
    * To be documented
+   * // Cross-platform
+   * 'done', 'go', 'next', 'search', 'send',
+   * // Android-only
+   * 'none', 'previous',
+   * // iOS-only
+   * 'default', 'emergency-call', 'google', 'join', 'route', 'yahoo'
    */
-  set returnKeyType(value: string) {this._returnKeyType = this.processEnum(value,
-    [// Cross-platform
-    'done', 'go', 'next', 'search', 'send',
-    // Android-only
-    'none', 'previous',
-    // iOS-only
-    'default', 'emergency-call', 'google', 'join', 'route', 'yahoo']
-  );}
+  set returnKeyType(value: string) {this._returnKeyType = this.processEnum(value, ['done', 'go', 'next', 'search', 'send', 'none', 'previous', 'default', 'emergency-call', 'google', 'join', 'route', 'yahoo']);}
   /**
    * To be documented
    */
