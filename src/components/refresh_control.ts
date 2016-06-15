@@ -3,10 +3,11 @@ import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component"
 import {REACT_NATIVE_WRAPPER} from './../renderer/renderer';
 import {ReactNativeWrapper, isAndroid} from "../wrapper/wrapper";
 
-var ANDROID_INPUTS: Array<string> = ['colors', 'enabled', 'progressBackgroundColor', 'size'];
+var ANDROID_INPUTS: Array<string> = ['colors', 'enabled', 'progressBackgroundColor', 'progressViewOffset', 'size'];
 var IOS_INPUTS: Array<string> = ['tintColor', 'title'];
 
-var ANDROID_BINDINGS: string = `[colors]="_colors" [enabled]="_enabled" [progressBackgroundColor]="_progressBackgroundColor" [size]="_size"`;
+var ANDROID_BINDINGS: string = `[colors]="_colors" [enabled]="_enabled" [progressBackgroundColor]="_progressBackgroundColor"
+  [progressViewOffset]="_progressViewOffset" [size]="_size"`;
 var IOS_BINDINGS: string = `[tintColor]="_tintColor" [title]="_title" onRefresh="true"`;
 
 /**
@@ -53,6 +54,7 @@ export class RefreshControl extends HighLevelComponent {
   private _colors: Array<number>;
   private _enabled: boolean;
   private _progressBackgroundColor: number;
+  private _progressViewOffset: number;
   private _size: number;
   /**
    * To be documented
@@ -75,6 +77,11 @@ export class RefreshControl extends HighLevelComponent {
    * @platform android
    */
   set progressBackgroundColor(value: string) {this._progressBackgroundColor = this.processColor(value);}
+  /**
+   * To be documented
+   * @platform android
+   */
+  set progressViewOffset(value: any) {this._progressViewOffset = this.processNumber(value);}
   /**
    * To be documented
    * @platform android

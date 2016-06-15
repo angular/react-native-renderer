@@ -7,12 +7,11 @@ import {OpacityFeedback} from "../opacity_feedback";
   selector: '[rippleFeedback]'
 })
 export class RippleFeedback extends OpacityFeedback implements OnInit, OnDestroy {
-  private _el: any;
   private _wrapper: ReactNativeWrapper;
   @Input() rippleFeedback: string;
 
   constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper, el: ElementRef) {
-    this._el = el.nativeElement;
+    super(el);
     this._wrapper = wrapper;
   }
 
