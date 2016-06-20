@@ -12,14 +12,14 @@ import {HttpApp} from "../common/http";
 import {AnimationApp} from "../common/animation";
 
 @RouteConfig([
-  { path: '/', component: HelloApp, as: 'HelloApp', data: {title: 'Kitchen Sink', backButtonTitle: 'Home'}},
-  { path: '/widgets', component: WidgetsList, as: 'WidgetsList', data: {title: 'Components'}},
-  { path: '/webview', component: WebViewApp, as: 'WebViewApp', data: {title: 'WebView'}},
-  { path: '/apis', component: APIsApp, as: 'APIsApp', data: {title: 'APIs'}},
-  { path: '/todomvc', component: TodoMVC, as: 'TodoMVC', data: {title: 'TodoMVC', rightButtonTitle: 'More'}},
-  { path: '/gestures', component: GesturesApp, as: 'GesturesApp', data: {title: 'Gestures'} },
-  { path: '/http', component: HttpApp, as: 'HttpApp', data: {title: 'Http'} },
-  { path: '/animation', component: AnimationApp, as: 'AnimationApp', data: {title: 'Animation'} }
+  { path: '/', component: HelloApp, name: 'HelloApp', data: {title: 'Kitchen Sink', backButtonTitle: 'Home'}},
+  { path: '/widgets', component: WidgetsList, name: 'WidgetsList', data: {title: 'Components'}},
+  { path: '/webview', component: WebViewApp, name: 'WebViewApp', data: {title: 'WebView'}},
+  { path: '/apis', component: APIsApp, name: 'APIsApp', data: {title: 'APIs'}},
+  { path: '/todomvc', component: TodoMVC, name: 'TodoMVC', data: {title: 'TodoMVC', rightButtonTitle: 'More'}},
+  { path: '/gestures', component: GesturesApp, name: 'GesturesApp', data: {title: 'Gestures'} },
+  { path: '/http', component: HttpApp, name: 'HttpApp', data: {title: 'Http'} },
+  { path: '/animation', component: AnimationApp, name: 'AnimationApp', data: {title: 'Animation'} }
 ])
 @Component({
   selector: 'kitchensink-app',

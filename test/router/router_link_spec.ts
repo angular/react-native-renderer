@@ -39,11 +39,12 @@ describe('Router Link', () => {
             var target = fixture.elementRef.nativeElement.children[0];
             fireGesture('swipe', target);
 
-            fixture.whenStable().then(() => {
+            setTimeout(() => {
               rootRenderer.executeCommands();
               expect(mock.commandLogs.toString()).toEqual(
                 'CREATE+8+cmp-b+{},CREATE+9+native-text+{},CREATE+10+native-rawtext+{"text":"b"},DETACH+3+1,ATTACH+3+8+1,ATTACH+9+10+0,ATTACH+8+9+0');
-            });
+              resolve();
+            }, 30);
           }, 0);
         });
       });
@@ -65,6 +66,10 @@ export class CompA {}
 })
 export class CompB {}
 
+@RouteConfig([
+  {path: '/', component: CompA, name: 'CompA'},
+  {path: '/b', component: CompB, name: 'CompB'}
+])
 @Component({
   selector: 'test-cmp',
   template: `<View [routerLink]="['/CompB']" event="swipe">
@@ -72,10 +77,6 @@ export class CompB {}
     </View>`,
   directives: [View, RouterOutlet, RouterLink]
 })
-@RouteConfig([
-  {path: '/', component: CompA, as: 'CompA'},
-  {path: '/b', component: CompB, as: 'CompB'}
-])
 class TestComponent {
   constructor(public router: Router, public location: LocationStrategy) {}
 }

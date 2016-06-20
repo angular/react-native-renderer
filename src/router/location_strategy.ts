@@ -53,7 +53,7 @@ export class ReactNativeLocationStrategy extends LocationStrategy {
     if (this.urlChanges.length > 0) {
       this.urlChanges.pop();
       var nextUrl = this.urlChanges.length > 0 ? this.urlChanges[this.urlChanges.length - 1] : '';
-      this.zone.run(() => this.simulatePopState(nextUrl));
+      this.zone.run(() => this.simulatePopState(nextUrl.replace('replace: ', '')));
     }
   }
 
