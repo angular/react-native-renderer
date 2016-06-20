@@ -245,7 +245,7 @@ export class ReactNativeRenderer implements Renderer {
   }
 
   setBindingDebugInfo(renderElement: Node, propertyName: string, propertyValue: string): void {
-    this.setElementProperty(renderElement, propertyName, propertyValue);
+    //this.setElementProperty(renderElement, propertyName, propertyValue);
   }
 
   setElementClass(renderElement:any, className:string, isAdd:boolean):any {

@@ -208,7 +208,9 @@ export abstract class Node {
   }
 
   dispatchCommand(command: string, params: any = null) {
-    this.rnWrapper.dispatchCommand(this.nativeTag, command, params);
+    if (this.nativeTag !== -1) {
+      this.rnWrapper.dispatchCommand(this.nativeTag, command, params);
+    }
   }
 
   getElementByTestId(testId: string): Node {

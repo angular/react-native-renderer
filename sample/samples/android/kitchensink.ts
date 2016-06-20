@@ -38,14 +38,14 @@ import {AnimationApp} from './../common/animation';
 `
 })
 @RouteConfig([
-  { path: '/', component: HelloApp, as: 'HelloApp' },
-  { path: '/todomvc', component: TodoMVC, as: 'TodoMVC' },
-  { path: '/gestures', component: GesturesApp, as: 'GesturesApp' },
-  { path: '/widgets', component: WidgetsList, as: 'WidgetsList' },
-  { path: '/webview', component: WebViewApp, as: 'WebViewApp' },
-  { path: '/apis', component: APIsList, as: 'APIsList' },
-  { path: '/http', component: HttpApp, as: 'HttpApp' },
-  { path: '/animation', component: AnimationApp, as: 'AnimationApp'}
+  { path: '/', component: HelloApp, name: 'HelloApp' },
+  { path: '/todomvc', component: TodoMVC, name: 'TodoMVC' },
+  { path: '/gestures', component: GesturesApp, name: 'GesturesApp' },
+  { path: '/widgets', component: WidgetsList, name: 'WidgetsList' },
+  { path: '/webview', component: WebViewApp, name: 'WebViewApp' },
+  { path: '/apis', component: APIsList, name: 'APIsList' },
+  { path: '/http', component: HttpApp, name: 'HttpApp' },
+  { path: '/animation', component: AnimationApp, name: 'AnimationApp'}
 ])
 export class KitchenSinkApp {
   @ViewChild(TodoMVC) viewChild: TodoMVC;
@@ -58,8 +58,8 @@ export class KitchenSinkApp {
   styles: any;
   _el : any = null;
   constructor(el: ElementRef, private router: Router, private locationStrategy: LocationStrategy) {
-    this.router.subscribe((url) => {
-      this._afterNavigate(url);
+    this.router.subscribe((res) => {
+      this._afterNavigate(res.instruction.urlPath);
     })
     NativeModules.StatusBarManager.setColor(processColor('#00a9e0'), true);
 

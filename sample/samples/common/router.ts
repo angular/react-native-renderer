@@ -23,8 +23,8 @@ class CompB {
 
 
 @RouteConfig([
-  { path: '/', component: CompA, as: 'CompA' },
-  { path: '/b', component: CompB, as: 'CompB' },
+  { path: '/', component: CompA, name: 'CompA' },
+  { path: '/b', component: CompB, name: 'CompB' },
 ])
 @Component({
   selector: 'example',
