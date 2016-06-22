@@ -13,7 +13,7 @@ import {Toolbar} from "../components/android/toolbar";
 import {Image} from '../components/image';
 import {ScrollView} from "../components/scrollview";
 import {Picker} from "../components/picker";
-import {ActivityIndicator} from '../components/ios/activity_indicator';
+import {ActivityIndicator} from '../components/activity_indicator';
 import {Navigator} from '../components/ios/navigator';
 import {ProgressView} from "../components/ios/progress_view";
 import {SegmentedControl} from "../components/ios/segmented_control";

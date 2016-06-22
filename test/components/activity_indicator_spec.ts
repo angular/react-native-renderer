@@ -6,12 +6,12 @@ import {
 } from '@angular/core/testing';
 import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
 import {Component, ViewChild} from '@angular/core';
-import {ReactNativeRootRenderer} from '../../../src/renderer/renderer';
-import {MockReactNativeWrapper} from "./../../../src/wrapper/wrapper_mock";
-import {ActivityIndicator} from "../../../src/components/ios/activity_indicator";
-import {getTestingProviders} from "../../../src/test_helpers/utils";
+import {ReactNativeRootRenderer} from '../../src/renderer/renderer';
+import {MockReactNativeWrapper} from "../../src/wrapper/wrapper_mock";
+import {ActivityIndicator} from "../../src/components/activity_indicator";
+import {getTestingProviders} from "../../src/test_helpers/utils";
 
-describe('ActivityIndicator component (iOS)', () => {
+describe('ActivityIndicator component', () => {
   var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
   beforeEach(() => mock.reset());
   beforeEachProviders(() => getTestingProviders(mock, TestComponent));
@@ -23,7 +23,7 @@ describe('ActivityIndicator component (iOS)', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-activityindicator+{"animating":true,"hidesWhenStopped":true,"height":20,"width":20},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-activityindicator+{"indeterminate":true,"styleAttr":"Normal","animating":true,"hidesWhenStopped":true,"height":20,"width":20},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   })));
 
@@ -34,7 +34,7 @@ describe('ActivityIndicator component (iOS)', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-activityindicator+{"animating":true,"hidesWhenStopped":true,"size":"large","accessible":true,"testID":"foo","height":36,"width":36},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-activityindicator+{"indeterminate":true,"styleAttr":"Normal","animating":true,"hidesWhenStopped":true,"size":"large","accessible":true,"testID":"foo","height":36,"width":36},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   })));
 
@@ -45,7 +45,7 @@ describe('ActivityIndicator component (iOS)', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-activityindicator+{"animating":true,"hidesWhenStopped":true,"height":20,"width":20,"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-activityindicator+{"indeterminate":true,"styleAttr":"Normal","animating":true,"hidesWhenStopped":true,"height":20,"width":20,"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   })));
 

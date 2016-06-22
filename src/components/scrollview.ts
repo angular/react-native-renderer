@@ -50,10 +50,11 @@ export class Sample {}
   [showsHorizontalScrollIndicator]="_showsHorizontalScrollIndicator" [showsVerticalScrollIndicator]="_showsVerticalScrollIndicator"
   (topScroll)="_handleScroll($event)" (topScrollBeginDrag)="_handleScrollBeginDrag($event)" (topScrollEndDrag)="_handleScrollEndDrag($event)"
   (topMomentumScrollBegin)="_handleMomentumScrollBegin($event)" (topMomentumScrollEnd)="_handleMomentumScrollEnd($event)"
+  [flexDirection]="_horizontal ? 'row' : 'column'"
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}>
   ${!isAndroid() ? '<ng-content select="RefreshControl"></ng-content>' : ''}
   <native-view [removeClippedSubviews]="_removeClippedSubviews" [style]="_contentContainerStyle" collapsable="false"
-    [alignSelf]="_horizontal ? 'flex-start' : null" [flexDirection]="_horizontal ? 'row' : null">
+    [flexDirection]="_horizontal ? 'row' : null">
   <ng-content></ng-content></native-view>
   </native-scrollview>`
 })

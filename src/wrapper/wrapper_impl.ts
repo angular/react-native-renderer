@@ -23,6 +23,7 @@ const RCT_VIEW_NAMES: { [s: string]: string } = ReactNative.Platform.OS == 'andr
   'native-switch': 'AndroidSwitch',
   'native-textinput' : 'AndroidTextInput',
   'native-webview': 'RCTWebView',
+  'native-activityindicator': 'AndroidProgressBar',
   'native-progressbar': 'AndroidProgressBar',
   'native-pagerlayout': 'AndroidViewPager',
   'native-drawerlayout': "AndroidDrawerLayout",
@@ -196,7 +197,7 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
       this._patchCallback(zone, ReactNative.NetInfo, 'addEventListener', [1]);
       this._patchCallback(zone, ReactNative.NetInfo, 'removeEventListener', [1]);
     }
-    if (ReactNative.PushNotificationIOS) {
+    if (ReactNative.NativeModules.PushNotificationManager && ReactNative.PushNotificationIOS) {
       this._patchCallback(zone, ReactNative.PushNotificationIOS, 'addEventListener', [1]);
       this._patchCallback(zone, ReactNative.PushNotificationIOS, 'removeEventListener', [1]);
       this._patchCallback(zone, ReactNative.PushNotificationIOS, 'getApplicationIconBadgeNumber', [0]);

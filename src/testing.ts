@@ -4,6 +4,7 @@ export * from './renderer/renderer';
 export * from './test_helpers/utils';
 export * from './wrapper/wrapper_mock';
 
+export * from './components/activity_indicator';
 export * from './components/image';
 export * from './components/picker';
 export * from './components/refresh_control';
@@ -19,7 +20,6 @@ export * from './components/android/pager_layout';
 export * from './components/android/progress_bar';
 export * from './components/android/toolbar';
 
-export * from './components/ios/activity_indicator';
 export * from './components/ios/date_picker';
 export * from './components/ios/map_view';
 export * from './components/ios/navigator';
