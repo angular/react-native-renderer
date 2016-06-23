@@ -26,7 +26,7 @@ import {StyleSheet} from 'react-native';
   </View>
   <View [styleSheet]="styles.container">
     <Text [styleSheet]="styles.title">Text input {{typed.length > 0 ? '-> ' + typed : ''}}</Text>
-    <TextInput placeholder="Type in" (submit)="typed=$event"></TextInput>
+    <TextInput [style]="{width: 200}" placeholder="Type in" (submit)="typed=$event"></TextInput>
     <Text [styleSheet]="styles.title">Switch ({{switched}})</Text>
     <Switch (change)="switched=$event"></Switch>
     <Text [styleSheet]="styles.title">Slider ({{sliderValue}})</Text>
@@ -41,6 +41,8 @@ import {StyleSheet} from 'react-native';
     <ProgressBar styleAttr="Inverse" color="#ce0058"></ProgressBar>
     <ProgressBar styleAttr="Small"></ProgressBar>
     <ProgressBar styleAttr="Horizontal"></ProgressBar>
+    <ActivityIndicator color="#ce0058"></ActivityIndicator>
+    <ActivityIndicator color="#ce0058" size="large"></ActivityIndicator>
   </View>
 </PagerLayout>
 `

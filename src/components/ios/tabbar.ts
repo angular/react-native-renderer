@@ -27,9 +27,9 @@ export class Sample {
 @Component({
   selector: 'TabBar',
   inputs: [
-    'barTintColor', 'tintColor', 'translucent'
+    'barTintColor', 'itemPositioning', 'tintColor', 'translucent'
   ].concat(GENERIC_INPUTS),
-  template: `<native-tabbar [barTintColor]="_barTintColor" [tintColor]="_tintColor" [translucent]="_translucent"
+  template: `<native-tabbar [barTintColor]="_barTintColor" [itemPositioning]="_itemPositioning" [tintColor]="_tintColor" [translucent]="_translucent"
   ${GENERIC_BINDINGS}><ng-content></ng-content></native-tabbar>`
 })
 export class TabBar extends HighLevelComponent {
@@ -40,12 +40,17 @@ export class TabBar extends HighLevelComponent {
 
   //Properties
   private _barTintColor: number;
+  private _itemPositioning: string;
   private _tintColor: number;
   private _translucent: boolean;
   /**
    * To be documented
    */
   set barTintColor(value: string) {this._barTintColor = this.processColor(value);}
+  /**
+   * To be documented
+   */
+  set itemPositioning(value: string) {this._itemPositioning = this.processEnum(value, ['auto', 'fill', 'center']);}
   /**
    * To be documented
    */

@@ -19,11 +19,12 @@ describe('ScrollView component', () => {
   it('should render vertically', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
     tcb.overrideTemplate(TestComponent, `<ScrollView></ScrollView>`)
+    tcb.overrideTemplate(TestComponent, `<ScrollView></ScrollView>`)
       .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{},CREATE+4+native-view+{"collapsable":false,"alignSelf":null,"flexDirection":null},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{"flexDirection":"column"},CREATE+4+native-view+{"collapsable":false,"flexDirection":null},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
   })));
 
@@ -34,7 +35,7 @@ describe('ScrollView component', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-horizontalscrollview+{"horizontal":true},CREATE+4+native-view+{"collapsable":false,"alignSelf":"flex-start","flexDirection":"row"},' +
+          'CREATE+2+test-cmp+{},CREATE+3+native-horizontalscrollview+{"horizontal":true,"flexDirection":"row"},CREATE+4+native-view+{"collapsable":false,"flexDirection":"row"},' +
           'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
   })));
@@ -46,13 +47,13 @@ describe('ScrollView component', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{"horizontal":false},CREATE+4+native-view+{"collapsable":false,"alignSelf":null,"flexDirection":null},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{"horizontal":false,"flexDirection":"column"},CREATE+4+native-view+{"collapsable":false,"flexDirection":null},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
 
         mock.clearLogs();
         fixture.componentInstance.isHorizontal = true;
         fixture.detectChanges();
         rootRenderer.executeCommands();
-        expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-horizontalscrollview+{"horizontal":true},UPDATE+4+native-view+{"alignSelf":"flex-start","flexDirection":"row"}');
+        expect(mock.commandLogs.toString()).toEqual('UPDATE+3+native-horizontalscrollview+{"horizontal":true,"flexDirection":"row"},UPDATE+4+native-view+{"flexDirection":"row"}');
       });
   })));
 
@@ -63,8 +64,8 @@ describe('ScrollView component', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{"scrollEnabled":false,"removeClippedSubviews":true},' +
-          'CREATE+4+native-view+{"collapsable":false,"removeClippedSubviews":true,"alignSelf":null,"flexDirection":null},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{"scrollEnabled":false,"flexDirection":"column","removeClippedSubviews":true},' +
+          'CREATE+4+native-view+{"collapsable":false,"removeClippedSubviews":true,"flexDirection":null},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
   })));
 
@@ -75,8 +76,8 @@ describe('ScrollView component', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{"flex":1,"collapse":true,"fontSize":42},' +
-          'CREATE+4+native-view+{"collapsable":false,"alignSelf":null,"flexDirection":null,"flex":1,"collapse":true},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-scrollview+{"flexDirection":"column","flex":1,"collapse":true,"fontSize":42},' +
+          'CREATE+4+native-view+{"collapsable":false,"flexDirection":null,"flex":1,"collapse":true},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0');
       });
   })));
 

@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
-import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../component";
-import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
-import {ReactNativeWrapper} from "../../wrapper/wrapper";
+import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
+import {REACT_NATIVE_WRAPPER} from '../renderer/renderer';
+import {ReactNativeWrapper, isAndroid} from "../wrapper/wrapper";
 
 /**
  * A component for displaying an activity indicator.
@@ -14,14 +14,14 @@ import {ReactNativeWrapper} from "../../wrapper/wrapper";
  export class Sample {}
  * ```
  * @style https://facebook.github.io/react-native/docs/view.html#style
- * @platform ios
  */
 @Component({
   selector: 'ActivityIndicator',
   inputs: [
     'animating', 'color', 'hidesWhenStopped', 'size',
   ].concat(GENERIC_INPUTS),
-  template: `<native-activityindicator [animating]="_animating" [color]="_color" [hidesWhenStopped]="_hidesWhenStopped" [size]="_size"
+  template: `<native-activityindicator [animating]="_animating" [color]="_color" [hidesWhenStopped]="_hidesWhenStopped"
+  [size]="_size" ${isAndroid() ? 'styleAttr="Normal" indeterminate="true"' : ''} 
   ${GENERIC_BINDINGS}></native-activityindicator>`
 })
 export class ActivityIndicator extends HighLevelComponent {
@@ -49,6 +49,7 @@ export class ActivityIndicator extends HighLevelComponent {
   set hidesWhenStopped(value: any) {this._hidesWhenStopped = this.processBoolean(value);}
   /**
    * To be documented
+   * @platform ios
    */
   set size(value: string) {
     this._size = this.processEnum(value, ['small', 'large']);
