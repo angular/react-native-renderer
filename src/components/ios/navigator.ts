@@ -121,8 +121,8 @@ class Bar {}
 var moreLogo = require('../../assets/icon_more.png');
 
 @RouteConfig([
- { path: '/', component: Foo, as: 'Foo', data: {title: 'foo!', rightButtonIcon: moreLogo, backButtonTitle: 'back'}},
- { path: '/bar', component: Bar, as: 'Bar', data: {title: 'bar!'} }
+ { path: '/', component: Foo, name: 'Foo', data: {title: 'foo!', rightButtonIcon: moreLogo, backButtonTitle: 'back'}},
+ { path: '/bar', component: Bar, name: 'Bar', data: {title: 'bar!'} }
 ])
 @Component({
   selector: 'sample',
