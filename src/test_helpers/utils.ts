@@ -1,4 +1,4 @@
-import {MockApplicationRef} from '@angular/core/testing';
+import {MockApplicationRef} from './mock_application_ref';
 import {RootRenderer, provide, ApplicationRef} from '@angular/core';
 import {ROUTER_PROVIDERS, ROUTER_PRIMARY_COMPONENT} from '@angular/router-deprecated';
 import {LocationStrategy} from '@angular/common';

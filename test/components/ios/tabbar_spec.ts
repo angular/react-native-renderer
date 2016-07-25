@@ -1,9 +1,4 @@
-import {
-  async, inject, beforeEachProviders, beforeEach,
-  iit, it, xit,
-  describe, ddescribe, xdescribe,
-  expect
-} from '@angular/core/testing';
+import {async, inject, addProviders} from '@angular/core/testing';
 import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
 import {Component, ViewChild} from '@angular/core';
 import {ReactNativeRootRenderer} from '../../../src/renderer/renderer';
@@ -13,12 +8,12 @@ import {TabBarItem} from "../../../src/components/ios/tabbar_item";
 import {View} from "../../../src/components/view";
 import {fireFunctionalEvent, getTestingProviders} from "../../../src/test_helpers/utils";
 
-var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
-
 describe('TabBar component (iOS)', () => {
   var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
-  beforeEach(() => mock.reset());
-  beforeEachProviders(() => getTestingProviders(mock, TestComponent));
+  beforeEach(() => {
+    mock.reset();
+    addProviders(getTestingProviders(mock, TestComponent));
+  });
 
   it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;

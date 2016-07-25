@@ -1,9 +1,4 @@
-import {
-  async, inject, beforeEachProviders, beforeEach,
-  iit, it, xit,
-  describe, ddescribe, xdescribe,
-  expect
-} from '@angular/core/testing';
+import {async, inject, addProviders} from '@angular/core/testing';
 import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
 import {Component} from '@angular/core';
 import {NgIf, NgFor} from '@angular/common';
@@ -14,12 +9,12 @@ import {View} from "./../../src/components/view";
 import {Text} from './../../src/components/text';
 import {getTestingProviders} from "../../src/testing";
 
-
 describe('Component without host', () => {
   var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
-  beforeEach(() => mock.reset());
-  beforeEachProviders(() => getTestingProviders(mock, TestComponent));
-
+  beforeEach(() => {
+    mock.reset();
+    addProviders(getTestingProviders(mock, TestComponent));
+  });
 
   it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;
