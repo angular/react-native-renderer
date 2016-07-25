@@ -9,7 +9,7 @@ import {Node} from "../../renderer/node";
 @Component({
   selector: 'NavigatorItem',
   inputs: ['instruction'],
-  template: `<native-navitem [title]="_title" [backButtonTitle]="_backButtonTitle" [leftButtonTitle]="_leftButtonTitle" [rightButtonTitle]="_rightButtonTitle"
+  template: `<native-navitem [title]="_title" [titleImage]="_titleImage" [backButtonTitle]="_backButtonTitle" [leftButtonTitle]="_leftButtonTitle" [rightButtonTitle]="_rightButtonTitle"
   [navigationBarHidden]="navigationBarHidden" [shadowHidden]="shadowHidden" [translucent]="translucent"
   [barTintColor]="barTintColor" [tintColor]="tintColor" [titleTextColor]="titleTextColor"
   [backButtonIcon]="_backButtonIcon" [leftButtonIcon]="_leftButtonIcon" [rightButtonIcon]="_rightButtonIcon"
@@ -30,6 +30,7 @@ class NavigatorItem extends HighLevelComponent implements AfterViewInit {
   @Input() titleTextColor: number;
   private _instruction: ComponentInstruction;
   private _title: string;
+  private _titleImage: any;
   private _backButtonTitle: string;
   private _leftButtonTitle: string;
   private _rightButtonTitle: string;
@@ -62,6 +63,7 @@ class NavigatorItem extends HighLevelComponent implements AfterViewInit {
     this._instruction = value;
     var data = value.routeData.data;
     if (data['title']) {this._title = data['title'];}
+    if (data['titleImage']) {this._titleImage = this.resolveAssetSource(data['titleImage']);}
     if (data['backButtonTitle']) {this._backButtonTitle = data['backButtonTitle'];}
     if (data['leftButtonTitle']) {this._leftButtonTitle = data['leftButtonTitle'];}
     if (data['rightButtonTitle']) {this._rightButtonTitle = data['rightButtonTitle'];}
@@ -101,7 +103,7 @@ class NavigatorItem extends HighLevelComponent implements AfterViewInit {
  * A Router's navigation triggers a navigation of the Navigator.
  *
  * For each route, additional data can be provided as follows:
- * {title: string, backButtonIcon: any, backButtonTitle: string, leftButtonIcon: any, leftButtonTitle: string, rightButtonIcon: any, rightButtonTitle: string,
+ * {title: string, titleImage: any, backButtonIcon: any, backButtonTitle: string, leftButtonIcon: any, leftButtonTitle: string, rightButtonIcon: any, rightButtonTitle: string,
  * wrapperStyle: any, navigationBarHidden: boolean, shadowHidden: boolean, tintColor: string, barTintColor: string, titleTextColor: string, translucent: boolean}
  *
  * ```

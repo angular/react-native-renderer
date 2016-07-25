@@ -36,10 +36,10 @@ export class Sample {
     'autoFocus', 'value',
     //Native
     'autoCapitalize', 'autoCorrect', 'blurOnSubmit', 'editable', 'keyboardType', 'maxLength', 'multiline',
-    'password', 'placeholder', 'placeholderTextColor', 'returnKeyType', 'selectionColor', 'selectTextOnFocus'
+    'placeholder', 'placeholderTextColor', 'returnKeyType', 'secureTextEntry', 'selectionColor', 'selectTextOnFocus'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `<native-textinput [text]="_nativeValue" [autoCapitalize]="_autoCapitalize" [autoCorrect]="_autoCorrect" [blurOnSubmit]="_blurOnSubmit" [editable]="_editable" [keyboardType]="_keyboardType"
-  [maxLength]="_maxLength" [multiline]="_multiline" [password]="_password" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor"
+  [maxLength]="_maxLength" [multiline]="_multiline" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor" [secureTextEntry]="_secureTextEntry"
   [returnKeyType]="_returnKeyType" [selectionColor]="_selectionColor" [selectTextOnFocus]="_selectTextOnFocus"
   (tap)="focusTextInput()" (topFocus)="_handleFocus()" (topChange)="_handleChange($event)" (topSubmitEditing)="_handleSubmitEditing($event)"
   (topBlur)="_handleBlur()" (topEndEditing)="_handleEndEditing($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-textinput>`
@@ -105,10 +105,10 @@ export class TextInput extends HighLevelComponent implements OnInit {
   private _keyboardType: string;
   private _maxLength: number;
   private _multiline: boolean;
-  private _password: boolean;
   private _placeholder: string;
   private _placeholderTextColor: number;
   private _returnKeyType: string;
+  private _secureTextEntry: boolean;
   private _selectionColor: number;
   private _selectTextOnFocus: boolean;
   /**
@@ -142,10 +142,6 @@ export class TextInput extends HighLevelComponent implements OnInit {
   /**
    * To be documented
    */
-  set password(value: any) {this._password = this.processBoolean(value);}
-  /**
-   * To be documented
-   */
   set placeholder(value: string) {this._placeholder = value;}
   /**
    * To be documented
@@ -161,6 +157,10 @@ export class TextInput extends HighLevelComponent implements OnInit {
    * 'default', 'emergency-call', 'google', 'join', 'route', 'yahoo'
    */
   set returnKeyType(value: string) {this._returnKeyType = this.processEnum(value, ['done', 'go', 'next', 'search', 'send', 'none', 'previous', 'default', 'emergency-call', 'google', 'join', 'route', 'yahoo']);}
+  /**
+   * To be documented
+   */
+  set secureTextEntry(value: any) {this._secureTextEntry = this.processBoolean(value);}
   /**
    * To be documented
    */
