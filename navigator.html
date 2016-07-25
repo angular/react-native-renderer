@@ -65,7 +65,7 @@ h4.cpt {
 <p>It uses a <code>RouteConfig</code> to define the different screens which can be reached.
 A Router&#39;s navigation triggers a navigation of the Navigator.</p>
 <p>For each route, additional data can be provided as follows:
-{title: string, backButtonIcon: any, backButtonTitle: string, leftButtonIcon: any, leftButtonTitle: string, rightButtonIcon: any, rightButtonTitle: string,
+{title: string, titleImage: any, backButtonIcon: any, backButtonTitle: string, leftButtonIcon: any, leftButtonTitle: string, rightButtonIcon: any, rightButtonTitle: string,
 wrapperStyle: any, navigationBarHidden: boolean, shadowHidden: boolean, tintColor: string, barTintColor: string, titleTextColor: string, translucent: boolean}</p>
 <pre><code>Component({
   selector: &#39;foo&#39;,
@@ -83,8 +83,8 @@ class Bar {}
 var moreLogo = require(&#39;../../assets/icon_more.png&#39;);
 
 @RouteConfig([
- { path: &#39;/&#39;, component: Foo, as: &#39;Foo&#39;, data: {title: &#39;foo!&#39;, rightButtonIcon: moreLogo, backButtonTitle: &#39;back&#39;}},
- { path: &#39;/bar&#39;, component: Bar, as: &#39;Bar&#39;, data: {title: &#39;bar!&#39;} }
+ { path: &#39;/&#39;, component: Foo, name: &#39;Foo&#39;, data: {title: &#39;foo!&#39;, rightButtonIcon: moreLogo, backButtonTitle: &#39;back&#39;}},
+ { path: &#39;/bar&#39;, component: Bar, name: &#39;Bar&#39;, data: {title: &#39;bar!&#39;} }
 ])
 @Component({
   selector: &#39;sample&#39;,
