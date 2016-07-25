@@ -7,7 +7,7 @@ var ANDROID_INPUTS: Array<string> = ['fadeDuration', 'loadingIndicatorSrc', 'pro
 var IOS_INPUTS: Array<string> = ['blurRadius', 'capInsets', 'defaultSource'];
 
 var ANDROID_BINDINGS: string = `[fadeDuration]="_fadeDuration" [loadingIndicatorSrc]="_loadingIndicatorSrc ? _loadingIndicatorSrc.uri : null"
-  [progressiveRenderingEnabled]="_progressiveRenderingEnabled" [shouldNotifyLoadEvents]="_shouldNotifyLoadEvents" [src]="_source ? _source.uri: null"`;
+  [progressiveRenderingEnabled]="_progressiveRenderingEnabled" [shouldNotifyLoadEvents]="_shouldNotifyLoadEvents" [src]="_source ? [{uri: _source.uri}] : null"`;
 var IOS_BINDINGS: string = `[blurRadius]="_blurRadius" [capInsets]="_capInsets" [defaultSource]="_defaultSource" [source]="_source"`;
 
 //TODO: add iOS specific events (onError, on Progress) and specific cases (tintColor, resizeMode)
@@ -59,7 +59,7 @@ export class Image extends HighLevelComponent {
   /**
    * To be documented
    */
-  set resizeMode(value: string) {this._resizeMode = this.processEnum(value, ['cover', 'contain', 'stretch']);}
+  set resizeMode(value: string) {this._resizeMode = this.processEnum(value, ['cover', 'contain', 'stretch', 'repeat']);}
 
   /**
    * To be documented

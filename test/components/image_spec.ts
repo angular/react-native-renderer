@@ -32,7 +32,7 @@ describe('Image component', () => {
         fixture.detectChanges();
         rootRenderer.executeCommands();
         expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-image+{"loadingIndicatorSrc":null,"src":"icon.png"},ATTACH+1+2+0,ATTACH+2+3+0');
+          'CREATE+2+test-cmp+{},CREATE+3+native-image+{"loadingIndicatorSrc":null,"src":[{"uri":"icon.png"}]},ATTACH+1+2+0,ATTACH+2+3+0');
       });
   })));
 

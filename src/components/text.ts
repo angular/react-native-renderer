@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {isAndroid} from './../wrapper/wrapper';
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
-var ANDROID_INPUTS: Array<string> = [];
-var IOS_INPUTS: Array<string> = ['allowFontScaling', 'lineBreakMode', 'suppressHighlighting'];
+var ANDROID_INPUTS: Array<string> = ['selectable'];
+var IOS_INPUTS: Array<string> = ['allowFontScaling', 'suppressHighlighting'];
 
-var ANDROID_BINDINGS: string = ``;
-var IOS_BINDINGS: string = `[allowFontScaling]="_allowFontScaling" [lineBreakMode]="_lineBreakMode" [suppressHighlighting]="_suppressHighlighting"`;
+var ANDROID_BINDINGS: string = `[selectable]="_selectable"`;
+var IOS_BINDINGS: string = `[allowFontScaling]="_allowFontScaling" [suppressHighlighting]="_suppressHighlighting"`;
 
 /**
  * A component for displaying a text.
@@ -23,32 +23,38 @@ export class Sample {}
 @Component({
   selector: 'Text',
   inputs: [
-    'numberOfLines'
+    'lineBreakMode', 'numberOfLines'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
-  template: `<native-text [numberOfLines]="_numberOfLines"
+  template: `<native-text [lineBreakMode]="_lineBreakMode" [numberOfLines]="_numberOfLines"
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}><ng-content></ng-content></native-text>`
 })
 export class Text extends HighLevelComponent{
   //Properties
+  private _lineBreakMode: string;
   private _numberOfLines: number;
+  /**
+   * To be documented
+   */
+  set lineBreakMode(value: any) { this._lineBreakMode = this.processEnum(value, ['tail', 'head', 'middle', 'clip']); }
   /**
    * To be documented
    */
   set numberOfLines(value: any) {this._numberOfLines = this.processNumber(value);}
 
+  private _selectable: boolean;
+  /**
+   * To be documented
+   * @platform android
+   */
+  set selectable(value: any) {this._selectable = this.processBoolean(value);}
+
   private _allowFontScaling: boolean;
-  private _lineBreakMode: string;
   private _suppressHighlighting: boolean;
   /**
    * To be documented
    * @platform ios
    */
   set allowFontScaling(value: any) {this._allowFontScaling = this.processBoolean(value);}
-  /**
-   * To be documented
-   * @platform ios
-   */
-  set lineBreakMode(value: any) { this._lineBreakMode = this.processEnum(value, ['clipping', 'word-wrapping', 'char-wrapping', 'truncating-head', 'truncating-middle', 'truncating-tail']); }
   /**
    * To be documented
    * @platform ios
