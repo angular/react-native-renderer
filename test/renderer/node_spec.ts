@@ -1,9 +1,4 @@
-import {
-  async, inject, beforeEachProviders, beforeEach,
-  iit, it, xit,
-  describe, ddescribe, xdescribe,
-  expect
-} from '@angular/core/testing';
+import {async, inject, addProviders} from '@angular/core/testing';
 import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
 import {Component} from '@angular/core';
 import {Node} from '../../src/renderer/node';
@@ -13,9 +8,10 @@ import {getTestingProviders} from "../../src/test_helpers/utils";
 
 describe('Node', () => {
   var mock:MockReactNativeWrapper = new MockReactNativeWrapper();
-  beforeEach(() => mock.reset());
-  beforeEachProviders(() => getTestingProviders(mock, TestComponent));
-
+  beforeEach(() => {
+    mock.reset();
+    addProviders(getTestingProviders(mock, TestComponent));
+  });
 
   it('should getElementByTestId', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb:TestComponentBuilder, _rootRenderer:ReactNativeRootRenderer) => {
     var rootRenderer = _rootRenderer;

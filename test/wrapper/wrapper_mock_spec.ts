@@ -1,8 +1,3 @@
-import {
-  iit, it, xit,
-  describe, ddescribe, xdescribe,
-  expect
-} from '@angular/core/testing';
 import {MockReactNativeWrapper} from './../../src/wrapper/wrapper_mock'
 
 describe('MockReactNativeWrapper', () => {
