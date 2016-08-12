@@ -1,10 +1,9 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {StyleSheet} from 'react-native';
-import {WebView, RippleFeedback} from 'angular2-react-native';
+import {WebView} from 'angular2-react-native';
 
 @Component({
   selector: 'webview-app',
-  directives: [RippleFeedback],
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
   template: `
 <View [style]="{flexDirection: 'row', flex: 1}">

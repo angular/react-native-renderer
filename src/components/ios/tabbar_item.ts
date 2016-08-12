@@ -1,7 +1,6 @@
-import {Component, Inject, Output, EventEmitter} from '@angular/core';
-import {NgIf} from '@angular/common';
+import {Component, Inject, Output, EventEmitter} from "@angular/core";
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../component";
-import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
+import {REACT_NATIVE_WRAPPER} from "./../../renderer/renderer";
 import {ReactNativeWrapper} from "../../wrapper/wrapper";
 
 /**
@@ -12,7 +11,6 @@ import {ReactNativeWrapper} from "../../wrapper/wrapper";
  */
 @Component({
   selector: 'TabBarItem',
-  directives: [NgIf],
   inputs: [
     'badge', 'icon', 'selected', 'selectedIcon', 'systemIcon', 'title'
   ].concat(GENERIC_INPUTS),

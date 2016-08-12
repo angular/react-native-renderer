@@ -1,4 +1,4 @@
-import {MockReactNativeWrapper} from './../../src/wrapper/wrapper_mock'
+import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 
 describe('MockReactNativeWrapper', () => {
 

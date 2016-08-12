@@ -1,4 +1,4 @@
-import {ReactNativeWrapper, isAndroid} from './../wrapper/wrapper';
+import {ReactNativeWrapper, isAndroid} from "./../wrapper/wrapper";
 
 var ANDROID_INPUTS: Array<string> = ['collapsable', 'accessibilityLiveRegion', 'accessibilityComponentType',
   'importantForAccessibility', 'needsOffscreenAlphaCompositing', 'renderToHardwareTextureAndroid ', 'nativeBackgroundAndroid'];

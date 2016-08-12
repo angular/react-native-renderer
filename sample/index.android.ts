@@ -1,4 +1,4 @@
-import {bootstrapReactNative, HTTP_PROVIDERS, ROUTER_PROVIDERS} from 'angular2-react-native';
-import {KitchenSinkApp} from "./samples/android/kitchensink";
+import {bootstrapReactNative} from 'angular2-react-native';
+import {KitchenSinkModule} from "./samples/android/module";
 
-bootstrapReactNative('ngReactNative', KitchenSinkApp, [HTTP_PROVIDERS, ROUTER_PROVIDERS]);
+bootstrapReactNative('ngReactNative', KitchenSinkModule);

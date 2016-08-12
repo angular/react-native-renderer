@@ -1,12 +1,33 @@
-import {RootRenderer, Renderer, RenderComponentType, OpaqueToken, Inject, Injectable, NgZone} from '@angular/core';
-import {ElementSchemaRegistry} from '@angular/compiler';
-import {Node, ElementNode, AnchorNode, TextNode, nodeMap} from './node';
-import {ReactNativeWrapper} from './../wrapper/wrapper';
-import {NativeCommand, NativeCommandCreate, NativeCommandUpdate, NativeCommandAttach, NativeCommandDetach, NativeCommandAttachAfter} from "./native_command";
+import {
+  RootRenderer,
+  Renderer,
+  RenderComponentType,
+  OpaqueToken,
+  Inject,
+  Injectable,
+  NgZone,
+  SanitizationService,
+  SecurityContext,
+  AnimationPlayer
+} from "@angular/core";
+import {ElementSchemaRegistry} from "@angular/compiler";
+import {Node, ElementNode, AnchorNode, TextNode, nodeMap} from "./node";
+import {ReactNativeWrapper} from "./../wrapper/wrapper";
+import {
+  NativeCommand,
+  NativeCommandCreate,
+  NativeCommandUpdate,
+  NativeCommandAttach,
+  NativeCommandDetach,
+  NativeCommandAttachAfter
+} from "./native_command";
 
 export const REACT_NATIVE_WRAPPER: OpaqueToken = new OpaqueToken("ReactNativeWrapper");
 
 export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
+  getDefaultComponentElementName(): string {
+    return 'def-cpt';
+  }
   hasProperty(tagName: string, propName: string): boolean {
     return true;
   }
@@ -18,7 +39,15 @@ export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
   }
 }
 
+export class ReactNativeSanitizationServiceImpl implements SanitizationService {
+  sanitize(ctx: SecurityContext, value: any): string {
+    return value;
+  }
+}
+
 export class ReactNativeRootRenderer implements RootRenderer {
+  public zone: NgZone;
+
   private _registeredComponents: Map<string, ReactNativeRenderer> = new Map<string, ReactNativeRenderer>();
 
   private _createCommands: Map<Node, NativeCommandCreate> = new Map<Node, NativeCommandCreate>();
@@ -27,7 +56,7 @@ export class ReactNativeRootRenderer implements RootRenderer {
   private _attachAfterCommands: Map<Node, NativeCommandAttachAfter> = new Map<Node, NativeCommandAttachAfter>();
   private _detachCommands: Map<Node, NativeCommandDetach> = new Map<Node, NativeCommandDetach>();
 
-  constructor(public wrapper: ReactNativeWrapper, public zone: NgZone) {
+  constructor(public wrapper: ReactNativeWrapper) {
     wrapper.patchReactNativeEventEmitter(nodeMap);
   }
 
@@ -90,8 +119,8 @@ export class ReactNativeRootRenderer implements RootRenderer {
 
 @Injectable()
 export class ReactNativeRootRenderer_ extends ReactNativeRootRenderer {
-  constructor(@Inject(REACT_NATIVE_WRAPPER) _wrapper: ReactNativeWrapper, _zone: NgZone) {
-    super(_wrapper, _zone);
+  constructor(@Inject(REACT_NATIVE_WRAPPER) _wrapper: ReactNativeWrapper) {
+    super(_wrapper);
   }
 }
 
@@ -111,7 +140,7 @@ export class ReactNativeRenderer implements Renderer {
   }
 
   createElement(parentElement: Node, name: string): Node {
-    var node = new ElementNode(name, this._rootRenderer.wrapper, this._rootRenderer.zone);
+    var node = new ElementNode(name, this._rootRenderer.wrapper, this._rootRenderer);
     node.attachTo(parentElement);
     if (!node.isVirtual && node.getAncestorWithNativeCreated()) {
       this._createElementCommand(node);
@@ -130,13 +159,13 @@ export class ReactNativeRenderer implements Renderer {
   }
 
   createTemplateAnchor(parentElement: Node): Node {
-    var node = new AnchorNode(this._rootRenderer.wrapper, this._rootRenderer.zone);
+    var node = new AnchorNode(this._rootRenderer.wrapper, this._rootRenderer);
     node.attachTo(parentElement);
     return node;
   }
 
   createText(parentElement: Node, value: string): Node {
-    var node = new TextNode(value, this._rootRenderer.wrapper, this._rootRenderer.zone);
+    var node = new TextNode(value, this._rootRenderer.wrapper, this._rootRenderer);
     if (parentElement && parentElement.isCreated) {
       this._createTextCommand(<TextNode>node);
       this._rootRenderer.addAttachCommand(node, false);
@@ -265,5 +294,9 @@ export class ReactNativeRenderer implements Renderer {
       var trimedText = renderNode.setText(text);
       this.setElementProperty(renderNode, 'text', trimedText);
     }
+  }
+
+  animate(element:any, startingStyles: any, keyframes: any[], duration: number, delay: number, easing: string): AnimationPlayer {
+    return undefined;
   }
 }

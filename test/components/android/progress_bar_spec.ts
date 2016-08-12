@@ -1,57 +1,38 @@
-import {async, inject, addProviders} from '@angular/core/testing';
-import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
-import {Component, ViewChild} from '@angular/core';
-import {ReactNativeRootRenderer} from '../../../src/renderer/renderer';
+import {Component, ViewChild} from "@angular/core";
 import {MockReactNativeWrapper} from "./../../../src/wrapper/wrapper_mock";
 import {ProgressBar} from "./../../../src/components/android/progress_bar";
-import {getTestingProviders} from "../../../src/test_helpers/utils";
+import {configureTestingModule, initTest} from "../../../src/test_helpers/utils";
 
 describe('ProgressBar component (Android)', () => {
-  var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
+  const mock: MockReactNativeWrapper = new MockReactNativeWrapper();
   beforeEach(() => {
     mock.reset();
-    addProviders(getTestingProviders(mock, TestComponent));
+    configureTestingModule(mock, TestComponent);
   });
 
-  it('should render', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
-    var rootRenderer = _rootRenderer;
-    tcb.overrideTemplate(TestComponent, `<ProgressBar>foo</ProgressBar>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
-        rootRenderer.executeCommands();
-        expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-progressbar+{},ATTACH+1+2+0,ATTACH+2+3+0');
-      });
-  })));
+  it('should render', () => {
+    initTest(TestComponent, `<ProgressBar>foo</ProgressBar>`);
+    expect(mock.commandLogs.toString()).toEqual(
+      'CREATE+2+test-cmp+{},CREATE+3+native-progressbar+{},ATTACH+1+2+0,ATTACH+2+3+0');
+  });
 
-  it('should render with properties', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
-    var rootRenderer = _rootRenderer;
-    tcb.overrideTemplate(TestComponent, `<ProgressBar [accessible]="true" testID="foo" styleAttr="{{'foo'}}">foo</ProgressBar>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
-        rootRenderer.executeCommands();
-        expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-progressbar+{"styleAttr":"Normal","accessible":true,"testID":"foo"},ATTACH+1+2+0,ATTACH+2+3+0');
-      });
-  })));
+  it('should render with properties', () => {
+    initTest(TestComponent, `<ProgressBar [accessible]="true" testID="foo" styleAttr="{{'foo'}}">foo</ProgressBar>`);
+    expect(mock.commandLogs.toString()).toEqual(
+      'CREATE+2+test-cmp+{},CREATE+3+native-progressbar+{"styleAttr":"Normal","accessible":true,"testID":"foo"},ATTACH+1+2+0,ATTACH+2+3+0');
+  });
 
-  it('should render with styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
-    var rootRenderer = _rootRenderer;
-    tcb.overrideTemplate(TestComponent, `<ProgressBar [styleSheet]="20" [style]="{margin: 42}">foo</ProgressBar>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
-        rootRenderer.executeCommands();
-        expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},CREATE+3+native-progressbar+{"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
-      });
-  })));
+  it('should render with styles', () => {
+    initTest(TestComponent, `<ProgressBar [styleSheet]="20" [style]="{margin: 42}">foo</ProgressBar>`);
+    expect(mock.commandLogs.toString()).toEqual(
+      'CREATE+2+test-cmp+{},CREATE+3+native-progressbar+{"flex":1,"collapse":true,"margin":42},ATTACH+1+2+0,ATTACH+2+3+0');
+  });
 
 });
 
 @Component({
   selector: 'test-cmp',
-  template: `to be overriden`,
-  directives: [ProgressBar]
+  template: `to be overriden`
 })
 class TestComponent {
   @ViewChild(ProgressBar) progressBar: ProgressBar

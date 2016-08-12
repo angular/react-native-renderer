@@ -1,7 +1,6 @@
-import {ReactNativeWrapper} from './../wrapper/wrapper';
-import {NgZone} from '@angular/core';
-import {Hammer} from './../events/hammer';
-import {SelectorMatcher, CssSelector} from '@angular/compiler/src/selector';
+import {ReactNativeWrapper} from "./../wrapper/wrapper";
+import {Hammer} from "./../events/hammer";
+import {SelectorMatcher, CssSelector} from "@angular/compiler/src/selector";
 
 export var nodeMap: Map<number, Node> = new Map<number, Node>();
 
@@ -22,7 +21,7 @@ export abstract class Node {
   public eventListeners: Map<string, Array<Function>> = new Map<string, Array<Function>>();
   public _hammer: any = null;
 
-  constructor(public rnWrapper: ReactNativeWrapper, public zone: NgZone) {}
+  constructor(public rnWrapper: ReactNativeWrapper, public zoneHolder: any) {}
 
   attachTo(parent: Node): void {
     if (parent) {
@@ -182,7 +181,7 @@ export abstract class Node {
     var handlers = this.eventListeners.get(name);
     if (handlers) {
       handlers.forEach((handler) => {
-        this.zone.run(() => handler(event));
+        this.zoneHolder.zone.run(() => handler(event));
       });
     }
     if (this.parent && !event._stop) {
@@ -270,8 +269,8 @@ export abstract class Node {
 }
 
 export class ElementNode extends Node {
-  constructor(public tagName: string, wrapper: ReactNativeWrapper, zone: NgZone) {
-    super(wrapper, zone);
+  constructor(public tagName: string, wrapper: ReactNativeWrapper, zoneHolder: any) {
+    super(wrapper, zoneHolder);
     //TODO: generalize the mechanism (list? regexp? meta data?)
     if (['dummy-anchor-for-dynamic-loader', 'View', 'Text', 'Switch', 'TextInput', 'WebView', 'Image', 'ProgressBar', 'PagerLayout', 'Picker', 'ScrollView',
         'DrawerLayout', 'DrawerLayoutSide', 'DrawerLayoutContent', 'RefreshControl', 'Toolbar',
@@ -282,8 +281,8 @@ export class ElementNode extends Node {
 }
 
 export class TextNode extends Node {
-  constructor(value: string, wrapper: ReactNativeWrapper, zone: NgZone) {
-    super(wrapper, zone);
+  constructor(value: string, wrapper: ReactNativeWrapper, zoneHolder: any) {
+    super(wrapper, zoneHolder);
     this.tagName = 'native-rawtext';
     this.setText(value);
   }
@@ -296,5 +295,5 @@ export class TextNode extends Node {
 }
 
 export class AnchorNode extends Node {
-  constructor(wrapper: ReactNativeWrapper, zone: NgZone) { super(wrapper, zone); this.isVirtual = true;}
+  constructor(wrapper: ReactNativeWrapper, zoneHolder: any) { super(wrapper, zoneHolder); this.isVirtual = true;}
 }

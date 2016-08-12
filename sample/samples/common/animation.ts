@@ -1,12 +1,10 @@
 import {Component, Input, Output, ElementRef, EventEmitter, ViewChildren, QueryList} from '@angular/core';
-import {NgFor, NgIf} from '@angular/common';
 import {StyleSheet} from 'react-native';
 import {TodoMVC} from "./todomvc";
 
 @Component({
   selector: 'ball',
   inputs: ['color', 'x', 'y', 'radius'],
-  directives: [NgIf, TodoMVC],
   template: `
 <View [styleSheet]="styles.ball" [style]="{top: _y, left: _x, backgroundColor: _color, borderRadius: _radius, width: _radius*2, height: _radius*2}"
   (pan)="moveBall($event)" (panend)="endMoveBall($event)">
@@ -91,7 +89,6 @@ export class Ball {
 @Component({
   selector: 'animation-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NgFor, Ball],
   template: `
 <Switch (change)="withTodoMVC=$event"></Switch>
 <ball *ngFor="let ball of balls" x="{{ball.x}}" y="{{ball.y}}" color="{{ball.color}}" radius="{{ball.radius}}" [withTodoMVC]="withTodoMVC" (tap)="moveAll()" (startMove)="startMove()"></ball>

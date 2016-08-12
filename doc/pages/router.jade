@@ -34,7 +34,6 @@ block content
 
         @Component({
           selector: 'comp-a',
-          directives: [ROUTER_DIRECTIVES],
           template: `<Text [routerLink]="['/CompB']" event="doubletap">Hello A</Text>`
         })
         class CompA {}
@@ -57,7 +56,6 @@ block content
         ])
         @Component({
           selector: 'example',
-          directives: [ROUTER_DIRECTIVES],
           template: `
         <View [style]="{margin: 50}">
           <router-outlet></router-outlet>

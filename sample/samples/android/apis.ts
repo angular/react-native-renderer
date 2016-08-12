@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
 import {StyleSheet, Alert, Linking, ToastAndroid, Clipboard, Platform, PixelRatio, NetInfo, AppState, DatePickerAndroid, TimePickerAndroid} from 'react-native';
-import {RippleFeedback} from 'angular2-react-native';
 
 @Component({
   selector: 'apis-list',
   host: {flex: '1'},
-  directives: [RippleFeedback],
   template: `
 <PagerLayout initialPage="0" [style]="{flex: 1, justifyContent: 'center', alignItems: 'center'}">
   <View [styleSheet]="styles.container">

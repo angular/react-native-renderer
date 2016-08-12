@@ -1,7 +1,6 @@
-import {Component, Inject, Output, EventEmitter} from '@angular/core';
-import {NgIf} from '@angular/common';
-import {REACT_NATIVE_WRAPPER} from './../renderer/renderer';
-import {ReactNativeWrapper, isAndroid} from './../wrapper/wrapper';
+import {Component, Inject, Output, EventEmitter} from "@angular/core";
+import {REACT_NATIVE_WRAPPER} from "./../renderer/renderer";
+import {ReactNativeWrapper, isAndroid} from "./../wrapper/wrapper";
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
 var ANDROID_INPUTS: Array<string> = ['enabled', 'mode', 'prompt'];
@@ -29,7 +28,6 @@ export class Sample {
  */
 @Component({
   selector: 'Picker',
-  directives: [NgIf],
   inputs: [
     'items', 'selectedValue',
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
