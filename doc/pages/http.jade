@@ -31,7 +31,6 @@ block content
 
         @Component({
           selector: 'example',
-          directives: [NgFor],
           template: `
         <TextInput placeholder="Search Wikipedia" (submit)="sendXHR($event)"></TextInput>
         <Text *ngFor="let page of pages">{{page}}</Text>

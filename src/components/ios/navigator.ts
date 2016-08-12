@@ -1,8 +1,21 @@
-import {Component, Inject, Input, Output, EventEmitter, NgZone, DynamicComponentLoader, ElementRef, ComponentRef, ViewChild, ViewContainerRef, AfterViewInit} from '@angular/core';
-import {NgFor, NgIf, LocationStrategy} from '@angular/common';
-import {Router, ComponentInstruction} from '@angular/router-deprecated';
+import {
+  Component,
+  Inject,
+  Input,
+  Output,
+  EventEmitter,
+  NgZone,
+  DynamicComponentLoader,
+  ElementRef,
+  ComponentRef,
+  ViewChild,
+  ViewContainerRef,
+  AfterViewInit
+} from "@angular/core";
+import {LocationStrategy} from "@angular/common";
+import {Router, ComponentInstruction} from "@angular/router-deprecated";
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../component";
-import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
+import {REACT_NATIVE_WRAPPER} from "./../../renderer/renderer";
 import {ReactNativeWrapper} from "../../wrapper/wrapper";
 import {Node} from "../../renderer/node";
 
@@ -18,7 +31,7 @@ import {Node} from "../../renderer/node";
     <dummy-anchor-for-dynamic-loader #target></dummy-anchor-for-dynamic-loader>
   </native-navitem>`
 })
-class NavigatorItem extends HighLevelComponent implements AfterViewInit {
+export class NavigatorItem extends HighLevelComponent implements AfterViewInit {
   @ViewChild('target', {read: ViewContainerRef}) target: ViewContainerRef;
 
   @Input() itemWrapperStyle: any;
@@ -109,8 +122,7 @@ class NavigatorItem extends HighLevelComponent implements AfterViewInit {
  * ```
 Component({
   selector: 'foo',
-  template: `<View [routerLink]="['/Bar']"><Text>Foo from here</Text></View>`,
-  directives: [ROUTER_DIRECTIVES]
+  template: `<View [routerLink]="['/Bar']"><Text>Foo from here</Text></View>`
 })
 class Foo {}
 
@@ -144,7 +156,6 @@ export class Sample {
  */
 @Component({
   selector: 'Navigator',
-  directives: [NgFor, NgIf, NavigatorItem],
   inputs: [
     'barTintColor', 'interactivePopGestureEnabled', 'itemWrapperStyle', 'navigationBarHidden', 'shadowHidden', 'tintColor', 'titleTextColor', 'translucent'
   ].concat(GENERIC_INPUTS),

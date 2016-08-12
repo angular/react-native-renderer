@@ -1,235 +1,120 @@
-import {async, inject, addProviders} from '@angular/core/testing';
-import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
-import {Component, ViewChild} from '@angular/core';
-import {Router, RouteConfig} from '@angular/router-deprecated';
-import {ReactNativeRootRenderer} from '../../../src/renderer/renderer';
+import {Component, ViewChild} from "@angular/core";
+import {async, getTestBed} from "@angular/core/testing";
+import {Router, RouteConfig} from "@angular/router-deprecated";
 import {MockReactNativeWrapper} from "./../../../src/wrapper/wrapper_mock";
-import {View} from "../../../src/components/view";
-import {Text} from '../../../src/components/text';
-import {fireFunctionalEvent, getTestingProviders} from "../../../src/test_helpers/utils";
+import {fireFunctionalEvent, configureTestingModule, initTest} from "../../../src/test_helpers/utils";
 import {Navigator} from "../../../src/components/ios/navigator";
 
 describe('Navigator component (iOS)', () => {
-  var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
+  const mock: MockReactNativeWrapper = new MockReactNativeWrapper();
   beforeEach(() => {
     mock.reset();
-    addProviders(getTestingProviders(mock, TestComponent));
+    configureTestingModule(mock, TestComponent);
   });
 
-  it('should render with default route', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
-    var rootRenderer = _rootRenderer;
-    tcb.overrideTemplate(TestComponent, `<Navigator></Navigator>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
+  it('should render with default route', async(() => {
+    const {fixture, rootRenderer} = initTest(TestComponent, `<Navigator></Navigator>`);
+    expect(mock.commandLogs.toString()).toEqual(
+      'CREATE+2+test-cmp+{},ATTACH+1+2+0');
+    mock.clearLogs();
+
+    setTimeout(() => {
+      rootRenderer.executeCommands();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+3+native-navigator+{"onNavigationComplete":true,"flex":1},' +
+        'CREATE+4+native-navitem+{"onLeftButtonPress":true,"onRightButtonPress":true,"title":"aaa","backgroundColor":"white","overflow":"hidden","position":"absolute","top":0,"left":0,"right":0,"bottom":64,"padding":37},' +
+        'CREATE+5+cmp-a+{},CREATE+6+native-text+{},CREATE+7+native-rawtext+{"text":"a"},ATTACH+6+7+0,ATTACH+5+6+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+4+5+0');
+    }, 150);
+  }));
+
+  it('should navigate to another route', async(() => {
+    const {fixture, rootRenderer} = initTest(TestComponent, `<Navigator></Navigator>`);
+    mock.clearLogs();
+    const router: Router = getTestBed().get(Router);
+
+    setTimeout(() => {
+      router.navigateByUrl('/b').then((_: any) => {
         rootRenderer.executeCommands();
-        expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},ATTACH+1+2+0');
         mock.clearLogs();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            fixture.detectChanges();
+        setTimeout(() => {
+          rootRenderer.executeCommands();
+          expect(mock.commandLogs.toString()).toEqual(
+            'REQUEST_NAVIGATOR_LOCK+3+,UPDATE+3+native-navigator+{"requestedTopOfStack":1},' +
+            'CREATE+8+native-navitem+{"onLeftButtonPress":true,"onRightButtonPress":true,"title":"bbb","backgroundColor":"white","overflow":"hidden","position":"absolute","top":0,"left":0,"right":0,"bottom":64},' +
+            'CREATE+9+cmp-b+{},CREATE+10+native-text+{},CREATE+11+native-rawtext+{"text":"b"},ATTACH+10+11+0,ATTACH+9+10+0,ATTACH+3+8+1,ATTACH+8+9+0');
+        }, 100);
+      });
+    }, 100);
+  }));
+
+  it('should navigate back', async(() => {
+    const {fixture, rootRenderer} = initTest(TestComponent, `<Navigator></Navigator>`);
+    mock.clearLogs();
+    const router: Router = getTestBed().get(Router);
+
+    setTimeout(() => {
+      router.navigateByUrl('/b').then((_: any) => {
+        setTimeout(() => {
+          rootRenderer.executeCommands();
+          mock.clearLogs();
+
+          const target = fixture.nativeElement.children[0].children[1];
+          fireFunctionalEvent('topNavigationComplete', target, {stackLength: 1});
+
+          fixture.whenStable().then(() => {
             rootRenderer.executeCommands();
             expect(mock.commandLogs.toString()).toEqual(
-              'CREATE+3+native-navigator+{"onNavigationComplete":true,"flex":1},' +
-              'CREATE+4+native-navitem+{"onLeftButtonPress":true,"onRightButtonPress":true,"title":"aaa","backgroundColor":"white","overflow":"hidden","position":"absolute","top":0,"left":0,"right":0,"bottom":64,"padding":37},' +
-              'ATTACH+2+3+0,ATTACH+3+4+0');
-            mock.clearLogs();
-
-            setTimeout(() => {
-              rootRenderer.executeCommands();
-              expect(mock.commandLogs.toString()).toEqual(
-                'CREATE+5+cmp-a+{},CREATE+6+native-text+{},CREATE+7+native-rawtext+{"text":"a"},ATTACH+6+7+0,ATTACH+5+6+0,ATTACH+4+5+0');
-              resolve();
-            }, 0);
-          }, 150);
-        });
+              'REQUEST_NAVIGATOR_LOCK+3+,UPDATE+3+native-navigator+{"requestedTopOfStack":0},DETACH+3+1');
+          });
+        }, 100);
       });
-  })));
+    }, 100);
+  }));
 
-  xit('should navigate to another route', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
-    var rootRenderer = _rootRenderer;
-    var router: Router;
-    tcb.overrideTemplate(TestComponent, `<Navigator></Navigator>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        router = fixture.componentInstance.router;
-        fixture.detectChanges();
-        rootRenderer.executeCommands();
-        mock.clearLogs();
+  it('should render with default route and custom styles', async(() => {
+    const {fixture, rootRenderer} = initTest(TestComponent, `<Navigator [itemWrapperStyle]="{margin: 42}"></Navigator>`);
+    expect(mock.commandLogs.toString()).toEqual(
+      'CREATE+2+test-cmp+{},ATTACH+1+2+0');
+    mock.clearLogs();
 
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            fixture.detectChanges();
-            rootRenderer.executeCommands();
-            mock.clearLogs();
+    setTimeout(() => {
+      rootRenderer.executeCommands();
+      expect(mock.commandLogs.toString()).toEqual(
+        'CREATE+3+native-navigator+{"onNavigationComplete":true,"flex":1},' +
+        'CREATE+4+native-navitem+{"onLeftButtonPress":true,"onRightButtonPress":true,"title":"aaa","backgroundColor":"white","overflow":"hidden","position":"absolute","top":0,"left":0,"right":0,"bottom":64,"margin":42,"padding":37},' +
+        'CREATE+5+cmp-a+{},CREATE+6+native-text+{},CREATE+7+native-rawtext+{"text":"a"},ATTACH+6+7+0,ATTACH+5+6+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+4+5+0');
+    }, 150);
+  }));
 
-            setTimeout(() => {
-              fixture.detectChanges();
-              rootRenderer.executeCommands();
-              mock.clearLogs();
+  it('should fire button press events', async(() => {
+    const {fixture, rootRenderer} = initTest(TestComponent, `<Navigator (leftButtonPress)="_handleEvent($event)"></Navigator>`);
+    mock.clearLogs();
 
-              router.navigateByUrl('/b').then((_: any) => {
-                fixture.detectChanges();
-                rootRenderer.executeCommands();
-                mock.clearLogs();
+    setTimeout(() => {
+      rootRenderer.executeCommands();
+      mock.clearLogs();
 
-                setTimeout(() => {
-                  fixture.detectChanges();
-                  rootRenderer.executeCommands();
-                  expect(mock.commandLogs.toString()).toEqual(
-                    'REQUEST_NAVIGATOR_LOCK+3+,UPDATE+3+native-navigator+{"requestedTopOfStack":1},' +
-                    'CREATE+8+native-navitem+{"onLeftButtonPress":true,"onRightButtonPress":true,"title":"bbb","backgroundColor":"white","overflow":"hidden","position":"absolute","top":0,"left":0,"right":0,"bottom":64},' +
-                    'ATTACH+3+8+1');
-                  mock.clearLogs();
+      const target = fixture.elementRef.nativeElement.children[0].children[1].children[2].children[0];
+      fireFunctionalEvent('topLeftButtonPress', target, {});
 
-                  setTimeout(() => {
-                    rootRenderer.executeCommands();
-                    expect(mock.commandLogs.toString()).toEqual(
-                      'CREATE+9+cmp-b+{},CREATE+10+native-text+{},CREATE+11+native-rawtext+{"text":"b"},ATTACH+10+11+0,ATTACH+9+10+0,ATTACH+8+9+0');
-                    resolve();
-                  }, 0);
-                }, 100);
-              });
-            }, 100);
-          }, 100);
-        });
+      fixture.whenStable().then(() => {
+        expect(fixture.componentInstance.log.join(',')).toEqual('{"title":"aaa","wrapperStyle":{"padding":37}}');
       });
-  })));
-
-  xit('should navigate back', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
-    var rootRenderer = _rootRenderer;
-    var router: Router;
-    tcb.overrideTemplate(TestComponent, `<Navigator></Navigator>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        router = fixture.componentInstance.router;
-        fixture.detectChanges();
-        rootRenderer.executeCommands();
-        mock.clearLogs();
-
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            fixture.detectChanges();
-            rootRenderer.executeCommands();
-            mock.clearLogs();
-
-            setTimeout(() => {
-              fixture.detectChanges();
-              rootRenderer.executeCommands();
-              mock.clearLogs();
-
-              router.navigateByUrl('/b').then((_: any) => {
-                fixture.detectChanges();
-                rootRenderer.executeCommands();
-                mock.clearLogs();
-
-                setTimeout(() => {
-                  fixture.detectChanges();
-                  rootRenderer.executeCommands();
-                  mock.clearLogs();
-
-                  setTimeout(() => {
-                    rootRenderer.executeCommands();
-                    mock.clearLogs();
-
-                    var target = fixture.nativeElement.children[0].children[1];
-                    fireFunctionalEvent('topNavigationComplete', target, {stackLength: 1});
-                    fixture.detectChanges();
-                    rootRenderer.executeCommands();
-                    mock.clearLogs();
-
-                    setTimeout(() => {
-                      fixture.detectChanges();
-                      rootRenderer.executeCommands();
-                      expect(mock.commandLogs.toString()).toEqual(
-                        'REQUEST_NAVIGATOR_LOCK+3+,UPDATE+3+native-navigator+{"requestedTopOfStack":0},DETACH+3+1');
-                      resolve();
-                    }, 100);
-                  }, 0);
-                }, 100);
-              });
-            }, 100);
-          }, 100);
-        });
-      });
-  })));
-
-  xit('should render with default route and custom styles', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
-    var rootRenderer = _rootRenderer;
-    tcb.overrideTemplate(TestComponent, `<Navigator [itemWrapperStyle]="{margin: 42}"></Navigator>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
-        rootRenderer.executeCommands();
-        expect(mock.commandLogs.toString()).toEqual(
-          'CREATE+2+test-cmp+{},ATTACH+1+2+0');
-        mock.clearLogs();
-
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            fixture.detectChanges();
-            rootRenderer.executeCommands();
-            expect(mock.commandLogs.toString()).toEqual(
-              'CREATE+3+native-navigator+{"onNavigationComplete":true,"flex":1},' +
-              'CREATE+4+native-navitem+{"onLeftButtonPress":true,"onRightButtonPress":true,"title":"aaa","backgroundColor":"white","overflow":"hidden","position":"absolute","top":0,"left":0,"right":0,"bottom":64,"margin":42,"padding":37},' +
-              'ATTACH+2+3+0,ATTACH+3+4+0');
-            mock.clearLogs();
-
-            setTimeout(() => {
-              rootRenderer.executeCommands();
-              expect(mock.commandLogs.toString()).toEqual(
-                'CREATE+5+cmp-a+{},CREATE+6+native-text+{},CREATE+7+native-rawtext+{"text":"a"},ATTACH+6+7+0,ATTACH+5+6+0,ATTACH+4+5+0');
-              resolve();
-            }, 0);
-          }, 150);
-        });
-      });
-  })));
-
-  it('should fire button press events', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
-    var rootRenderer = _rootRenderer;
-    tcb.overrideTemplate(TestComponent, `<Navigator (leftButtonPress)="_handleEvent($event)"></Navigator>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
-        rootRenderer.executeCommands();
-        mock.clearLogs();
-
-        return new Promise((resolve: any) => {
-          setTimeout(() => {
-            fixture.detectChanges();
-            rootRenderer.executeCommands();
-            mock.clearLogs();
-
-            setTimeout(() => {
-              rootRenderer.executeCommands();
-              mock.clearLogs();
-
-              var target = fixture.elementRef.nativeElement.children[0].children[1].children[2].children[0];
-              fireFunctionalEvent('topLeftButtonPress', target, {});
-              fixture.detectChanges();
-
-              setTimeout(() => {
-                expect(fixture.componentInstance.log.join(',')).toEqual('{"title":"aaa","wrapperStyle":{"padding":37}}');
-                resolve();
-              }, 100);
-            }, 0);
-          }, 150);
-        });
-      });
-  })));
-
+    }, 150);
+  }));
 
 });
 
 @Component({
   selector: 'cmp-a',
-  template: `<Text>a</Text>`,
-  directives: [Text]
+  template: `<Text>a</Text>`
 })
 export class CompA {}
 
 @Component({
   selector: 'cmp-b',
-  template: `<Text>b</Text>`,
-  directives: [Text]
+  template: `<Text>b</Text>`
 })
 export class CompB {}
 
@@ -239,8 +124,7 @@ export class CompB {}
 ])
 @Component({
   selector: 'test-cmp',
-  template: `to be overriden`,
-  directives: [Navigator, View]
+  template: `to be overriden`
 })
 class TestComponent {
   @ViewChild(Navigator) navigator: Navigator;

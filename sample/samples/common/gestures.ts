@@ -1,12 +1,9 @@
 import {Component} from '@angular/core';
-import {NgFor} from '@angular/common';
-import {RippleFeedback} from 'angular2-react-native';
 import {StyleSheet} from 'react-native';
 
 @Component({
   selector: 'gestures-app',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NgFor, RippleFeedback],
   template: `
 <View [styleSheet]="styles.surface"
   (doubletap)="handleEvent($event)"

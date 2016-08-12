@@ -1,4 +1,4 @@
-import {Directive, ElementRef, OnDestroy, OnInit} from '@angular/core';
+import {Directive, ElementRef, OnDestroy, OnInit} from "@angular/core";
 
 @Directive({
   selector: '[opacityFeedback]'

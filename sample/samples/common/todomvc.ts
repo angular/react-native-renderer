@@ -1,7 +1,6 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
-import {NgIf, NgFor} from '@angular/common';
 import {StyleSheet, AsyncStorage} from 'react-native';
-import {TextInput, OpacityFeedback} from 'angular2-react-native';
+import {TextInput} from 'angular2-react-native';
 
 class Palette {
   static background: string = '#005eb8';
@@ -22,7 +21,6 @@ class Todo {
 
 @Component({
   selector: 'todo-item',
-  directives: [NgIf, OpacityFeedback],
   template: `
 <View [styleSheet]="styles.row">
 <Text [styleSheet]="[styles.tick, item.active ? styles.tickOff : styles.tickOn]" opacityFeedback (tap)="toggle($event)">{{item.active ? "[  ]" : "[x]"}}</Text>
@@ -116,7 +114,6 @@ export class TodoItem {
 @Component({
   selector: 'todo-mvc',
   host: {position: 'absolute', top: '0', left: '0', bottom: '0', right: '0'},
-  directives: [NgFor, NgIf, TodoItem, OpacityFeedback],
   template: `
 <View [style]="{flexDirection: 'row'}">
   <Text [styleSheet]="[styles.all, leftCount == 0 ? styles.allOn : styles.allOff]" (tap)="selectAll()">V</Text>

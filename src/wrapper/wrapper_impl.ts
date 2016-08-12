@@ -1,5 +1,6 @@
 //ReactNative
 import {ReactNativeWrapper, overridePlatform} from "./wrapper";
+import {NgZone} from "@angular/core";
 var ReactNative = require('react-native');
 var AppRegistry = ReactNative.AppRegistry;
 var UIManager = ReactNative.NativeModules.UIManager;
@@ -10,8 +11,6 @@ var ReactNativeEventEmitter = require('react/lib/ReactNativeEventEmitter');
 var ReactNativeTagHandles = require('react/lib/ReactNativeTagHandles');
 var ReactNativeAttributePayload = require('react/lib/ReactNativeAttributePayload');
 var ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
-
-import {NgZone} from '@angular/core';
 
 overridePlatform(ReactNative.Platform.OS);
 

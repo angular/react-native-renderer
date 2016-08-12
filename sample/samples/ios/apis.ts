@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
-import {OpacityFeedback} from 'angular2-react-native';
 import {StyleSheet, ActionSheetIOS, Alert, AlertIOS, AppState, Clipboard, Linking, NetInfo, PixelRatio, Platform} from 'react-native';
 
 @Component({
   selector: 'apis-app',
   host: {flex: '1'},
-  directives: [OpacityFeedback],
   template: `
 <TabBar tintColor="white" barTintColor="#005eb8">
   <TabBarItem systemIcon="history" [selected]="selectedTab == 'one'" (select)="selectedTab='one'" [style]="{alignItems: 'center'}">

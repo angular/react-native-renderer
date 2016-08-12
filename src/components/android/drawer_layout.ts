@@ -1,7 +1,7 @@
-import {Component, Inject, ElementRef, Output, EventEmitter} from '@angular/core';
+import {Component, Inject, ElementRef, Output, EventEmitter} from "@angular/core";
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../component";
-import {Node} from '../../renderer/node';
-import {REACT_NATIVE_WRAPPER} from './../../renderer/renderer';
+import {Node} from "../../renderer/node";
+import {REACT_NATIVE_WRAPPER} from "./../../renderer/renderer";
 import {ReactNativeWrapper} from "../../wrapper/wrapper";
 
 @Component({

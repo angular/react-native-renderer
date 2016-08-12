@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
 import {RouteConfig} from '@angular/router-deprecated';
 import {LocationStrategy} from '@angular/common';
-import {ROUTER_DIRECTIVES} from 'angular2-react-native';
 
 @Component({
   selector: 'comp-a',
-  directives: [ROUTER_DIRECTIVES],
   template: `<Text [routerLink]="['/CompB']" event="doubletap">Hello A</Text>`
 })
 class CompA {}
@@ -28,7 +26,6 @@ class CompB {
 ])
 @Component({
   selector: 'example',
-  directives: [ROUTER_DIRECTIVES],
   template: `
 <View [style]="{margin: 50}">
   <router-outlet></router-outlet>

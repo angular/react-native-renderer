@@ -1,49 +1,39 @@
-import {async, inject, addProviders} from '@angular/core/testing';
-import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
-import {Component, ViewChild} from '@angular/core';
-import {ReactNativeRootRenderer} from '../../../src/renderer/renderer';
+import {Component, ViewChild} from "@angular/core";
 import {MockReactNativeWrapper} from "./../../../src/wrapper/wrapper_mock";
 import {View} from "./../../../src/components/view";
-import {RippleFeedback} from "../../../src/directives/android/ripple_feedback";
-import {fireEvent, getTestingProviders} from '../../../src/test_helpers/utils';
+import {fireEvent, configureTestingModule, initTest} from "../../../src/test_helpers/utils";
 
 describe('Ripple feedback', () => {
-  var mock: MockReactNativeWrapper = new MockReactNativeWrapper();
+  const mock: MockReactNativeWrapper = new MockReactNativeWrapper();
   beforeEach(() => {
     mock.reset();
-    addProviders(getTestingProviders(mock, TestComponent));
+    configureTestingModule(mock, TestComponent);
   });
 
-  it('should send commands during a tap', async(inject([TestComponentBuilder, ReactNativeRootRenderer], (tcb: TestComponentBuilder, _rootRenderer: ReactNativeRootRenderer) => {
-    var rootRenderer = _rootRenderer;
-    tcb.overrideTemplate(TestComponent, `<View rippleFeedback></View>`)
-      .createAsync(TestComponent).then((fixture: ComponentFixture<TestComponent>) => {
-        fixture.detectChanges();
-        rootRenderer.executeCommands();
-        mock.clearLogs();
+  it('should send commands during a tap', () => {
+    const {fixture, rootRenderer} = initTest(TestComponent, `<View rippleFeedback></View>`);
+    mock.clearLogs();
 
-        var target = fixture.elementRef.nativeElement.children[0].children[0];
-        fireEvent('topTouchStart', target, 0, [[50, 0]]);
-        fixture.detectChanges();
-        rootRenderer.executeCommands();
-        expect(mock.commandLogs.toString()).toEqual(
-          'COMMAND+3+hotspotUpdate+50,0,COMMAND+3+setPressed+true');
-        mock.clearLogs();
+    const target = fixture.elementRef.nativeElement.children[0].children[0];
+    fireEvent('topTouchStart', target, 0, [[50, 0]]);
+    fixture.detectChanges();
+    rootRenderer.executeCommands();
+    expect(mock.commandLogs.toString()).toEqual(
+      'COMMAND+3+hotspotUpdate+50,0,COMMAND+3+setPressed+true');
+    mock.clearLogs();
 
-        fireEvent('topTouchEnd', target, 40, [[100, 0]]);
-        fixture.detectChanges();
-        rootRenderer.executeCommands();
-        expect(mock.commandLogs.toString()).toEqual(
-          'COMMAND+3+hotspotUpdate+100,0,COMMAND+3+setPressed+false');
-      });
-  })));
+    fireEvent('topTouchEnd', target, 40, [[100, 0]]);
+    fixture.detectChanges();
+    rootRenderer.executeCommands();
+    expect(mock.commandLogs.toString()).toEqual(
+      'COMMAND+3+hotspotUpdate+100,0,COMMAND+3+setPressed+false');
+  });
 
 });
 
 @Component({
   selector: 'test-cmp',
-  template: `to be overriden`,
-  directives: [View, RippleFeedback]
+  template: `to be overriden`
 })
 class TestComponent {
   @ViewChild(View) view: View

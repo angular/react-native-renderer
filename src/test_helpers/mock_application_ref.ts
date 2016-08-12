@@ -1,4 +1,4 @@
-import {ApplicationRef, ComponentFactory, ComponentRef, Injectable, Injector, NgZone, Type} from '@angular/core';
+import {ApplicationRef, ComponentFactory, ComponentRef, Injectable, Injector, NgZone, Type} from "@angular/core";
 
 /**
  * A no-op implementation of {@link ApplicationRef}, useful for testing.
