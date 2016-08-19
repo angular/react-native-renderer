@@ -84,7 +84,6 @@ import {ROUTER_DIRECTIVES} from &quot;angular2-react-native&quot;;
 
 @Component({
   selector: &#39;comp-a&#39;,
-  directives: [ROUTER_DIRECTIVES],
   template: `&lt;Text [routerLink]=&quot;[&#39;/CompB&#39;]&quot; event=&quot;doubletap&quot;&gt;Hello A&lt;/Text&gt;`
 })
 class CompA {}
@@ -107,7 +106,6 @@ class CompB {
 ])
 @Component({
   selector: &#39;example&#39;,
-  directives: [ROUTER_DIRECTIVES],
   template: `
 &lt;View [style]=&quot;{margin: 50}&quot;&gt;
   &lt;router-outlet&gt;&lt;/router-outlet&gt;
