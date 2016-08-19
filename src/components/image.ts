@@ -59,7 +59,7 @@ export class Image extends HighLevelComponent {
   /**
    * To be documented
    */
-  set resizeMode(value: string) {this._resizeMode = this.processEnum(value, ['cover', 'contain', 'stretch', 'repeat']);}
+  set resizeMode(value: string) {this._resizeMode = this.processEnum(value, ['cover', 'contain', 'stretch', 'repeat', 'center']);}
 
   /**
    * To be documented
