@@ -48,6 +48,7 @@ export function bootstrapReactNative(appName:string, module: any, customProvider
       var zone: NgZone = ngModuleRef.injector.get(NgZone);
       var rootRenderer = ngModuleRef.injector.get(RootRenderer);
       rootRenderer.zone = zone;
+      rootRenderer.executeCommands();
       zone.onStable.subscribe(() => { rootRenderer.executeCommands(); });
       ngModuleRef.injector.get(ReactNativeWrapperImpl).patchReactNativeWithZone(zone);
     });
