@@ -42,7 +42,8 @@ export class Sample {
   [maxLength]="_maxLength" [multiline]="_multiline" [placeholder]="_placeholder" [placeholderTextColor]="_placeholderTextColor" [secureTextEntry]="_secureTextEntry"
   [returnKeyType]="_returnKeyType" [selectionColor]="_selectionColor" [selectTextOnFocus]="_selectTextOnFocus"
   (tap)="focusTextInput()" (topFocus)="_handleFocus()" (topChange)="_handleChange($event)" (topSubmitEditing)="_handleSubmitEditing($event)"
-  (topBlur)="_handleBlur()" (topEndEditing)="_handleEndEditing($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-textinput>`
+  (topBlur)="_handleBlur()" (topEndEditing)="_handleEndEditing($event)" (topContentSizeChange)="_handleContentSizeChange($event)"
+  ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-textinput>`
 })
 export class TextInput extends HighLevelComponent implements OnInit {
   private _nativeElement: Node;
@@ -79,6 +80,10 @@ export class TextInput extends HighLevelComponent implements OnInit {
    * To be documented
    */
   @Output() endEditing: EventEmitter<string> = new EventEmitter();
+  /**
+   * To be documented
+   */
+  @Output() contentSizeChange: EventEmitter<string> = new EventEmitter();
 
 
   //Properties
@@ -242,6 +247,10 @@ export class TextInput extends HighLevelComponent implements OnInit {
 
   _handleEndEditing(event: any) {
     this.endEditing.emit(event.text);
+  }
+
+  _handleContentSizeChange(event: any) {
+    this.contentSizeChange.emit(event);
   }
 
   //Commands
