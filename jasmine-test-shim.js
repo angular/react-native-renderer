@@ -41,7 +41,9 @@ jrunner.addSpecFiles(specFiles);
 
 var testingPlatformServer = require('@angular/platform-server/testing/server.js');
 var testing = require('@angular/core/testing.js');
-testing.setBaseTestProviders(testingPlatformServer.TEST_SERVER_PLATFORM_PROVIDERS,
-  testingPlatformServer.TEST_SERVER_APPLICATION_PROVIDERS);
+
+testing.TestBed.initTestEnvironment(
+  testingPlatformServer.ServerTestingModule, testingPlatformServer.platformServerTesting());
+require('zone.js/dist/jasmine-patch.js');
 
 jrunner.execute();

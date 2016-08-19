@@ -3,7 +3,7 @@
   "version": "0.0.1-alpha.15",
   "description": "A React Native renderer for Angular 2",
   "scripts": {
-    "test": "gulp test.browser/ci",
+    "test": "gulp test.browser/ci && gulp test.node/ci",
     "postinstall": "typings install"
   },
   "repository": {

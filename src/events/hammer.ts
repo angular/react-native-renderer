@@ -1,4 +1,4 @@
-if (typeof global.window === "undefined") global.window = {};
+if (typeof global.window === "undefined") global.window = global;
 if (typeof global.document === "undefined") global.document = {createElement: () => {return {style: {}};}};
 var hammer = (typeof global.window.Hammer === "undefined") ? require('hammerjs') : global.window.Hammer;
 

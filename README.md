@@ -30,6 +30,7 @@ iOS:
 * OR, `gulp watch` and  open `.dist/app/ngReactNative/ios/ngReactNative.xcodeproj` in Xcode and hit `Run`
 
 Tests:
+* `gulp test.node` to run tests in Node
 * `gulp test.browser` to run tests in Chrome
 
 Doc:
