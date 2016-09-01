@@ -5,6 +5,8 @@ var JasmineRunner = require('jasmine');
 var path = require('path');
 
 require('zone.js/dist/zone-node.js');
+require('zone.js/dist/proxy.js');
+require('zone.js/dist/sync-test.js');
 require('zone.js/dist/async-test.js');
 require('zone.js/dist/fake-async-test.js');
 require('reflect-metadata/Reflect');
