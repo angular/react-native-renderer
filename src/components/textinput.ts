@@ -5,13 +5,14 @@ import {ReactNativeWrapper, isAndroid} from "./../wrapper/wrapper";
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
 var ANDROID_INPUTS: Array<string> = ['numberOfLines', 'returnKeyLabel', 'underlineColorAndroid'];
-var IOS_INPUTS: Array<string> = ['clearButtonMode', 'clearTextOnFocus', 'enablesReturnKeyAutomatically',
-  'keyboardAppearance'];
+var IOS_INPUTS: Array<string> = ['clearButtonMode', 'clearTextOnFocus', 'dataDetectorTypes',
+  'enablesReturnKeyAutomatically', 'keyboardAppearance'];
 
 var ANDROID_BINDINGS: string = `[numberOfLines]="_numberOfLines" [underlineColorAndroid]="_underlineColorAndroid"
   [returnKeyLabel]="_returnKeyLabel" (topTextInput)="_handleKeyPress($event)"
   mostRecentEventCount="0"`;
 var IOS_BINDINGS: string = `[clearButtonMode]="_clearButtonMode" [clearTextOnFocus]="_clearTextOnFocus"
+  [dataDetectorTypes]="_dataDetectorTypes"
   [enablesReturnKeyAutomatically]="_enablesReturnKeyAutomatically" [keyboardAppearance]="_keyboardAppearance"
   (topKeyPress)="_handleKeyPress($event)"`;
 
@@ -196,6 +197,7 @@ export class TextInput extends HighLevelComponent implements OnInit {
 
   private _clearButtonMode: boolean;
   private _clearTextOnFocus: boolean;
+  private _dataDetectorTypes: string;
   private _enablesReturnKeyAutomatically: boolean;
   private _keyboardAppearance: string;
   /**
@@ -208,6 +210,11 @@ export class TextInput extends HighLevelComponent implements OnInit {
    * @platform ios
    */
   set clearTextOnFocus(value: any) {this._clearTextOnFocus = this.processBoolean(value);}
+  /**
+   * To be documented
+   * @platform ios
+   */
+  set dataDetectorTypes(value: string) {this._dataDetectorTypes = this.processEnum(value, ['phoneNumber', 'link', 'address', 'calendarEvent', 'none', 'all']);}
   /**
    * To be documented
    * @platform ios

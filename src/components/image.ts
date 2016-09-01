@@ -8,7 +8,7 @@ var IOS_INPUTS: Array<string> = ['blurRadius', 'capInsets', 'defaultSource'];
 
 var ANDROID_BINDINGS: string = `[fadeDuration]="_fadeDuration" [loadingIndicatorSrc]="_loadingIndicatorSrc ? _loadingIndicatorSrc.uri : null"
   [progressiveRenderingEnabled]="_progressiveRenderingEnabled" [shouldNotifyLoadEvents]="_shouldNotifyLoadEvents" [src]="_source ? [{uri: _source.uri}] : null"`;
-var IOS_BINDINGS: string = `[blurRadius]="_blurRadius" [capInsets]="_capInsets" [defaultSource]="_defaultSource" [source]="_source"`;
+var IOS_BINDINGS: string = `[blurRadius]="_blurRadius" [capInsets]="_capInsets" [defaultSource]="_defaultSource" [source]="[_source]"`;
 
 //TODO: add iOS specific events (onError, on Progress) and specific cases (tintColor, resizeMode)
 /**
