@@ -34,7 +34,7 @@ export class ActivityIndicator extends HighLevelComponent {
   private _animating: boolean = true;
   private _color: number;
   private _hidesWhenStopped: boolean = true;
-  private _size: string;
+  private _size: string | number;
   /**
    * To be documented
    */
@@ -51,12 +51,14 @@ export class ActivityIndicator extends HighLevelComponent {
    * To be documented
    * @platform ios
    */
-  set size(value: string) {
+  set size(value: string | number) {
     this._size = this.processEnum(value, ['small', 'large']);
     if (this._size == 'small') {
       this.setDefaultStyle({height: 20, width: 20});
-    } else {
+    } else if (this._size == 'large') {
       this.setDefaultStyle({height: 36, width: 36});
+    } else {
+      this.setDefaultStyle({height: this._size, width: this._size});
     }
   }
 }
