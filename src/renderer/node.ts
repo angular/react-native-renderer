@@ -1,6 +1,6 @@
 import {ReactNativeWrapper} from "./../wrapper/wrapper";
 import {Hammer} from "./../events/hammer";
-import {SelectorMatcher, CssSelector} from "@angular/compiler/src/selector";
+import {SelectorMatcher, CssSelector} from "./selector";
 
 export var nodeMap: Map<number, Node> = new Map<number, Node>();
 

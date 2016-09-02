@@ -6,9 +6,10 @@ import {
   Inject,
   Injectable,
   NgZone,
-  SanitizationService,
+  Sanitizer,
   SecurityContext,
-  AnimationPlayer
+  AnimationPlayer,
+  SchemaMetadata
 } from "@angular/core";
 import {ElementSchemaRegistry} from "@angular/compiler";
 import {Node, ElementNode, AnchorNode, TextNode, nodeMap} from "./node";
@@ -31,6 +32,9 @@ export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
   hasProperty(tagName: string, propName: string): boolean {
     return true;
   }
+  hasElement(tagName: string, schemaMetas: SchemaMetadata[]): boolean {
+    return true;
+  }
   getMappedPropName(propName: string): string {
     return propName;
   }
@@ -39,7 +43,7 @@ export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
   }
 }
 
-export class ReactNativeSanitizationServiceImpl implements SanitizationService {
+export class ReactNativeSanitizer implements Sanitizer {
   sanitize(ctx: SecurityContext, value: any): string {
     return value;
   }
@@ -231,9 +235,11 @@ export class ReactNativeRenderer implements Renderer {
     for (var i = 0; i < viewRootNodes.length; i++) {
       var node = viewRootNodes[i];
       var parent = node.parent;
-      var index = parent.children.indexOf(node);
-      parent.children.splice(index, 1);
-      this._rootRenderer.addDetachCommand(node);
+      if (parent) {
+        var index = parent.children.indexOf(node);
+        parent.children.splice(index, 1);
+        this._rootRenderer.addDetachCommand(node);
+      }
     }
   }
 
@@ -256,9 +262,10 @@ export class ReactNativeRenderer implements Renderer {
 
   setElementProperty(renderElement: Node, propertyName: string, propertyValue: any): void {
     if (typeof propertyValue !== 'undefined') {
-      renderElement.setProperty(propertyName, propertyValue, false);
+      const cleanPropertyName = propertyName.startsWith('_on') ? propertyName.substr(1) : propertyName;
+      renderElement.setProperty(cleanPropertyName, propertyValue, false);
       if (renderElement.isCreated) {
-        this._rootRenderer.addUpdateCommand(renderElement, propertyName, propertyValue);
+        this._rootRenderer.addUpdateCommand(renderElement, cleanPropertyName, propertyValue);
       }
     }
   }

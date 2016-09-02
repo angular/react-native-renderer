@@ -8,17 +8,18 @@ block content
         # Http
 
         The http module of Angular 2 can be used as is in applications.
-        The only thing to be done is to bootstrap the application with the right providers (see below).
+        The only thing to be done is to import `ReactNativeHttpModule` in the main module of the application (see below).
 
         Behind the scene, it uses the [Network polyfill](https://facebook.github.io/react-native/docs/network.html) provided by React Native.
 
-        ## bootstrap
+        ## Main module
         ```
-        import {bootstrapReactNative, HTTP_PROVIDERS}
-            from 'angular2-react-native';
-        import {Example} from "./example";
-
-        bootstrapReactNative('example', Example, [HTTP_PROVIDERS]);
+        @NgModule({
+          declarations: [...],
+          imports: [ReactNativeModule, CommonModule, ReactNativeHttpModule],
+          bootstrap: [...]
+        })
+        export class MyAppModule {}
         ```
 
         ## Example

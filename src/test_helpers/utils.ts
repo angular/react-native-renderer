@@ -1,14 +1,13 @@
 import {MockApplicationRef} from "./mock_application_ref";
-import {RootRenderer, ApplicationRef, SanitizationService, CUSTOM_ELEMENTS_SCHEMA, NgZone} from "@angular/core";
+import {RootRenderer, ApplicationRef, Sanitizer, CUSTOM_ELEMENTS_SCHEMA, NgZone} from "@angular/core";
 import {TestBed, getTestBed, ComponentFixture} from "@angular/core/testing";
-import {ROUTER_PROVIDERS, ROUTER_PRIMARY_COMPONENT} from "@angular/router-deprecated";
 import {LocationStrategy} from "@angular/common";
 import {ElementSchemaRegistry} from "@angular/compiler";
 import {
   ReactNativeRootRenderer,
   ReactNativeRootRenderer_,
   ReactNativeElementSchemaRegistry,
-  ReactNativeSanitizationServiceImpl,
+  ReactNativeSanitizer,
   REACT_NATIVE_WRAPPER
 } from "../renderer/renderer";
 import {ReactNativeLocationStrategy} from "../router/location_strategy";
@@ -16,9 +15,9 @@ import {ReactNativeWrapper} from "../wrapper/wrapper";
 import {Node} from "../renderer/node";
 import {ReactNativeModule} from "../module";
 
-export function configureTestingModule(mock: ReactNativeWrapper, testCpt: any, declarations: Array<any> = []): typeof TestBed {
+export function configureTestingModule(mock: ReactNativeWrapper, testCpt: any, declarations: Array<any> = [], modules: Array<any> = []): typeof TestBed {
   const tb = TestBed.configureTestingModule({
-    imports: [ReactNativeModule],
+    imports: [ReactNativeModule].concat(modules),
     providers: getTestingProviders(mock, testCpt),
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [testCpt].concat(declarations)
@@ -40,14 +39,12 @@ export function initTest(testCpt: any, tpl: string): {fixture: ComponentFixture<
 function getTestingProviders(mock: ReactNativeWrapper, testCpt: any): Array<any> {
   return [
     {provide: ApplicationRef, useClass: MockApplicationRef},
-    ROUTER_PROVIDERS,
     {provide: LocationStrategy, useClass: ReactNativeLocationStrategy },
-    {provide: ROUTER_PRIMARY_COMPONENT, useValue: testCpt},
     {provide: REACT_NATIVE_WRAPPER, useValue: mock},
     ReactNativeElementSchemaRegistry,
     {provide: ElementSchemaRegistry, useExisting: ReactNativeElementSchemaRegistry},
-    ReactNativeSanitizationServiceImpl,
-    {provide: SanitizationService, useExisting: ReactNativeSanitizationServiceImpl},
+    ReactNativeSanitizer,
+    {provide: Sanitizer, useExisting: ReactNativeSanitizer},
     {provide: ReactNativeRootRenderer, useClass: ReactNativeRootRenderer_},
     {provide: RootRenderer, useExisting: ReactNativeRootRenderer}
   ];

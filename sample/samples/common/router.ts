@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {RouteConfig} from '@angular/router-deprecated';
+import {Routes} from '@angular/router';
 import {LocationStrategy} from '@angular/common';
 
 @Component({
@@ -19,11 +19,6 @@ class CompB {
   }
 }
 
-
-@RouteConfig([
-  { path: '/', component: CompA, name: 'CompA' },
-  { path: '/b', component: CompB, name: 'CompB' },
-])
 @Component({
   selector: 'example',
   template: `
@@ -33,3 +28,8 @@ class CompB {
   `
 })
 export class Example {}
+
+const appRoutes: Routes = [
+  { path: '', component: CompA },
+  { path: 'b', component: CompB }
+];

@@ -32,6 +32,6 @@ export * from './components/ios/tabbar_item';
 export * from './directives/opacity_feedback';
 export * from './directives/android/ripple_feedback';
 
-export * from './http/http';
+export * from './http/http_module';
 
-export * from './router/router';
+export * from './router/router_module';

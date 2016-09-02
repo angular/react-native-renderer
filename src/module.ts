@@ -1,7 +1,5 @@
 import {NgModule, CUSTOM_ELEMENTS_SCHEMA, ApplicationModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {HTTP_PROVIDERS} from "./http/http";
-import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES} from "./router/router";
 import {ActivityIndicator} from "./components/activity_indicator";
 import {Image} from "./components/image";
 import {Picker} from "./components/picker";
@@ -57,14 +55,12 @@ export {RippleFeedback} from './directives/android/ripple_feedback';
 @NgModule({
   declarations: [ActivityIndicator, Image, Picker, RefreshControl, ScrollView, Switch, Text, TextInput, View, WebView,
     DrawerLayout, DrawerLayoutContent, DrawerLayoutSide, PagerLayout, ProgressBar, Toolbar,
-    DatePicker, MapView, Navigator, ProgressView, SegmentedControl, Slider, TabBar, TabBarItem,
-    OpacityFeedback, RippleFeedback, ROUTER_DIRECTIVES,
-    NavigatorItem],
+    DatePicker, MapView, Navigator, NavigatorItem, ProgressView, SegmentedControl, Slider, TabBar, TabBarItem,
+    OpacityFeedback, RippleFeedback],
   exports: [ActivityIndicator, Image, Picker, RefreshControl, ScrollView, Switch, Text, TextInput, View, WebView,
    DrawerLayout, DrawerLayoutContent, DrawerLayoutSide, PagerLayout, ProgressBar, Toolbar,
    DatePicker, MapView, Navigator, ProgressView, SegmentedControl, Slider, TabBar, TabBarItem,
-   OpacityFeedback, RippleFeedback, ROUTER_DIRECTIVES],
-  providers: [HTTP_PROVIDERS, ROUTER_PROVIDERS],
+   OpacityFeedback, RippleFeedback],
   imports: [ApplicationModule, CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -1,4 +1,3 @@
-import {async} from "@angular/core/testing";
 import {Component} from "@angular/core";
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {fireEvent, configureTestingModule, initTest} from "../../src/test_helpers/utils";
@@ -71,7 +70,7 @@ describe('Hammer', () => {
     expect(fixture.componentInstance.log.join(',')).toEqual('swiperight,swipe');
   });
 
-  it('should support press', async(() => {
+  it('should support press', (done) => {
     const {fixture, rootRenderer} = initTest(TestComponent, `<native-text (press)="handleEvent($event)" (pressup)="handleEvent($event)">foo</native-text>`);
 
     const target = fixture.elementRef.nativeElement.children[0];
@@ -80,9 +79,11 @@ describe('Hammer', () => {
 
     setTimeout(() => {
       fireEvent('topTouchEnd', target, 300);
+      fixture.detectChanges();
       expect(fixture.componentInstance.log.join(',')).toEqual('press,pressup');
+      done();
     }, 300);
-  }));
+  });
 
   it('should support pinch', () => {
     const {fixture, rootRenderer} = initTest(TestComponent, `<native-text (pinch)="handleEvent($event)" (pinchstart)="handleEvent($event)"

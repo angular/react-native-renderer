@@ -15,7 +15,7 @@ var ANDROID_BINDINGS: string = `[collapsable]="_collapsable" [accessibilityLiveR
   [nativeBackgroundAndroid]="_nativeBackgroundAndroid"`;
 var IOS_BINDINGS: string = `[accessibilityTraits]="_accessibilityTraits" [shouldRasterizeIOS]="_shouldRasterizeIOS"`;
 export var GENERIC_BINDINGS: string = `[accessible]="_accessible" [accessibilityLabel]="_accessibilityLabel" [testID]="_testID"
-  [pointerEvents]="_pointerEvents" [removeClippedSubviews]="_removeClippedSubviews" [onLayout]="_onLayout" [styleSheet]="_styleSheet"
+  [pointerEvents]="_pointerEvents" [removeClippedSubviews]="_removeClippedSubviews" [_onLayout]="_onLayout" [styleSheet]="_styleSheet"
   [style]="_style" ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}`;
 
 /**

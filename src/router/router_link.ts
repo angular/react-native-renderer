@@ -1,44 +1,54 @@
-import {Directive, OnInit, OnDestroy, ElementRef} from "@angular/core";
-import {Router, Instruction} from "@angular/router-deprecated";
+import {Directive, OnInit, OnDestroy, ElementRef, Input} from "@angular/core";
+import {Router, ActivatedRoute, UrlTree} from '@angular/router';
 
-@Directive({
-  selector: '[routerLink]',
-  inputs: ['routeParams: routerLink', 'event: event']
-})
+@Directive({selector: '[routerLink]'})
 export class RouterLink implements OnInit, OnDestroy {
   private _el : any;
-  private _navigationInstruction: Instruction;
+  private commands: any[] = [];
+  @Input() queryParams: {[k: string]: any};
+  @Input() fragment: string;
+  @Input() preserveQueryParams: boolean;
+  @Input() preserveFragment: boolean;
+  @Input() event: string = 'tap';
 
-  private _routeParams: any[];
-  private _event: string = 'tap';
-
-  constructor(private _router: Router, el: ElementRef) {
+  constructor(private router: Router, private route: ActivatedRoute, el: ElementRef) {
     this._el = el.nativeElement;
-    this._router.subscribe((_) => this._updateInstruction());
   }
 
-  private _updateInstruction(): void {
-    this._navigationInstruction = this._router.generate(this._routeParams);
+  @Input()
+  set routerLink(data: any[] | string) {
+    if (Array.isArray(data)) {
+      this.commands = <Array<any>>data;
+    } else {
+      this.commands = [data];
+    }
   }
 
-  set routeParams(changes: any[]) {
-    this._routeParams = changes;
-    this._updateInstruction();
+  onEvent(): boolean {
+    this.router.navigateByUrl(this.urlTree);
+    return false;
   }
 
-  set event(eventName: string) {
-    this._event = eventName || 'tap';
-  }
-
-  onEvent(): void {
-    this._router.navigateByInstruction(this._navigationInstruction);
+  get urlTree(): UrlTree {
+    return this.router.createUrlTree(this.commands, {
+      relativeTo: this.route,
+      queryParams: this.queryParams,
+      fragment: this.fragment,
+      preserveQueryParams: toBool(this.preserveQueryParams),
+      preserveFragment: toBool(this.preserveFragment)
+    });
   }
 
   ngOnInit() {
-    this._el.addEventListener(this._event, this.onEvent.bind(this));
+    this._el.addEventListener(this.event, this.onEvent.bind(this));
   }
 
   ngOnDestroy() {
-    this._el.removeEventListener(this._event, this.onEvent.bind(this));
+    this._el.removeEventListener(this.event, this.onEvent.bind(this));
   }
+}
+
+function toBool(s?: any): boolean {
+  if (s === '') return true;
+  return !!s;
 }

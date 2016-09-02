@@ -28,8 +28,8 @@ import {ReactNativeWrapper} from "../../wrapper/wrapper";
   [showsUserLocation]="_showsUserLocation" [zoomEnabled]="_zoomEnabled"
   [annotations]="_annotations" [followUserLocation]="_followUserLocation" [legalLabelInsets]="_legalLabelInsets" [mapType]="_mapType"
   [maxDelta]="_maxDelta" [minDelta]="_minDelta" [overlays]="_overlays" [showsCompass]="_showsCompass" [showsPointsOfInterest]="_showsPointsOfInterest"
-  onChange="true" [onPress]="_annotationEventsEnabled" [onAnnotationDragStateChange]="_annotationEventsEnabled" [onAnnotationFocus]="_annotationEventsEnabled"
-  [onAnnotationBlur]="_annotationEventsEnabled"
+  onChange="true" [_onPress]="_annotationEventsEnabled" [_onAnnotationDragStateChange]="_annotationEventsEnabled" [_onAnnotationFocus]="_annotationEventsEnabled"
+  [_onAnnotationBlur]="_annotationEventsEnabled"
   (topChange)="_handleChange($event)" (topPress)="_handlePress($event)" (topAnnotationFocus)="_handleAnnotationFocus($event)"
   (topAnnotationBlur)="_handleAnnotationBlur($event)" (topAnnotationDragStateChange)="_handleAnnotationDragStateChange($event)"
   ${GENERIC_BINDINGS}></native-mapview>`
