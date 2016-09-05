@@ -63,14 +63,15 @@ h4.cpt {
 }
 </style></head></html><body><div role="navigation" class="navbar navbar-inverse navbar-fixed-top"><div class="container-fluid"><div class="navbar-header"><a href="./index.html" class="navbar-brand">react-native-renderer</a><a href="./getting_started.html" class="navbar-brand">Documentation</a></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="https://github.com/angular/react-native-renderer">Github</a></li><li><a href="https://gitter.im/angular/react-native-renderer">Gitter</a></li></ul></div></div></div><div class="row"><div class="content col-sm-10 col-sm-push-2"><div><div style="float: right;"><a href="https://github.com/angular/react-native-renderer/blob/master/doc/pages/http.jade">Edit this page on Github</a></div><h1 id="http">Http</h1>
 <p>The http module of Angular 2 can be used as is in applications.
-The only thing to be done is to bootstrap the application with the right providers (see below).</p>
+The only thing to be done is to import <code>ReactNativeHttpModule</code> in the main module of the application (see below).</p>
 <p>Behind the scene, it uses the <a href="https://facebook.github.io/react-native/docs/network.html">Network polyfill</a> provided by React Native.</p>
-<h2 id="bootstrap">bootstrap</h2>
-<pre><code>import {bootstrapReactNative, HTTP_PROVIDERS}
-    from &#39;angular2-react-native&#39;;
-import {Example} from &quot;./example&quot;;
-
-bootstrapReactNative(&#39;example&#39;, Example, [HTTP_PROVIDERS]);
+<h2 id="main-module">Main module</h2>
+<pre><code>@NgModule({
+  declarations: [...],
+  imports: [ReactNativeModule, CommonModule, ReactNativeHttpModule],
+  bootstrap: [...]
+})
+export class MyAppModule {}
 </code></pre><h2 id="example">Example</h2>
 <pre><code>import {Component, ViewChild} from &#39;@angular/core&#39;;
 import {NgFor} from &#39;@angular/common&#39;;
