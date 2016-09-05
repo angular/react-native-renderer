@@ -1,9 +1,3 @@
-export * from './renderer/node';
-export * from './renderer/renderer';
-
-export * from './test_helpers/utils';
-export * from './wrapper/wrapper_mock';
-
 export * from './components/activity_indicator';
 export * from './components/image';
 export * from './components/picker';
@@ -32,6 +26,23 @@ export * from './components/ios/tabbar_item';
 export * from './directives/opacity_feedback';
 export * from './directives/android/ripple_feedback';
 
+export * from './events/hammer';
+
 export * from './http/http_module';
 
+export * from './renderer/node';
+export * from './renderer/renderer';
+export * from './renderer/selector';
+
 export * from './router/router_module';
+
+export * from './test_helpers/mock_application_ref';
+export * from './test_helpers/mock_react_native';
+export * from './test_helpers/router_testing_module';
+export * from './test_helpers/utils';
+
+export * from './wrapper/wrapper';
+export * from './wrapper/wrapper_mock';
+
+
+
