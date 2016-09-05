@@ -1,19 +1,19 @@
 import {
   Component,
   Inject,
+  Injector,
   Input,
   Output,
   EventEmitter,
   NgZone,
-  DynamicComponentLoader,
   ElementRef,
-  ComponentRef,
   ViewChild,
   ViewContainerRef,
-  AfterViewInit
+  ComponentFactoryResolver,
+  AfterViewInit, OnDestroy, ResolvedReflectiveProvider
 } from "@angular/core";
 import {LocationStrategy} from "@angular/common";
-import {Router, ComponentInstruction} from "@angular/router-deprecated";
+import {Router, ActivatedRoute, RouterOutletMap, PRIMARY_OUTLET} from "@angular/router";
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../component";
 import {REACT_NATIVE_WRAPPER} from "./../../renderer/renderer";
 import {ReactNativeWrapper} from "../../wrapper/wrapper";
@@ -21,7 +21,7 @@ import {Node} from "../../renderer/node";
 
 @Component({
   selector: 'NavigatorItem',
-  inputs: ['instruction'],
+  inputs: ['activatedRoute'],
   template: `<native-navitem [title]="_title" [titleImage]="_titleImage" [backButtonTitle]="_backButtonTitle" [leftButtonTitle]="_leftButtonTitle" [rightButtonTitle]="_rightButtonTitle"
   [navigationBarHidden]="navigationBarHidden" [shadowHidden]="shadowHidden" [translucent]="translucent"
   [barTintColor]="barTintColor" [tintColor]="tintColor" [titleTextColor]="titleTextColor"
@@ -41,7 +41,7 @@ export class NavigatorItem extends HighLevelComponent implements AfterViewInit {
   @Input() barTintColor: number;
   @Input() tintColor: number;
   @Input() titleTextColor: number;
-  private _instruction: ComponentInstruction;
+  private _activatedRoute: ActivatedRoute;
   private _title: string;
   private _titleImage: any;
   private _backButtonTitle: string;
@@ -53,13 +53,11 @@ export class NavigatorItem extends HighLevelComponent implements AfterViewInit {
   private _wrapperStyle: any;
 
   //Events
-  @Output() leftButtonPress: EventEmitter<ComponentInstruction> = new EventEmitter();
-  @Output() rightButtonPress: EventEmitter<ComponentInstruction> = new EventEmitter();
+  @Output() leftButtonPress: EventEmitter<ActivatedRoute> = new EventEmitter();
+  @Output() rightButtonPress: EventEmitter<ActivatedRoute> = new EventEmitter();
   @Output() componentLoad: EventEmitter<any> = new EventEmitter();
 
-  private _toBeLoaded: any = null;
-
-  constructor(private loader: DynamicComponentLoader, private elementRef: ElementRef, @Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
+  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, @Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
     super(wrapper);
     this.setDefaultStyle({
       backgroundColor: 'white',
@@ -72,9 +70,9 @@ export class NavigatorItem extends HighLevelComponent implements AfterViewInit {
     });
   }
 
-  set instruction(value: ComponentInstruction) {
-    this._instruction = value;
-    var data = value.routeData.data;
+  set activatedRoute(activatedRoute: ActivatedRoute) {
+    this._activatedRoute = activatedRoute;
+    var data = activatedRoute.snapshot.data;
     if (data['title']) {this._title = data['title'];}
     if (data['titleImage']) {this._titleImage = this.resolveAssetSource(data['titleImage']);}
     if (data['backButtonTitle']) {this._backButtonTitle = data['backButtonTitle'];}
@@ -90,29 +88,29 @@ export class NavigatorItem extends HighLevelComponent implements AfterViewInit {
     if (data['leftButtonIcon']) {this._leftButtonIcon = this.resolveAssetSource(data['leftButtonIcon']);}
     if (data['rightButtonIcon']) {this._rightButtonIcon = this.resolveAssetSource(data['rightButtonIcon']);}
     if (data['wrapperStyle']) {this._wrapperStyle = data['wrapperStyle'];}
-
-    this._toBeLoaded = value.componentType;
   }
 
   _handleLeftButtonPress() {
-    this.leftButtonPress.emit(this._instruction);
+    this.leftButtonPress.emit(this._activatedRoute);
   }
 
   _handleRightButtonPress() {
-   this.rightButtonPress.emit(this._instruction);
+    this.rightButtonPress.emit(this._activatedRoute);
   }
 
   ngAfterViewInit() {
-    this.loader.loadNextToLocation(this._toBeLoaded, this.target).then((componentRef: ComponentRef<any>) => {
-      this.componentLoad.emit(componentRef.instance);
-    });
+    const component: any = this._activatedRoute.routeConfig.component;
+    const componentFactory = this._componentFactoryResolver.resolveComponentFactory<any>(component);
+    const componentRef = this.target.createComponent(componentFactory, 0, this._injector, []);
+    componentRef.changeDetectorRef.detectChanges();
+    this.componentLoad.emit(componentRef.instance);
   }
 }
 
 /**
  * A component for displaying a navigator.
  *
- * It uses a `RouteConfig` to define the different screens which can be reached.
+ * It acts as the primary outlet for the router.
  * A Router's navigation triggers a navigation of the Navigator.
  *
  * For each route, additional data can be provided as follows:
@@ -120,9 +118,9 @@ export class NavigatorItem extends HighLevelComponent implements AfterViewInit {
  * wrapperStyle: any, navigationBarHidden: boolean, shadowHidden: boolean, tintColor: string, barTintColor: string, titleTextColor: string, translucent: boolean}
  *
  * ```
-Component({
+@Component({
   selector: 'foo',
-  template: `<View [routerLink]="['/Bar']"><Text>Foo from here</Text></View>`
+  template: `<View routerLink="bar"><Text>Foo from here</Text></View>`
 })
 class Foo {}
 
@@ -132,12 +130,6 @@ class Foo {}
 })
 class Bar {}
 
-var moreLogo = require('../../assets/icon_more.png');
-
-@RouteConfig([
- { path: '/', component: Foo, name: 'Foo', data: {title: 'foo!', rightButtonIcon: moreLogo, backButtonTitle: 'back'}},
- { path: '/bar', component: Bar, name: 'Bar', data: {title: 'bar!'} }
-])
 @Component({
   selector: 'sample',
   template: `<Navigator (rightButtonPress)="_navigate($event)"></Navigator>`
@@ -146,10 +138,25 @@ export class Sample {
   constructor(private router: Router) {
   }
 
-  _navigate(event: ComponentInstruction) {
+  _navigate(event: ActivatedRoute) {
     this.router.navigateByUrl('/bar');
   }
 }
+
+
+const moreLogo = require('../../assets/icon_more.png');
+const appRoutes = [
+ { path: '', component: Foo, data: {title: 'foo!', rightButtonIcon: moreLogo, backButtonTitle: 'back'}},
+ { path: 'bar', component: Bar, data: {title: 'bar!'} }
+];
+
+@NgModule({
+  declarations: [Sample, CompA, CompB],
+  imports: [ReactNativeModule, CommonModule, ReactNativeRouterModule.forRoot(appRoutes)],
+  bootstrap: [Sample]
+})
+export class AppModule {}
+
  * ```
  * @style https://facebook.github.io/react-native/docs/view.html#style
  * @platform ios
@@ -162,39 +169,49 @@ export class Sample {
   template: `<native-navigator *ngIf="_stack.length > 0" [interactivePopGestureEnabled]="_interactivePopGestureEnabled" [requestedTopOfStack]="_requestedTopOfStack"
   onNavigationComplete="true" (topNavigationComplete)="_handleNavigationComplete($event)"
   ${GENERIC_BINDINGS}>
-    <NavigatorItem *ngFor="let instruction of _stack" [itemWrapperStyle]="_itemWrapperStyle"
+    <NavigatorItem *ngFor="let activatedRoute of _stack" [itemWrapperStyle]="_itemWrapperStyle"
     [barTintColor]="_barTintColor" [navigationBarHidden]="_navigationBarHidden"
     [shadowHidden]="_shadowHidden" [tintColor]="_tintColor" [titleTextColor]="_titleTextColor" [translucent]="_translucent"
-    [instruction]="instruction"
+    [activatedRoute]="activatedRoute"
     (leftButtonPress)="_handleLeftButtonPress($event)" (rightButtonPress)="_handleRightButtonPress($event)" (componentLoad)="_handleComponentLoad($event)"></NavigatorItem>
   </native-navigator>`
 })
-export class Navigator extends HighLevelComponent {
+export class Navigator extends HighLevelComponent implements OnDestroy {
   private _requestedTopOfStack: number ;
-  private _stack: Array<ComponentInstruction> = [];
+  private _stack: Array<ActivatedRoute> = [];
   private _loadedComponents: Array<any> = [];
+  private _wrapper: ReactNativeWrapper;
+
   constructor(private router: Router, private zone: NgZone, private locationStrategy: LocationStrategy, private elementRef: ElementRef,
-              @Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
+              private parentOutletMap: RouterOutletMap, @Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
     super(wrapper);
+    this._wrapper = wrapper;
+    parentOutletMap.registerOutlet(PRIMARY_OUTLET, <any>this);
     this.setDefaultStyle({flex: 1});
-    this.router.subscribe((url) => {
-      if (this._stack.length == 0) {
-        this._stack.push(router.currentInstruction.component);
-      } else {
-        var navigator: Node = this.elementRef.nativeElement.children[1];
-        setTimeout(()=> {
-          wrapper.requestNavigatorLock(navigator.nativeTag, (lockAcquired) => this._handleRouterUpdate(lockAcquired, navigator));
-        }, 0)
-      }
-    })
   }
 
-  _handleRouterUpdate(lockAcquired: boolean, navigator: Node): void {
-    var instruction: ComponentInstruction = this.router.currentInstruction.component;
+  activate(activatedRoute: ActivatedRoute, loadedResolver: ComponentFactoryResolver,
+           loadedInjector: Injector, providers: ResolvedReflectiveProvider[],
+           outletMap: RouterOutletMap): void {
+    if (this._stack.length == 0) {
+      this._stack.push(activatedRoute);
+    } else {
+      var navigator: Node = this.elementRef.nativeElement.children[1];
+      setTimeout(()=> {
+        this._wrapper.requestNavigatorLock(navigator.nativeTag, (lockAcquired) => this._handleNavigation(lockAcquired, navigator, activatedRoute));
+      }, 0)
+    }
+  }
+
+  deactivate(): void {}
+
+  ngOnDestroy(): void { this.parentOutletMap.removeOutlet(PRIMARY_OUTLET); }
+
+  _handleNavigation(lockAcquired: boolean, navigator: Node, activatedRoute: ActivatedRoute): void {
     this.zone.run(() => {
       if (lockAcquired) {
-        if (this._stack.indexOf(instruction) == -1) {
-          this._stack.push(instruction);
+        if (this._stack.map((ar) => ar.routeConfig.path).indexOf(activatedRoute.routeConfig.path) == -1) {
+          this._stack.push(activatedRoute);
         } else {
           this._stack.pop();
         }
@@ -218,11 +235,11 @@ export class Navigator extends HighLevelComponent {
   /**
    * To be documented
    */
-  @Output() leftButtonPress: EventEmitter<ComponentInstruction> = new EventEmitter();
+  @Output() leftButtonPress: EventEmitter<ActivatedRoute> = new EventEmitter();
   /**
    * To be documented
    */
-  @Output() rightButtonPress: EventEmitter<ComponentInstruction> = new EventEmitter();
+  @Output() rightButtonPress: EventEmitter<ActivatedRoute> = new EventEmitter();
 
   //Properties
   private _barTintColor: number;
@@ -266,11 +283,11 @@ export class Navigator extends HighLevelComponent {
    */
   set translucent(value: string) {this._translucent = this.processBoolean(value);}
 
-  _handleLeftButtonPress(event: ComponentInstruction) {
+  _handleLeftButtonPress(event: ActivatedRoute) {
     this.leftButtonPress.emit(event);
   }
 
-  _handleRightButtonPress(event: ComponentInstruction) {
+  _handleRightButtonPress(event: ActivatedRoute) {
     this.rightButtonPress.emit(event);
   }
 

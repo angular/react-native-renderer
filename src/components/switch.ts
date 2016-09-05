@@ -7,7 +7,7 @@ var ANDROID_INPUTS: Array<string> = [];
 var IOS_INPUTS: Array<string> = ['onTintColor', 'thumbTintColor', 'tintColor'];
 
 var ANDROID_BINDINGS: string = ``;
-var IOS_BINDINGS: string = `[onTintColor]="_onTintColor" [thumbTintColor]="_thumbTintColor" [tintColor]="_tintColor" onChange="true"`;
+var IOS_BINDINGS: string = `[_onTintColor]="_onTintColor" [thumbTintColor]="_thumbTintColor" [tintColor]="_tintColor" onChange="true"`;
 
 /**
  * A component for displaying a switch.
@@ -28,7 +28,7 @@ export class Sample {
   inputs: [
    'on', 'enabled'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
-  template: `<native-switch [on]="_on" [enabled]="_enabled"
+  template: `<native-switch [_on]="_on" [enabled]="_enabled"
   (topChange)="_handleChange($event)" ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-switch>`
 })
 export class Switch extends HighLevelComponent {

@@ -8,17 +8,23 @@ block content
         # Router
 
         The rooter module of Angular 2 can be used as is in applications.
-        The only thing to be done is to bootstrap the application with the right providers (see below), and use the right directives.
+        The only thing to be done is to import `ReactNativeRouterModule` in the main module of the application (see below), and use the static `forRoot` method to configure routes.
 
         It uses a mock of `LocationStrategy`. Manipulating the location triggers a navigation of the router.
 
-        ## bootstrap
+        ## Main module
         ```
-        import {bootstrapReactNative, ROUTER_PROVIDERS}
-            from 'angular2-react-native';
-        import {Example} from "./example";
+        const appRoutes: Routes = [
+          { path: '', component: CompA },
+          { path: 'b', component: CompB }
+        ];
 
-        bootstrapReactNative('example', Example, [ROUTER_PROVIDERS]);
+        @NgModule({
+          declarations: [Example, CompA, CompB, ...],
+          imports: [ReactNativeModule, CommonModule, ReactNativeRouterModule.forRoot(appRoutes)],
+          bootstrap: [Example]
+        })
+        export class MyAppModule {}
         ```
 
         ## Directives
@@ -28,9 +34,7 @@ block content
         ## Example
         ```
         import {Component} from '@angular/core';
-        import {RouteConfig} from '@angular/router-deprecated';
         import {LocationStrategy} from '@angular/common';
-        import {ROUTER_DIRECTIVES} from "angular2-react-native";
 
         @Component({
           selector: 'comp-a',
@@ -49,11 +53,6 @@ block content
           }
         }
 
-
-        @RouteConfig([
-          { path: '/', component: CompA, name: 'CompA' },
-          { path: '/b', component: CompB, name: 'CompB' },
-        ])
         @Component({
           selector: 'example',
           template: `

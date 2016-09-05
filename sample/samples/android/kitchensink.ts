@@ -1,17 +1,10 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {Router, RouteConfig} from '@angular/router-deprecated';
+import {Router, NavigationEnd} from '@angular/router';
 import {LocationStrategy} from '@angular/common';
 import {StyleSheet, BackAndroid, Alert, NativeModules, processColor} from 'react-native';
 import {DrawerLayout, Toolbar} from 'angular2-react-native';
 
-import {HelloApp} from "./hello";
 import {TodoMVC} from "./../common/todomvc";
-import {GesturesApp} from "./../common/gestures";
-import {WidgetsList} from "./widgets";
-import {WebViewApp} from './../common/webview';
-import {APIsList} from "./apis";
-import {HttpApp} from "./../common/http";
-import {AnimationApp} from './../common/animation';
 
 @Component({
   selector: 'kitchensink-app',
@@ -22,12 +15,12 @@ import {AnimationApp} from './../common/animation';
     <Toolbar [styleSheet]="styles.toolbar" [navIcon]="hamburgerIcon" [overflowIcon]="moreIcon"
     title="Kitchen Sink" titleColor="#FFFFFF" (select)="handleToolbar($event)"></Toolbar>
     <View [styleSheet]="styles.content">
-      <router-outlet></router-outlet>
+      <router-outlet (activate)="_lastActivated = $event"></router-outlet>
     </View>
   </DrawerLayoutSide>
   <DrawerLayoutContent>
     <View [styleSheet]="styles.drawer">
-      <View *ngFor="let item of menuItems" [styleSheet]="styles.menuItem" [routerLink]="['/' + item.as]" rippleFeedback="#00a9e0">
+      <View *ngFor="let item of menuItems" [styleSheet]="styles.menuItem" [routerLink]="item.as" rippleFeedback="#00a9e0">
         <Text [styleSheet]="styles.menuText">{{item.name}}</Text>
       </View>
     </View>
@@ -35,29 +28,22 @@ import {AnimationApp} from './../common/animation';
 </DrawerLayout>
 `
 })
-@RouteConfig([
-  { path: '/', component: HelloApp, name: 'HelloApp' },
-  { path: '/todomvc', component: TodoMVC, name: 'TodoMVC' },
-  { path: '/gestures', component: GesturesApp, name: 'GesturesApp' },
-  { path: '/widgets', component: WidgetsList, name: 'WidgetsList' },
-  { path: '/webview', component: WebViewApp, name: 'WebViewApp' },
-  { path: '/apis', component: APIsList, name: 'APIsList' },
-  { path: '/http', component: HttpApp, name: 'HttpApp' },
-  { path: '/animation', component: AnimationApp, name: 'AnimationApp'}
-])
 export class KitchenSinkApp {
-  @ViewChild(TodoMVC) viewChild: TodoMVC;
+  private _lastActivated: any;
+  private _todoMVC: TodoMVC;
   @ViewChild(DrawerLayout) drawerLayout: DrawerLayout;
   @ViewChild(Toolbar) toolbar: Toolbar;
   hamburgerIcon: any = require('../../assets/icon_hamburger.png');
   moreIcon: any = require('../../assets/icon_more.png');
-  menuItems: Array<any> = [{name: 'Hello world', as: 'HelloApp'}, {name: 'Components', as: 'WidgetsList'}, {name: 'WebView', as: 'WebViewApp'}, {name: 'APIs', as: 'APIsList'},
-    {name: 'TodoMVC', as: 'TodoMVC'}, {name: 'Gestures', as: 'GesturesApp'}, {name: 'Http', as: 'HttpApp'}, {name: 'Animation', as: 'AnimationApp'}]
+  menuItems: Array<any> = [{name: 'Hello world', as: ''}, {name: 'Components', as: 'widgets'}, {name: 'WebView', as: 'webview'}, {name: 'APIs', as: 'apis'},
+    {name: 'TodoMVC', as: 'todomvc'}, {name: 'Gestures', as: 'gestures'}, {name: 'Http', as: 'http'}, {name: 'Animation', as: 'animation'}]
   styles: any;
   _el : any = null;
   constructor(el: ElementRef, private router: Router, private locationStrategy: LocationStrategy) {
-    this.router.subscribe((res) => {
-      this._afterNavigate(res.instruction.urlPath);
+    this.router.events.subscribe((res) => {
+      if (res instanceof NavigationEnd) {
+        this._afterNavigate(res.url.substring(1));
+      }
     })
     NativeModules.StatusBarManager.setColor(processColor('#00a9e0'), true);
 
@@ -114,8 +100,10 @@ export class KitchenSinkApp {
     this.drawerLayout.closeDrawer();
     if (url == 'todomvc') {
       this._addMoreInToolbar();
+      this._todoMVC = this._lastActivated;
     } else {
       this._removeMoreInToolbar();
+      this._todoMVC = null;
     }
   }
 
@@ -123,16 +111,16 @@ export class KitchenSinkApp {
     var position = event.position;
     if (position == -1) {
       this.drawerLayout.openDrawer();
-    } else if (position == 0 && this.viewChild) {
-      this.viewChild.reset();
-    } else if (position == 1 && this.viewChild) {
-      this.viewChild.empty();
-    } else if (position == 2 && this.viewChild) {
-      this.viewChild.full();
-    } else if (position == 3 && this.viewChild) {
-      this.viewChild.save();
-    } else if (position == 4 && this.viewChild) {
-      this.viewChild.load();
+    } else if (position == 0 && this._todoMVC) {
+      this._todoMVC.reset();
+    } else if (position == 1 && this._todoMVC) {
+      this._todoMVC.empty();
+    } else if (position == 2 && this._todoMVC) {
+      this._todoMVC.full();
+    } else if (position == 3 && this._todoMVC) {
+      this._todoMVC.save();
+    } else if (position == 4 && this._todoMVC) {
+      this._todoMVC.load();
     }
   }
 

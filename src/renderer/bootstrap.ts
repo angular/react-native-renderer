@@ -18,14 +18,14 @@ Object.defineProperty(XMLHttpRequest.prototype, 'onreadystatechange', {
 });
 
 // Finally, define the bootstrap
-import {RootRenderer, NgZone, enableProdMode, NgModuleRef, SanitizationService, ExceptionHandler} from "@angular/core";
+import {RootRenderer, NgZone, enableProdMode, NgModuleRef, Sanitizer, ErrorHandler} from "@angular/core";
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {ElementSchemaRegistry} from "@angular/compiler";
 import {
   ReactNativeRootRenderer,
   ReactNativeRootRenderer_,
   ReactNativeElementSchemaRegistry,
-  ReactNativeSanitizationServiceImpl,
+  ReactNativeSanitizer,
   REACT_NATIVE_WRAPPER
 } from "./renderer";
 
@@ -33,13 +33,13 @@ export function bootstrapReactNative(appName:string, module: any, customProvider
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
     platformBrowserDynamic([
-      {provide: ExceptionHandler, useFactory: _exceptionHandler, deps: []},
+      {provide: ErrorHandler, useFactory: errorHandler, deps: []},
       [ReactNativeWrapperImpl],
       {provide: REACT_NATIVE_WRAPPER, useExisting: ReactNativeWrapperImpl},
       [ReactNativeElementSchemaRegistry],
       {provide: ElementSchemaRegistry, useExisting: ReactNativeElementSchemaRegistry},
-      ReactNativeSanitizationServiceImpl,
-      {provide: SanitizationService, useExisting: ReactNativeSanitizationServiceImpl},
+      ReactNativeSanitizer,
+      {provide: Sanitizer, useExisting: ReactNativeSanitizer},
       {provide: ReactNativeRootRenderer, useClass: ReactNativeRootRenderer_},
       {provide: RootRenderer, useExisting: ReactNativeRootRenderer}
     ].concat(customProviders || [])).
@@ -55,10 +55,6 @@ export function bootstrapReactNative(appName:string, module: any, customProvider
   });
 }
 
-function _exceptionHandler(): ExceptionHandler {
-  return new ExceptionHandler({
-    logError: (error: any) => console.log(error),
-    logGroup: (error: any) => console.log(error),
-    logGroupEnd: (_: any) => console.groupEnd()
-  });
+function errorHandler(): ErrorHandler {
+  return new ErrorHandler();
 }

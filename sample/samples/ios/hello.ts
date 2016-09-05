@@ -16,19 +16,19 @@ import {StyleSheet} from 'react-native';
     Shake or press cmd + D for dev menu
   </Text>
   <View [style]="{flexDirection: 'row', marginTop: 20}">
-    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/WidgetsList']">Components</Text>
-    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/WebViewApp']">Webview</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback routerLink="widgets">Components</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback routerLink="webview">Webview</Text>
   </View>
   <View [style]="{flexDirection: 'row', marginTop: 10}">
-    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/APIsApp']">APIs</Text>
-    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/TodoMVC']">TodoMVC</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback routerLink="apis">APIs</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback routerLink="todomvc">TodoMVC</Text>
   </View>
   <View [style]="{flexDirection: 'row', marginTop: 10}">
-    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/GesturesApp']">Gestures</Text>
-    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/HttpApp']">Http</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback routerLink="gestures">Gestures</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback routerLink="http">Http</Text>
   </View>
   <View [style]="{flexDirection: 'row', marginTop: 10}">
-    <Text [styleSheet]="styles.button" opacityFeedback [routerLink]="['/AnimationApp']">Animation</Text>
+    <Text [styleSheet]="styles.button" opacityFeedback routerLink="animation">Animation</Text>
   </View>
 </View>
 <Image [styleSheet]="styles.image" [style]="{left: 0}" [source]="angularLogo"></Image>

@@ -1,3 +1,4 @@
+import {NgModule} from "@angular/core";
 import {
   Http,
   RequestOptions,
@@ -8,7 +9,7 @@ import {
 } from "@angular/http";
 import {ReactNativeXHRBackend} from "./xhr_backend";
 
-export const HTTP_PROVIDERS: any[] = [
+const HTTP_PROVIDERS: any[] = [
   {
     provide: Http,
     useFactory: (xhrBackend: ReactNativeXHRBackend, requestOptions: RequestOptions) => new Http(xhrBackend, requestOptions),
@@ -19,3 +20,8 @@ export const HTTP_PROVIDERS: any[] = [
   {provide: ResponseOptions, useClass: BaseResponseOptions},
   ReactNativeXHRBackend
 ];
+
+@NgModule({providers: HTTP_PROVIDERS})
+export class ReactNativeHttpModule {
+
+}
