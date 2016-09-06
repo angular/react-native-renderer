@@ -29,7 +29,14 @@ var PATHS = {
   tmp: 'dist/tmp',
   publish: 'dist/publish',
   modules: [
-    'node_modules/@angular/**/*',
+    'node_modules/@angular/common/**/*',
+    'node_modules/@angular/compiler/**/*',
+    'node_modules/@angular/core/**/*',
+    'node_modules/@angular/http/**/*',
+    'node_modules/@angular/platform-browser/**/*',
+    'node_modules/@angular/platform-browser-dynamic/**/*',
+    'node_modules/@angular/platform-server/**/*',
+    'node_modules/@angular/router/**/*',
     'node_modules/hammerjs/**/*',
     'node_modules/reflect-metadata/**/*',
     'node_modules/rxjs/**/*',
@@ -53,7 +60,7 @@ gulp.task('!postcreate', ['!create'], function() {
     .pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/android/app/src/main/'));
 
 });
-gulp.task('init', ['!postcreate'], function() {
+gulp.task('init', function() {
   var copier = require('./tools/copy-dependencies');
   return copier.doCopy(PATHS.modules, PATHS.app + '/' + APP_NAME + '/node_modules');
 });
@@ -259,7 +266,7 @@ gulp.task('clean.code', function (done) {
 });
 
 function ts2js(path, dest, toSystem, withDeclaration) {
-  var tsResult = gulp.src(path.concat(['typings/index.d.ts', 'src/angular2-react-native.d.ts']), {base: './'})
+  var tsResult = gulp.src(path.concat(['typings/index.d.ts', 'src/angular2-react-native.d.ts', 'src/angular2-react-native-android.d.ts', 'src/angular2-react-native-ios.d.ts']), {base: './'})
     .pipe(typescript({
       noImplicitAny: true,
       module: toSystem ? 'system' : 'commonjs',
@@ -337,6 +344,8 @@ function customReporter() {
       if (error.relativeFilename && error.message.indexOf(`Module '"react-native"' has no exported member`) == -1 &&
         error.message.indexOf(`Module ''angular2-react-native'' has no exported member`) == -1 &&
         error.message.indexOf(`src\\angular2-react-native.d.ts`) == -1 &&
+        error.message.indexOf(`src\\angular2-react-native-android.d.ts`) == -1 &&
+        error.message.indexOf(`src\\angular2-react-native-ios.d.ts`) == -1 &&
         error.message.indexOf(`does not exist on type 'Global'.`) == -1) {
         console.error(error.message);
       }

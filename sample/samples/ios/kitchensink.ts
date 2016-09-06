@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {ActionSheetIOS} from 'react-native';
-import {Navigator} from 'angular2-react-native';
+import {Navigator} from 'angular2-react-native/ios';
 import {TodoMVC} from "../common/todomvc";
 
 @Component({

@@ -1,6 +1,6 @@
 import {Component, ViewChild} from "@angular/core";
 import {MockReactNativeWrapper} from "../../src/wrapper/wrapper_mock";
-import {ActivityIndicator} from "../../src/components/activity_indicator";
+import {ActivityIndicator} from "../../src/components/common/activity_indicator";
 import {configureTestingModule, initTest} from "../../src/test_helpers/utils";
 
 describe('ActivityIndicator component', () => {

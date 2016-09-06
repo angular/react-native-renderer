@@ -1,6 +1,5 @@
 import {Component, Input, Output, ElementRef, EventEmitter, ViewChildren, QueryList} from '@angular/core';
 import {StyleSheet} from 'react-native';
-import {TodoMVC} from "./todomvc";
 
 @Component({
   selector: 'ball',

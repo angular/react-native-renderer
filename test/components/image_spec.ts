@@ -1,6 +1,6 @@
 import {Component, ViewChild} from "@angular/core";
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
-import {Image} from "../../src/components/image";
+import {Image} from "../../src/components/common/image";
 import {fireFunctionalEvent, configureTestingModule, initTest} from "../../src/test_helpers/utils";
 
 describe('Image component', () => {

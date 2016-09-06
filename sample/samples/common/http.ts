@@ -2,7 +2,8 @@ import {Component, ViewChild} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 
-import {TextInput} from 'angular2-react-native';
+import {TextInput as TextInputAndroid} from 'angular2-react-native/android';
+import {TextInput as TextInputIOS} from 'angular2-react-native/ios';
 
 @Component({
   selector: 'http-app',
@@ -13,7 +14,8 @@ import {TextInput} from 'angular2-react-native';
 `
 })
 export class HttpApp {
-  @ViewChild(TextInput) textInput: TextInput;
+  @ViewChild(TextInputAndroid) textInputAndroid: TextInputAndroid;
+  @ViewChild(TextInputIOS) textInputIOS: TextInputIOS;
   pages: Array<any> = [];
   constructor(private http: Http) {}
 
@@ -28,7 +30,8 @@ export class HttpApp {
             this.pages.push(raw[key].title);
           }
         });
-      this.textInput.blurTextInput();
+      if (this.textInputAndroid) this.textInputAndroid.blurTextInput();
+      if (this.textInputIOS) this.textInputIOS.blurTextInput();
     }
 
   }

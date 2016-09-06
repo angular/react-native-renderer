@@ -1,6 +1,6 @@
 import {Component, ViewChild} from "@angular/core";
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
-import {Text} from "./../../src/components/text";
+import {Text} from "../../src/components/common/text";
 import {configureTestingModule, initTest} from "../../src/test_helpers/utils";
 
 describe('Text component', () => {

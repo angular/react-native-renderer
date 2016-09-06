@@ -1,6 +1,6 @@
 import {Component, ViewChild} from "@angular/core";
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
-import {Switch} from "./../../src/components/switch";
+import {Switch} from "../../src/components/common/switch";
 import {fireFunctionalEvent, configureTestingModule, initTest} from "../../src/test_helpers/utils";
 
 describe('Switch component', () => {

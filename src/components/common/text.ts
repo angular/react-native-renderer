@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {isAndroid} from "./../wrapper/wrapper";
+import {isAndroid} from "../../wrapper/wrapper";
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
 var ANDROID_INPUTS: Array<string> = ['selectable'];

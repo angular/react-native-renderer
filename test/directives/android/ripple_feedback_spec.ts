@@ -1,6 +1,6 @@
 import {Component, ViewChild} from "@angular/core";
 import {MockReactNativeWrapper} from "./../../../src/wrapper/wrapper_mock";
-import {View} from "./../../../src/components/view";
+import {View} from "../../../src/components/common/view";
 import {fireEvent, configureTestingModule, initTest} from "../../../src/test_helpers/utils";
 
 describe('Ripple feedback', () => {

@@ -1,6 +1,6 @@
 import {Component, ViewChild} from "@angular/core";
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
-import {TextInput} from "./../../src/components/textinput";
+import {TextInput} from "../../src/components/common/textinput";
 import {fireFunctionalEvent, configureTestingModule, initTest} from "../../src/test_helpers/utils";
 
 describe('TextInput component', () => {
