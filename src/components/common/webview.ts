@@ -58,11 +58,11 @@ export class WebView extends HighLevelComponent{
   @Output() loadingError: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _automaticallyAdjustContentInsets: boolean;
-  private _contentInset: any;
-  private _injectedJavaScript: string;
-  private _scalesPageToFit: boolean;
-  private _source: any;
+  public _automaticallyAdjustContentInsets: boolean;
+  public _contentInset: any;
+  public _injectedJavaScript: string;
+  public _scalesPageToFit: boolean;
+  public _source: any;
   /**
    * To be documented
    */
@@ -84,8 +84,8 @@ export class WebView extends HighLevelComponent{
    */
   set source(value: any) {this._source = this.resolveAssetSource(value);}
 
-  private _domStorageEnabled: boolean;
-  private _javaScriptEnabled: boolean;
+  public _domStorageEnabled: boolean;
+  public _javaScriptEnabled: boolean;
   /**
    * To be documented
    * @platform android
@@ -97,10 +97,10 @@ export class WebView extends HighLevelComponent{
    */
   set javaScriptEnabled(value: any) { this._javaScriptEnabled = this.processBoolean(value); }
 
-  private _allowsInlineMediaPlayback: boolean;
-  private _scrollEnabled: boolean;
-  private _decelerationRate: number;
-  private _bounces: boolean;
+  public _allowsInlineMediaPlayback: boolean;
+  public _scrollEnabled: boolean;
+  public _decelerationRate: number;
+  public _bounces: boolean;
   /**
    * To be documented
    * @platform ios

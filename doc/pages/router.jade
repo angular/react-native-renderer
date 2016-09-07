@@ -8,7 +8,8 @@ block content
         # Router
 
         The rooter module of Angular 2 can be used as is in applications.
-        The only thing to be done is to import `ReactNativeRouterModule` in the main module of the application (see below), and use the static `forRoot` method to configure routes.
+        The only thing to be done is to import `ReactNativeRouterModule` in the main module of the application (see below),
+        and use the static `RouterModule.forRoot` method to configure routes.
 
         It uses a mock of `LocationStrategy`. Manipulating the location triggers a navigation of the router.
 
@@ -19,9 +20,12 @@ block content
           { path: 'b', component: CompB }
         ];
 
+        export const providers: Provider[] = RouterModule.forRoot(appRoutes)['providers'];
+
         @NgModule({
           declarations: [Example, CompA, CompB, ...],
-          imports: [ReactNativeAndroidModule, CommonModule, ReactNativeRouterModule.forRoot(appRoutes)],
+          imports: [ReactNativeAndroidModule, CommonModule, ReactNativeRouterModule],
+          providers: [providers, {provide: LocationStrategy, useClass: ReactNativeLocationStrategy}],
           bootstrap: [Example]
         })
         export class MyAppModule {}

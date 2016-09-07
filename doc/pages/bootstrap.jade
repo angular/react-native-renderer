@@ -6,14 +6,30 @@ block content
 
     :marked
         # bootstrap
-        To bootstrap an application, you must use the special method `bootstrapReactNative`.
+
+        ## JIT compilation
+
+        To bootstrap an application with JIT compilation, you must use the special methods `bootstrapReactNativeJIT`.
 
         ```
-        import {bootstrapReactNative} from 'angular2-react-native';
+        import {bootstrapReactNativeJIT} from 'angular2-react-native/jit';
         import {MyAppModule} from "./app/module";
 
-        bootstrapReactNative('myApp', MyAppModule);
+        bootstrapReactNativeJIT('myApp', MyAppModule);
         ```
+
+        ## AOT compilation
+
+        To bootstrap an application with AOT compilation, you must use the special methods `bootstrapReactNativeAOT`.
+
+        ```
+        import {bootstrapReactNativeAOT} from 'angular2-react-native/aot';
+        import {MyAppModuleNgFactory} from "./app/module.ngfactory";
+
+        bootstrapReactNativeAOT('myApp', MyAppModule);
+        ```
+
+        ## Main module
 
         The main module must import `ReactNativeAndroidModule` or `ReactNativeiOSModule` depending on the platform targetted:
          ```

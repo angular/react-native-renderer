@@ -55,9 +55,9 @@ export class PagerLayout extends HighLevelComponent implements OnInit {
   @Output() pageSelected: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _initialPage: number;
-  private _keyboardDismissMode: string;
-  private _scrollEnabled: boolean;
+  public _initialPage: number;
+  public _keyboardDismissMode: string;
+  public _scrollEnabled: boolean;
   /**
    * To be documented
    */

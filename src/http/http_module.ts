@@ -9,10 +9,14 @@ import {
 } from "@angular/http";
 import {ReactNativeXHRBackend} from "./xhr_backend";
 
-const HTTP_PROVIDERS: any[] = [
+export function httpFactory(xhrBackend: ReactNativeXHRBackend, requestOptions: RequestOptions) {
+  return new Http(xhrBackend, requestOptions);
+}
+
+export const HTTP_PROVIDERS: any[] = [
   {
     provide: Http,
-    useFactory: (xhrBackend: ReactNativeXHRBackend, requestOptions: RequestOptions) => new Http(xhrBackend, requestOptions),
+    useFactory: httpFactory,
     deps: [ReactNativeXHRBackend, RequestOptions]
   },
   BrowserXhr,

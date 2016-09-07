@@ -32,12 +32,12 @@ export class ProgressView extends HighLevelComponent {
   }
 
   //Properties
-  private _progress: number;
-  private _progressImage: any;
-  private _progressTintColor: number;
-  private _progressViewStyle: string;
-  private _trackImage: any;
-  private _trackTintColor: number;
+  public _progress: number;
+  public _progressImage: any;
+  public _progressTintColor: number;
+  public _progressViewStyle: string;
+  public _trackImage: any;
+  public _trackTintColor: number;
   /**
    * To be documented
    */

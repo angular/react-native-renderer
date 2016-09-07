@@ -44,8 +44,8 @@ export class Switch extends HighLevelComponent {
   @Output() change: EventEmitter<boolean> = new EventEmitter();
 
   //Properties
-  private _on: boolean = false;
-  private _enabled: boolean = true;
+  public _on: boolean = false;
+  public _enabled: boolean = true;
   /**
    * To be documented
    */
@@ -55,9 +55,9 @@ export class Switch extends HighLevelComponent {
    */
   set enabled(value: any) { this._enabled = this.processBoolean(value);}
 
-  private _onTintColor: number;
-  private _thumbTintColor: number;
-  private _tintColor: number;
+  public _onTintColor: number;
+  public _thumbTintColor: number;
+  public _tintColor: number;
   /**
    * To be documented
    * @platform ios

@@ -39,10 +39,10 @@ export class TabBar extends HighLevelComponent {
   }
 
   //Properties
-  private _barTintColor: number;
-  private _itemPositioning: string;
-  private _tintColor: number;
-  private _translucent: boolean;
+  public _barTintColor: number;
+  public _itemPositioning: string;
+  public _tintColor: number;
+  public _translucent: boolean;
   /**
    * To be documented
    */

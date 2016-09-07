@@ -38,11 +38,11 @@ export class SegmentedControl extends HighLevelComponent {
   @Output() change: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _enabled: boolean;
-  private _momentary: any;
-  private _selectedIndex: number;
-  private _tintColor: number;
-  private _values: Array<string>;
+  public _enabled: boolean;
+  public _momentary: any;
+  public _selectedIndex: number;
+  public _tintColor: number;
+  public _values: Array<string>;
   /**
    * To be documented
    */

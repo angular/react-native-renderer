@@ -1,4 +1,4 @@
-import {bootstrapReactNative} from 'angular2-react-native';
+import {bootstrapReactNativeJIT} from 'angular2-react-native/jit';
 import {KitchenSinkModule} from "./samples/ios/module";
 
-bootstrapReactNative('ngReactNative', KitchenSinkModule);
+bootstrapReactNativeJIT('ngReactNative', KitchenSinkModule);

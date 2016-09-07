@@ -41,16 +41,16 @@ export class NavigatorItem extends HighLevelComponent implements AfterViewInit {
   @Input() barTintColor: number;
   @Input() tintColor: number;
   @Input() titleTextColor: number;
-  private _activatedRoute: ActivatedRoute;
-  private _title: string;
-  private _titleImage: any;
-  private _backButtonTitle: string;
-  private _leftButtonTitle: string;
-  private _rightButtonTitle: string;
-  private _backButtonIcon: any;
-  private _leftButtonIcon: any;
-  private _rightButtonIcon: any;
-  private _wrapperStyle: any;
+  public _activatedRoute: ActivatedRoute;
+  public _title: string;
+  public _titleImage: any;
+  public _backButtonTitle: string;
+  public _leftButtonTitle: string;
+  public _rightButtonTitle: string;
+  public _backButtonIcon: any;
+  public _leftButtonIcon: any;
+  public _rightButtonIcon: any;
+  public _wrapperStyle: any;
 
   //Events
   @Output() leftButtonPress: EventEmitter<ActivatedRoute> = new EventEmitter();
@@ -178,14 +178,14 @@ export class AppModule {}
 })
 export class Navigator extends HighLevelComponent implements OnDestroy {
   private _requestedTopOfStack: number ;
-  private _stack: Array<ActivatedRoute> = [];
+  public _stack: Array<ActivatedRoute> = [];
   private _loadedComponents: Array<any> = [];
-  private _wrapper: ReactNativeWrapper;
+  private __wrapper: ReactNativeWrapper;
 
   constructor(private router: Router, private zone: NgZone, private locationStrategy: LocationStrategy, private elementRef: ElementRef,
               private parentOutletMap: RouterOutletMap, @Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
     super(wrapper);
-    this._wrapper = wrapper;
+    this.__wrapper = wrapper;
     parentOutletMap.registerOutlet(PRIMARY_OUTLET, <any>this);
     this.setDefaultStyle({flex: 1});
   }
@@ -198,7 +198,7 @@ export class Navigator extends HighLevelComponent implements OnDestroy {
     } else {
       var navigator: Node = this.elementRef.nativeElement.children[1];
       setTimeout(()=> {
-        this._wrapper.requestNavigatorLock(navigator.nativeTag, (lockAcquired) => this._handleNavigation(lockAcquired, navigator, activatedRoute));
+        this.__wrapper.requestNavigatorLock(navigator.nativeTag, (lockAcquired) => this._handleNavigation(lockAcquired, navigator, activatedRoute));
       }, 0)
     }
   }
@@ -242,14 +242,14 @@ export class Navigator extends HighLevelComponent implements OnDestroy {
   @Output() rightButtonPress: EventEmitter<ActivatedRoute> = new EventEmitter();
 
   //Properties
-  private _barTintColor: number;
-  private _interactivePopGestureEnabled: boolean;
-  private _itemWrapperStyle: any;
-  private _navigationBarHidden: boolean;
-  private _shadowHidden: boolean;
-  private _tintColor: number;
-  private _titleTextColor: number;
-  private _translucent: boolean;
+  public _barTintColor: number;
+  public _interactivePopGestureEnabled: boolean;
+  public _itemWrapperStyle: any;
+  public _navigationBarHidden: boolean;
+  public _shadowHidden: boolean;
+  public _tintColor: number;
+  public _titleTextColor: number;
+  public _translucent: boolean;
   /**
    * To be documented
    */

@@ -37,12 +37,12 @@ export class TabBarItem extends HighLevelComponent {
   @Output() select: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _badge: number|string;
-  private _icon: any;
-  private _selected: boolean;
-  private _selectedIcon: any;
-  private _systemIcon: string;
-  private _title: string;
+  public _badge: number|string;
+  public _icon: any;
+  public _selected: boolean;
+  public _selectedIcon: any;
+  public _systemIcon: string;
+  public _title: string;
   /**
    * To be documented
    */

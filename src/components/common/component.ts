@@ -30,9 +30,9 @@ export abstract class HighLevelComponent {
   }
 
   //Style
-  private _defaultStyle: {[s: string]: any } = {};
-  private _styleSheet: Array<number | boolean | {[s: string]: any }>;
-  private _style: {[s: string]: any };
+  public _defaultStyle: {[s: string]: any } = {};
+  public _styleSheet: Array<number | boolean | {[s: string]: any }>;
+  public _style: {[s: string]: any };
   /**
    * To be documented
    */
@@ -43,12 +43,12 @@ export abstract class HighLevelComponent {
   set style(value: {[s: string]: any }) {this._style = value;}
 
   //Both platforms
-  private _accessible: boolean;
-  private _accessibilityLabel: string;
-  private _testID: string;
-  private _pointerEvents: string;
-  private _removeClippedSubviews: boolean;
-  private _onLayout: boolean;
+  public _accessible: boolean;
+  public _accessibilityLabel: string;
+  public _testID: string;
+  public _pointerEvents: string;
+  public _removeClippedSubviews: boolean;
+  public _onLayout: boolean;
   /**
    * To be documented
    */
@@ -75,13 +75,13 @@ export abstract class HighLevelComponent {
   set onLayout(value: any) { this._onLayout = this.processBoolean(value);}
 
   //Android specific
-  private _collapsable: boolean;
-  private _accessibilityLiveRegion: string;
-  private _accessibilityComponentType: string;
-  private _importantForAccessibility: string;
-  private _needsOffscreenAlphaCompositing: boolean;
-  private _renderToHardwareTextureAndroid: boolean;
-  private _nativeBackgroundAndroid: any;
+  public _collapsable: boolean;
+  public _accessibilityLiveRegion: string;
+  public _accessibilityComponentType: string;
+  public _importantForAccessibility: string;
+  public _needsOffscreenAlphaCompositing: boolean;
+  public _renderToHardwareTextureAndroid: boolean;
+  public _nativeBackgroundAndroid: any;
   /**
    * To be documented
    * @platform android
@@ -119,8 +119,8 @@ export abstract class HighLevelComponent {
   set nativeBackgroundAndroid(value: any) {this._nativeBackgroundAndroid = value;}
 
   //iOS specific
-  private _accessibilityTraits: any;
-  private _shouldRasterizeIOS: boolean;
+  public _accessibilityTraits: any;
+  public _shouldRasterizeIOS: boolean;
   /**
    * To be documented
    * @platform ios

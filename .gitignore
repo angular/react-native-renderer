@@ -4,3 +4,5 @@ typings
 *.log
 .idea
 .DS_Store
+*.ngfactory.ts
+es6

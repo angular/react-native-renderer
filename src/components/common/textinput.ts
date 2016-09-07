@@ -89,9 +89,9 @@ export class TextInput extends HighLevelComponent implements OnInit {
 
   //Properties
   @Input() defaultValue: string;
-  private _autoFocus: boolean = false;
-  private _value: string = null;
-  private _nativeValue: string = null;
+  public _autoFocus: boolean = false;
+  public _value: string = null;
+  public _nativeValue: string = null;
   /**
    * To be documented
    */
@@ -104,19 +104,19 @@ export class TextInput extends HighLevelComponent implements OnInit {
     this._nativeValue = value;
   }
 
-  private _autoCapitalize : string;
-  private _autoCorrect: boolean;
-  private _blurOnSubmit: boolean;
-  private _editable: boolean;
-  private _keyboardType: string;
-  private _maxLength: number;
-  private _multiline: boolean;
-  private _placeholder: string;
-  private _placeholderTextColor: number;
-  private _returnKeyType: string;
-  private _secureTextEntry: boolean;
-  private _selectionColor: number;
-  private _selectTextOnFocus: boolean;
+  public _autoCapitalize : string;
+  public _autoCorrect: boolean;
+  public _blurOnSubmit: boolean;
+  public _editable: boolean;
+  public _keyboardType: string;
+  public _maxLength: number;
+  public _multiline: boolean;
+  public _placeholder: string;
+  public _placeholderTextColor: number;
+  public _returnKeyType: string;
+  public _secureTextEntry: boolean;
+  public _selectionColor: number;
+  public _selectTextOnFocus: boolean;
   /**
    * To be documented
    */
@@ -176,9 +176,9 @@ export class TextInput extends HighLevelComponent implements OnInit {
    */
   set selectTextOnFocus(value: any) {this._selectTextOnFocus = this.processBoolean(value);}
 
-  private _numberOfLines: number;
-  private _returnKeyLabel: string;
-  private _underlineColorAndroid: number;
+  public _numberOfLines: number;
+  public _returnKeyLabel: string;
+  public _underlineColorAndroid: number;
   /**
    * To be documented
    * @platform android
@@ -195,11 +195,11 @@ export class TextInput extends HighLevelComponent implements OnInit {
    */
   set underlineColorAndroid(value: string) {this._underlineColorAndroid = this.processColor(value);}
 
-  private _clearButtonMode: boolean;
-  private _clearTextOnFocus: boolean;
-  private _dataDetectorTypes: string;
-  private _enablesReturnKeyAutomatically: boolean;
-  private _keyboardAppearance: string;
+  public _clearButtonMode: boolean;
+  public _clearTextOnFocus: boolean;
+  public _dataDetectorTypes: string;
+  public _enablesReturnKeyAutomatically: boolean;
+  public _keyboardAppearance: string;
   /**
    * To be documented
    * @platform ios

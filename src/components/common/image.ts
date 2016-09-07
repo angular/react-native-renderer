@@ -54,8 +54,8 @@ export class Image extends HighLevelComponent {
   @Output() loadEnd: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _resizeMode: string;
-  private _source: any;
+  public _resizeMode: string;
+  public _source: any;
   /**
    * To be documented
    */
@@ -66,10 +66,10 @@ export class Image extends HighLevelComponent {
    */
   set source(value: string) {this._source = this.resolveAssetSource(value);}
 
-  private _fadeDuration: number;
-  private _loadingIndicatorSrc: any;
-  private _progressiveRenderingEnabled: boolean;
-  private _shouldNotifyLoadEvents: boolean;
+  public _fadeDuration: number;
+  public _loadingIndicatorSrc: any;
+  public _progressiveRenderingEnabled: boolean;
+  public _shouldNotifyLoadEvents: boolean;
   /**
    * To be documented
    * @platform android
@@ -91,9 +91,9 @@ export class Image extends HighLevelComponent {
    */
   set shouldNotifyLoadEvents(value: any) {this._shouldNotifyLoadEvents = this.processBoolean(value);}
 
-  private _blurRadius: number;
-  private _capInsets: any;
-  private _defaultSource: string;
+  public _blurRadius: number;
+  public _capInsets: any;
+  public _defaultSource: string;
   /**
    * To be documented
    * @platform ios
