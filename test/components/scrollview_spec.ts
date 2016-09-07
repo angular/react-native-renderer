@@ -1,7 +1,7 @@
 import {Component, ViewChild} from "@angular/core";
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
 import {fireFunctionalEvent, configureTestingModule, initTest} from "../../src/test_helpers/utils";
-import {ScrollView} from "../../src/components/scrollview";
+import {ScrollView} from "../../src/components/common/scrollview";
 
 describe('ScrollView component', () => {
   const mock: MockReactNativeWrapper = new MockReactNativeWrapper();

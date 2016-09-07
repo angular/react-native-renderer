@@ -15,11 +15,11 @@ block content
         bootstrapReactNative('myApp', MyAppModule);
         ```
 
-        The main module must import the `ReactNativeModule`:
+        The main module must import `ReactNativeAndroidModule` or `ReactNativeiOSModule` depending on the platform targetted:
          ```
          @NgModule({
            declarations: [...],
-           imports: [ReactNativeModule, CommonModule],
+           imports: [ReactNativeAndroidModule, CommonModule],
            bootstrap: [...]
          })
          export class MyAppModule {}

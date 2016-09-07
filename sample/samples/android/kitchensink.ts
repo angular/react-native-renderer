@@ -2,7 +2,7 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {LocationStrategy} from '@angular/common';
 import {StyleSheet, BackAndroid, Alert, NativeModules, processColor} from 'react-native';
-import {DrawerLayout, Toolbar} from 'angular2-react-native';
+import {DrawerLayout, Toolbar} from 'angular2-react-native/android';
 
 import {TodoMVC} from "./../common/todomvc";
 

@@ -1,7 +1,7 @@
 import {Component, Inject, Output, EventEmitter} from "@angular/core";
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
-import {REACT_NATIVE_WRAPPER} from "./../renderer/renderer";
-import {ReactNativeWrapper, isAndroid} from "../wrapper/wrapper";
+import {REACT_NATIVE_WRAPPER} from "../../renderer/renderer";
+import {ReactNativeWrapper, isAndroid} from "../../wrapper/wrapper";
 
 var ANDROID_INPUTS: Array<string> = ['fadeDuration', 'loadingIndicatorSrc', 'progressiveRenderingEnabled', 'shouldNotifyLoadEvents'];
 var IOS_INPUTS: Array<string> = ['blurRadius', 'capInsets', 'defaultSource'];

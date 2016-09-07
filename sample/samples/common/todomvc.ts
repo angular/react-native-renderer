@@ -1,6 +1,7 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {StyleSheet, AsyncStorage} from 'react-native';
-import {TextInput} from 'angular2-react-native';
+import {TextInput as TextInputAndroid} from 'angular2-react-native/android';
+import {TextInput as TextInputIOS} from 'angular2-react-native/ios';
 
 class Palette {
   static background: string = '#005eb8';
@@ -31,7 +32,8 @@ class Todo {
 `
 })
 export class TodoItem {
-  @ViewChild(TextInput) textInput: TextInput;
+  @ViewChild(TextInputAndroid) textInputAndroid: TextInputAndroid;
+  @ViewChild(TextInputIOS) textInputIOS: TextInputIOS;
   styles: any;
   @Input() item: Todo;
   @Output() toggled: EventEmitter<number> = new EventEmitter();
@@ -55,7 +57,8 @@ export class TodoItem {
   }
 
   stopEdit(text: string) {
-    this.textInput.blurTextInput();
+    if (this.textInputAndroid) this.textInputAndroid.blurTextInput();
+    if (this.textInputIOS) this.textInputIOS.blurTextInput();
     if (text && text.length > 0) {
       this.item.value = text;
     }
@@ -147,7 +150,8 @@ export class TodoItem {
 `
 })
 export class TodoMVC {
-  @ViewChild(TextInput) textInput: TextInput;
+  @ViewChild(TextInputAndroid) textInputAndroid: TextInputAndroid;
+  @ViewChild(TextInputIOS) textInputIOS: TextInputIOS;
   styles: any;
   todos: Array<Todo> = [];
   filteredTodos: Array<Todo> = [];
@@ -165,8 +169,14 @@ export class TodoMVC {
       this.leftCount++;
     }
     this.filterTodos();
-    this.textInput.value = '';
-    this.textInput.blurTextInput();
+    if (this.textInputAndroid) {
+      this.textInputAndroid.value = '';
+      this.textInputAndroid.blurTextInput();
+    }
+    if (this.textInputIOS) {
+      this.textInputIOS.value = '';
+      this.textInputIOS.blurTextInput();
+    }
   }
 
   deleteTodo(todo: Todo) {

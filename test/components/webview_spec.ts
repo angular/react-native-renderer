@@ -1,6 +1,6 @@
 import {Component, ViewChild} from "@angular/core";
 import {MockReactNativeWrapper} from "./../../src/wrapper/wrapper_mock";
-import {WebView} from "./../../src/components/webview";
+import {WebView} from "../../src/components/common/webview";
 import {fireFunctionalEvent, configureTestingModule, initTest} from "../../src/test_helpers/utils";
 
 describe('WebView component', () => {

@@ -137,7 +137,9 @@ function getFiles(dir, files_){
     if (fs.statSync(name).isDirectory()){
       getFiles(name, files_);
     } else {
-      files_.push(name);
+      if (name.indexOf('/_') == -1 && name.indexOf('module') == -1) {
+        files_.push(name);
+      }
     }
   }
   return files_;

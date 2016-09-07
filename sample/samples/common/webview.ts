@@ -1,6 +1,7 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {StyleSheet} from 'react-native';
-import {WebView} from 'angular2-react-native';
+import {WebView as WebViewAndroid} from 'angular2-react-native/android';
+import {WebView as WebViewIOS} from 'angular2-react-native/ios';
 
 @Component({
   selector: 'webview-app',
@@ -19,7 +20,8 @@ import {WebView} from 'angular2-react-native';
 `
 })
 export class WebViewApp {
-  @ViewChild(WebView) webView: WebView;
+  @ViewChild(WebViewAndroid) webViewAndroid: WebViewAndroid;
+  @ViewChild(WebViewIOS) webViewIOS: WebViewIOS;
   styles: any;
   _el : any = null;
   constructor(el: ElementRef) {
@@ -40,11 +42,13 @@ export class WebViewApp {
   }
 
   goBack() {
-    this.webView.goBack();
+    if (this.webViewAndroid) this.webViewAndroid.goBack();
+    if (this.webViewIOS) this.webViewIOS.goBack();
   }
 
   goForward() {
-    this.webView.goForward();
+    if (this.webViewAndroid) this.webViewAndroid.goForward();
+    if (this.webViewIOS) this.webViewIOS.goForward();
   }
 }
 

@@ -13,14 +13,21 @@ import {
 import {ReactNativeLocationStrategy} from "../router/location_strategy";
 import {ReactNativeWrapper} from "../wrapper/wrapper";
 import {Node} from "../renderer/node";
-import {ReactNativeModule} from "../module";
+import {ReactNativeAndroidModule} from "../modules/android_module";
+import {DatePicker} from "./../components/ios/date_picker";
+import {MapView} from "./../components/ios/map_view";
+import {Navigator, NavigatorItem} from "./../components/ios/navigator";
+import {ProgressView} from "./../components/ios/progress_view";
+import {SegmentedControl} from "./../components/ios/segmented_control";
+import {TabBar} from "./../components/ios/tabbar";
+import {TabBarItem} from "./../components/ios/tabbar_item";
 
 export function configureTestingModule(mock: ReactNativeWrapper, testCpt: any, declarations: Array<any> = [], modules: Array<any> = []): typeof TestBed {
   const tb = TestBed.configureTestingModule({
-    imports: [ReactNativeModule].concat(modules),
+    imports: [ReactNativeAndroidModule].concat(modules),
     providers: getTestingProviders(mock, testCpt),
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [testCpt].concat(declarations)
+    declarations: [DatePicker, MapView, Navigator, NavigatorItem, ProgressView, SegmentedControl, TabBar, TabBarItem, testCpt].concat(declarations)
   });
   //
   return tb;

@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Routes} from '@angular/router';
-import {ReactNativeModule, ReactNativeRouterModule, ReactNativeHttpModule} from 'angular2-react-native';
+import {ReactNativeAndroidModule, ReactNativeRouterModule, ReactNativeHttpModule} from 'angular2-react-native';
 import {KitchenSinkApp}   from './kitchensink';
 
 import {HelloApp} from "./hello";
@@ -26,7 +26,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [KitchenSinkApp, HelloApp, TodoMVC, TodoItem, GesturesApp, WidgetsList, WebViewApp, APIsList, HttpApp, AnimationApp, Ball],
-  imports: [ReactNativeModule, ReactNativeHttpModule, CommonModule, ReactNativeRouterModule.forRoot(appRoutes)],
+  imports: [ReactNativeAndroidModule, ReactNativeHttpModule, CommonModule, ReactNativeRouterModule.forRoot(appRoutes)],
   bootstrap: [KitchenSinkApp]
 })
 export class KitchenSinkModule {}

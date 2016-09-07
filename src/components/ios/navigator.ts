@@ -14,7 +14,7 @@ import {
 } from "@angular/core";
 import {LocationStrategy} from "@angular/common";
 import {Router, ActivatedRoute, RouterOutletMap, PRIMARY_OUTLET} from "@angular/router";
-import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./../component";
+import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "../common/component";
 import {REACT_NATIVE_WRAPPER} from "./../../renderer/renderer";
 import {ReactNativeWrapper} from "../../wrapper/wrapper";
 import {Node} from "../../renderer/node";
