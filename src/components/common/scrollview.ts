@@ -41,7 +41,7 @@ export class Sample {}
 @Component({
   selector: 'ScrollView',
   inputs: [
-    'contentContainerStyle', 'horizontal', 'keyboardDismissMode', 'keyboardShouldPersistTaps', 'pagingEnabled', 'removeClippedSubviews', 'scrollEnabled',
+    'contentContainerStyle', 'horizontal', 'keyboardDismissMode', 'keyboardShouldPersistTaps', 'pagingEnabled', 'scrollEnabled',
     'sendMomentumEvents', 'showsHorizontalScrollIndicator', 'showsVerticalScrollIndicator'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `
@@ -52,7 +52,7 @@ export class Sample {}
   (topMomentumScrollBegin)="_handleMomentumScrollBegin($event)" (topMomentumScrollEnd)="_handleMomentumScrollEnd($event)"
   [flexDirection]="_horizontal ? 'row' : 'column'"
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}>
-  ${!isAndroid() ? '<ng-content select="RefreshControl"></ng-content>' : ''}
+  ${isAndroid() ? '' : '<ng-content select="RefreshControl"></ng-content>'}
   <native-view [removeClippedSubviews]="_removeClippedSubviews" [style]="_contentContainerStyle" collapsable="false"
     [flexDirection]="_horizontal ? 'row' : null">
   <ng-content></ng-content></native-view>
@@ -88,16 +88,15 @@ export class ScrollView extends HighLevelComponent{
   @Output() momentumScrollEnd: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _contentContainerStyle: any;
-  private _horizontal: boolean;
-  private _keyboardDismissMode: string;
-  private _keyboardShouldPersistTaps: boolean;
-  private _pagingEnabled: boolean;
-  private _removeClippedSubviews: boolean;
-  private _scrollEnabled: boolean;
-  private _sendMomentumEvents: boolean;
-  private _showsHorizontalScrollIndicator: boolean;
-  private _showsVerticalScrollIndicator: boolean;
+  public _contentContainerStyle: any;
+  public _horizontal: boolean;
+  public _keyboardDismissMode: string;
+  public _keyboardShouldPersistTaps: boolean;
+  public _pagingEnabled: boolean;
+  public _scrollEnabled: boolean;
+  public _sendMomentumEvents: boolean;
+  public _showsHorizontalScrollIndicator: boolean;
+  public _showsVerticalScrollIndicator: boolean;
   /**
    * To be documented
    */
@@ -121,10 +120,6 @@ export class ScrollView extends HighLevelComponent{
   /**
    * To be documented
    */
-  set removeClippedSubviews(value: any) {this._removeClippedSubviews = this.processBoolean(value);}
-  /**
-   * To be documented
-   */
   set scrollEnabled(value: any) {this._scrollEnabled = this.processBoolean(value);}
   /**
    * To be documented
@@ -139,7 +134,7 @@ export class ScrollView extends HighLevelComponent{
    */
   set showsVerticalScrollIndicator(value: any) {this._showsVerticalScrollIndicator = this.processBoolean(value);}
 
-  private _endFillColor: number;
+  public _endFillColor: number;
   /**
    * To be documented
    * @platform android
@@ -147,27 +142,27 @@ export class ScrollView extends HighLevelComponent{
   set endFillColor(value: string){this._endFillColor = this.processColor(value);}
 
 
-  private _alwaysBounceHorizontal: boolean;
-  private _alwaysBounceVertical: boolean;
-  private _automaticallyAdjustContentInsets: boolean;
-  private _bounces: boolean;
-  private _bouncesZoom: boolean;
-  private _canCancelContentTouches: boolean;
-  private _centerContent: boolean;
-  private _contentInset: any; //{0, 0, 0, 0}
-  private _contentOffset: any; //{x: 0, y: 0}
-  private _decelerationRate: number;
-  private _directionalLockEnabled: boolean;
-  private _indicatorStyle: string;
-  private _maximumZoomScale: number;
-  private _minimumZoomScale: number;
-  private _scrollEventThrottle: number;
-  private _scrollIndicatorInsets: any; //{0, 0, 0, 0}
-  private _scrollsToTop: boolean;
-  private _snapToAlignment: string;
-  private _snapToInterval: number;
-  private _stickyHeaderIndices: Array<number>;
-  private _zoomScale: number;
+  public _alwaysBounceHorizontal: boolean;
+  public _alwaysBounceVertical: boolean;
+  public _automaticallyAdjustContentInsets: boolean;
+  public _bounces: boolean;
+  public _bouncesZoom: boolean;
+  public _canCancelContentTouches: boolean;
+  public _centerContent: boolean;
+  public _contentInset: any; //{0, 0, 0, 0}
+  public _contentOffset: any; //{x: 0, y: 0}
+  public _decelerationRate: number;
+  public _directionalLockEnabled: boolean;
+  public _indicatorStyle: string;
+  public _maximumZoomScale: number;
+  public _minimumZoomScale: number;
+  public _scrollEventThrottle: number;
+  public _scrollIndicatorInsets: any; //{0, 0, 0, 0}
+  public _scrollsToTop: boolean;
+  public _snapToAlignment: string;
+  public _snapToInterval: number;
+  public _stickyHeaderIndices: Array<number>;
+  public _zoomScale: number;
   /**
    * To be documented
    * @platform ios

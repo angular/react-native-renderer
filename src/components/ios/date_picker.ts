@@ -38,12 +38,12 @@ export class DatePicker extends HighLevelComponent {
   @Output() change: EventEmitter<Date> = new EventEmitter();
 
   //Properties
-  private _date: number;
-  private _maximumDate: number;
-  private _minimumDate: number;
-  private _minuteInterval: number;
-  private _mode: string;
-  private _timeZoneOffsetInMinutes: number;
+  public _date: number;
+  public _maximumDate: number;
+  public _minimumDate: number;
+  public _minuteInterval: number;
+  public _mode: string;
+  public _timeZoneOffsetInMinutes: number;
   /**
    * To be documented
    */

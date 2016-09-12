@@ -45,17 +45,17 @@ export class RefreshControl extends HighLevelComponent {
   @Output() refresh: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _refreshing: boolean;
+  public _refreshing: boolean;
   /**
    * To be documented
    */
   set refreshing(value: string) {this._refreshing = this.processBoolean(value);}
 
-  private _colors: Array<number>;
-  private _enabled: boolean;
-  private _progressBackgroundColor: number;
-  private _progressViewOffset: number;
-  private _size: number;
+  public _colors: Array<number>;
+  public _enabled: boolean;
+  public _progressBackgroundColor: number;
+  public _progressViewOffset: number;
+  public _size: number;
   /**
    * To be documented
    * @platform android
@@ -92,8 +92,8 @@ export class RefreshControl extends HighLevelComponent {
       this.getUIManager().AndroidSwipeRefreshLayout.Constants.SIZE.LARGE;
   }
 
-  private _tintColor: number;
-  private _title: string;
+  public _tintColor: number;
+  public _title: string;
   /**
    * To be documented
    * @platform ios

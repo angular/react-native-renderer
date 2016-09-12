@@ -4,7 +4,7 @@ import {LocationStrategy} from '@angular/common';
 import {StyleSheet, BackAndroid, Alert, NativeModules, processColor} from 'react-native';
 import {DrawerLayout, Toolbar} from 'angular2-react-native/android';
 
-import {TodoMVC} from "./../common/todomvc";
+import {TodoMVC} from "./todomvc";
 
 @Component({
   selector: 'kitchensink-app',

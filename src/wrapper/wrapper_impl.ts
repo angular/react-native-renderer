@@ -1,3 +1,5 @@
+declare var require: any;
+
 //ReactNative
 import {ReactNativeWrapper, overridePlatform} from "./wrapper";
 import {NgZone} from "@angular/core";

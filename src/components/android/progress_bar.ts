@@ -19,7 +19,7 @@ export class Sample {}
 @Component({
   selector: 'ProgressBar',
   inputs: [
-    'color', 'indeterminate', 'progress', 'styleAttr',
+    'color', 'indeterminate', 'progress', 'styleAttr'
   ].concat(GENERIC_INPUTS),
   template: `<native-progressbar [color]="_color" [indeterminate]="_indeterminate" [progress]="_progress" [styleAttr]="_styleAttr"
   ${GENERIC_BINDINGS}></native-progressbar>`
@@ -30,10 +30,10 @@ export class ProgressBar extends HighLevelComponent {
   }
 
   //Properties
-  private _color: number;
-  private _indeterminate: boolean;
-  private _progress: number;
-  private _styleAttr: string;
+  public _color: number;
+  public _indeterminate: boolean;
+  public _progress: number;
+  public _styleAttr: string;
   /**
    * To be documented
    */

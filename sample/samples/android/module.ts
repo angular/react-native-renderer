@@ -1,17 +1,17 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {Routes} from '@angular/router';
-import {ReactNativeAndroidModule, ReactNativeRouterModule, ReactNativeHttpModule} from 'angular2-react-native';
+import {NgModule, Provider} from '@angular/core';
+import {CommonModule, LocationStrategy} from '@angular/common';
+import {RouterModule, Routes} from '@angular/router';
+import {ReactNativeAndroidModule, ReactNativeRouterModule, ReactNativeHttpModule, ReactNativeLocationStrategy} from 'angular2-react-native';
 import {KitchenSinkApp}   from './kitchensink';
 
 import {HelloApp} from "./hello";
-import {TodoMVC, TodoItem} from '../common/todomvc';
-import {GesturesApp} from "./../common/gestures";
+import {TodoMVC, TodoItem} from './todomvc';
+import {GesturesApp} from "././gestures";
 import {WidgetsList} from "./widgets";
-import {WebViewApp} from './../common/webview';
+import {WebViewApp} from '././webview';
 import {APIsList} from "./apis";
-import {HttpApp} from "./../common/http";
-import {AnimationApp, Ball} from './../common/animation';
+import {HttpApp} from "./http";
+import {AnimationApp, Ball} from './animation';
 
 const appRoutes: Routes = [
   { path: '', component: HelloApp },
@@ -24,9 +24,12 @@ const appRoutes: Routes = [
   { path: 'animation', component: AnimationApp }
 ];
 
+export const providers: Provider[] = RouterModule.forRoot(appRoutes)['providers'];
+
 @NgModule({
-  declarations: [KitchenSinkApp, HelloApp, TodoMVC, TodoItem, GesturesApp, WidgetsList, WebViewApp, APIsList, HttpApp, AnimationApp, Ball],
-  imports: [ReactNativeAndroidModule, ReactNativeHttpModule, CommonModule, ReactNativeRouterModule.forRoot(appRoutes)],
+  declarations: [KitchenSinkApp, HelloApp, WidgetsList, APIsList, AnimationApp, Ball, GesturesApp, HttpApp, TodoMVC, TodoItem, WebViewApp],
+  imports: [ReactNativeAndroidModule, ReactNativeHttpModule, CommonModule, ReactNativeRouterModule],
+  providers: [providers, {provide: LocationStrategy, useClass: ReactNativeLocationStrategy}],
   bootstrap: [KitchenSinkApp]
 })
 export class KitchenSinkModule {}

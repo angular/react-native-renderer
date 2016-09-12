@@ -29,7 +29,7 @@ export class Sample {
 @Component({
   selector: 'Picker',
   inputs: [
-    'items', 'selectedValue',
+    'items', 'selectedValue'
   ].concat(GENERIC_INPUTS).concat(isAndroid() ? ANDROID_INPUTS : IOS_INPUTS),
   template: `
   <native-dialogpicker *ngIf="_mode == 'dialog'" [items]="_items"
@@ -50,8 +50,8 @@ export class Picker extends HighLevelComponent {
   @Output() select: EventEmitter<number> = new EventEmitter();
 
   //Properties
-  private _items: Array<any> = [];
-  private _selectedValue: any;
+  public _items: Array<any> = [];
+  public _selectedValue: any;
   /**
    * To be documented
    */
@@ -69,9 +69,9 @@ export class Picker extends HighLevelComponent {
     })
   }
 
-  private _enabled: boolean;
-  private _mode: string = 'dialog';
-  private _prompt: string;
+  public _enabled: boolean;
+  public _mode: string = 'dialog';
+  public _prompt: string;
   /**
    * To be documented
    * @platform android

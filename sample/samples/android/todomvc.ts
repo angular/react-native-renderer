@@ -1,7 +1,6 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {StyleSheet, AsyncStorage} from 'react-native';
-import {TextInput as TextInputAndroid} from 'angular2-react-native/android';
-import {TextInput as TextInputIOS} from 'angular2-react-native/ios';
+import {TextInput} from 'angular2-react-native/android';
 
 class Palette {
   static background: string = '#005eb8';
@@ -16,7 +15,7 @@ class Palette {
   static offText: string = '#005eb8';
 }
 
-class Todo {
+export class Todo {
   constructor(public value: string = "", public active: boolean = true, public edited: boolean = false) {}
 }
 
@@ -32,8 +31,7 @@ class Todo {
 `
 })
 export class TodoItem {
-  @ViewChild(TextInputAndroid) textInputAndroid: TextInputAndroid;
-  @ViewChild(TextInputIOS) textInputIOS: TextInputIOS;
+  @ViewChild(TextInput) textInput: TextInput;
   styles: any;
   @Input() item: Todo;
   @Output() toggled: EventEmitter<number> = new EventEmitter();
@@ -57,8 +55,7 @@ export class TodoItem {
   }
 
   stopEdit(text: string) {
-    if (this.textInputAndroid) this.textInputAndroid.blurTextInput();
-    if (this.textInputIOS) this.textInputIOS.blurTextInput();
+    this.textInput.blurTextInput();
     if (text && text.length > 0) {
       this.item.value = text;
     }
@@ -150,8 +147,7 @@ export class TodoItem {
 `
 })
 export class TodoMVC {
-  @ViewChild(TextInputAndroid) textInputAndroid: TextInputAndroid;
-  @ViewChild(TextInputIOS) textInputIOS: TextInputIOS;
+  @ViewChild(TextInput) textInput: TextInput;
   styles: any;
   todos: Array<Todo> = [];
   filteredTodos: Array<Todo> = [];
@@ -169,14 +165,8 @@ export class TodoMVC {
       this.leftCount++;
     }
     this.filterTodos();
-    if (this.textInputAndroid) {
-      this.textInputAndroid.value = '';
-      this.textInputAndroid.blurTextInput();
-    }
-    if (this.textInputIOS) {
-      this.textInputIOS.value = '';
-      this.textInputIOS.blurTextInput();
-    }
+    this.textInput.value = '';
+    this.textInput.blurTextInput();
   }
 
   deleteTodo(todo: Todo) {

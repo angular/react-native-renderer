@@ -1,3 +1,5 @@
+declare var require: any;
+
 //React Native wrapper
 import {ReactNativeWrapperImpl} from "./../wrapper/wrapper_impl";
 
@@ -12,14 +14,14 @@ Object.defineProperty(XMLHttpRequest.prototype, 'onreadystatechange', {
   set: onreadystatechangeSetter,
   configurable: true
 });
-import "zone.js/dist/zone.js";
+require("zone.js/dist/zone.js");
 Object.defineProperty(XMLHttpRequest.prototype, 'onreadystatechange', {
   get: onreadystatechangeGetter,
 });
 
 // Finally, define the bootstrap
 import {RootRenderer, NgZone, enableProdMode, NgModuleRef, Sanitizer, ErrorHandler} from "@angular/core";
-import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
+import { platformBrowser } from '@angular/platform-browser';
 import {ElementSchemaRegistry} from "@angular/compiler";
 import {
   ReactNativeRootRenderer,
@@ -29,10 +31,10 @@ import {
   REACT_NATIVE_WRAPPER
 } from "./renderer";
 
-export function bootstrapReactNative(appName:string, module: any, customProviders?: Array<any>) {
+export function bootstrapReactNativeAOT(appName:string, factory: any, customProviders?: Array<any>) {
   ReactNativeWrapperImpl.registerApp(appName, function() {
     enableProdMode();
-    platformBrowserDynamic([
+    platformBrowser([
       {provide: ErrorHandler, useFactory: errorHandler, deps: []},
       [ReactNativeWrapperImpl],
       {provide: REACT_NATIVE_WRAPPER, useExisting: ReactNativeWrapperImpl},
@@ -43,7 +45,7 @@ export function bootstrapReactNative(appName:string, module: any, customProvider
       {provide: ReactNativeRootRenderer, useClass: ReactNativeRootRenderer_},
       {provide: RootRenderer, useExisting: ReactNativeRootRenderer}
     ].concat(customProviders || [])).
-    bootstrapModule(module).
+    bootstrapModuleFactory(factory).
     then((ngModuleRef: NgModuleRef<any>) => {
       var zone: NgZone = ngModuleRef.injector.get(NgZone);
       var rootRenderer = ngModuleRef.injector.get(RootRenderer);

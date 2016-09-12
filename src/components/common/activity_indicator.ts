@@ -18,7 +18,7 @@ import {ReactNativeWrapper, isAndroid} from "../../wrapper/wrapper";
 @Component({
   selector: 'ActivityIndicator',
   inputs: [
-    'animating', 'color', 'hidesWhenStopped', 'size',
+    'animating', 'color', 'hidesWhenStopped', 'size'
   ].concat(GENERIC_INPUTS),
   template: `<native-activityindicator [animating]="_animating" [color]="_color" [hidesWhenStopped]="_hidesWhenStopped"
   [size]="_size" ${isAndroid() ? 'styleAttr="Normal" indeterminate="true"' : ''} 
@@ -31,10 +31,10 @@ export class ActivityIndicator extends HighLevelComponent {
   }
 
   //Properties
-  private _animating: boolean = true;
-  private _color: number;
-  private _hidesWhenStopped: boolean = true;
-  private _size: string | number;
+  public _animating: boolean = true;
+  public _color: number;
+  public _hidesWhenStopped: boolean = true;
+  public _size: string | number;
   /**
    * To be documented
    */

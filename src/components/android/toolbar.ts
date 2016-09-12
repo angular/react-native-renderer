@@ -41,17 +41,17 @@ export class Toolbar extends HighLevelComponent {
   @Output() select: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _actions: Array<any>; //[{title: string, icon: optionalImageSource, show: enum('always', 'ifRoom', 'never'), showWithText: bool}]
-  private _contentInsetStart: number;
-  private _contentInsetEnd: number;
-  private _logo: any;
-  private _navIcon: any;
-  private _overflowIcon: any;
-  private _rtl: boolean;
-  private _subtitle: string = null;
-  private _subtitleColor: number;
-  private _title: string;
-  private _titleColor: number;
+  public _actions: Array<any>; //[{title: string, icon: optionalImageSource, show: enum('always', 'ifRoom', 'never'), showWithText: bool}]
+  public _contentInsetStart: number;
+  public _contentInsetEnd: number;
+  public _logo: any;
+  public _navIcon: any;
+  public _overflowIcon: any;
+  public _rtl: boolean;
+  public _subtitle: string = null;
+  public _subtitleColor: number;
+  public _title: string;
+  public _titleColor: number;
   /**
    * To be documented
    */

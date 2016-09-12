@@ -66,12 +66,12 @@ export class MapView extends HighLevelComponent {
   @Output() annotationDragStateChange: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _pitchEnabled: boolean;
-  private _region: any;
-  private _rotateEnabled: boolean;
-  private _scrollEnabled: boolean;
-  private _showsUserLocation: boolean;
-  private _zoomEnabled: boolean;
+  public _pitchEnabled: boolean;
+  public _region: any;
+  public _rotateEnabled: boolean;
+  public _scrollEnabled: boolean;
+  public _showsUserLocation: boolean;
+  public _zoomEnabled: boolean;
   /**
    * To be documented
    */
@@ -99,17 +99,17 @@ export class MapView extends HighLevelComponent {
   set zoomEnabled(value: any) {this._zoomEnabled = this.processBoolean(value);}
 
   //TODO: manage views and events on annotations
-  private _annotations: Array<any>;
-  private _annotationEventsEnabled: boolean = false;
-  private _annotationMap: Map<string, any>;
-  private _followUserLocation: boolean;
-  private _legalLabelInsets: any;
-  private _mapType: string;
-  private _maxDelta: number;
-  private _minDelta: number;
-  private _overlays: Array<any>;
-  private _showsCompass: boolean;
-  private _showsPointsOfInterest: boolean;
+  public _annotations: Array<any>;
+  public _annotationEventsEnabled: boolean = false;
+  public _annotationMap: Map<string, any>;
+  public _followUserLocation: boolean;
+  public _legalLabelInsets: any;
+  public _mapType: string;
+  public _maxDelta: number;
+  public _minDelta: number;
+  public _overlays: Array<any>;
+  public _showsCompass: boolean;
+  public _showsPointsOfInterest: boolean;
   /**
    * To be documented
    * [{latitude: number, longitude: number, animateDrop: bool, draggable: bool, title: string, subtitle: string,

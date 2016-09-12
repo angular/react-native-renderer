@@ -49,11 +49,11 @@ export class Slider extends HighLevelComponent {
   @Output() slidingComplete: EventEmitter<number> = new EventEmitter();
 
   //Properties
-  private _disabled: boolean = false;
-  private _maximumValue: number = 1;
-  private _minimumValue: number = 0;
-  private _step: number = 0;
-  private _value: number;
+  public _disabled: boolean = false;
+  public _maximumValue: number = 1;
+  public _minimumValue: number = 0;
+  public _step: number = 0;
+  public _value: number;
   /**
    * To be documented
    */
@@ -75,12 +75,12 @@ export class Slider extends HighLevelComponent {
    */
   set value(value: any) {this._value = this.processNumber(value);}
 
-  private _maximumTrackImage: any;
-  private _maximumTrackTintColor: number;
-  private _minimumTrackImage: any;
-  private _minimumTrackTintColor: number;
-  private _thumbImage: any;
-  private _trackImage: any;
+  public _maximumTrackImage: any;
+  public _maximumTrackTintColor: number;
+  public _minimumTrackImage: any;
+  public _minimumTrackTintColor: number;
+  public _thumbImage: any;
+  public _trackImage: any;
   /**
    * To be documented
    * @platform ios

@@ -30,8 +30,8 @@ export class Sample {}
 })
 export class Text extends HighLevelComponent{
   //Properties
-  private _lineBreakMode: string;
-  private _numberOfLines: number;
+  public _lineBreakMode: string;
+  public _numberOfLines: number;
   /**
    * To be documented
    */
@@ -41,15 +41,15 @@ export class Text extends HighLevelComponent{
    */
   set numberOfLines(value: any) {this._numberOfLines = this.processNumber(value);}
 
-  private _selectable: boolean;
+  public _selectable: boolean;
   /**
    * To be documented
    * @platform android
    */
   set selectable(value: any) {this._selectable = this.processBoolean(value);}
 
-  private _allowFontScaling: boolean;
-  private _suppressHighlighting: boolean;
+  public _allowFontScaling: boolean;
+  public _suppressHighlighting: boolean;
   /**
    * To be documented
    * @platform ios

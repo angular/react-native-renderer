@@ -84,11 +84,11 @@ export class DrawerLayout extends HighLevelComponent {
   @Output() drawerStateChanged: EventEmitter<any> = new EventEmitter();
 
   //Properties
-  private _keyboardDismissMode: string;
-  private _drawerLockMode: string;
-  private _drawerPosition: number;
-  private _drawerWidth: number;
-  private _statusBarBackgroundColor: number;
+  public _keyboardDismissMode: string;
+  public _drawerLockMode: string;
+  public _drawerPosition: number;
+  public _drawerWidth: number;
+  public _statusBarBackgroundColor: number;
   /**
    * To be documented
    */

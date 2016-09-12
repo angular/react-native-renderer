@@ -1,6 +1,5 @@
-// The bootstrap export must be kept in first position
-export * from './renderer/bootstrap';
 export * from './renderer/node';
+export * from './router/location_strategy';
 
 export * from './modules/android_module';
 export * from './modules/ios_module';
