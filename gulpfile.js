@@ -300,7 +300,7 @@ gulp.task('publish.transform', ['publish.copy.source'], function (done) {
   runSequence('transform', done);
 });
 gulp.task('publish.ngc.src', ['publish.transform'], function (done) {
-  exec('./node_modules/.bin/ngc -p ./dist/tmp/src', function(e, stdout) {
+  exec(ngcExecutable + ' -p ./dist/tmp/src', function(e, stdout) {
     if (e) console.log(e);
     if (done) done();
   }).stdout.on('data', function(data) {
@@ -476,6 +476,8 @@ function customReporter() {
     error: (error) => {
       if (error.relativeFilename && error.message.indexOf(`Module '"react-native"' has no exported member`) == -1 &&
         error.message.indexOf(`Module ''angular2-react-native'' has no exported member`) == -1 &&
+        error.message.indexOf(`Module ''angular2-react-native/android'' has no exported member`) == -1 &&
+        error.message.indexOf(`Module ''angular2-react-native/ios'' has no exported member`) == -1 &&
         error.message.indexOf(`src\\angular2-react-native.d.ts`) == -1 &&
         error.message.indexOf(`src\\angular2-react-native-android.d.ts`) == -1 &&
         error.message.indexOf(`src\\angular2-react-native-ios.d.ts`) == -1 &&
