@@ -23,11 +23,11 @@ Creating the sample project:
 
 Android:
 * `gulp start.android` to launch the sample on the connected device or emulator, and watch sources for auto update (if enabled in F2/shake dev menu)
-*use the `Reload JS` button after the initial red screen*
+* `gulp start.android.aot` to launch the some with AoT compilation
 
 iOS:
 * `gulp start.ios` to launch the sample on an emulator, and watch sources for auto update (it will fail the first due to initial compilation, simply restart it)
-* OR, `gulp watch` and  open `.dist/app/ngReactNative/ios/ngReactNative.xcodeproj` in Xcode and hit `Run`
+* `gulp start.ios.aot` to launch the some with AoT compilation
 
 Tests:
 * `gulp test.browser` to run tests in Chrome
