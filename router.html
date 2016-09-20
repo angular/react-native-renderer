@@ -63,7 +63,8 @@ h4.cpt {
 }
 </style></head></html><body><div role="navigation" class="navbar navbar-inverse navbar-fixed-top"><div class="container-fluid"><div class="navbar-header"><a href="./index.html" class="navbar-brand">react-native-renderer</a><a href="./getting_started.html" class="navbar-brand">Documentation</a></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="https://github.com/angular/react-native-renderer">Github</a></li><li><a href="https://gitter.im/angular/react-native-renderer">Gitter</a></li></ul></div></div></div><div class="row"><div class="content col-sm-10 col-sm-push-2"><div><div style="float: right;"><a href="https://github.com/angular/react-native-renderer/blob/master/doc/pages/router.jade">Edit this page on Github</a></div><h1 id="router">Router</h1>
 <p>The rooter module of Angular 2 can be used as is in applications.
-The only thing to be done is to import <code>ReactNativeRouterModule</code> in the main module of the application (see below), and use the static <code>forRoot</code> method to configure routes.</p>
+The only thing to be done is to import <code>ReactNativeRouterModule</code> in the main module of the application (see below),
+and use the static <code>RouterModule.forRoot</code> method to configure routes.</p>
 <p>It uses a mock of <code>LocationStrategy</code>. Manipulating the location triggers a navigation of the router.</p>
 <h2 id="main-module">Main module</h2>
 <pre><code>const appRoutes: Routes = [
@@ -71,9 +72,12 @@ The only thing to be done is to import <code>ReactNativeRouterModule</code> in t
   { path: &#39;b&#39;, component: CompB }
 ];
 
+export const providers: Provider[] = RouterModule.forRoot(appRoutes)[&#39;providers&#39;];
+
 @NgModule({
   declarations: [Example, CompA, CompB, ...],
-  imports: [ReactNativeModule, CommonModule, ReactNativeRouterModule.forRoot(appRoutes)],
+  imports: [ReactNativeAndroidModule, CommonModule, ReactNativeRouterModule],
+  providers: [providers, {provide: LocationStrategy, useClass: ReactNativeLocationStrategy}],
   bootstrap: [Example]
 })
 export class MyAppModule {}
