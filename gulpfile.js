@@ -86,7 +86,7 @@ gulp.task('!assets', function () {
   return gulp.src(PATHS.sources.sampleAssets).pipe(gulp.dest(PATHS.app + '/' + APP_NAME));
 });
 gulp.task('!transpile', ['!assets'], function () {
-  return ts2js([PATHS.sources.sample, PATHS.sources.src], PATHS.tmp);
+  return ts2js([PATHS.sources.sample, PATHS.sources.src], PATHS.tmp, false, false);
 });
 gulp.task('!copyToNodeModules', ['!transpile'], function () {
   return gulp.src(PATHS.tmp + '/src/**/*').pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules/angular2-react-native'));
@@ -181,7 +181,7 @@ gulp.task('start.ios.aot', function (neverDone) {
 /*******************************   BROWSER   **************************************/
 /**********************************************************************************/
 gulp.task('ts2system', ['clean.code'], function () {
-  return ts2js([PATHS.sources.src, PATHS.sources.test], PATHS.destination, true);
+  return ts2js([PATHS.sources.src, PATHS.sources.test], PATHS.destination, true, false);
 });
 
 gulp.task('karma-launch', function() {

@@ -41,6 +41,12 @@ export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
   securityContext(tagName: string, propName: string): any {
     return 0;
   }
+  validateProperty(name: string): {error: boolean; msg?: string} {
+    return {error: false};
+  }
+  validateAttribute(name: string): {error: boolean; msg?: string} {
+    return {error: false};
+  }
 }
 
 export class ReactNativeSanitizer implements Sanitizer {
