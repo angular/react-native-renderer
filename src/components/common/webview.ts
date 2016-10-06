@@ -127,7 +127,7 @@ export class WebView extends HighLevelComponent{
    */
   set scrollEnabled(value: any) {this._scrollEnabled = this.processBoolean(value); }
 
-  //Event handlers 
+  //Event handlers
   _handleLoadingStart(event: any) {
     this.loadingStart.emit({canGoBack: event.canGoBack, canGoForward: event.canGoForward, loading: event.loading, title: event.title, url: event.url});
   }
