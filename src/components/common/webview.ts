@@ -34,6 +34,7 @@ export class Sample {}
   template: `<native-webview [automaticallyAdjustContentInsets]="_automaticallyAdjustContentInsets" [contentInset]="_contentInset"
   [injectedJavaScript]="_injectedJavaScript" [scalesPageToFit]="_scalesPageToFit" [source]="_source"
   (topLoadingStart)="_handleLoadingStart($event)" (topLoadingFinish)="_handleLoadingFinish($event)" (topLoadingError)="_handleLoadingError($event)"
+  (topContentSizeChange)="_handleContentSizeChange($event)"
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}></native-webview>`
 })
 export class WebView extends HighLevelComponent{
@@ -56,6 +57,10 @@ export class WebView extends HighLevelComponent{
    * To be documented
    */
   @Output() loadingError: EventEmitter<any> = new EventEmitter();
+  /**
+   * To be documented
+   */
+  @Output() contentSizeChange: EventEmitter<any> = new EventEmitter();
 
   //Properties
   public _automaticallyAdjustContentInsets: boolean;
@@ -122,7 +127,7 @@ export class WebView extends HighLevelComponent{
    */
   set scrollEnabled(value: any) {this._scrollEnabled = this.processBoolean(value); }
 
-  //Event handlers
+  //Event handlers 
   _handleLoadingStart(event: any) {
     this.loadingStart.emit({canGoBack: event.canGoBack, canGoForward: event.canGoForward, loading: event.loading, title: event.title, url: event.url});
   }
@@ -133,6 +138,10 @@ export class WebView extends HighLevelComponent{
 
   _handleLoadingError(event: any) {
     this.loadingError.emit({canGoBack: event.canGoBack, canGoForward: event.canGoForward, loading: event.loading, title: event.title, url: event.url, code: event.code, description: event.description});
+  }
+
+  _handleContentSizeChange(event: any) {
+    this.contentSizeChange.emit(event);
   }
 
   //Commands
