@@ -1,6 +1,6 @@
 import {Location, LocationStrategy} from '@angular/common';
 import {Compiler, Injectable, Injector, ModuleWithProviders, NgModule, NgModuleFactory, NgModuleFactoryLoader} from '@angular/core';
-import {Route, Router, RouterOutletMap, Routes, UrlSerializer, provideRoutes, __router_private__} from '@angular/router';
+import {Route, Router, RouterOutletMap, Routes, UrlSerializer, provideRoutes, __router_private__, PreloadingStrategy, NoPreloading} from '@angular/router';
 import {ReactNativeRouterModule} from './../router/router_module';
 import {ReactNativeLocationStrategy} from './../router/location_strategy';
 
@@ -39,6 +39,7 @@ export function setupTestingRouter(
         UrlSerializer, RouterOutletMap, Location, NgModuleFactoryLoader, Compiler, Injector, __router_private__.ROUTES
       ]
     },
+    {provide: PreloadingStrategy, useExisting: NoPreloading},
     provideRoutes([])
   ]
 })
