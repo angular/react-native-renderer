@@ -125,14 +125,14 @@ export class ReactNativeWrapperImpl extends ReactNativeWrapper {
     var tag = ReactNativeTagHandles.allocateTag();
     var viewName = RCT_VIEW_NAMES[tagName] || RCT_VIEW_NAMES['native-view'];
     this.$log(`Creating a ${viewName} with tag ${tag} and attribs:`, properties);
-    UIManager.createView(tag, viewName, 1, properties);
+    UIManager.createView(tag, viewName, 1, JSON.parse(JSON.stringify(properties)));
     return tag;
   }
 
   updateView(tag: number, tagName: string, properties: Object) {
     var viewName = RCT_VIEW_NAMES[tagName] || RCT_VIEW_NAMES['native-view'];
     this.$log(`Updating property ${viewName} in ${tag} to`, properties);
-    UIManager.updateView(tag, viewName, properties);
+    UIManager.updateView(tag, viewName, JSON.parse(JSON.stringify(properties)));
   }
 
   manageChildren(parentTag: number, moveFrom: Array<number>, moveTo: Array<number>, addTags: Array<number>, addAt: Array<number>, removeAt: Array<number>) {
