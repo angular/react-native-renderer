@@ -62,6 +62,7 @@ export class ScrollView extends HighLevelComponent{
   private _nativeElement: Node;
   constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper, el: ElementRef) {
     super(wrapper);
+    this.setDefaultStyle({overflow: 'scroll'});
     this._nativeElement = el.nativeElement;
   }
 

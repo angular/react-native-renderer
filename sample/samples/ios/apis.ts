@@ -62,7 +62,7 @@ export class APIsApp {
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     NetInfo.fetch().then((reach: string) => { this.connectionType = reach });
-    NetInfo.isConnectionExpensive((isConnectionExpensive: boolean) => { this.isConnectionExpensive = isConnectionExpensive });
+    //NetInfo.isConnectionExpensive((isConnectionExpensive: boolean) => { this.isConnectionExpensive = isConnectionExpensive });
     NetInfo.isConnected.fetch().then((isConnected: boolean) => { this.isConnected = isConnected });
     this.styles = StyleSheet.create({
       button: {
