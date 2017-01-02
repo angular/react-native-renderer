@@ -278,6 +278,7 @@ export class ReactNativeRenderer implements Renderer {
 
   setElementAttribute(renderElement: Node, attributeName: string, attributeValue: string): void {
     var val: any = attributeValue;
+    if (attributeName == "ng-version") return;
     if (attributeValue == "false") val = false;
     if (attributeValue == "true") val = true;
     if (attributeValue == "null") val = null;

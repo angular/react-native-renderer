@@ -1,5 +1,6 @@
-import {Component} from "@angular/core";
-import {isAndroid} from "../../wrapper/wrapper";
+import {Component, Inject} from "@angular/core";
+import {REACT_NATIVE_WRAPPER} from "../../renderer/renderer";
+import {ReactNativeWrapper, isAndroid} from "../../wrapper/wrapper";
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "./component";
 
 var ANDROID_INPUTS: Array<string> = ['selectable'];
@@ -29,6 +30,10 @@ export class Sample {}
   ${GENERIC_BINDINGS} ${isAndroid() ? ANDROID_BINDINGS : IOS_BINDINGS}><ng-content></ng-content></native-text>`
 })
 export class Text extends HighLevelComponent{
+  constructor(@Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
+    super(wrapper);
+  }
+
   //Properties
   public _lineBreakMode: string;
   public _numberOfLines: number;
