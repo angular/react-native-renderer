@@ -47,6 +47,17 @@ export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
   validateAttribute(name: string): {error: boolean; msg?: string} {
     return {error: false};
   }
+  allKnownElementNames(): string[] {
+    return [];
+  }
+  normalizeAnimationStyleProperty(propName: string): string {
+    return propName;
+  }
+  normalizeAnimationStyleValue(
+    camelCaseProp: string, userProvidedProp: string,
+    val: string|number): {error: string, value: string} {
+      return {error: null, value: '' + val}
+  }
 }
 
 export class ReactNativeSanitizer implements Sanitizer {
