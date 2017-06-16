@@ -15,7 +15,6 @@ import {View} from "../components/ios/_view";
 import {WebView} from "../components/ios/_webview";
 
 import {DatePicker} from "../components/ios/date_picker";
-import {MapView} from "../components/ios/map_view";
 import {Navigator, NavigatorItem} from "../components/ios/navigator";
 import {ProgressView} from "../components/ios/progress_view";
 import {SegmentedControl} from "../components/ios/segmented_control";
@@ -24,9 +23,9 @@ import {TabBarItem} from "../components/ios/tabbar_item";
 
 @NgModule({
   declarations: [ActivityIndicator, Image, Picker, RefreshControl, ScrollView, Slider, Switch, Text, TextInput, View, WebView,
-    DatePicker, MapView, Navigator, NavigatorItem, ProgressView, SegmentedControl, TabBar, TabBarItem],
+    DatePicker, Navigator, NavigatorItem, ProgressView, SegmentedControl, TabBar, TabBarItem],
   exports: [ActivityIndicator, Image, Picker, RefreshControl, ScrollView, Slider, Switch, Text, TextInput, View, WebView,
-    DatePicker, MapView, Navigator, ProgressView, SegmentedControl, TabBar, TabBarItem],
+    DatePicker, Navigator, ProgressView, SegmentedControl, TabBar, TabBarItem],
   imports: [CommonModule, ApplicationModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
