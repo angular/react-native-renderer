@@ -13,7 +13,7 @@ http://angular.github.io/react-native-renderer/
 ### Preparing your environment
 * Set up React Native for iOS and/or Android following [Getting started](https://facebook.github.io/react-native/docs/getting-started.html) and [Android setup](https://facebook.github.io/react-native/docs/android-setup.htmlt)
 * Clone this repository or a fork of it
-* Install Gulp, React Native CLI  and Typings globally: `npm install -g gulp react-native-cli typings`
+* Install Gulp and React Native CLI globally: `npm install -g gulp react-native-cli`
 * Install local npm modules: `npm install`
 
 ### Running scripts

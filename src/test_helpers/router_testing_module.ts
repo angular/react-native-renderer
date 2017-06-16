@@ -1,6 +1,6 @@
 import {Location, LocationStrategy} from '@angular/common';
 import {Compiler, Injectable, Injector, ModuleWithProviders, NgModule, NgModuleFactory, NgModuleFactoryLoader} from '@angular/core';
-import {Route, Router, RouterOutletMap, Routes, UrlSerializer, provideRoutes, __router_private__, PreloadingStrategy, NoPreloading} from '@angular/router';
+import {Route, Router, Routes, UrlSerializer, provideRoutes, PreloadingStrategy, NoPreloading, ChildrenOutletContexts, ɵflatten, ɵROUTER_PROVIDERS, ROUTES} from '@angular/router';
 import {ReactNativeRouterModule} from './../router/router_module';
 import {ReactNativeLocationStrategy} from './../router/location_strategy';
 
@@ -20,23 +20,23 @@ export class SpyNgModuleFactoryLoader implements NgModuleFactoryLoader {
 }
 
 export function setupTestingRouter(
-  urlSerializer: UrlSerializer, outletMap: RouterOutletMap, location: Location,
+  urlSerializer: UrlSerializer, childrenOutletContexts: ChildrenOutletContexts, location: Location,
   loader: NgModuleFactoryLoader, compiler: Compiler, injector: Injector, routes: Route[][]) {
   return new Router(
-    null, urlSerializer, outletMap, location, injector, loader, compiler, __router_private__.flatten(routes));
+    null, urlSerializer, childrenOutletContexts, location, injector, loader, compiler, ɵflatten(routes));
 }
 
 @NgModule({
   exports: [ReactNativeRouterModule],
   providers: [
-    __router_private__.ROUTER_PROVIDERS,
+    ɵROUTER_PROVIDERS,
     {provide: LocationStrategy, useClass: ReactNativeLocationStrategy },
     {provide: NgModuleFactoryLoader, useClass: SpyNgModuleFactoryLoader},
     {
       provide: Router,
       useFactory: setupTestingRouter,
       deps: [
-        UrlSerializer, RouterOutletMap, Location, NgModuleFactoryLoader, Compiler, Injector, __router_private__.ROUTES
+        UrlSerializer, ChildrenOutletContexts, Location, NgModuleFactoryLoader, Compiler, Injector, ROUTES
       ]
     },
     {provide: PreloadingStrategy, useExisting: NoPreloading},

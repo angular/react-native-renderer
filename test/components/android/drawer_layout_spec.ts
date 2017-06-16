@@ -14,8 +14,8 @@ describe('DrawerLayout component (Android)', () => {
     initTest(TestComponent, `<DrawerLayout drawerWidth="250"><DrawerLayoutSide><View></View></DrawerLayoutSide><DrawerLayoutContent><View></View></DrawerLayoutContent></DrawerLayout>`);
     expect(mock.commandLogs.toString()).toEqual(
       'CREATE+2+test-cmp+{},CREATE+3+native-drawerlayout+{"drawerWidth":250},CREATE+4+native-view+{"bottom":0,"collapsable":false,"left":0,"position":"absolute","right":0,"top":0},' +
-      'CREATE+5+native-view+{},CREATE+6+native-view+{"bottom":0,"collapsable":false,"position":"absolute","top":0,"width":250},CREATE+7+native-view+{},' +
-      'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+6+1,ATTACH+4+5+0,ATTACH+6+7+0');
+      'CREATE+5+native-view+{"bottom":0,"collapsable":false,"position":"absolute","top":0,"width":250},CREATE+6+native-view+{},CREATE+7+native-view+{},' +
+      'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1,ATTACH+4+6+0,ATTACH+5+7+0');
   });
 
   it('should render with properties', () => {

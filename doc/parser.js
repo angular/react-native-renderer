@@ -35,11 +35,11 @@ function visit(sourceFile) {
   return data;
 
   function visitNode(node) {
-    var commentRanges = ts.getJsDocComments(node, sourceFile);
-    if (commentRanges) {
-      commentRanges.forEach(function (commentRange) {
+    var jsDocs = ts.getJSDocs(node);
+    if (jsDocs) {
+      jsDocs.forEach(function (jsDoc) {
         var content = sourceFile.text
-          .substring(commentRange.pos + 3, commentRange.end - 2)
+          .substring(jsDoc.pos + 3, jsDoc.end - 2)
           .replace(LEADING_STAR_REGEX, '')
           .trim();
         if (content) {

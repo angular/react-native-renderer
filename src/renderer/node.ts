@@ -294,6 +294,6 @@ export class TextNode extends Node {
   }
 }
 
-export class AnchorNode extends Node {
+export class CommentNode extends Node {
   constructor(wrapper: ReactNativeWrapper, zoneHolder: any) { super(wrapper, zoneHolder); this.isVirtual = true;}
 }
