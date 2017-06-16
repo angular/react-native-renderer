@@ -274,7 +274,7 @@ export class ElementNode extends Node {
     //TODO: generalize the mechanism (list? regexp? meta data?)
     if (['dummy-anchor-for-dynamic-loader', 'View', 'Text', 'Switch', 'TextInput', 'WebView', 'Image', 'ProgressBar', 'PagerLayout', 'Picker', 'ScrollView',
         'DrawerLayout', 'DrawerLayoutSide', 'DrawerLayoutContent', 'RefreshControl', 'Toolbar',
-        'ActivityIndicator', 'DatePicker', 'MapView', 'Navigator', 'NavigatorItem', 'ProgressView', 'SegmentedControl', 'Slider', 'TabBar', 'TabBarItem'].indexOf(tagName) > -1) {
+        'ActivityIndicator', 'DatePicker', 'Navigator', 'NavigatorItem', 'ProgressView', 'SegmentedControl', 'Slider', 'TabBar', 'TabBarItem'].indexOf(tagName) > -1) {
       this.isVirtual = true;
     }
   }

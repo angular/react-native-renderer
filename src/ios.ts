@@ -11,7 +11,6 @@ export {View} from './components/ios/_view';
 export {WebView} from './components/ios/_webview';
 
 export {DatePicker} from './components/ios/date_picker';
-export {MapView} from './components/ios/map_view';
 export {Navigator} from './components/ios/navigator';
 export {ProgressView} from './components/ios/progress_view';
 export {SegmentedControl} from './components/ios/segmented_control';

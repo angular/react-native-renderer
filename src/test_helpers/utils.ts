@@ -15,7 +15,6 @@ import {ReactNativeWrapper} from "../wrapper/wrapper";
 import {Node} from "../renderer/node";
 import {ReactNativeAndroidModule} from "../modules/android_module";
 import {DatePicker} from "./../components/ios/date_picker";
-import {MapView} from "./../components/ios/map_view";
 import {Navigator, NavigatorItem} from "./../components/ios/navigator";
 import {ProgressView} from "./../components/ios/progress_view";
 import {SegmentedControl} from "./../components/ios/segmented_control";
@@ -27,7 +26,7 @@ export function configureTestingModule(mock: ReactNativeWrapper, testCpt: any, d
     imports: [ReactNativeAndroidModule].concat(modules),
     providers: getTestingProviders(mock, testCpt),
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [DatePicker, MapView, Navigator, NavigatorItem, ProgressView, SegmentedControl, TabBar, TabBarItem, testCpt].concat(declarations)
+    declarations: [DatePicker, Navigator, NavigatorItem, ProgressView, SegmentedControl, TabBar, TabBarItem, testCpt].concat(declarations)
   });
   //
   return tb;

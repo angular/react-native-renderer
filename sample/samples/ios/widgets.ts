@@ -50,12 +50,6 @@ import {StyleSheet} from 'react-native';
     <Text [styleSheet]="styles.title">Date picker ({{selectedDate}})</Text>
     <DatePicker date="2016-03-18" (change)="selectedDate=$event"></DatePicker>
   </TabBarItem>
-
-  <TabBarItem systemIcon="search" [selected]="selectedTab == 'four'" (select)="selectedTab='four'" [style]="{alignItems: 'center'}">
-    <Text [styleSheet]="styles.title">Map view</Text>
-    <MapView [annotations]="[{latitude: 43.62, longitude: 7.07, title: 'Hello', tintColor: '#ce0058'}]" [region]="{latitude: 43.62, longitude: 7.07}"
-      [overlays]="[{coordinates: [{latitude: 42, longitude: 2}, {latitude: 42, longitude: 12}], lineWidth: 2, strokeColor: '#ce0058'}]" [style]="{width: 320, height: 500}"></MapView>
-  </TabBarItem>
 </TabBar>
 `
 })

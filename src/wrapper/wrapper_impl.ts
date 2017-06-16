@@ -53,7 +53,6 @@ const RCT_VIEW_NAMES: { [s: string]: string } = ReactNative.Platform.OS == 'andr
   'native-dialogpicker': 'RCTPicker',
   'native-activityindicator': 'RCTActivityIndicatorView',
   'native-datepicker': 'RCTDatePicker',
-  'native-mapview': 'RCTMap',
   'native-navigator': 'RCTNavigator',
   'native-navitem': 'RCTNavItem',
   'native-progressview': 'RCTProgressView',
