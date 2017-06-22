@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     "module": "es2015",
     "moduleResolution": "node",
-    "outDir": "../node_modules/angular2-react-native",
+    "outDir": "../node_modules/angular-react-native",
     "rootDir": ".",
     "sourceMap": true,
     "inlineSources": true,

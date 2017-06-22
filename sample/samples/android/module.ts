@@ -1,7 +1,7 @@
 import {NgModule, Provider} from '@angular/core';
 import {CommonModule, LocationStrategy} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
-import {ReactNativeAndroidModule, ReactNativeRouterModule, ReactNativeHttpModule, ReactNativeLocationStrategy} from 'angular2-react-native';
+import {ReactNativeAndroidModule, ReactNativeRouterModule, ReactNativeHttpModule, ReactNativeLocationStrategy} from 'angular-react-native';
 import {KitchenSinkApp}   from './kitchensink';
 
 import {HelloApp} from "./hello";

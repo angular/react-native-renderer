@@ -222,4 +222,4 @@ changes to be accepted, the CLA must be signed. It's a quick process, we promise
 [individual-cla]: http://code.google.com/legal/individual-cla-v1.0.html
 [js-style-guide]: http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml
 [stackoverflow]: http://stackoverflow.com/questions/tagged/angular
-[seed]: https://github.com/mlaval/angular2-react-native-seed
+[seed]: https://github.com/mlaval/angular-react-native-seed

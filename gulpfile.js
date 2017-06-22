@@ -72,7 +72,7 @@ gulp.task('!transpile', ['!assets'], function () {
   return ts2js([PATHS.sources.sample, PATHS.sources.src], PATHS.tmp, false, false);
 });
 gulp.task('!copyToNodeModules', ['!transpile'], function () {
-  return gulp.src(PATHS.tmp + '/src/**/*').pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules/angular2-react-native'));
+  return gulp.src(PATHS.tmp + '/src/**/*').pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules/angular-react-native'));
 });
 gulp.task('compile.jit', ['!copyToNodeModules'], function () {
   return gulp.src(PATHS.tmp + '/sample/**/*').pipe(gulp.dest(PATHS.app + '/' + APP_NAME));
@@ -242,10 +242,10 @@ systemBuilder.config({
   defaultJSExtensions: true
 });
 gulp.task('!pre-bundle', ['ts2system'], function () {
-  return gulp.src(PATHS.destination + '/src/**/*').pipe(gulp.dest(PATHS.destination + '/angular2-react-native'));
+  return gulp.src(PATHS.destination + '/src/**/*').pipe(gulp.dest(PATHS.destination + '/angular-react-native'));
 });
 gulp.task('bundle', ['!pre-bundle'], function(done) {
-  return systemBuilder.bundle('angular2-react-native/testing', path.join(PATHS.publish, 'bundles/testing.dev.js'),
+  return systemBuilder.bundle('angular-react-native/testing', path.join(PATHS.publish, 'bundles/testing.dev.js'),
     {}).catch(function (e) { console.log(e); });
 });
 
@@ -291,7 +291,7 @@ gulp.task('publish.ngc.src', ['publish.transform'], function (done) {
   });
 });
 gulp.task('publish', ['publish.ngc.src'], function (done) {
-  return gulp.src(PATHS.tmp + '/node_modules/angular2-react-native/**/*').pipe(gulp.dest(PATHS.publish));
+  return gulp.src(PATHS.tmp + '/node_modules/angular-react-native/**/*').pipe(gulp.dest(PATHS.publish));
 });
 
 /**********************************************************************************/
@@ -408,7 +408,7 @@ function executeInAppDir(command, done, inParentFolder) {
 }
 
 function ts2js(path, dest, toSystem, withDeclaration) {
-  var tsResult = gulp.src(path.concat(['typings/index.d.ts', 'src/angular2-react-native.d.ts', 'src/angular2-react-native-android.d.ts', 'src/angular2-react-native-ios.d.ts']), {base: './'})
+  var tsResult = gulp.src(path.concat(['typings/index.d.ts', 'src/angular-react-native.d.ts', 'src/angular-react-native-android.d.ts', 'src/angular-react-native-ios.d.ts']), {base: './'})
     .pipe(typescript({
       noImplicitAny: true,
       module: toSystem ? 'system' : 'commonjs',
@@ -458,12 +458,12 @@ function customReporter() {
   return {
     error: (error) => {
       if (error.relativeFilename && error.message.indexOf(`Module '"react-native"' has no exported member`) == -1 &&
-        error.message.indexOf(`Module ''angular2-react-native'' has no exported member`) == -1 &&
-        error.message.indexOf(`Module ''angular2-react-native/android'' has no exported member`) == -1 &&
-        error.message.indexOf(`Module ''angular2-react-native/ios'' has no exported member`) == -1 &&
-        error.message.indexOf(`src\\angular2-react-native.d.ts`) == -1 &&
-        error.message.indexOf(`src\\angular2-react-native-android.d.ts`) == -1 &&
-        error.message.indexOf(`src\\angular2-react-native-ios.d.ts`) == -1 &&
+        error.message.indexOf(`Module ''angular-react-native'' has no exported member`) == -1 &&
+        error.message.indexOf(`Module ''angular-react-native/android'' has no exported member`) == -1 &&
+        error.message.indexOf(`Module ''angular-react-native/ios'' has no exported member`) == -1 &&
+        error.message.indexOf(`src\\angular-react-native.d.ts`) == -1 &&
+        error.message.indexOf(`src\\angular-react-native-android.d.ts`) == -1 &&
+        error.message.indexOf(`src\\angular-react-native-ios.d.ts`) == -1 &&
         error.message.indexOf(`does not exist on type 'Global'.`) == -1) {
         console.error(error.message);
       }

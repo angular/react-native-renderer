@@ -1,6 +1,6 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {StyleSheet, AsyncStorage} from 'react-native';
-import {TextInput} from 'angular2-react-native/ios';
+import {TextInput} from 'angular-react-native/ios';
 
 class Palette {
   static background: string = '#005eb8';
@@ -218,7 +218,7 @@ export class TodoMVC {
 
   reset() {
     this.todos = this.filteredTodos = [
-      new Todo("Angular 2", false, false),
+      new Todo("Angular", false, false),
       new Todo("React Native", false, false),
       new Todo("Android", false, false),
       new Todo("iOS", true, false)

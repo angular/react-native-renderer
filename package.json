@@ -1,7 +1,7 @@
 {
-  "name": "angular2-react-native",
+  "name": "angular-react-native",
   "version": "0.0.1-alpha.20",
-  "description": "A React Native renderer for Angular 2",
+  "description": "A React Native renderer for Angular",
   "scripts": {
     "test": "gulp test.browser/ci"
   },
@@ -10,7 +10,7 @@
     "url": "git+https://github.com/angular/react-native-renderer.git"
   },
   "keywords": [
-    "Angular2",
+    "Angular",
     "renderer",
     "react-native"
   ],
