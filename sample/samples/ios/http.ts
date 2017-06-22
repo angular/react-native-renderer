@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 
-import {TextInput} from 'angular2-react-native/ios';
+import {TextInput} from 'angular-react-native/ios';
 
 @Component({
   selector: 'http-app',

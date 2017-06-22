@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {StyleSheet} from 'react-native';
-import {WebView} from 'angular2-react-native/android';
+import {WebView} from 'angular-react-native/android';
 
 @Component({
   selector: 'webview-app',
