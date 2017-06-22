@@ -1,18 +1,20 @@
 import {
-  RootRenderer,
-  Renderer,
-  RenderComponentType,
-  OpaqueToken,
+  RendererFactory2,
+  Renderer2,
+  RendererType2,
+  RendererStyleFlags2,
+  InjectionToken,
   Inject,
   Injectable,
   NgZone,
   Sanitizer,
   SecurityContext,
   AnimationPlayer,
-  SchemaMetadata
+  SchemaMetadata,
+  Compiler
 } from "@angular/core";
 import {ElementSchemaRegistry} from "@angular/compiler";
-import {Node, ElementNode, AnchorNode, TextNode, nodeMap} from "./node";
+import {Node, ElementNode, TextNode, nodeMap, CommentNode} from "./node";
 import {ReactNativeWrapper} from "./../wrapper/wrapper";
 import {
   NativeCommand,
@@ -23,7 +25,7 @@ import {
   NativeCommandAttachAfter
 } from "./native_command";
 
-export const REACT_NATIVE_WRAPPER: OpaqueToken = new OpaqueToken("ReactNativeWrapper");
+export const REACT_NATIVE_WRAPPER: InjectionToken<string> = new InjectionToken("ReactNativeWrapper");
 
 export class ReactNativeElementSchemaRegistry extends ElementSchemaRegistry {
   getDefaultComponentElementName(): string {
@@ -66,8 +68,10 @@ export class ReactNativeSanitizer implements Sanitizer {
   }
 }
 
-export class ReactNativeRootRenderer implements RootRenderer {
+@Injectable()
+export class ReactNativeRootRenderer implements RendererFactory2 {
   public zone: NgZone;
+  public wrapper: ReactNativeWrapper;
 
   private _registeredComponents: Map<string, ReactNativeRenderer> = new Map<string, ReactNativeRenderer>();
 
@@ -77,17 +81,13 @@ export class ReactNativeRootRenderer implements RootRenderer {
   private _attachAfterCommands: Map<Node, NativeCommandAttachAfter> = new Map<Node, NativeCommandAttachAfter>();
   private _detachCommands: Map<Node, NativeCommandDetach> = new Map<Node, NativeCommandDetach>();
 
-  constructor(public wrapper: ReactNativeWrapper) {
-    wrapper.patchReactNativeEventEmitter(nodeMap);
+  constructor(@Inject(REACT_NATIVE_WRAPPER) _wrapper: ReactNativeWrapper) {
+    this.wrapper = _wrapper;
+    this.wrapper.patchReactNativeEventEmitter(nodeMap);
   }
 
-  renderComponent(componentType: RenderComponentType): Renderer {
-    var renderer = this._registeredComponents.get(componentType.id);
-    if (renderer == null) {
-      renderer = new ReactNativeRenderer(this, componentType);
-      this._registeredComponents.set(componentType.id, renderer);
-    }
-    return renderer;
+  createRenderer(hostElement: any, type: RendererType2 | any): Renderer2 {
+    return new ReactNativeRenderer(this);
   }
 
   addCreateCommand(node: Node, props: {[s: string]: any } = null) {
@@ -138,36 +138,139 @@ export class ReactNativeRootRenderer implements RootRenderer {
   }
 }
 
-@Injectable()
-export class ReactNativeRootRenderer_ extends ReactNativeRootRenderer {
-  constructor(@Inject(REACT_NATIVE_WRAPPER) _wrapper: ReactNativeWrapper) {
-    super(_wrapper);
-  }
-}
+export class ReactNativeRenderer implements Renderer2 {
+  data: {[key: string]: any;} = {};
 
-export class ReactNativeRenderer implements Renderer {
-
-  constructor(private _rootRenderer: ReactNativeRootRenderer, private componentProto: RenderComponentType) { }
-
-  renderComponent(componentType: RenderComponentType):Renderer {
-    return this._rootRenderer.renderComponent(componentType);
-  }
+  constructor(private _rootRenderer: ReactNativeRootRenderer) {}
 
   selectRootElement(selector: string): Node {
-    var root = this.createElement(null, selector.startsWith('#root') ? 'test-cmp' : selector);
+    const root = this.createElement(selector.startsWith('#root') ? 'test-cmp' : selector);
     this._createElementCommand(root);
     this._rootRenderer.addAttachCommand(root, true);
     return root;
   }
 
-  createElement(parentElement: Node, name: string): Node {
-    var node = new ElementNode(name, this._rootRenderer.wrapper, this._rootRenderer);
-    node.attachTo(parentElement);
-    if (!node.isVirtual && node.getAncestorWithNativeCreated()) {
-      this._createElementCommand(node);
-      this._rootRenderer.addAttachCommand(node, false);
+  createElement(name: string, namespace?: string | any): Node {
+    //console.log('createElement:' + name);
+    return new ElementNode(name, this._rootRenderer.wrapper, this._rootRenderer);
+  }
+
+  createComment(value: string): any {
+    return new CommentNode(this._rootRenderer.wrapper, this._rootRenderer);
+  }
+
+  createText(value: string): Node {
+    //console.log('createText:' + value);
+    return new TextNode(value, this._rootRenderer.wrapper, this._rootRenderer);
+  }
+
+  destroyNode(node: Node): any {
+    node.toBeDestroyed = true;
+  }
+
+  destroy(): void {
+    //console.log('NOT IMPLEMENTED: destroy', arguments);
+  }
+
+  appendChild(parent: Node, newChild: Node): void {
+    //console.log('appendChild');
+    newChild.attachTo(parent);
+    if (newChild.getAncestorWithNativeCreated()) {
+      if (this._createNativeRecursively(newChild)) {
+        this._rootRenderer.addAttachCommand(newChild, false);
+      }
     }
-    return node;
+  }
+
+  insertBefore(parent: any, newChild: any, refChild: any): void {
+    //console.log('insertBefore');
+    const index = parent.children.indexOf(refChild);
+    newChild.attachToAt(parent, index);
+    if (newChild.getAncestorWithNativeCreated()) {
+      if (this._createNativeRecursively(newChild)) {
+        this._rootRenderer.addAttachCommand(newChild, false);
+      }
+    }
+  }
+
+  removeChild(parent: any, oldChild: any): void {
+    const index = parent.children.indexOf(oldChild);
+    parent.children.splice(index, 1);
+    this._rootRenderer.addDetachCommand(oldChild);
+  }
+
+  parentNode(node: Node): Node {
+    return node.parent;
+  }
+
+  nextSibling(node: Node): any {
+    let res = null;
+    const parent = node.parent;
+    if (parent) {
+      const index = parent.children.indexOf(node) + 1;
+      if (parent.children.length > index) {
+        res = parent.children[index];
+      }
+    }
+    return res;
+  }
+
+  setAttribute(el: Node, name: string, value: string, namespace?: string | any): void {
+    var val: any = value;
+    if (name == "ng-version") return;
+    if (value == "false") val = false;
+    if (value == "true") val = true;
+    if (value == "null") val = null;
+    if (!isNaN(parseInt(val))) val = parseInt(val);
+    if (value.startsWith('#')) val = this._rootRenderer.wrapper.processColor(value);
+    this.setProperty(el, name, val);
+  }
+
+  removeAttribute(el: any, name: string, namespace?: string | any): void {
+  }
+
+  addClass(el: any, name: string): void {
+    console.error('NOT IMPLEMENTED: addClass', arguments);
+  }
+
+  removeClass(el: any, name: string): void {
+    console.error('NOT IMPLEMENTED: removeClass', arguments);
+  }
+
+  setStyle(el: any, style: string, value: any, flags?: RendererStyleFlags2): void {
+    console.error('NOT IMPLEMENTED: setStyle', arguments);
+  }
+
+  removeStyle(el: any, style: string, flags?: RendererStyleFlags2): void {
+    console.error('NOT IMPLEMENTED: removeStyle', arguments);
+  }
+
+  setProperty(el: Node, name: string, value: any): void {
+    if (typeof value !== 'undefined') {
+      const cleanPropertyName = name.startsWith('_on') ? name.substr(1) : name;
+      el.setProperty(cleanPropertyName, value, false);
+      if (el.isCreated) {
+        this._rootRenderer.addUpdateCommand(el, cleanPropertyName, value);
+      }
+    }
+  }
+
+  setValue(node: Node, value: string): void {
+    if (node instanceof TextNode) {
+      const trimedText = node.setText(value);
+      this.setProperty(node, 'text', trimedText);
+    }
+  }
+
+  listen(target: 'window' | 'document' | 'body' | Node, eventName: string, callback: (event: any) => boolean | void): () => void {
+    if (target === 'window' || target == 'document' || target == 'body') {
+      console.error('NOT IMPLEMENTED: listen on ' + target, arguments);
+      return () => {};
+    } else {
+      target.addEventListener(eventName, callback);
+      return () => {target.removeEventListener(eventName, callback);};
+    }
+
   }
 
   private _createElementCommand(node: Node): void {
@@ -175,59 +278,10 @@ export class ReactNativeRenderer implements Renderer {
     node.isCreated = true;
   }
 
-  createViewRoot(hostElement: Node): Node {
-    return hostElement;
-  }
-
-  createTemplateAnchor(parentElement: Node): Node {
-    var node = new AnchorNode(this._rootRenderer.wrapper, this._rootRenderer);
-    node.attachTo(parentElement);
-    return node;
-  }
-
-  createText(parentElement: Node, value: string): Node {
-    var node = new TextNode(value, this._rootRenderer.wrapper, this._rootRenderer);
-    if (parentElement && parentElement.isCreated) {
-      this._createTextCommand(<TextNode>node);
-      this._rootRenderer.addAttachCommand(node, false);
-    }
-    node.attachTo(parentElement);
-    return node;
-  }
-
   private _createTextCommand(node: TextNode): void {
     this._rootRenderer.addCreateCommand(node, {text: node.properties['text']});
     var cmd = new NativeCommandCreate(node);
     node.isCreated = true;
-  }
-
-  projectNodes(parentElement: Node, nodes: Node[]): void {
-    if (parentElement) {
-      for (var i = 0; i < nodes.length; i++) {
-        var node = nodes[i];
-        node.attachTo(parentElement);
-        if (node.getAncestorWithNativeCreated()) {
-          if (this._createNativeRecursively(node)) {
-            this._rootRenderer.addAttachCommand(node, false);
-          }
-        }
-      }
-    }
-  }
-
-  attachViewAfter(node: Node, viewRootNodes: Node[]): void {
-    if (viewRootNodes.length > 0) {
-      var index = node.parent.children.indexOf(node);
-      for (var i = 0; i < viewRootNodes.length; i++) {
-        var viewRootNode = viewRootNodes[i];
-        viewRootNode.attachToAt(node.parent, index + i + 1);
-        if (viewRootNode.getAncestorWithNativeCreated()) {
-          if (this._createNativeRecursively(viewRootNode)) {
-            this._rootRenderer.addAttachAfterCommand(viewRootNode, node);
-          }
-        }
-      }
-    }
   }
 
   private _createNativeRecursively(node: Node, isRoot: boolean = true): boolean {
@@ -246,82 +300,5 @@ export class ReactNativeRenderer implements Renderer {
       }
     }
     return didCreate;
-  }
-
-  detachView(viewRootNodes: Node[]): void {
-    for (var i = 0; i < viewRootNodes.length; i++) {
-      var node = viewRootNodes[i];
-      var parent = node.parent;
-      if (parent) {
-        var index = parent.children.indexOf(node);
-        parent.children.splice(index, 1);
-        this._rootRenderer.addDetachCommand(node);
-      }
-    }
-  }
-
-  destroyView(hostElement: any, viewAllNodes: Node[]): void {
-    for (var i = 0; i < viewAllNodes.length; i++) {
-      var node = viewAllNodes[i];
-      node.toBeDestroyed = true;
-    }
-  }
-
-  listen(renderElement: Node, name: string, callback: Function): Function {
-    renderElement.addEventListener(name, callback);
-    return () => {renderElement.removeEventListener(name, callback);};
-  }
-
-  listenGlobal(target: string, name: string, callback: Function): Function {
-    console.error('NOT IMPLEMENTED: listenGlobal', arguments);
-    return () => {};
-  }
-
-  setElementProperty(renderElement: Node, propertyName: string, propertyValue: any): void {
-    if (typeof propertyValue !== 'undefined') {
-      const cleanPropertyName = propertyName.startsWith('_on') ? propertyName.substr(1) : propertyName;
-      renderElement.setProperty(cleanPropertyName, propertyValue, false);
-      if (renderElement.isCreated) {
-        this._rootRenderer.addUpdateCommand(renderElement, cleanPropertyName, propertyValue);
-      }
-    }
-  }
-
-  setElementAttribute(renderElement: Node, attributeName: string, attributeValue: string): void {
-    var val: any = attributeValue;
-    if (attributeName == "ng-version") return;
-    if (attributeValue == "false") val = false;
-    if (attributeValue == "true") val = true;
-    if (attributeValue == "null") val = null;
-    if (!isNaN(parseInt(val))) val = parseInt(val);
-    if (attributeValue.startsWith('#')) val = this._rootRenderer.wrapper.processColor(attributeValue);
-    this.setElementProperty(renderElement, attributeName, val);
-  }
-
-  setBindingDebugInfo(renderElement: Node, propertyName: string, propertyValue: string): void {
-    //this.setElementProperty(renderElement, propertyName, propertyValue);
-  }
-
-  setElementClass(renderElement:any, className:string, isAdd:boolean):any {
-    console.error('NOT IMPLEMENTED: setElementClass', arguments);
-  }
-
-  setElementStyle(renderElement:any, styleName:string, styleValue:string):any {
-    console.error('NOT IMPLEMENTED: setElementStyle', arguments);
-  }
-
-  invokeElementMethod(renderElement: Node, methodName: string, args: any[]): void {
-    renderElement.dispatchCommand(methodName, args);
-  }
-
-  setText(renderNode: Node, text: string): void {
-    if (renderNode instanceof TextNode) {
-      var trimedText = renderNode.setText(text);
-      this.setElementProperty(renderNode, 'text', trimedText);
-    }
-  }
-
-  animate(element:any, startingStyles: any, keyframes: any[], duration: number, delay: number, easing: string): AnimationPlayer {
-    return undefined;
   }
 }

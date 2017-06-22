@@ -1,9 +1,6 @@
-declare var global: any;
-declare var require: any;
-
-if (typeof global.window === "undefined") global.window = global;
-if (typeof global.document === "undefined") global.document = {createElement: () => {return {style: {}};}};
-var hammer = (typeof global.window.Hammer === "undefined") ? require('hammerjs') : global.window.Hammer;
+if (typeof global['window'] === "undefined") global['window'] = global;
+if (typeof global['document'] === "undefined") global['document'] = {createElement: () => {return {style: {}};}};
+var hammer = (typeof global['window'].Hammer === "undefined") ? require('hammerjs') : global['window'].Hammer;
 
 var EVENT_RECOGNIZER_MAP: {[s: string]: string } = {
   //doubletap
@@ -155,7 +152,7 @@ var NATIVE_INPUT_MAP: {[s: string]: any } = {
 
 var NATIVE_TARGET_EVENTS = 'topTouchStart topTouchMove topTouchEnd topTouchCancel';
 
-function NativeInput() {
+export function NativeInput() {
   this.evTarget = NATIVE_TARGET_EVENTS;
   this.targetIds = {};
 

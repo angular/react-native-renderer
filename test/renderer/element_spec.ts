@@ -129,19 +129,19 @@ describe('Element', () => {
     expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('8');
   });
 
-  it('should support NgFor in a <template> and with line return', () => {
+  it('should support NgFor in a <ng-template> and with line return', () => {
     const {fixture, rootRenderer} = initTest(TestComponent, `
 <native-view>
-  <template ngFor let-item [ngForOf]="a">
+  <ng-template ngFor let-item [ngForOf]="a">
     <native-text>{{item}}</native-text>
-  </template>
+  </ng-template>
 </native-view>`);
     rootRenderer.executeCommands();
     expect(mock.nativeElementMap.get(1).children[0].children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('1,2,3');
   });
 
   it('should support NgFor with several children and right order', () => {
-    const {fixture, rootRenderer} = initTest(TestComponent, `<template ngFor let-item [ngForOf]="d"><native-text>{{item.a}}</native-text><native-text>{{item.b}}</native-text></template>`);
+    const {fixture, rootRenderer} = initTest(TestComponent, `<ng-template ngFor let-item [ngForOf]="d"><native-text>{{item.a}}</native-text><native-text>{{item.b}}</native-text></ng-template>`);
     rootRenderer.executeCommands();
     expect(mock.nativeElementMap.get(1).children[0].children.map((a: NativeElement) => a.children[0].properties['text']).join(',')).toEqual('0,1,8,9');
   });
@@ -161,7 +161,7 @@ describe('Element', () => {
       'CREATE+2+test-cmp+{},CREATE+3+native-text+{},CREATE+4+native-rawtext+{"text":"foo"},ATTACH+1+2+0,ATTACH+3+4+0,ATTACH+2+3+0');
 
     mock.clearLogs();
-    fixture.elementRef.nativeElement.children[1].fireEvent('someEvent', {});
+    fixture.elementRef.nativeElement.children[0].fireEvent('someEvent', {});
 
     fixture.detectChanges();
     rootRenderer.executeCommands();

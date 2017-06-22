@@ -17,7 +17,6 @@
   "index.android.ts",
   "index.ios.ts",
   "../../../node_modules/zone.js/dist/zone.js.d.ts",
-  "../../../typings/globals/node/index.d.ts",
   "../../../fake-react-native.d.ts"
 ],
 

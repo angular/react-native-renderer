@@ -29,14 +29,14 @@ describe('Component without host', () => {
     expect(mock.commandLogs.toString()).toEqual(
       'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},' +
       'CREATE+5+native-view+{},CREATE+6+native-view+{},CREATE+7+native-view+{},' +
-      'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+6+7+0,ATTACH+5+6+0,ATTACH+4+5+0,ATTACH+3+4+0');
+      'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+4+5+0,ATTACH+5+6+0,ATTACH+6+7+0');
   });
 
   it('should support sub-components', () => {
     const {fixture, rootRenderer} = initTest(TestComponent, `<View><sub></sub></View>`);
     rootRenderer.executeCommands();
     expect(mock.commandLogs.toString()).toEqual(
-      'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+sub+{},CREATE+5+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+4+5+0,ATTACH+3+4+0');
+      'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+sub+{},CREATE+5+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+4+5+0');
   });
 
   it('should support ngIf', () => {
@@ -107,7 +107,7 @@ describe('Component without host', () => {
     const {fixture, rootRenderer} = initTest(TestComponent, `<proj><sub></sub><Text></Text></proj>`);
     rootRenderer.executeCommands();
     expect(mock.commandLogs.toString()).toEqual(
-      'CREATE+2+test-cmp+{},CREATE+3+proj+{},CREATE+4+native-text+{},CREATE+5+sub+{},CREATE+6+native-view+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1,ATTACH+5+6+0');
+      'CREATE+2+test-cmp+{},CREATE+3+proj+{},CREATE+4+sub+{},CREATE+5+native-view+{},CREATE+6+native-text+{},ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+6+1,ATTACH+4+5+0');
   });
 
   it('should support components with ngIf in their templates', () => {
@@ -122,7 +122,7 @@ describe('Component without host', () => {
     rootRenderer.executeCommands();
     expect(mock.commandLogs.toString()).toEqual(
       'CREATE+2+test-cmp+{},CREATE+3+sub-with-if+{},CREATE+4+native-view+{},CREATE+5+native-view+{},CREATE+6+native-text+{},' +
-      'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+2,ATTACH+3+6+1');
+      'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1,ATTACH+3+6+2');
   });
 
   it('should not attach twice components with ngIf in their templates', () => {
@@ -130,7 +130,7 @@ describe('Component without host', () => {
     rootRenderer.executeCommands();
     expect(mock.commandLogs.toString()).toEqual(
       'CREATE+2+test-cmp+{},CREATE+3+native-view+{},CREATE+4+native-view+{},CREATE+5+native-view+{},CREATE+6+native-dialogpicker+{"items":[],"mode":"dialog","height":50},' +
-      'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+2,ATTACH+3+6+1');
+      'ATTACH+1+2+0,ATTACH+2+3+0,ATTACH+3+4+0,ATTACH+3+5+1,ATTACH+3+6+2');
   });
 
 });

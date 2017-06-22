@@ -1,7 +1,6 @@
 var fs = require('fs');
 
 var gulp = require('gulp');
-const babel = require('gulp-babel');
 var jade = require('gulp-jade');
 var rename = require('gulp-rename');
 var typescript = require('gulp-typescript');
@@ -34,20 +33,11 @@ var PATHS = {
   tmp: 'dist/tmp',
   publish: 'dist/publish',
   modules: [
+    'node_modules/@angular/**/*',
     'node_modules/hammerjs/**/*',
     'node_modules/reflect-metadata/**/*',
     'node_modules/rxjs/**/*',
     'node_modules/zone.js/**/*'
-  ],
-  es6Modules: [
-    'node_modules/@angular/common/**/*.js', '!node_modules/@angular/common/bundles/*',
-    'node_modules/@angular/compiler/**/*.js', '!node_modules/@angular/compiler/bundles/*',
-    'node_modules/@angular/core/**/*.js', '!node_modules/@angular/core/bundles/*',
-    'node_modules/@angular/http/**/*.js', '!node_modules/@angular/http/bundles/*',
-    'node_modules/@angular/platform-browser/**/*.js', '!node_modules/@angular/platform-browser/bundles/*',
-    'node_modules/@angular/platform-browser-dynamic/**/*.js', '!node_modules/@angular/platform-browser-dynamic/bundles/*',
-    'node_modules/@angular/platform-server/**/*.js', '!node_modules/@angular/platform-server/bundles/*',
-    'node_modules/@angular/router/**/*.js', '!node_modules/@angular/router/bundles/*',
   ]
 };
 
@@ -69,16 +59,9 @@ gulp.task('!postcreate', ['!create'], function() {
     .pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/android/app/src/main/'));
 
 });
-gulp.task('!ng2commonjs', ['!postcreate'], function() {
-  return gulp.src(PATHS.es6Modules, {base: 'node_modules'})
-    .pipe(babel({
-      presets: ['es2015']
-    }))
+gulp.task('init', ['!postcreate'], function() {
+  return gulp.src(PATHS.modules, { base: './node_modules/' })
     .pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules'));
-});
-gulp.task('init', ['!ng2commonjs'], function() {
-  var copier = require('./tools/copy-dependencies');
-  return copier.doCopy(PATHS.modules, PATHS.app + '/' + APP_NAME + '/node_modules');
 });
 
 //--------------------------- JIT compilation---------------------------

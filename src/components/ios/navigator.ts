@@ -13,7 +13,7 @@ import {
   AfterViewInit, OnDestroy, ResolvedReflectiveProvider
 } from "@angular/core";
 import {LocationStrategy} from "@angular/common";
-import {Router, ActivatedRoute, RouterOutletMap, PRIMARY_OUTLET} from "@angular/router";
+import {Router, ActivatedRoute, ChildrenOutletContexts, PRIMARY_OUTLET} from "@angular/router";
 import {HighLevelComponent, GENERIC_INPUTS, GENERIC_BINDINGS} from "../common/component";
 import {REACT_NATIVE_WRAPPER} from "./../../renderer/renderer";
 import {ReactNativeWrapper} from "../../wrapper/wrapper";
@@ -183,20 +183,18 @@ export class Navigator extends HighLevelComponent implements OnDestroy {
   private __wrapper: ReactNativeWrapper;
 
   constructor(private router: Router, private zone: NgZone, private locationStrategy: LocationStrategy, private elementRef: ElementRef,
-              private parentOutletMap: RouterOutletMap, @Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
+              private parentContexts: ChildrenOutletContexts, @Inject(REACT_NATIVE_WRAPPER) wrapper: ReactNativeWrapper) {
     super(wrapper);
     this.__wrapper = wrapper;
-    parentOutletMap.registerOutlet(PRIMARY_OUTLET, <any>this);
+    parentContexts.onChildOutletCreated(PRIMARY_OUTLET, <any>this);
     this.setDefaultStyle({flex: 1});
   }
 
-  activate(activatedRoute: ActivatedRoute, loadedResolver: ComponentFactoryResolver,
-           loadedInjector: Injector, providers: ResolvedReflectiveProvider[],
-           outletMap: RouterOutletMap): void {
+  activateWith(activatedRoute: ActivatedRoute, loadedResolver: ComponentFactoryResolver): void {
     if (this._stack.length == 0) {
       this._stack.push(activatedRoute);
     } else {
-      var navigator: Node = this.elementRef.nativeElement.children[1];
+      var navigator: Node = this.elementRef.nativeElement.children[0];
       setTimeout(()=> {
         this.__wrapper.requestNavigatorLock(navigator.nativeTag, (lockAcquired) => this._handleNavigation(lockAcquired, navigator, activatedRoute));
       }, 0)
@@ -205,7 +203,7 @@ export class Navigator extends HighLevelComponent implements OnDestroy {
 
   deactivate(): void {}
 
-  ngOnDestroy(): void { this.parentOutletMap.removeOutlet(PRIMARY_OUTLET); }
+  ngOnDestroy(): void { this.parentContexts.onChildOutletDestroyed(PRIMARY_OUTLET); }
 
   _handleNavigation(lockAcquired: boolean, navigator: Node, activatedRoute: ActivatedRoute): void {
     this.zone.run(() => {

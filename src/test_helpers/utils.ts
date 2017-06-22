@@ -1,11 +1,10 @@
 import {MockApplicationRef} from "./mock_application_ref";
-import {RootRenderer, ApplicationRef, Sanitizer, CUSTOM_ELEMENTS_SCHEMA, NgZone} from "@angular/core";
+import {RendererFactory2, ApplicationRef, Sanitizer, CUSTOM_ELEMENTS_SCHEMA, NgZone} from "@angular/core";
 import {TestBed, getTestBed, ComponentFixture} from "@angular/core/testing";
 import {LocationStrategy} from "@angular/common";
 import {ElementSchemaRegistry} from "@angular/compiler";
 import {
   ReactNativeRootRenderer,
-  ReactNativeRootRenderer_,
   ReactNativeElementSchemaRegistry,
   ReactNativeSanitizer,
   REACT_NATIVE_WRAPPER
@@ -51,8 +50,8 @@ function getTestingProviders(mock: ReactNativeWrapper, testCpt: any): Array<any>
     {provide: ElementSchemaRegistry, useExisting: ReactNativeElementSchemaRegistry},
     ReactNativeSanitizer,
     {provide: Sanitizer, useExisting: ReactNativeSanitizer},
-    {provide: ReactNativeRootRenderer, useClass: ReactNativeRootRenderer_},
-    {provide: RootRenderer, useExisting: ReactNativeRootRenderer}
+    [ReactNativeRootRenderer],
+    {provide: RendererFactory2, useExisting: ReactNativeRootRenderer}
   ];
 }
 
