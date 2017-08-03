@@ -9,9 +9,11 @@ var UIManager = ReactNative.NativeModules.UIManager;
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 var dismissKeyboard = require('react-native/Libraries/Utilities/dismissKeyboard');
 
-var ReactNativeEventEmitter = require('react-native/Libraries/Renderer/src/renderers/native/ReactNativeEventEmitter');
-var ReactNativeTagHandles = require('react-native/Libraries/Renderer/src/renderers/native/ReactNativeTagHandles');
-var ReactNativeAttributePayload = require('react-native/Libraries/Renderer/src/renderers/native/ReactNativeAttributePayload');
+var ReactNativeStackEntry = require('react-native/Libraries/Renderer/ReactNativeStack-dev');
+
+var ReactNativeEventEmitter = ReactNativeStackEntry.ReactNativeEventEmitter;
+var ReactNativeTagHandles = ReactNativeStackEntry.ReactNativeTagHandles;
+var ReactNativeAttributePayload = ReactNativeStackEntry.ReactNativeAttributePayload;
 var ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
 
 overridePlatform(ReactNative.Platform.OS);
