@@ -54,6 +54,9 @@ gulp.task('!create', ['clean'], function(done) {
   executeInAppDir('react-native init ' + APP_NAME, done, true);
 });
 gulp.task('!postcreate', ['!create'], function() {
+  gulp.src(PATHS.app + '/' + APP_NAME + '/node_modules/react-native/Libraries/Renderer/ReactNativeStack*')
+    .pipe(transformReactNativeStack())
+    .pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/node_modules/react-native/Libraries/Renderer/'));
   return gulp.src(PATHS.app + '/' + APP_NAME + '/android/app/src/main/AndroidManifest.xml')
     .pipe(transformAndroidManifest())
     .pipe(gulp.dest(PATHS.app + '/' + APP_NAME + '/android/app/src/main/'));
@@ -448,6 +451,21 @@ function transformAndroidManifest() {
     `<uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />`);
+    file.contents = new Buffer(content);
+    this.push(file);
+    done();
+  });
+}
+
+function transformReactNativeStack() {
+  return through2.obj(function (file, encoding, done) {
+    var content = String(file.contents);
+    content = content.replace('module.exports = ReactNativeStackEntry;',
+      `ReactNativeStackEntry.ReactNativeEventEmitter = ReactNativeEventEmitter_1;
+ReactNativeStackEntry.ReactNativeTagHandles = ReactNativeTagHandles_1;
+ReactNativeStackEntry.ReactNativeAttributePayload = ReactNativeAttributePayload_1;
+
+module.exports = ReactNativeStackEntry;`);
     file.contents = new Buffer(content);
     this.push(file);
     done();
